@@ -27,17 +27,23 @@
 
 @layer base {
     html {
-        @apply antialiased;
+        @apply antialiased w-full overflow-x-hidden;
     }
 
     body {
-        @apply bg-lum-ivory text-lum-espresso font-sans;
+        @apply w-full overflow-x-hidden bg-lum-ivory text-lum-espresso font-sans;
     }
 }
 
 @layer components {
+    .lum-viewport {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
     .lum-page {
-        @apply relative mx-auto w-[1920px];
+        @apply relative w-[1920px];
+        transform-origin: top left;
     }
 
     .lum-container {
