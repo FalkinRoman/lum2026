@@ -1,0 +1,36 @@
+{
+  "fileKey": "b8ljkrlJPsyM9VphFqDpI5",
+  "rootFrame": "71:103",
+  "canvasWidth": 1920,
+  "colors": {
+    "primary/ivory/100": "#FFFDDF",
+    "primary/espresso/100": "#2E2720",
+    "primary/cream": "#FFFBB2",
+    "primary/ground": "#39362E",
+    "secondary/green/100": "#41606B",
+    "secondary/rose/100": "#F56F31",
+    "secondary/9": "#E2E1C8",
+    "secondary/2": "#FFB04A"
+  },
+  "typography": {
+    "volkorn/heading 1/1920-r": { "family": "Vollkorn", "weight": 400, "size": 88, "lineHeight": 94 },
+    "volkorn/heading 1/1920-italic m": { "family": "Vollkorn", "style": "italic", "weight": 500, "size": 88, "lineHeight": 94 },
+    "volkorn/heading 2/1920-r": { "family": "Vollkorn", "weight": 400, "size": 56, "lineHeight": 68, "letterSpacing": -0.25 },
+    "volkorn/heading 3/1920-m": { "family": "Vollkorn", "weight": 500, "size": 32, "lineHeight": 36, "letterSpacing": 0.32 },
+    "jost/text 1/m": { "family": "Jost", "weight": 500, "size": 18, "lineHeight": 18, "letterSpacing": 1.8 },
+    "jost/text 1/r": { "family": "Jost", "weight": 400, "size": 18, "lineHeight": 26, "letterSpacing": 0.1 },
+    "jost/text 2/m": { "family": "Jost", "weight": 500, "size": 16, "lineHeight": 25, "letterSpacing": 0.16 },
+    "jost/text 2/exb": { "family": "Jost", "weight": 800, "size": 16, "lineHeight": 25, "letterSpacing": 3.2 },
+    "jost/headline 1/m": { "family": "Jost", "weight": 500, "size": 24, "lineHeight": 34, "letterSpacing": 3.2 }
+  },
+  "sections": [
+    { "id": "142:162", "name": "hero", "height": 1242 },
+    { "id": "71:64", "name": "polaroids", "height": 1299 },
+    { "id": "82:340", "name": "villas", "height": 1413 },
+    { "id": "273:1634", "name": "location", "height": 1939 },
+    { "id": "222:397", "name": "interior", "height": 1527 },
+    { "id": "289:2434", "name": "blog", "height": 1274 },
+    { "id": "8:32", "name": "shop", "height": 768 },
+    { "id": "524:436", "name": "footer", "height": 800 }
+  ]
+}

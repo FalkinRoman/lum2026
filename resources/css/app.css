@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Vollkorn', ui-serif, Georgia, serif;
+    --font-script: 'Marck Script', cursive;
+
+    --color-lum-ivory: #fffddf;
+    --color-lum-ivory-88: rgb(255 253 223 / 0.88);
+    --color-lum-ivory-64: rgb(255 253 223 / 0.64);
+    --color-lum-ivory-40: rgb(255 253 223 / 0.4);
+    --color-lum-ivory-16: rgb(255 253 223 / 0.16);
+    --color-lum-espresso: #2e2720;
+    --color-lum-espresso-40: rgb(46 39 32 / 0.4);
+    --color-lum-cream: #fffbb2;
+    --color-lum-ground: #39362e;
+    --color-lum-green: #41606b;
+    --color-lum-rose: #f56f31;
+    --color-lum-sand: #e2e1c8;
+    --color-lum-orange: #ffb04a;
+    --color-lum-orange-2: #f58931;
+}
+
+@layer base {
+    html {
+        @apply antialiased;
+    }
+
+    body {
+        @apply bg-lum-ivory text-lum-espresso font-sans;
+    }
+}
+
+@layer components {
+    .lum-page {
+        @apply relative mx-auto w-[1920px];
+    }
+
+    .lum-container {
+        @apply relative w-[1920px];
+    }
+
+    .lum-section-inner {
+        @apply relative mx-auto w-[1776px];
+    }
+
+    .lum-btn {
+        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px];
+    }
+
+    .lum-btn-ivory {
+        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-ivory text-lum-espresso;
+    }
+
+    .lum-btn-dark {
+        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-ground text-lum-ivory;
+    }
+
+    .lum-btn-green {
+        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-green text-lum-ivory;
+    }
+
+    .lum-btn-outline-ivory {
+        @apply inline-flex items-center justify-center rounded-[50px] border border-lum-ivory px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] text-lum-ivory;
+    }
+
+    .lum-heading-1 {
+        @apply font-serif text-[88px] leading-[94px] tracking-normal;
+    }
+
+    .lum-heading-1-hero {
+        @apply font-serif text-[120px] leading-[120px] tracking-[-1.16px];
+    }
+
+    .lum-heading-2 {
+        @apply font-serif text-[56px] leading-[68px] tracking-[-0.25px];
+    }
+
+    .lum-heading-3 {
+        @apply font-serif text-[32px] leading-[36px] tracking-[0.32px];
+    }
+
+    .lum-eyebrow {
+        @apply text-[18px] font-medium uppercase tracking-[1.8px] leading-[18px];
+    }
+
+    .lum-body {
+        @apply text-[18px] leading-[26px] tracking-[0.1px];
+    }
+
+    .lum-text-2 {
+        @apply text-[16px] leading-[25px] tracking-[0.16px];
+    }
+
+    .lum-text-3 {
+        @apply text-[14px] leading-[14px] tracking-[0.6px];
+    }
+
+    .lum-script {
+        @apply font-script lowercase;
+    }
+
+    .lum-headline {
+        @apply text-[24px] font-medium leading-[34px] tracking-[3.2px];
+    }
+
+    .lum-divider {
+        @apply h-px w-[1776px] mx-auto bg-lum-espresso opacity-16;
+    }
+}
