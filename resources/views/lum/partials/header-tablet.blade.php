@@ -1,0 +1,31 @@
+<header class="absolute left-[20px] top-0 z-50 h-[80px] w-[920px] border-b border-lum-ivory-40">
+    <a href="/" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
+        <img src="{{ asset('images/lum/hero/logo-lum-cream.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
+    </a>
+
+    <div class="absolute right-0 top-[24px] flex items-center gap-[10px]">
+        <div class="relative">
+            <button
+                type="button"
+                class="flex items-center rounded-[44px] bg-lum-ivory p-[2px]"
+                data-lum-lang-toggle
+                aria-label="Language"
+                aria-expanded="false"
+                aria-controls="lum-lang-panel"
+            >
+                <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+            </button>
+            @include('lum.partials.language-switcher')
+        </div>
+
+        <a href="#" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">take a break</a>
+
+        <button type="button" class="flex items-center rounded-[44px] bg-lum-ivory p-[2px]" aria-label="Contact">
+            <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        </button>
+
+        <button type="button" class="flex w-[56px] items-center justify-center rounded-[50px] bg-lum-ivory px-[20px]" aria-label="Menu">
+            <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        </button>
+    </div>
+</header>

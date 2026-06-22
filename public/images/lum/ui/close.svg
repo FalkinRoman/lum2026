@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 11.2954 11.2954" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Union" filter="url(#filter0_g_0_10)">
+<path d="M10.5454 1.54541L6.44312 5.64771L10.5454 9.75L9.75 10.5454L5.64771 6.44312L1.54541 10.5454L0.75 9.75L4.85229 5.64771L0.75 1.54541L1.54541 0.75L5.64771 4.85229L9.75 0.75L10.5454 1.54541Z" fill="#FFFDDF"/>
+</g>
+<defs>
+<filter id="filter0_g_0_10" x="0" y="0" width="11.2954" height="11.2954" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.066666670143604279 0.066666670143604279" numOctaves="3" seed="7176" />
+<feDisplacementMap in="shape" scale="1.5" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_0_10">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+</defs>
+</svg>

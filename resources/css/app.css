@@ -5,6 +5,10 @@
 @source '../views/**/*.blade.php';
 
 @theme {
+    /* mobile ≤430, tablet 431–1023, desktop ≥1024 */
+    --breakpoint-tab: 431px;
+    --breakpoint-desk: 1024px;
+
     --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Vollkorn', ui-serif, Georgia, serif;
     --font-script: 'Marck Script', cursive;
@@ -42,12 +46,16 @@
     }
 
     .lum-page {
-        @apply relative w-[1920px];
+        @apply relative;
         transform-origin: top left;
     }
 
     .lum-container {
-        @apply relative w-[1920px];
+        @apply relative w-full;
+    }
+
+    .lum-lang-panel:not(.hidden) {
+        @apply opacity-100;
     }
 
     .lum-section-inner {
@@ -115,6 +123,6 @@
     }
 
     .lum-divider {
-        @apply h-px w-[1776px] mx-auto bg-lum-espresso opacity-16;
+        @apply h-px mx-auto bg-lum-espresso opacity-16 w-[calc(100%-40px)] desk:w-[1776px];
     }
 }
