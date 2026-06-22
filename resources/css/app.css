@@ -42,7 +42,7 @@
 @layer components {
     .lum-viewport {
         width: 100%;
-        overflow-x: hidden;
+        overflow: hidden;
     }
 
     .lum-page {

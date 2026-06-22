@@ -4,9 +4,9 @@ const LUM_VIEWPORT = {
 };
 
 const LUM_BREAKPOINTS = {
-    mobile: { width: 375, height: 7716 },
-    tablet: { width: 960, height: 9503 },
-    desktop: { width: 1920, height: 10262 },
+    mobile: { width: 375 },
+    tablet: { width: 960 },
+    desktop: { width: 1920 },
 };
 
 function getLumBreakpoint() {
@@ -36,7 +36,7 @@ function scaleLumPage() {
     }
 
     const breakpoint = getLumBreakpoint();
-    const { width, height } = LUM_BREAKPOINTS[breakpoint];
+    const { width } = LUM_BREAKPOINTS[breakpoint];
     const scale = window.innerWidth / width;
 
     syncLumBreakpointAttribute(breakpoint);
@@ -44,7 +44,10 @@ function scaleLumPage() {
     page.style.width = `${width}px`;
     page.style.transform = `scale(${scale})`;
     page.style.transformOrigin = 'top left';
-    viewport.style.height = `${height * scale}px`;
+
+    const pageHeight = page.offsetHeight;
+    page.style.marginBottom = `${pageHeight * (scale - 1)}px`;
+    viewport.style.height = `${pageHeight * scale}px`;
 }
 
 function initLanguageSwitcher() {
