@@ -1,5 +1,6 @@
 import { initLocationCards } from './location-cards';
 import { initBurgerMenu, syncBurgerMenuDrawer } from './burger-menu';
+import { initStickyHeader, syncStickyHeader } from './sticky-header';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -60,73 +61,108 @@ function scaleLumPage() {
         menuScaled.style.transform = `scale(${scale})`;
         syncBurgerMenuDrawer();
     }
+
+    const stickyScaled = document.querySelector('.lum-sticky-header__scaled');
+
+    if (stickyScaled) {
+        stickyScaled.style.width = `${width}px`;
+        stickyScaled.style.transformOrigin = 'top left';
+        stickyScaled.style.transform = `scale(${scale})`;
+        syncStickyHeader();
+    }
 }
 
 function initLanguageSwitcher() {
-    const panel = document.getElementById('lum-lang-panel');
-    const toggle = document.querySelector('[data-lum-lang-toggle]');
+    const toggles = document.querySelectorAll('[data-lum-lang-toggle]');
 
-    if (! panel || ! toggle) {
+    if (! toggles.length) {
         return;
     }
 
-    const openPanel = () => {
-        panel.classList.remove('hidden');
-        panel.classList.remove('opacity-0');
-        panel.classList.add('pointer-events-auto');
-        panel.setAttribute('aria-hidden', 'false');
-        toggle.setAttribute('aria-expanded', 'true');
-    };
+    const pairs = [];
 
-    const closePanel = () => {
-        panel.classList.add('hidden');
-        panel.classList.add('opacity-0');
-        panel.classList.remove('pointer-events-auto');
-        panel.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
-    };
+    toggles.forEach((toggle) => {
+        const panelId = toggle.getAttribute('aria-controls');
+        const panel = panelId ? document.getElementById(panelId) : null;
 
-    toggle.addEventListener('click', (event) => {
-        event.stopPropagation();
-
-        if (panel.classList.contains('hidden')) {
-            openPanel();
+        if (! panel) {
             return;
         }
 
-        closePanel();
-    });
+        const closePanel = () => {
+            panel.classList.add('hidden');
+            panel.classList.add('opacity-0');
+            panel.classList.remove('pointer-events-auto');
+            panel.setAttribute('aria-hidden', 'true');
+            toggle.setAttribute('aria-expanded', 'false');
+        };
 
-    panel.querySelectorAll('[data-lum-lang-close]').forEach((button) => {
-        button.addEventListener('click', (event) => {
+        const openPanel = () => {
+            pairs.forEach(({ panel: otherPanel, toggle: otherToggle, close }) => {
+                if (otherPanel !== panel) {
+                    close();
+                }
+            });
+
+            panel.classList.remove('hidden');
+            panel.classList.remove('opacity-0');
+            panel.classList.add('pointer-events-auto');
+            panel.setAttribute('aria-hidden', 'false');
+            toggle.setAttribute('aria-expanded', 'true');
+        };
+
+        pairs.push({ panel, toggle, close: closePanel });
+
+        toggle.addEventListener('click', (event) => {
             event.stopPropagation();
+
+            if (panel.classList.contains('hidden')) {
+                openPanel();
+                return;
+            }
+
             closePanel();
         });
-    });
 
-    panel.querySelectorAll('[data-lum-lang-option]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.stopPropagation();
-            closePanel();
+        panel.querySelectorAll('[data-lum-lang-close]').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                closePanel();
+            });
+        });
+
+        panel.querySelectorAll('[data-lum-lang-option]').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
+                closePanel();
+            });
         });
     });
 
     document.addEventListener('click', (event) => {
-        if (panel.classList.contains('hidden')) {
-            return;
-        }
+        pairs.forEach(({ panel, toggle, close }) => {
+            if (panel.classList.contains('hidden')) {
+                return;
+            }
 
-        if (panel.contains(event.target) || toggle.contains(event.target)) {
-            return;
-        }
+            if (panel.contains(event.target) || toggle.contains(event.target)) {
+                return;
+            }
 
-        closePanel();
+            close();
+        });
     });
 
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            closePanel();
+        if (event.key !== 'Escape') {
+            return;
         }
+
+        pairs.forEach(({ panel, close }) => {
+            if (! panel.classList.contains('hidden')) {
+                close();
+            }
+        });
     });
 }
 
@@ -134,4 +170,5 @@ scaleLumPage();
 initLanguageSwitcher();
 initLocationCards();
 initBurgerMenu();
+initStickyHeader();
 window.addEventListener('resize', scaleLumPage);

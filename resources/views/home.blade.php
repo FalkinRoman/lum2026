@@ -19,4 +19,5 @@
 </div>
 
 @include('lum.partials.burger-menu')
+@include('lum.partials.header-sticky')
 @endsection

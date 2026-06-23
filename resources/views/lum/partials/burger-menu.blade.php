@@ -67,7 +67,7 @@
                     </a>
                     <div class="absolute right-0 top-[24px] flex items-center gap-[10px]">
                         <button type="button" class="flex items-center rounded-[44px] border border-lum-espresso p-[2px]" aria-label="Language">
-                            <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px] brightness-0" width="32" height="32">
+                            <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
                         <a href="#" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">take a break</a>
                         <button type="button" class="flex items-center rounded-[44px] bg-lum-espresso p-[2px]" aria-label="Contact">
@@ -127,7 +127,7 @@
                     </a>
                     <div class="absolute right-0 top-[48px] flex items-center gap-[10px]">
                         <button type="button" class="flex items-center rounded-[50px] border border-lum-espresso p-[2px]" aria-label="Language">
-                            <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px] brightness-0" width="32" height="32">
+                            <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
                         <a href="#" class="lum-btn-outline">take a break</a>
                         <button type="button" class="flex items-center rounded-[50px] bg-lum-espresso p-[2px]" aria-label="Contact">

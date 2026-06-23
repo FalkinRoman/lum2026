@@ -24,7 +24,7 @@
             <div class="flex h-[48px] w-[48px] shrink-0 items-center justify-center">
                 <img src="{{ $img('hero/scroll-arrow-375.svg') }}" alt="" class="w-[48px] rotate-90" width="49" height="7">
             </div>
-            <a href="#villas" class="lum-btn-green px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">explore our villas</a>
+            <a href="#villas" class="lum-btn-green px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>explore our villas</a>
         </div>
 
         <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="pointer-events-none absolute bottom-[-28px] left-0 w-full rotate-180 scale-x-[-1]" width="375" height="54">
@@ -55,7 +55,7 @@
             <div class="flex h-[48px] w-[48px] shrink-0 items-center justify-center">
                 <img src="{{ $img('hero/scroll-arrow-960.svg') }}" alt="" class="w-[48px] rotate-90" width="49" height="7">
             </div>
-            <a href="#villas" class="lum-btn-green px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">explore our villas</a>
+            <a href="#villas" class="lum-btn-green px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>explore our villas</a>
         </div>
 
         <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-0 z-10 h-[135px] w-[960px] max-w-none rotate-180 scale-x-[-1]" width="960" height="135">
@@ -91,7 +91,7 @@
             <img src="{{ $img('hero/scroll-arrow.svg') }}" alt="" class="w-[86px] rotate-90" width="87" height="7">
         </div>
 
-        <a href="#villas" class="lum-btn-green absolute left-1/2 top-[1018px] z-20 -translate-x-1/2">explore our villas</a>
+        <a href="#villas" class="lum-btn-green absolute left-1/2 top-[1018px] z-20 -translate-x-1/2" data-lum-sticky-trigger>explore our villas</a>
 
         <img src="{{ $img('hero/torn-edge.svg') }}" alt="" class="pointer-events-none absolute bottom-[-109px] left-0 z-10 h-[269px] w-[1920px] max-w-none rotate-180 scale-x-[-1]" width="1920" height="269">
     </div>

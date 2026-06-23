@@ -21,7 +21,7 @@
 
     <div class="absolute right-0 top-[48px] flex items-center gap-[10px]">
         <button type="button" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Language">
-            <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+            <img src="{{ asset('images/lum/hero/language-cream.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <a href="#" class="lum-btn-outline-ivory">take a break</a>
         <button type="button" class="flex items-center rounded-[50px] bg-lum-ivory p-[2px]" aria-label="Contact">

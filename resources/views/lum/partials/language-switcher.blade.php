@@ -1,5 +1,5 @@
 <div
-    id="lum-lang-panel"
+    id="{{ $panelId ?? 'lum-lang-panel' }}"
     class="lum-lang-panel pointer-events-none absolute right-0 top-[calc(100%+8px)] z-[70] hidden w-[320px] opacity-0 transition-opacity duration-150"
     role="dialog"
     aria-label="Select Language"
