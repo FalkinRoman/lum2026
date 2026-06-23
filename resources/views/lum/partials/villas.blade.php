@@ -86,10 +86,10 @@
             <img src="{{ $img('villas/oval-preview.jpg') }}" alt="" class="h-full w-full object-cover" width="180" height="240">
         </div>
 
-        <button type="button" class="absolute left-[76px] top-[604px] z-20 flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Previous">
+        <button type="button" class="absolute left-[20px] top-[calc(50%+91px)] z-20 flex size-[56px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Previous">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" class="absolute left-[884px] top-[604px] z-20 flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Next">
+        <button type="button" class="absolute right-[20px] top-[calc(50%+91px)] z-20 flex size-[56px] -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Next">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>

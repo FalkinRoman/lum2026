@@ -17,11 +17,11 @@
             @endforeach
         </div>
         <img src="{{ $img('interior/left.jpg') }}" alt="" class="absolute left-0 top-[388px] h-[260px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="375" height="260">
-        <button type="button" class="absolute left-[143px] top-[628px] flex size-[40px] rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[8px]" aria-label="Previous">
-            <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[24px]" width="24" height="24">
+        <button type="button" class="absolute left-[143px] top-[628px] flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Previous">
+            <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
         </button>
-        <button type="button" class="absolute left-[193px] top-[628px] flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[8px]" aria-label="Next">
-            <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[24px]" width="24" height="24">
+        <button type="button" class="absolute left-[193px] top-[628px] flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Next">
+            <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
         </button>
         <div class="absolute left-1/2 top-[692px] flex w-[280px] -translate-x-1/2 flex-col items-center gap-[16px]">
             <div class="flex w-full items-center justify-center gap-[8px]">
@@ -51,11 +51,11 @@
             @endforeach
         </div>
         <img src="{{ $img('interior/left.jpg') }}" alt="" class="absolute left-0 top-[421px] h-[641px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="960" height="641">
-        <button type="button" class="absolute left-[414px] top-[1034px] flex size-[56px] rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[12px]" aria-label="Previous">
-            <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        <button type="button" class="absolute left-[414px] top-[1034px] flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="Previous">
+            <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
         </button>
-        <button type="button" class="absolute left-[490px] top-[1034px] flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[12px]" aria-label="Next">
-            <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        <button type="button" class="absolute left-[490px] top-[1034px] flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="Next">
+            <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
         </button>
         <div class="absolute left-1/2 top-[1134px] flex w-[378px] -translate-x-1/2 flex-col items-center gap-[24px]">
             <div class="flex w-full items-center justify-center gap-[14px]">

@@ -1,6 +1,7 @@
 import { initLocationCards } from './location-cards';
 import { initBurgerMenu, syncBurgerMenuDrawer } from './burger-menu';
 import { initStickyHeader, syncStickyHeader } from './sticky-header';
+import { initBlogSlider } from './blog-slider';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -169,6 +170,7 @@ function initLanguageSwitcher() {
 scaleLumPage();
 initLanguageSwitcher();
 initLocationCards();
+initBlogSlider();
 initBurgerMenu();
 initStickyHeader();
 window.addEventListener('resize', scaleLumPage);
