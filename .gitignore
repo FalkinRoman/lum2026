@@ -25,3 +25,7 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Large local media (not used in site; kept on disk only)
+/public/images/lum/hero/video-poster.jpg
+/public/images/lum/hero/video.gif
