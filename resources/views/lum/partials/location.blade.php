@@ -9,15 +9,18 @@
                 ['text' => 'thoughtfully prepared', 'italic' => true],
             ],
             'photoLabel' => 'Dining',
-            'tag' => 'restaurants <span class="italic">worth</span> traveling for',
+            'tag' => 'restaurants <span class="font-medium italic" style="white-space: nowrap;">worth</span> traveling for',
+            'tagTop' => ['mob' => 56, 'tab' => 80, 'desk' => 128],
             'activeImg' => 'location/dining.png',
             'activeImgClass' => 'object-cover opacity-90',
             'activeImgDesk' => 'h-[160px] w-[273px]',
             'activeImgTab' => 'h-[128px] w-[218px]',
-            'activeImgMob' => 'w-[163px] h-[96px]',
-            'activeImgMobTop' => '162px',
+            'activeImgMob' => 'h-[96px] w-[163px]',
+            'activeImgRotate' => false,
             'list' => 'Lum Restaurant & Bar / Sandwich Spot / Rosenköster / Brute Wine & Bar',
             'listBr' => 'Lum Restaurant & Bar / Sandwich Spot /<br>Rosenköster / Brute Wine & Bar',
+            'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
+            'listMobWidth' => 'w-[245px]',
             'btn' => 'bg-lum-espresso',
             'width' => 'w-[550px]',
         ],
@@ -30,15 +33,18 @@
                 ['text' => 'yoga sessions', 'italic' => true],
             ],
             'photoLabel' => 'Relax',
-            'tag' => 'new energy from <span class="italic">old tradition</span>',
+            'tag' => 'new energy from <span class="font-medium italic" style="white-space: nowrap;">old tradition</span>',
+            'tagTop' => ['mob' => 56, 'tab' => 80, 'desk' => 128],
             'activeImg' => 'location/relax-sun.png',
             'activeImgClass' => 'object-contain',
-            'activeImgDesk' => 'h-[214px] w-[218px]',
+            'activeImgDesk' => 'h-[269px] w-[273px]',
             'activeImgTab' => 'h-[214px] w-[218px]',
-            'activeImgMob' => 'w-[163px] h-[160px]',
-            'activeImgMobTop' => '130px',
+            'activeImgMob' => 'h-[160px] w-[163px]',
+            'activeImgRotate' => false,
             'list' => 'Yoga / Surfing / Padel',
             'listBr' => 'Yoga / Surfing / Padel',
+            'listTop' => ['mob' => 314, 'tab' => 517, 'desk' => 591],
+            'listMobWidth' => null,
             'btn' => 'bg-lum-green',
             'width' => 'w-[549px]',
         ],
@@ -51,15 +57,18 @@
                 ['text' => 'used to be', 'italic' => true],
             ],
             'photoLabel' => 'discover',
-            'tag' => 'welcome to the <span class="italic">true Sri Lanka</span>',
+            'tag' => 'welcome to the <span class="font-medium italic" style="white-space: nowrap;">true Sri Lanka</span>',
+            'tagTop' => ['mob' => 56, 'tab' => 79, 'desk' => 128],
             'activeImg' => 'location/discover-map.png',
-            'activeImgClass' => 'object-cover -rotate-[15deg]',
+            'activeImgClass' => 'object-cover',
             'activeImgDesk' => 'size-[240px]',
-            'activeImgTab' => 'size-[240px]',
+            'activeImgTab' => 'size-[200px]',
             'activeImgMob' => 'size-[171px]',
-            'activeImgMobTop' => '137px',
+            'activeImgRotate' => true,
             'list' => 'Galle Fort / Koggala Lake / Mirissa / Dondra',
             'listBr' => 'Galle Fort / Koggala Lake /<br>Mirissa / Dondra',
+            'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
+            'listMobWidth' => 'w-[170px]',
             'btn' => 'bg-lum-green',
             'width' => 'w-[550px]',
         ],
@@ -80,14 +89,22 @@
 
         <div class="absolute left-[20px] top-[476px] flex w-[335px] flex-col gap-[24px]">
             @foreach ($cards as $card)
-                <article class="relative h-[420px] w-[335px] overflow-hidden border border-dashed border-lum-espresso bg-lum-sand">
-                    <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="pointer-events-none absolute left-1/2 top-1/2 size-[780px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="780" height="780">
-                    <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 {{ $card['activeImgMob'] }} {{ $card['activeImgClass'] }}" style="top: {{ $card['activeImgMobTop'] }}; transform: translateX(-50%);">
-                    <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] text-lum-espresso">{{ $card['title'] }}</h3>
-                    <div class="lum-location-card__tag absolute left-1/2 top-[56px] w-max max-w-none -translate-x-1/2 rotate-[1deg] bg-lum-cream px-[16px] py-[1px]">
-                        <p class="whitespace-nowrap font-serif text-[14px] leading-[20px] tracking-[-0.4px] text-lum-espresso">{!! $card['tag'] !!}</p>
+                <article class="relative h-[420px] w-[335px] border border-dashed border-lum-espresso bg-lum-sand">
+                    <div class="lum-location-card__bg">
+                        <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[780px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="780" height="780">
                     </div>
-                    <p class="absolute left-1/2 top-[292px] w-[245px] -translate-x-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ $card['list'] }}</p>
+                    @if ($card['activeImgRotate'])
+                        <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+                            <div class="-rotate-[15deg]">
+                                <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $card['activeImgMob'] }} {{ $card['activeImgClass'] }}">
+                            </div>
+                        </div>
+                    @else
+                        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgMob'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
+                    @endif
+                    <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
+                    @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['mob'], 'tag' => $card['tag'], 'padding' => 'px-[24px] py-[4px]'])
+                    <p @class(['absolute left-1/2 -translate-x-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso', $card['listMobWidth'] ?? '']) style="top: {{ $card['listTop']['mob'] }}px">{!! $card['listBr'] !!}</p>
                     <a href="#" class="lum-btn absolute left-1/2 top-[360px] -translate-x-1/2 {{ $card['btn'] }} px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-ivory">more info</a>
                 </article>
             @endforeach
@@ -109,29 +126,10 @@
         <div class="absolute left-[20px] top-[642px] w-[920px]">
             <div class="flex gap-[20px]">
                 @foreach (array_slice($cards, 0, 2) as $card)
-                    <article class="relative h-[650px] w-[450px] overflow-hidden border border-dashed border-lum-espresso bg-lum-sand">
-                        <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="pointer-events-none absolute left-1/2 top-1/2 size-[1048px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="1048" height="1048">
-                        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgTab'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
-                        <h3 class="absolute left-1/2 top-[44px] -translate-x-1/2 font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
-                        <div class="lum-location-card__tag absolute left-1/2 top-[80px] w-max max-w-none -translate-x-1/2 rotate-[1deg] bg-lum-cream px-[48px] py-[4px]">
-                            <p class="whitespace-nowrap font-serif text-[20px] leading-[24px] tracking-[-0.4px] text-lum-espresso">{!! $card['tag'] !!}</p>
-                        </div>
-                        <p class="absolute left-1/2 top-[492px] -translate-x-1/2 text-center lum-text-2 text-lum-espresso">{!! $card['listBr'] !!}</p>
-                        <a href="#" class="lum-btn absolute left-1/2 top-[574px] -translate-x-1/2 {{ $card['btn'] }} px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-ivory">more info</a>
-                    </article>
+                    @include('lum.partials.location-card-tablet', ['card' => $card])
                 @endforeach
             </div>
-            @php $card = $cards[2]; @endphp
-            <article class="relative mt-[40px] h-[650px] w-[450px] overflow-hidden border border-dashed border-lum-espresso bg-lum-sand">
-                <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="pointer-events-none absolute left-1/2 top-1/2 size-[1048px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="1048" height="1048">
-                <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgTab'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
-                <h3 class="absolute left-1/2 top-[44px] -translate-x-1/2 font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
-                <div class="lum-location-card__tag absolute left-1/2 top-[79px] w-max max-w-none -translate-x-1/2 rotate-[1deg] bg-lum-cream px-[48px] py-[4px]">
-                    <p class="whitespace-nowrap font-serif text-[20px] leading-[24px] tracking-[-0.4px] text-lum-espresso">{!! $card['tag'] !!}</p>
-                </div>
-                <p class="absolute left-1/2 top-[492px] -translate-x-1/2 text-center lum-text-2 text-lum-espresso">{!! $card['listBr'] !!}</p>
-                <a href="#" class="lum-btn absolute left-1/2 top-[574px] -translate-x-1/2 {{ $card['btn'] }} px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-ivory">more info</a>
-            </article>
+            @include('lum.partials.location-card-tablet', ['card' => $cards[2], 'stacked' => true])
         </div>
         <div class="lum-divider absolute bottom-0 left-[20px]"></div>
     </div>
@@ -149,8 +147,8 @@
 
         <div class="absolute left-[72px] top-[1039px] flex gap-[64px]">
             @foreach ($cards as $card)
-                <article @class(['lum-location-card group relative h-[740px] overflow-hidden', $card['width']])>
-                    <div class="lum-location-card__photo absolute inset-0">
+                <article @class(['lum-location-card group relative h-[740px]', $card['width']])>
+                    <div class="lum-location-card__photo absolute inset-0 overflow-hidden">
                         <img src="{{ $img($card['photo']) }}" alt="" class="absolute inset-0 h-full w-full object-cover">
                         <div class="absolute inset-0 {{ $card['photoGradient'] }}"></div>
                         <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lum-ivory">
@@ -165,13 +163,21 @@
                     </div>
 
                     <div class="lum-location-card__active absolute inset-0 bg-lum-sand">
-                        <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="pointer-events-none absolute left-1/2 top-1/2 size-[1280px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="1280" height="1280">
-                        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgDesk'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
-                        <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso">{{ $card['title'] }}</h3>
-                        <div class="lum-location-card__tag absolute left-1/2 top-[129px] w-max max-w-none -translate-x-1/2 rotate-[1deg] bg-lum-cream px-[48px] py-[4px]">
-                            <p class="whitespace-nowrap font-serif text-[20px] leading-[24px] tracking-[-0.4px] text-lum-espresso">{!! $card['tag'] !!}</p>
+                        <div class="lum-location-card__bg">
+                            <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[1280px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="1280" height="1280">
                         </div>
-                        <p class="lum-text-2 absolute left-1/2 top-[565px] -translate-x-1/2 text-center text-lum-espresso">{!! $card['listBr'] !!}</p>
+                        @if ($card['activeImgRotate'])
+                            <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+                                <div class="-rotate-[15deg]">
+                                    <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $card['activeImgDesk'] }} {{ $card['activeImgClass'] }}">
+                                </div>
+                            </div>
+                        @else
+                            <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgDesk'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
+                        @endif
+                        <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso">{{ $card['title'] }}</h3>
+                        @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag']])
+                        <p class="lum-text-2 absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso" style="top: {{ $card['listTop']['desk'] }}px">{!! $card['listBr'] !!}</p>
                         <a href="#" class="lum-btn absolute left-1/2 top-[640px] -translate-x-1/2 {{ $card['btn'] }} text-lum-ivory">more info</a>
                     </div>
                 </article>

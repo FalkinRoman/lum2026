@@ -126,12 +126,46 @@
         @apply h-px mx-auto bg-lum-espresso opacity-16 w-[calc(100%-40px)] desk:w-[1776px];
     }
 
-    .lum-location-card__tag {
-        @apply inline-block w-max max-w-none whitespace-nowrap;
+    .lum-location-card__tag-wrap {
+        z-index: 10;
+        width: max-content;
+        max-width: none;
     }
 
-    .lum-location-card__tag p {
-        @apply whitespace-nowrap;
+    .lum-location-card__tag-rotate {
+        width: max-content;
+        max-width: none;
+    }
+
+    .lum-location-card__tag {
+        width: max-content;
+        max-width: none;
+        white-space: nowrap;
+    }
+
+    .lum-location-card__tag-text {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: -0.16px;
+    }
+
+    .lum-location-card__tag-text,
+    .lum-location-card__tag-text * {
+        display: inline !important;
+        white-space: nowrap !important;
+    }
+
+    @media (width >= 431px) {
+        .lum-location-card__tag-text {
+            font-size: 20px;
+            line-height: 24px;
+            letter-spacing: -0.4px;
+        }
+    }
+
+    .lum-location-card__bg {
+        @apply pointer-events-none absolute inset-0 overflow-hidden;
     }
 
     .lum-location-card__photo,
