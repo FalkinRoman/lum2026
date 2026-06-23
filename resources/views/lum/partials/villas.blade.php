@@ -1,6 +1,6 @@
-<section id="villas" class="lum-container relative h-[939px] bg-lum-ivory tab:h-[1082px] desk:h-[1413px]">
+<section id="villas" class="lum-container relative z-10 h-[939px] overflow-visible bg-lum-ivory tab:h-[1082px] desk:h-[1413px]">
     {{-- MOBILE — Figma 16:1479 + 16:1488 --}}
-    <div class="relative h-full tab:hidden">
+    <div class="relative h-full overflow-visible tab:hidden">
         <div class="absolute left-1/2 top-[44px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[16px] text-center">
             <p class="lum-text-3 font-medium uppercase text-lum-espresso">Hotel and restaurant & bar</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="335" height="1">
@@ -13,42 +13,44 @@
             </div>
         </div>
 
-        <div class="absolute left-0 top-[269px] h-[550px] w-full overflow-hidden">
-            <img src="{{ $img('villas/photo.jpg') }}" alt="" class="h-full w-full object-cover" width="375" height="550">
-            <div class="absolute inset-0 bg-black/32"></div>
-            <div class="absolute inset-y-0 left-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
-            <div class="absolute inset-y-0 right-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
+        <div class="absolute left-0 top-[269px] h-[670px] w-full">
+            <div class="relative h-[550px] w-full overflow-hidden">
+                <img src="{{ $img('villas/photo.jpg') }}" alt="" class="h-full w-full object-cover" width="375" height="550">
+                <div class="absolute inset-0 bg-black/32"></div>
+                <div class="absolute inset-y-0 left-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
+                <div class="absolute inset-y-0 right-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
 
-            <div class="absolute left-[111.5px] top-[28px] flex items-center gap-[16px] text-lum-ivory">
-                <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px]">01</span>
-                <span class="h-px w-[86px] bg-lum-ivory-64"></span>
-                <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">04</span>
+                <div class="absolute left-[111.5px] top-[28px] flex items-center gap-[16px] text-lum-ivory">
+                    <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px]">01</span>
+                    <span class="h-px w-[86px] bg-lum-ivory-64"></span>
+                    <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">04</span>
+                </div>
+
+                <div class="absolute left-1/2 top-[181px] w-[335px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88">
+                    <p>Sleeps 4 adults — with 2 pools, 2 bedrooms</p>
+                    <p>and 2 bathrooms</p>
+                </div>
+
+                <h2 class="absolute left-1/2 top-[275px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[56px] leading-[56px] text-lum-ivory">
+                    <span class="font-normal">Lum</span><span class="font-medium italic"> Villas</span>
+                </h2>
             </div>
 
-            <div class="absolute left-1/2 top-[181px] w-[335px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88">
-                <p>Sleeps 4 adults — with 2 pools, 2 bedrooms</p>
-                <p>and 2 bathrooms</p>
+            <div class="absolute left-[118px] top-[422px] z-20 h-[188px] w-[140px] overflow-hidden rounded-[50%]">
+                <img src="{{ $img('villas/oval-preview.jpg') }}" alt="" class="h-full w-full object-cover" width="140" height="188">
             </div>
 
-            <h2 class="absolute left-1/2 top-[275px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[56px] leading-[56px] text-lum-ivory">
-                <span class="font-normal">Lum</span><span class="font-medium italic"> Villas</span>
-            </h2>
-
-            <div class="absolute left-[118px] top-[422px] h-[188px] w-[140px] overflow-hidden rounded-full">
-                <img src="{{ $img('villas/section.jpg') }}" alt="" class="h-full w-full object-cover" width="140" height="188">
-            </div>
-
-            <button type="button" class="absolute left-[58px] top-[530px] flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Previous">
+            <button type="button" class="absolute left-[58px] top-[530px] z-20 flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Previous">
                 <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
             </button>
-            <button type="button" class="absolute left-[278px] top-[530px] flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Next">
+            <button type="button" class="absolute left-[278px] top-[530px] z-20 flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Next">
                 <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
             </button>
         </div>
     </div>
 
     {{-- TABLET — Figma 16:949 --}}
-    <div class="relative hidden h-full tab:block desk:hidden">
+    <div class="relative hidden h-full overflow-visible tab:block desk:hidden">
         <div class="absolute left-1/2 top-[60px] flex w-[640px] -translate-x-1/2 flex-col items-center gap-[16px] text-center">
             <p class="lum-text-2 font-medium uppercase text-lum-espresso">Hotel and restaurant & bar</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="640" height="1">
@@ -80,20 +82,20 @@
             <span class="font-normal">Lum </span><span class="font-medium italic">Villas</span>
         </h2>
 
-        <div class="absolute left-1/2 top-[842px] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-full">
-            <img src="{{ $img('villas/section.jpg') }}" alt="" class="h-full w-full object-cover" width="180" height="240">
+        <div class="absolute left-1/2 top-[842px] z-20 h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]">
+            <img src="{{ $img('villas/oval-preview.jpg') }}" alt="" class="h-full w-full object-cover" width="180" height="240">
         </div>
 
-        <button type="button" class="absolute left-[20px] top-[calc(50%+91px)] flex size-[56px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Previous">
+        <button type="button" class="absolute left-[76px] top-[604px] z-20 flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Previous">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" class="absolute left-[884px] top-[calc(50%+91px)] flex size-[56px] -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Next">
+        <button type="button" class="absolute left-[884px] top-[604px] z-20 flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Next">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>
 
     {{-- DESKTOP — Figma 16:627 --}}
-    <div class="relative hidden h-full desk:block">
+    <div class="relative hidden h-full overflow-visible desk:block">
         <div class="absolute left-1/2 top-[80px] flex w-[530px] -translate-x-1/2 flex-col items-center gap-[24px] text-center">
             <p class="lum-eyebrow text-lum-espresso">Hotel and restaurant & bar</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-[2px] w-full" width="530" height="2">
@@ -129,13 +131,17 @@
             <span class="font-normal">Lum </span><span class="font-medium italic">Villas</span>
         </h2>
 
-        <button type="button" class="absolute left-[72px] top-[calc(50%+166.5px)] flex size-[64px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Previous">
+        <div class="absolute left-1/2 top-[1143px] z-20 h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]">
+            <img src="{{ $img('villas/oval-preview.jpg') }}" alt="" class="h-full w-full object-cover" width="320" height="430">
+        </div>
+
+        <button type="button" class="absolute left-[72px] top-[calc(50%+166.5px)] z-20 flex size-[64px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Previous">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" class="absolute left-[1848px] top-[calc(50%+166.5px)] flex size-[64px] -translate-x-1/2 -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Next">
+        <button type="button" class="absolute left-[1848px] top-[calc(50%+166.5px)] z-20 flex size-[64px] -translate-x-1/2 -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Next">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <a href="#" class="absolute left-[1467px] top-[1129px] flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">VIEW</a>
+        <a href="#" class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">VIEW</a>
     </div>
 </section>
