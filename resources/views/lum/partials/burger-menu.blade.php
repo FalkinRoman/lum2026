@@ -6,8 +6,8 @@
     aria-modal="true"
     aria-label="Menu"
 >
-    <div class="lum-burger-menu__scroll fixed inset-0 z-10 overflow-y-auto overscroll-contain bg-black/32 backdrop-blur-[8px]">
-        <div class="lum-burger-menu__drawer relative max-w-full overflow-hidden">
+    <div class="lum-burger-menu__scroll fixed inset-0 z-10 flex min-h-full flex-col overflow-y-auto overscroll-contain bg-black/32 backdrop-blur-[8px]">
+        <div class="lum-burger-menu__drawer relative w-full shrink-0 overflow-hidden">
             <div class="lum-burger-menu__scaled flex flex-col origin-top-left">
                 <div class="lum-burger-menu__panel relative bg-lum-ivory">
             {{-- MOBILE --}}
@@ -170,7 +170,7 @@
 
         <button
             type="button"
-            class="lum-burger-menu__hitarea block min-h-[50vh] w-full border-0 bg-transparent p-0"
+            class="lum-burger-menu__hitarea block min-h-0 w-full shrink-0 flex-1 border-0 bg-transparent p-0"
             data-lum-menu-backdrop
             aria-label="Close menu"
         ></button>

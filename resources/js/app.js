@@ -1,5 +1,5 @@
 import { initLocationCards } from './location-cards';
-import { initBurgerMenu } from './burger-menu';
+import { initBurgerMenu, syncBurgerMenuDrawer } from './burger-menu';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -56,7 +56,9 @@ function scaleLumPage() {
 
     if (menuScaled) {
         menuScaled.style.width = `${width}px`;
+        menuScaled.style.transformOrigin = 'top left';
         menuScaled.style.transform = `scale(${scale})`;
+        syncBurgerMenuDrawer();
     }
 }
 

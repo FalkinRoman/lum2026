@@ -1,3 +1,22 @@
+export function syncBurgerMenuDrawer() {
+    const menuScaled = document.querySelector('.lum-burger-menu__scaled');
+    const drawer = document.querySelector('.lum-burger-menu__drawer');
+
+    if (! menuScaled || ! drawer) {
+        return;
+    }
+
+    const rect = menuScaled.getBoundingClientRect();
+
+    if (rect.height <= 0) {
+        drawer.style.removeProperty('height');
+
+        return;
+    }
+
+    drawer.style.height = `${rect.height}px`;
+}
+
 export function initBurgerMenu() {
     const menu = document.getElementById('lum-burger-menu');
 
@@ -28,6 +47,7 @@ export function initBurgerMenu() {
 
         requestAnimationFrame(() => {
             menu.classList.add('is-open');
+            syncBurgerMenuDrawer();
         });
 
         const firstFocusable = menu.querySelector('.lum-burger-menu__panel [data-lum-menu-close]');
