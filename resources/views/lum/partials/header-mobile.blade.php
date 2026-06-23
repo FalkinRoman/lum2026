@@ -3,7 +3,7 @@
         <img src="{{ asset('images/lum/hero/logo-lum-cream.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
     </a>
 
-    <button type="button" class="absolute right-0 top-1/2 flex w-[56px] -translate-y-1/2 items-center justify-center rounded-[50px] bg-lum-ivory px-[20px]" aria-label="Menu">
+    <button type="button" class="absolute right-0 top-1/2 flex w-[56px] -translate-y-1/2 items-center justify-center rounded-[50px] bg-lum-ivory px-[20px]" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
         <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
     </button>
 

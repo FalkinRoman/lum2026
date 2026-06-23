@@ -1,5 +1,5 @@
 <header class="absolute left-[72px] top-0 z-50 h-[132px] w-[1776px] border-b border-lum-ivory-40">
-    <button type="button" class="absolute left-0 top-1/2 flex -translate-y-1/2 items-center rounded-[50px] bg-lum-ivory px-[20px] py-[2px]" aria-label="Menu">
+    <button type="button" class="absolute left-0 top-1/2 flex -translate-y-1/2 items-center rounded-[50px] bg-lum-ivory px-[20px] py-[2px]" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
         <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
     </button>
 

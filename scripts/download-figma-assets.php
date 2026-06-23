@@ -61,6 +61,9 @@ $assets = [
     'villas/side-blur.jpg' => 'https://www.figma.com/api/mcp/asset/c7897ed9-0774-4a5e-b3e5-90190fd77ba9',
     'swap/map.jpg' => 'https://www.figma.com/api/mcp/asset/1da20543-55ac-49b9-8319-b1b531fab107',
     'swap/preview.png' => 'https://www.figma.com/api/mcp/asset/cc678cc0-4e77-4d98-89c5-264fcdbaf9aa',
+    'menu/map.jpg' => 'https://www.figma.com/api/mcp/asset/1da20543-55ac-49b9-8319-b1b531fab107',
+    'menu/close.svg' => 'https://www.figma.com/api/mcp/asset/8f16c516-7670-4b7d-9ee5-9ff15896b2cf',
+    'menu/logo-lum-espresso.svg' => 'https://www.figma.com/api/mcp/asset/c0265c32-1142-439b-ac36-ae7b7973a815',
 ];
 
 function streamDownload(string $url, string $dest): bool

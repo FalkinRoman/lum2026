@@ -1,4 +1,5 @@
 import { initLocationCards } from './location-cards';
+import { initBurgerMenu } from './burger-menu';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -50,6 +51,13 @@ function scaleLumPage() {
     const pageHeight = page.offsetHeight;
     page.style.marginBottom = `${pageHeight * (scale - 1)}px`;
     viewport.style.height = `${pageHeight * scale}px`;
+
+    const menuScaled = document.querySelector('.lum-burger-menu__scaled');
+
+    if (menuScaled) {
+        menuScaled.style.width = `${width}px`;
+        menuScaled.style.transform = `scale(${scale})`;
+    }
 }
 
 function initLanguageSwitcher() {
@@ -123,4 +131,5 @@ function initLanguageSwitcher() {
 scaleLumPage();
 initLanguageSwitcher();
 initLocationCards();
+initBurgerMenu();
 window.addEventListener('resize', scaleLumPage);

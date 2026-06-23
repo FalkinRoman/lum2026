@@ -82,6 +82,10 @@
         @apply inline-flex items-center justify-center rounded-[50px] border border-lum-ivory px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] text-lum-ivory;
     }
 
+    .lum-btn-outline {
+        @apply inline-flex items-center justify-center rounded-[50px] border border-lum-espresso px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] text-lum-espresso;
+    }
+
     .lum-heading-1 {
         @apply font-serif text-[88px] leading-[94px] tracking-normal;
     }
@@ -269,5 +273,67 @@
                 @apply pointer-events-auto opacity-100;
             }
         }
+    }
+}
+
+@layer components {
+    .lum-burger-menu__scroll {
+        opacity: 0;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        transition: opacity 0.55s ease;
+    }
+
+    .lum-burger-menu.is-open .lum-burger-menu__scroll {
+        opacity: 1;
+    }
+
+    .lum-burger-menu__drawer {
+        transform: translate3d(0, -100%, 0);
+        transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .lum-burger-menu.is-open .lum-burger-menu__drawer {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-burger-menu__hitarea {
+        cursor: default;
+    }
+
+    .lum-burger-menu [data-lum-menu-reveal] {
+        opacity: 0;
+        transform: translate3d(0, 28px, 0);
+        transition:
+            opacity 0.45s ease,
+            transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .lum-burger-menu:not(.is-open) [data-lum-menu-reveal] {
+        transition-delay: 0s;
+    }
+
+    .lum-burger-menu.is-open [data-lum-menu-reveal='1'] {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition-delay: 0.18s;
+    }
+
+    .lum-burger-menu.is-open [data-lum-menu-reveal='2'] {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition-delay: 0.26s;
+    }
+
+    .lum-burger-menu.is-open [data-lum-menu-reveal='3'] {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition-delay: 0.34s;
+    }
+
+    .lum-burger-menu.is-open [data-lum-menu-reveal='4'] {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition-delay: 0.42s;
     }
 }
