@@ -108,7 +108,9 @@
         <div class="absolute left-0 top-[333px] h-[1080px] w-full overflow-hidden">
             <img src="{{ $img('villas/photo.jpg') }}" alt="" class="h-full w-full object-cover" width="1920" height="1080">
             <div class="absolute inset-0 bg-black/32"></div>
-            <div class="absolute inset-y-0 left-0 w-[32px] overflow-hidden bg-[#d9d9d9]"></div>
+            <div class="absolute inset-y-0 left-0 w-[32px] overflow-hidden">
+                <img src="{{ $img('villas/side-gradient.jpg') }}" alt="" class="pointer-events-none absolute top-0 left-[-123px] h-full w-[617px] max-w-none object-cover" width="617" height="1080">
+            </div>
             <div class="absolute inset-y-0 left-[32px] w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
             <div class="absolute inset-y-0 right-0 w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
         </div>
@@ -130,7 +132,7 @@
         <button type="button" class="absolute left-[72px] top-[calc(50%+166.5px)] flex size-[64px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Previous">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" class="absolute right-[72px] top-[calc(50%+166.5px)] flex size-[64px] -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Next">
+        <button type="button" class="absolute left-[1848px] top-[calc(50%+166.5px)] flex size-[64px] -translate-x-1/2 -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Next">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
