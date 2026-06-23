@@ -13,6 +13,6 @@
     @endif
     <h3 class="absolute left-1/2 top-[44px] -translate-x-1/2 font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
     @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['tab'], 'tag' => $card['tag']])
-    <p class="absolute left-1/2 -translate-x-1/2 text-center lum-text-2 text-lum-espresso" style="top: {{ $card['listTop']['tab'] }}px">{!! $card['listBr'] !!}</p>
+    @include('lum.partials.location-card-list', ['top' => $card['listTop']['tab'], 'lines' => $card['listLines']])
     <a href="#" class="lum-btn absolute left-1/2 top-[574px] -translate-x-1/2 {{ $card['btn'] }} px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-ivory">more info</a>
 </article>

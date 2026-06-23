@@ -17,10 +17,11 @@
             'activeImgTab' => 'h-[128px] w-[218px]',
             'activeImgMob' => 'h-[96px] w-[163px]',
             'activeImgRotate' => false,
-            'list' => 'Lum Restaurant & Bar / Sandwich Spot / Rosenköster / Brute Wine & Bar',
-            'listBr' => 'Lum Restaurant & Bar / Sandwich Spot /<br>Rosenköster / Brute Wine & Bar',
+            'listLines' => [
+                'Lum Restaurant & Bar / Sandwich Spot /',
+                'Rosenköster / Brute Wine & Bar',
+            ],
             'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
-            'listMobWidth' => 'w-[245px]',
             'btn' => 'bg-lum-espresso',
             'width' => 'w-[550px]',
         ],
@@ -41,10 +42,8 @@
             'activeImgTab' => 'h-[214px] w-[218px]',
             'activeImgMob' => 'h-[160px] w-[163px]',
             'activeImgRotate' => false,
-            'list' => 'Yoga / Surfing / Padel',
-            'listBr' => 'Yoga / Surfing / Padel',
+            'listLines' => ['Yoga / Surfing / Padel'],
             'listTop' => ['mob' => 314, 'tab' => 517, 'desk' => 591],
-            'listMobWidth' => null,
             'btn' => 'bg-lum-green',
             'width' => 'w-[549px]',
         ],
@@ -63,12 +62,15 @@
             'activeImgClass' => 'object-cover',
             'activeImgDesk' => 'size-[240px]',
             'activeImgTab' => 'size-[200px]',
-            'activeImgMob' => 'size-[171px]',
+            'activeImgMobSize' => 140,
+            'activeImgMobCenter' => true,
+            'activeImgMobTopShift' => 0,
             'activeImgRotate' => true,
-            'list' => 'Galle Fort / Koggala Lake / Mirissa / Dondra',
-            'listBr' => 'Galle Fort / Koggala Lake /<br>Mirissa / Dondra',
+            'listLines' => [
+                'Galle Fort / Koggala Lake /',
+                'Mirissa / Dondra',
+            ],
             'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
-            'listMobWidth' => 'w-[170px]',
             'btn' => 'bg-lum-green',
             'width' => 'w-[550px]',
         ],
@@ -89,22 +91,46 @@
 
         <div class="absolute left-[20px] top-[476px] flex w-[335px] flex-col gap-[24px]">
             @foreach ($cards as $card)
+                @php
+                    $activeImgMobTop = $card['activeImgMobTop'] ?? null;
+                    if (!empty($card['activeImgMobCenter'])) {
+                        $tagBottom = $card['tagTop']['mob'] + 28;
+                        $listTop = $card['listTop']['mob'];
+                        $imgSize = $card['activeImgMobSize']
+                            ?? (preg_match('/(\d+)px/', $card['activeImgMob'] ?? '', $imgSizeMatch) ? (int) $imgSizeMatch[1] : 115);
+                        $imgBox = ! empty($card['activeImgMobSize'])
+                            ? $imgSize
+                            : $imgSize * (sin(deg2rad(15)) + cos(deg2rad(15)));
+                        $activeImgMobTop = round(($tagBottom + $listTop) / 2 - $imgBox / 2 + ($card['activeImgMobTopShift'] ?? 0), 2);
+                    }
+                @endphp
                 <article class="relative h-[420px] w-[335px] border border-dashed border-lum-espresso bg-lum-sand">
                     <div class="lum-location-card__bg">
                         <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[780px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="780" height="780">
                     </div>
                     @if ($card['activeImgRotate'])
-                        <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+                        @if (!empty($card['activeImgMobCenter']) && isset($activeImgMobTop) && !empty($card['activeImgMobSize']))
+                            <div class="absolute left-1/2 -translate-x-1/2" style="top: {{ $activeImgMobTop }}px">
+                                <img
+                                    src="{{ $img($card['activeImg']) }}"
+                                    alt=""
+                                    class="block object-contain"
+                                    style="width: {{ $card['activeImgMobSize'] }}px; height: {{ $card['activeImgMobSize'] }}px; transform: rotate(-15deg)"
+                                >
+                            </div>
+                        @else
+                        <div @class(['absolute left-1/2 flex -translate-x-1/2 items-center justify-center', isset($activeImgMobTop) ? '' : 'top-1/2 -translate-y-1/2']) @if(isset($activeImgMobTop)) style="top: {{ $activeImgMobTop }}px" @endif>
                             <div class="-rotate-[15deg]">
-                                <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $card['activeImgMob'] }} {{ $card['activeImgClass'] }}">
+                                <img src="{{ $img($card['activeImg']) }}" alt="" @class([$card['activeImgClass'], empty($card['activeImgMobSize']) ? $card['activeImgMob'] : null]) @if(!empty($card['activeImgMobSize'])) style="width: {{ $card['activeImgMobSize'] }}px; height: {{ $card['activeImgMobSize'] }}px" @endif>
                             </div>
                         </div>
+                        @endif
                     @else
-                        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgMob'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
+                        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }} {{ empty($card['activeImgMobSize']) ? $card['activeImgMob'] : '' }}" @if(!empty($card['activeImgMobSize'])) style="width: {{ $card['activeImgMobSize'] }}px; height: {{ $card['activeImgMobSize'] }}px" @endif>
                     @endif
                     <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
                     @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['mob'], 'tag' => $card['tag'], 'padding' => 'px-[24px] py-[4px]'])
-                    <p @class(['absolute left-1/2 -translate-x-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso', $card['listMobWidth'] ?? '']) style="top: {{ $card['listTop']['mob'] }}px">{!! $card['listBr'] !!}</p>
+                    @include('lum.partials.location-card-list', ['top' => $card['listTop']['mob'], 'lines' => $card['listLines'], 'class' => 'text-[14px] leading-[22px] tracking-[0.1px]'])
                     <a href="#" class="lum-btn absolute left-1/2 top-[360px] -translate-x-1/2 {{ $card['btn'] }} px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-ivory">more info</a>
                 </article>
             @endforeach
@@ -177,7 +203,7 @@
                         @endif
                         <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso">{{ $card['title'] }}</h3>
                         @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag']])
-                        <p class="lum-text-2 absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso" style="top: {{ $card['listTop']['desk'] }}px">{!! $card['listBr'] !!}</p>
+                        @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines']])
                         <a href="#" class="lum-btn absolute left-1/2 top-[640px] -translate-x-1/2 {{ $card['btn'] }} text-lum-ivory">more info</a>
                     </div>
                 </article>
