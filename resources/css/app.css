@@ -125,4 +125,31 @@
     .lum-divider {
         @apply h-px mx-auto bg-lum-espresso opacity-16 w-[calc(100%-40px)] desk:w-[1776px];
     }
+
+    .lum-location-card__tag {
+        @apply inline-block w-max max-w-none whitespace-nowrap;
+    }
+
+    .lum-location-card__tag p {
+        @apply whitespace-nowrap;
+    }
+
+    .lum-location-card__photo,
+    .lum-location-card__active {
+        @apply transition-opacity duration-300;
+    }
+
+    .lum-location-card__active {
+        @apply pointer-events-none opacity-0;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-location-card:hover .lum-location-card__photo {
+            @apply pointer-events-none opacity-0;
+        }
+
+        .lum-location-card:hover .lum-location-card__active {
+            @apply pointer-events-auto opacity-100;
+        }
+    }
 }
