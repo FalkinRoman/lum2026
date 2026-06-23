@@ -162,6 +162,14 @@
 
     {{-- DESKTOP --}}
     <div class="relative hidden h-full desk:block">
+        <svg class="pointer-events-none absolute size-0" aria-hidden="true">
+            @foreach ($cards as $index => $card)
+                <filter id="lum-location-filter-{{ $index }}">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.01 0.005" numOctaves="5" seed="{{ 2 + $index }}" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="B" filterUnits="userSpaceOnUse" />
+                </filter>
+            @endforeach
+        </svg>
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
         <div class="absolute left-[532px] top-[357px] flex w-[856px] flex-col items-center gap-[44px] text-center">
             <h2 class="lum-heading-1 text-lum-espresso">
@@ -172,19 +180,21 @@
         <a href="#" class="lum-btn-dark absolute left-1/2 top-[843px] -translate-x-1/2">See on map</a>
 
         <div class="absolute left-[72px] top-[1039px] flex gap-[64px]">
-            @foreach ($cards as $card)
-                <article @class(['lum-location-card group relative h-[740px]', $card['width']])>
+            @foreach ($cards as $index => $card)
+                <article @class(['lum-location-card group relative h-[740px]', $card['width']]) data-lum-location-card data-filter-id="lum-location-filter-{{ $index }}">
                     <div class="lum-location-card__photo absolute inset-0 overflow-hidden">
-                        <img src="{{ $img($card['photo']) }}" alt="" class="absolute inset-0 h-full w-full object-cover">
+                        <img src="{{ $img($card['photo']) }}" alt="" class="lum-location-card__photo-img absolute inset-0 h-full w-full object-cover" style="filter: url(#lum-location-filter-{{ $index }})">
                         <div class="absolute inset-0 {{ $card['photoGradient'] }}"></div>
-                        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lum-ivory">
-                            @foreach ($card['photoLines'] as $line)
-                                <p @class(['lum-heading-3', 'font-normal italic' => $line['italic']])>{{ $line['text'] }}</p>
-                            @endforeach
-                        </div>
-                        <div class="absolute bottom-[52px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-[12px]">
-                            <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
-                            <span class="lum-eyebrow text-lum-ivory">{{ $card['photoLabel'] }}</span>
+                        <div class="lum-location-card__photo-overlay absolute inset-0">
+                            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lum-ivory">
+                                @foreach ($card['photoLines'] as $line)
+                                    <p @class(['lum-heading-3', 'font-normal italic' => $line['italic']])>{{ $line['text'] }}</p>
+                                @endforeach
+                            </div>
+                            <div class="absolute bottom-[52px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-[12px]">
+                                <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
+                                <span class="lum-eyebrow text-lum-ivory">{{ $card['photoLabel'] }}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -193,18 +203,18 @@
                             <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[1280px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="1280" height="1280">
                         </div>
                         @if ($card['activeImgRotate'])
-                            <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+                            <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center" data-lum-reveal="1">
                                 <div class="-rotate-[15deg]">
                                     <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $card['activeImgDesk'] }} {{ $card['activeImgClass'] }}">
                                 </div>
                             </div>
                         @else
-                            <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgDesk'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
+                            <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgDesk'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}" data-lum-reveal="1">
                         @endif
-                        <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso">{{ $card['title'] }}</h3>
-                        @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag']])
-                        @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines']])
-                        <a href="#" class="lum-btn absolute left-1/2 top-[640px] -translate-x-1/2 {{ $card['btn'] }} text-lum-ivory">more info</a>
+                        <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso" data-lum-reveal="2">{{ $card['title'] }}</h3>
+                        @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag'], 'reveal' => 3])
+                        @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines'], 'reveal' => 4])
+                        <a href="#" class="lum-btn absolute left-1/2 top-[640px] -translate-x-1/2 {{ $card['btn'] }} text-lum-ivory" data-lum-reveal="5">more info</a>
                     </div>
                 </article>
             @endforeach

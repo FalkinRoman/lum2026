@@ -178,12 +178,96 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
+        .lum-location-card {
+            @apply overflow-hidden;
+        }
+
+        .lum-location-card__photo {
+            @apply z-[1] opacity-100 transition-none;
+        }
+
+        .lum-location-card__photo-img {
+            @apply transition-transform duration-700 ease-out;
+            will-change: transform;
+        }
+
+        .lum-location-card.is-hover .lum-location-card__photo-img {
+            transform: scale(1.08);
+        }
+
+        .lum-location-card__photo-overlay {
+            @apply transition-opacity duration-300 ease-out;
+        }
+
+        .lum-location-card.is-hover .lum-location-card__photo-overlay {
+            @apply opacity-0;
+        }
+
+        .lum-location-card__active {
+            @apply z-[2] opacity-100;
+            transform: translate3d(0, 100%, 0);
+            transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .lum-location-card.is-hover .lum-location-card__active {
+            @apply pointer-events-auto;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .lum-location-card [data-lum-reveal] {
+            opacity: 0;
+            transition: opacity 0.45s ease;
+        }
+
+        .lum-location-card:not(.is-hover) [data-lum-reveal] {
+            transition-delay: 0s;
+        }
+
+        .lum-location-card.is-hover [data-lum-reveal='1'] {
+            opacity: 1;
+            transition-delay: 0.1s;
+        }
+
+        .lum-location-card.is-hover [data-lum-reveal='2'] {
+            opacity: 1;
+            transition-delay: 0.16s;
+        }
+
+        .lum-location-card.is-hover [data-lum-reveal='3'] {
+            opacity: 1;
+            transition-delay: 0.22s;
+        }
+
+        .lum-location-card.is-hover [data-lum-reveal='4'] {
+            opacity: 1;
+            transition-delay: 0.28s;
+        }
+
+        .lum-location-card.is-hover [data-lum-reveal='5'] {
+            opacity: 1;
+            transition-delay: 0.34s;
+        }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
         .lum-location-card:hover .lum-location-card__photo {
-            @apply pointer-events-none opacity-0;
+            @apply opacity-100;
         }
 
         .lum-location-card:hover .lum-location-card__active {
-            @apply pointer-events-auto opacity-100;
+            @apply opacity-100;
+        }
+    }
+
+    @media not all and (hover: hover) and (pointer: fine) {
+        @media (width >= 1024px) {
+            .lum-location-card:hover .lum-location-card__photo {
+                @apply pointer-events-none opacity-0;
+            }
+
+            .lum-location-card:hover .lum-location-card__active {
+                @apply pointer-events-auto opacity-100;
+            }
         }
     }
 }

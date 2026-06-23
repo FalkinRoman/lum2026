@@ -1,3 +1,5 @@
+import { initLocationCards } from './location-cards';
+
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
     tabletMax: 1023,  // планшеты и landscape-телефоны
@@ -120,4 +122,5 @@ function initLanguageSwitcher() {
 
 scaleLumPage();
 initLanguageSwitcher();
+initLocationCards();
 window.addEventListener('resize', scaleLumPage);
