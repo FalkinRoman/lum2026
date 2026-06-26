@@ -1,14 +1,10 @@
 <section class="lum-container relative h-[1173px] bg-lum-ivory tab:h-[1134px] desk:h-[1299px]">
     {{-- MOBILE --}}
     <div class="relative h-full tab:hidden">
-        <p class="lum-script pointer-events-none absolute left-[52px] top-[79px] -rotate-[10deg] text-[32px] leading-none tracking-[1.6px] text-lum-green">shine</p>
-        <p class="lum-script pointer-events-none absolute left-[281px] top-[33px] -rotate-[10deg] text-[32px] leading-none tracking-[1.6px] text-lum-green">impressions</p>
-        <p class="lum-script pointer-events-none absolute left-[298px] top-[1052px] rotate-[9deg] text-[32px] leading-none tracking-[1.6px] text-lum-green">relax</p>
-
         @foreach ([
-            ['left' => '59px', 'top' => '107px', 'rotate' => '13.5deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '14px'],
-            ['left' => '198px', 'top' => '156px', 'rotate' => '-1deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '14px'],
-            ['left' => '91px', 'top' => '853px', 'rotate' => '-10deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '14px'],
+            ['left' => '59.07px', 'top' => '107.45px', 'rotate' => '13.51deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '14px'],
+            ['left' => '198.36px', 'top' => '156px', 'rotate' => '-0.97deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '14px'],
+            ['left' => '91px', 'top' => '852.55px', 'rotate' => '-9.98deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '14px'],
         ] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
@@ -19,6 +15,16 @@
                 </div>
             </div>
         @endforeach
+
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 51.69px; top: 78.5px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">shine</p>
+        </div>
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 281.09px; top: 32.83px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">impressions</p>
+        </div>
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 298.1px; top: 1052px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(9.07deg);">relax</p>
+        </div>
 
         <div class="absolute left-[20px] top-[450px] flex w-[335px] flex-col items-center gap-[44px]">
             <div class="flex flex-col items-center gap-[16px]">
@@ -41,14 +47,10 @@
 
     {{-- TABLET --}}
     <div class="relative hidden h-full tab:block desk:hidden">
-        <p class="lum-script pointer-events-none absolute left-[56px] top-[33px] text-[48px] leading-none tracking-[2.4px] text-lum-green">shine</p>
-        <p class="lum-script pointer-events-none absolute left-[564px] top-[-25px] -rotate-[10deg] text-[48px] leading-none tracking-[2.4px] text-lum-green">impressions</p>
-        <p class="lum-script pointer-events-none absolute left-[549px] top-[498px] rotate-[9deg] text-[48px] leading-none tracking-[2.4px] text-lum-green">relax</p>
-
         @foreach ([
-            ['left' => '109px', 'top' => '148px', 'rotate' => '13.5deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '18px'],
-            ['left' => '655px', 'top' => '138px', 'rotate' => '-5.5deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '18px'],
-            ['left' => '327px', 'top' => '184px', 'rotate' => '-1deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '18px'],
+            ['left' => '108.77px', 'top' => '147.56px', 'rotate' => '13.51deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '18px'],
+            ['left' => '654.73px', 'top' => '138px', 'rotate' => '-0.97deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '18px'],
+            ['left' => '380px', 'top' => '184.2px', 'rotate' => '-9.98deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '18px'],
         ] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
@@ -59,6 +61,16 @@
                 </div>
             </div>
         @endforeach
+
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 120.97px; top: 12.67px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">shine</p>
+        </div>
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 705.41px; top: -70.93px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">impressions</p>
+        </div>
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 606.3px; top: 498px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(9.07deg);">relax</p>
+        </div>
 
         <div class="absolute left-[80px] top-[695px] flex w-[800px] flex-col items-center gap-[56px]">
             <div class="flex flex-col items-center gap-[20px]">
@@ -79,12 +91,8 @@
         <div class="lum-divider absolute bottom-0 left-[20px]"></div>
     </div>
 
-    {{-- DESKTOP (не трогаем) --}}
+    {{-- DESKTOP --}}
     <div class="relative hidden h-full desk:block">
-        <p class="lum-script pointer-events-none absolute left-[195px] top-[150px] text-[73px] leading-none tracking-[3.65px] text-lum-green">shine</p>
-        <p class="lum-script pointer-events-none absolute left-[1091px] top-[455px] rotate-[9deg] text-[73px] leading-none tracking-[3.65px] text-lum-green">relax</p>
-        <p class="lum-script pointer-events-none absolute left-[1291px] top-[-20px] -rotate-[10deg] text-[73px] leading-none tracking-[3.65px] text-lum-green">impressions</p>
-
         @foreach ([
             ['left' => '216px', 'top' => '362px', 'rotate' => '13.5deg', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023'],
             ['left' => '787px', 'top' => '109px', 'rotate' => '-5.5deg', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024'],
@@ -97,6 +105,16 @@
                 <p class="lum-script absolute bottom-[28px] left-0 right-0 px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-green">share your impressions</p>
             </div>
         @endforeach
+
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 274.97px; top: 149.67px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">shine</p>
+        </div>
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 1468.64px; top: -78px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">impressions</p>
+        </div>
+        <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 1161.79px; top: 455px;">
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(9.07deg);">relax</p>
+        </div>
 
         <div class="absolute left-[532px] top-[693px] flex w-[856px] flex-col items-center gap-[64px]">
             <div class="flex flex-col items-center gap-[24px]">
