@@ -2,6 +2,8 @@ import { initLocationCards } from './location-cards';
 import { initBurgerMenu, syncBurgerMenuDrawer } from './burger-menu';
 import { initStickyHeader, syncStickyHeader } from './sticky-header';
 import { initBlogSlider } from './blog-slider';
+import { initHeroTitle } from './hero-title';
+import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -71,6 +73,8 @@ function scaleLumPage() {
         stickyScaled.style.transform = `scale(${scale})`;
         syncStickyHeader();
     }
+
+    refreshScrollTriggers();
 }
 
 function initLanguageSwitcher() {
@@ -192,4 +196,6 @@ initLocationCards();
 initBlogSlider();
 initBurgerMenu();
 initStickyHeader();
+initHeroTitle();
+initShopParallax();
 window.addEventListener('resize', scaleLumPage);

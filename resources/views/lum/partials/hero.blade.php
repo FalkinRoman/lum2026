@@ -15,9 +15,13 @@
                 <img src="{{ $img('hero/logomark.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                 <div class="flex w-full flex-col items-center gap-[24px]">
                     <p class="w-full text-center text-[14px] font-medium uppercase leading-[14px] tracking-[0.6px] text-lum-ivory">THE LUM – SRI LANKA</p>
-                    <h1 class="text-center text-lum-ivory">
-                        <span class="block font-serif text-[52px] leading-[55px]">Find the spirit of</span>
-                        <span class="block font-serif text-[52px] font-medium italic leading-[55px]">Sri Lanka</span>
+                    <h1 class="lum-hero-title text-center text-lum-ivory" data-lum-hero-title>
+                        <span class="lum-hero-title__line block">
+                            <span class="lum-hero-title__text block font-serif text-[52px] leading-[55px]">Find the spirit of</span>
+                        </span>
+                        <span class="lum-hero-title__line block">
+                            <span class="lum-hero-title__text block font-serif text-[52px] font-medium italic leading-[55px]">Sri Lanka</span>
+                        </span>
                     </h1>
                 </div>
             </div>
@@ -46,9 +50,13 @@
                 <img src="{{ $img('hero/logomark.svg') }}" alt="" class="size-[40px]" width="40" height="40">
                 <div class="flex w-full flex-col items-center gap-[24px]">
                     <p class="w-full text-center text-[16px] font-medium leading-[25px] tracking-[0.16px] text-lum-ivory">THE LUM – SRI LANKA</p>
-                    <h1 class="whitespace-nowrap text-center text-lum-ivory">
-                        <span class="font-serif text-[64px] leading-[64px]">Find the spirit of </span>
-                        <span class="font-serif text-[64px] font-medium italic leading-[64px]">Sri Lanka</span>
+                    <h1 class="lum-hero-title whitespace-nowrap text-center text-lum-ivory" data-lum-hero-title>
+                        <span class="lum-hero-title__line lum-hero-title__line--inline">
+                            <span class="lum-hero-title__text font-serif text-[64px] leading-[64px]">Find the spirit of&nbsp;</span>
+                        </span>
+                        <span class="lum-hero-title__line lum-hero-title__line--inline">
+                            <span class="lum-hero-title__text font-serif text-[64px] font-medium italic leading-[64px]">Sri Lanka</span>
+                        </span>
                     </h1>
                 </div>
             </div>
@@ -78,9 +86,13 @@
                 <p class="lum-eyebrow text-center text-lum-ivory">The lum – sri lanka</p>
                 <div class="flex w-full items-center justify-center gap-[32px]">
                     <img src="{{ $img('hero/deco-left.svg') }}" alt="" class="w-[108px] rotate-180 scale-y-[-1]" width="108" height="2">
-                    <h1 class="whitespace-nowrap text-center text-lum-ivory">
-                        <span class="font-serif text-[120px] leading-[120px] tracking-[-1.16px]">Find the spirit of&nbsp;</span>
-                        <span class="font-serif text-[120px] font-medium italic leading-[120px] tracking-[-1.16px]">Sri Lanka</span>
+                    <h1 class="lum-hero-title whitespace-nowrap text-center text-lum-ivory" data-lum-hero-title>
+                        <span class="lum-hero-title__line lum-hero-title__line--inline">
+                            <span class="lum-hero-title__text font-serif text-[120px] leading-[120px] tracking-[-1.16px]">Find the spirit of&nbsp;</span>
+                        </span>
+                        <span class="lum-hero-title__line lum-hero-title__line--inline">
+                            <span class="lum-hero-title__text font-serif text-[120px] font-medium italic leading-[120px] tracking-[-1.16px]">Sri Lanka</span>
+                        </span>
                     </h1>
                     <img src="{{ $img('hero/deco-right.svg') }}" alt="" class="w-[108px]" width="108" height="2">
                 </div>
