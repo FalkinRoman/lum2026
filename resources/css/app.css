@@ -58,6 +58,273 @@
         @apply opacity-100;
     }
 
+    .lum-lang-option {
+        @apply transition-colors duration-300 ease-out;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-lang-option:hover,
+        .lum-lang-option.is-active {
+            @apply text-lum-ivory;
+        }
+    }
+
+    .lum-lang-option.is-active {
+        @apply text-lum-ivory;
+    }
+
+    .lum-btn-outline-ivory,
+    .lum-btn-outline,
+    .lum-btn-green,
+    .lum-btn,
+    .lum-btn-ivory,
+    .lum-btn-dark,
+    .lum-icon-btn,
+    .lum-burger-btn,
+    .lum-nav-link,
+    .lum-nav-link--inline,
+    .lum-tab {
+        transition:
+            background-color 0.28s ease,
+            color 0.28s ease,
+            border-color 0.28s ease,
+            opacity 0.28s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-btn-outline-ivory:hover {
+            @apply bg-lum-ivory text-lum-espresso;
+        }
+
+        .lum-btn-outline:hover {
+            @apply bg-lum-espresso text-lum-ivory;
+        }
+
+        .lum-btn-green:hover {
+            @apply border border-lum-green bg-transparent text-lum-green;
+        }
+
+        .lum-btn:hover {
+            @apply border border-lum-green bg-transparent text-lum-green;
+        }
+
+        .lum-btn-ivory:hover {
+            @apply border border-lum-ivory bg-transparent text-lum-ivory;
+        }
+
+        .lum-btn-dark:hover {
+            @apply border border-lum-ground bg-transparent text-lum-ground;
+        }
+    }
+
+    .lum-btn-green,
+    .lum-btn,
+    .lum-btn-ivory,
+    .lum-btn-dark {
+        @apply border border-transparent;
+    }
+
+    .lum-icon-btn {
+        @apply flex items-center;
+    }
+
+    .lum-icon-btn img {
+        @apply size-[32px] shrink-0;
+        transform: none;
+        transition: filter 0.28s ease;
+    }
+
+    .lum-icon-btn--ivory-outline {
+        @apply rounded-[50px] border border-lum-ivory p-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-icon-btn--ivory-outline:hover {
+            @apply bg-lum-ivory;
+        }
+
+        .lum-icon-btn--ivory-outline:hover img {
+            filter: brightness(0);
+        }
+    }
+
+    .lum-icon-btn--ivory-filled {
+        @apply rounded-[50px] border border-transparent bg-lum-ivory p-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-icon-btn--ivory-filled:hover {
+            @apply border-lum-ivory bg-transparent;
+        }
+
+        .lum-icon-btn--ivory-filled:hover img {
+            filter: brightness(0) invert(1);
+        }
+    }
+
+    .lum-icon-btn--ivory-filled-s {
+        @apply rounded-[44px] border border-transparent bg-lum-ivory p-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-icon-btn--ivory-filled-s:hover {
+            @apply border-lum-ivory bg-transparent;
+        }
+
+        .lum-icon-btn--ivory-filled-s:hover img {
+            filter: brightness(0);
+        }
+    }
+
+    .lum-icon-btn--espresso-outline {
+        @apply rounded-[50px] border border-lum-espresso p-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-icon-btn--espresso-outline:hover {
+            @apply bg-lum-espresso;
+        }
+
+        .lum-icon-btn--espresso-outline:hover img {
+            filter: brightness(0) invert(1);
+        }
+    }
+
+    .lum-icon-btn--espresso-filled img {
+        filter: brightness(0) invert(1);
+    }
+
+    .lum-icon-btn--espresso-filled {
+        @apply rounded-[50px] border border-transparent bg-lum-espresso p-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-icon-btn--espresso-filled:hover {
+            @apply border-lum-espresso bg-transparent;
+        }
+
+        .lum-icon-btn--espresso-filled:hover img {
+            filter: none;
+        }
+    }
+
+    .lum-burger-btn img {
+        @apply size-[32px] shrink-0;
+        transform: none;
+        transition: filter 0.28s ease;
+    }
+
+    .lum-burger-btn--ivory {
+        @apply rounded-[50px] border border-transparent bg-lum-ivory px-[20px] py-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-burger-btn--ivory:hover {
+            @apply border-lum-espresso bg-transparent;
+        }
+
+        .lum-burger-btn--ivory:hover img {
+            filter: brightness(0);
+        }
+    }
+
+    .lum-burger-btn--ivory-compact {
+        @apply justify-center rounded-[50px] border border-transparent bg-lum-ivory px-[20px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-burger-btn--ivory-compact:hover {
+            @apply border-lum-espresso bg-transparent;
+        }
+
+        .lum-burger-btn--ivory-compact:hover img {
+            filter: brightness(0);
+        }
+    }
+
+    .lum-burger-btn--espresso {
+        @apply rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px] py-[2px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-burger-btn--espresso:hover {
+            @apply bg-transparent;
+        }
+    }
+
+    .lum-burger-btn--espresso-compact {
+        @apply justify-center rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-burger-btn--espresso-compact:hover {
+            @apply bg-transparent;
+        }
+    }
+
+    .lum-nav-link {
+        @apply relative flex flex-col items-center gap-[5px];
+    }
+
+    .lum-nav-link__dot {
+        @apply size-[6px] opacity-0 scale-75 transition-all duration-300 ease-out;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-nav-link:hover .lum-nav-link__dot {
+            @apply opacity-100 scale-100;
+        }
+    }
+
+    .lum-nav-link.is-active .lum-nav-link__dot {
+        @apply opacity-100 scale-100;
+    }
+
+    .lum-nav-link--inline {
+        @apply relative flex h-[25px] items-center;
+    }
+
+    .lum-nav-link--inline::after {
+        content: '';
+        @apply absolute -bottom-[5px] left-1/2 size-[6px] -translate-x-1/2 rounded-full bg-current opacity-0 scale-75 transition-all duration-300 ease-out;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-nav-link--inline:hover::after {
+            @apply opacity-100 scale-100;
+        }
+    }
+
+    .lum-nav-link--inline.is-active::after {
+        @apply opacity-100 scale-100;
+    }
+
+    .lum-tab {
+        @apply inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap;
+    }
+
+    .lum-tab--s {
+        @apply px-[14px] py-[9px] text-[14px] leading-[14px] tracking-[0.6px];
+    }
+
+    .lum-tab--l {
+        @apply h-[40px] px-[18px] text-[16px] leading-[25px] tracking-[0.16px];
+    }
+
+    .lum-tab--active {
+        @apply border border-lum-ground bg-lum-ground text-lum-ivory;
+    }
+
+    .lum-tab--inactive {
+        @apply border border-lum-ground bg-transparent text-lum-ground;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-tab--inactive:hover {
+            @apply bg-lum-ground text-lum-ivory;
+        }
+    }
+
     .lum-section-inner {
         @apply relative mx-auto w-[1776px];
     }

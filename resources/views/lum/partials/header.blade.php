@@ -1,18 +1,18 @@
 <header class="absolute left-[72px] top-0 z-50 h-[132px] w-[1776px] border-b border-lum-ivory-40">
-    <button type="button" class="absolute left-0 top-1/2 flex -translate-y-1/2 items-center rounded-[50px] bg-lum-ivory px-[20px] py-[2px]" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
+    <button type="button" class="lum-burger-btn lum-burger-btn--ivory absolute left-0 top-1/2 flex -translate-y-1/2 items-center" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
         <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
     </button>
 
     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-ivory-40"></div>
 
     <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] lum-text-2 font-medium text-lum-ivory">
-        <a href="#" class="flex flex-col items-center gap-[5px]">
+        <a href="#" class="lum-nav-link is-active">
             <span>Stay</span>
-            <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
+            <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="lum-nav-link__dot" width="6" height="6">
         </a>
-        <a href="#" class="flex h-[25px] items-center">Dining</a>
-        <a href="#" class="flex h-[25px] items-center">Relax</a>
-        <a href="#" class="flex h-[25px] items-center">Discover</a>
+        <a href="#" class="lum-nav-link--inline">Dining</a>
+        <a href="#" class="lum-nav-link--inline">Relax</a>
+        <a href="#" class="lum-nav-link--inline">Discover</a>
     </nav>
 
     <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
@@ -20,11 +20,21 @@
     </a>
 
     <div class="absolute right-0 top-[48px] flex items-center gap-[10px]">
-        <button type="button" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Language">
-            <img src="{{ asset('images/lum/hero/language-cream.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-        </button>
+        <div class="relative">
+            <button
+                type="button"
+                class="lum-icon-btn lum-icon-btn--ivory-outline"
+                data-lum-lang-toggle
+                aria-label="Language"
+                aria-expanded="false"
+                aria-controls="lum-lang-panel-desktop"
+            >
+                <img src="{{ asset('images/lum/hero/language-cream.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+            </button>
+            @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-desktop'])
+        </div>
         <a href="#" class="lum-btn-outline-ivory">take a break</a>
-        <button type="button" class="flex items-center rounded-[50px] bg-lum-ivory p-[2px]" aria-label="Contact">
+        <button type="button" class="lum-icon-btn lum-icon-btn--ivory-filled" aria-label="Contact">
             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>

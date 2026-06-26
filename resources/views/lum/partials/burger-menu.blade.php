@@ -16,7 +16,7 @@
                     <a href="/" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
                     </a>
-                    <button type="button" class="absolute right-0 top-1/2 flex w-[56px] -translate-y-1/2 items-center justify-center rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px]" data-lum-menu-close aria-label="Close menu">
+                    <button type="button" class="lum-burger-btn lum-burger-btn--espresso-compact absolute right-0 top-1/2 flex w-[56px] -translate-y-1/2 items-center" data-lum-menu-close aria-label="Close menu">
                         <span class="flex size-[32px] shrink-0 items-center justify-center">
                             <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
                         </span>
@@ -26,8 +26,8 @@
 
                 <p class="absolute left-[20px] top-[104px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso-40" data-lum-menu-reveal="1">Select Language</p>
                 <div class="absolute right-[20px] top-[98px] flex gap-[10px]" data-lum-menu-reveal="1">
-                    <button type="button" class="bg-lum-ground px-[10px] py-[6px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-ivory">✓Ru</button>
-                    <button type="button" class="border border-lum-ground px-[10px] py-[6px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-ground">En</button>
+                    <button type="button" class="lum-tab lum-tab--s lum-tab--active">✓Ru</button>
+                    <button type="button" class="lum-tab lum-tab--s lum-tab--inactive">En</button>
                 </div>
 
                 <nav class="absolute left-[20px] top-[146px] flex w-[160px] flex-col gap-[6px]" data-lum-menu-reveal="2">
@@ -56,7 +56,7 @@
                         <p class="font-serif text-[22px] font-medium leading-[24px] tracking-[0.19px] text-lum-ivory">
                             Thiththagalla road,<br>Ahangama, Sri Lanka
                         </p>
-                        <a href="#" class="lum-btn bg-lum-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-espresso">SEE on map</a>
+                        <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">SEE on map</a>
                     </div>
                 </div>
             </div>
@@ -68,14 +68,14 @@
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
                     </a>
                     <div class="absolute right-0 top-[24px] flex items-center gap-[10px]">
-                        <button type="button" class="flex items-center rounded-[44px] border border-lum-espresso p-[2px]" aria-label="Language">
+                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-outline" aria-label="Language">
                             <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
                         <a href="#" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">take a break</a>
-                        <button type="button" class="flex items-center rounded-[44px] bg-lum-espresso p-[2px]" aria-label="Contact">
-                            <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="Contact">
+                            <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
-                        <button type="button" class="flex w-[56px] items-center justify-center rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px]" data-lum-menu-close aria-label="Close menu">
+                        <button type="button" class="lum-burger-btn lum-burger-btn--espresso-compact flex w-[56px] items-center justify-center" data-lum-menu-close aria-label="Close menu">
                             <span class="flex size-[32px] shrink-0 items-center justify-center">
                                 <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
                             </span>
@@ -106,38 +106,38 @@
                     <div class="absolute bottom-[31px] left-[36px] font-serif text-[28px] font-medium leading-[34px] tracking-[0.36px] text-lum-ivory">
                         Thiththagalla road,<br>Ahangama, Sri Lanka
                     </div>
-                    <a href="#" class="lum-btn absolute bottom-[36px] right-[36px] bg-lum-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-espresso">SEE on map</a>
+                    <a href="#" class="lum-btn-ivory absolute bottom-[36px] right-[36px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">SEE on map</a>
                 </div>
             </div>
 
             {{-- DESKTOP --}}
             <div class="relative hidden h-[732px] w-full desk:block">
                 <header class="absolute left-1/2 top-0 h-[132px] w-[1776px] -translate-x-1/2 border-b border-lum-espresso/16">
-                    <button type="button" class="absolute left-0 top-1/2 flex -translate-y-1/2 items-center rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px] py-[2px]" data-lum-menu-close aria-label="Close menu">
+                    <button type="button" class="lum-burger-btn lum-burger-btn--espresso absolute left-0 top-1/2 flex -translate-y-1/2 items-center" data-lum-menu-close aria-label="Close menu">
                         <span class="flex size-[32px] shrink-0 items-center justify-center">
                             <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
                         </span>
                     </button>
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
                     <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] text-[16px] font-medium leading-[25px] tracking-[0.16px] text-lum-espresso">
-                        <a href="#" class="flex flex-col items-center gap-[5px]">
+                        <a href="#" class="lum-nav-link is-active">
                             <span>Stay</span>
-                            <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
+                            <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="lum-nav-link__dot" width="6" height="6">
                         </a>
-                        <a href="#" class="flex h-[25px] items-center">Dining</a>
-                        <a href="#" class="flex h-[25px] items-center">Relax</a>
-                        <a href="#" class="flex h-[25px] items-center">Discover</a>
+                        <a href="#" class="lum-nav-link--inline">Dining</a>
+                        <a href="#" class="lum-nav-link--inline">Relax</a>
+                        <a href="#" class="lum-nav-link--inline">Discover</a>
                     </nav>
                     <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-[40px] w-[105px]" width="105" height="40">
                     </a>
                     <div class="absolute right-0 top-[48px] flex items-center gap-[10px]">
-                        <button type="button" class="flex items-center rounded-[50px] border border-lum-espresso p-[2px]" aria-label="Language">
+                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-outline" aria-label="Language">
                             <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
                         <a href="#" class="lum-btn-outline">take a break</a>
-                        <button type="button" class="flex items-center rounded-[50px] bg-lum-espresso p-[2px]" aria-label="Contact">
-                            <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="Contact">
+                            <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
                     </div>
                 </header>
@@ -165,7 +165,7 @@
                     <div class="absolute bottom-[40px] left-[44px] font-serif text-[32px] font-medium leading-[36px] tracking-[0.32px] text-lum-ivory">
                         Thiththagalla road,<br>Ahangama, Sri Lanka
                     </div>
-                    <a href="#" class="lum-btn absolute bottom-[44px] right-[44px] bg-lum-ivory text-lum-espresso">SEE on map</a>
+                    <a href="#" class="lum-btn-ivory absolute bottom-[44px] right-[44px]">SEE on map</a>
                 </div>
             </div>
         </div>

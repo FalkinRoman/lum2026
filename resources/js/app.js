@@ -135,6 +135,25 @@ function initLanguageSwitcher() {
         panel.querySelectorAll('[data-lum-lang-option]').forEach((button) => {
             button.addEventListener('click', (event) => {
                 event.stopPropagation();
+
+                const lang = button.getAttribute('data-lum-lang-option');
+                const check = panel.querySelector('.lum-lang-panel__check');
+
+                panel.querySelectorAll('[data-lum-lang-option]').forEach((option) => {
+                    option.classList.remove('is-active');
+                    option.removeAttribute('aria-current');
+                });
+
+                button.classList.add('is-active');
+                button.setAttribute('aria-current', 'true');
+
+                if (check && lang) {
+                    const isDesktop = window.innerWidth >= 1024;
+                    check.style.top = lang === 'ru'
+                        ? (isDesktop ? '72px' : '71px')
+                        : '110px';
+                }
+
                 closePanel();
             });
         });

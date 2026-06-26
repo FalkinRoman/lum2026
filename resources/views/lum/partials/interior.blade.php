@@ -13,7 +13,7 @@
         <div class="absolute left-1/2 top-[172px] h-[41px] w-[201px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]"></div>
         <div class="absolute left-[57px] top-[252px] flex w-[260px] flex-wrap items-center justify-center gap-[8px]">
             @foreach ($interiorTabs as $label => $active)
-                <button type="button" @class(['inline-flex h-[32px] shrink-0 items-center justify-center px-[14px] text-[14px] leading-[22px] font-medium whitespace-nowrap', 'bg-lum-ground text-lum-ivory' => $active, 'border border-lum-ground bg-transparent text-lum-ground' => ! $active])>{{ $label }}</button>
+                <button type="button" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
             @endforeach
         </div>
         <img src="{{ $img('interior/left.jpg') }}" alt="" class="absolute left-0 top-[388px] h-[260px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="375" height="260">
@@ -47,7 +47,7 @@
         <div class="absolute left-1/2 top-[217px] h-[71px] w-[281px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]"></div>
         <div class="absolute left-[127px] top-[325px] flex flex-nowrap items-center gap-[10px]">
             @foreach ($interiorTabs as $label => $active)
-                <button type="button" @class(['inline-flex h-[32px] shrink-0 items-center justify-center px-[14px] text-[14px] leading-[22px] font-medium whitespace-nowrap', 'bg-lum-ground text-lum-ivory' => $active, 'border border-lum-ground bg-transparent text-lum-ground' => ! $active])>{{ $label }}</button>
+                <button type="button" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
             @endforeach
         </div>
         <img src="{{ $img('interior/left.jpg') }}" alt="" class="absolute left-0 top-[421px] h-[641px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="960" height="641">
@@ -81,7 +81,7 @@
         <div class="absolute left-1/2 top-[328.64px] h-[80px] w-[440px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]"></div>
         <div class="absolute left-1/2 top-[484px] flex -translate-x-1/2 flex-nowrap items-center gap-[10px]">
             @foreach ($interiorTabs as $label => $active)
-                <button type="button" @class(['inline-flex h-[40px] shrink-0 items-center justify-center px-[18px] lum-text-2 font-medium whitespace-nowrap', 'bg-lum-ground text-lum-ivory' => $active, 'border border-lum-ground bg-transparent text-lum-ground' => ! $active])>{{ $label }}</button>
+                <button type="button" @class(['lum-tab lum-tab--l', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
             @endforeach
         </div>
         <img src="{{ $img('interior/left.jpg') }}" alt="" class="absolute left-0 top-[605px] h-[620px] w-[928px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="928" height="620">
