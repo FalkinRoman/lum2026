@@ -3,6 +3,7 @@ import { initBurgerMenu, syncBurgerMenuDrawer } from './burger-menu';
 import { initStickyHeader, syncStickyHeader } from './sticky-header';
 import { initBlogSlider } from './blog-slider';
 import { initHeroTitle } from './hero-title';
+import { initHeroVideo } from './hero-video';
 import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
 
 const LUM_VIEWPORT = {
@@ -197,5 +198,6 @@ initBlogSlider();
 initBurgerMenu();
 initStickyHeader();
 initHeroTitle();
+initHeroVideo();
 initShopParallax();
 window.addEventListener('resize', scaleLumPage);

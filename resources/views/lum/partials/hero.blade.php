@@ -2,8 +2,8 @@
     {{-- MOBILE --}}
     <div class="relative h-[680px] tab:hidden">
         <div class="absolute inset-0 overflow-hidden">
-            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline poster="{{ $img('hero/video-poster.png') }}">
-                <source src="{{ $img('hero/video.mp4') }}" type="video/mp4">
+            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img('hero/video-poster.png') }}" data-lum-hero-video data-lum-bp="mobile">
+                <source data-src="{{ $img('hero/video.mp4') }}" type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
@@ -37,8 +37,8 @@
     {{-- TABLET --}}
     <div class="relative hidden h-[1080px] tab:block desk:hidden">
         <div class="absolute inset-0 overflow-hidden">
-            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline poster="{{ $img('hero/video-poster.png') }}">
-                <source src="{{ $img('hero/video.mp4') }}" type="video/mp4">
+            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img('hero/video-poster.png') }}" data-lum-hero-video data-lum-bp="tablet">
+                <source data-src="{{ $img('hero/video.mp4') }}" type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
@@ -72,8 +72,8 @@
     {{-- DESKTOP (не трогаем) --}}
     <div class="relative hidden h-[1242px] desk:block">
         <div class="absolute inset-0 h-[1242px] overflow-hidden">
-            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline poster="{{ $img('hero/video-poster.png') }}">
-                <source src="{{ $img('hero/video.mp4') }}" type="video/mp4">
+            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img('hero/video-poster.png') }}" data-lum-hero-video data-lum-bp="desktop">
+                <source data-src="{{ $img('hero/video.mp4') }}" type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
