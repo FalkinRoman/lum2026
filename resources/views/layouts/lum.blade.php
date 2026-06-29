@@ -27,7 +27,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;0,800;1,400&family=Marck+Script&family=Vollkorn:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="w-full overflow-x-hidden">
+<body class="w-full">
     @yield('content')
 </body>
 </html>

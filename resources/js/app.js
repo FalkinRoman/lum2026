@@ -38,10 +38,6 @@ function syncLumBreakpointAttribute(breakpoint) {
     document.documentElement.dataset.lumBp = breakpoint;
 }
 
-function supportsPageZoom() {
-    return typeof CSS !== 'undefined' && CSS.supports('zoom', '1');
-}
-
 function scaleLumPage() {
     const viewport = document.querySelector('.lum-viewport');
     const page = document.querySelector('.lum-page');
@@ -57,22 +53,21 @@ function scaleLumPage() {
     syncLumBreakpointAttribute(breakpoint);
     page.dataset.lumBreakpoint = breakpoint;
     page.style.width = `${width}px`;
-    viewport.style.removeProperty('height');
-    viewport.style.removeProperty('min-height');
+    page.style.zoom = 'normal';
+    page.style.transform = `scale(${scale})`;
+    page.style.transformOrigin = 'top left';
+    page.style.marginBottom = '0';
 
-    if (supportsPageZoom()) {
-        page.style.transform = 'none';
-        page.style.transformOrigin = '';
-        page.style.marginBottom = '0';
-        page.style.zoom = String(scale);
-    } else {
-        page.style.zoom = 'normal';
-        page.style.transform = `scale(${scale})`;
-        page.style.transformOrigin = 'top left';
+    const syncViewportHeight = () => {
+        const visualHeight = Math.ceil(page.getBoundingClientRect().height);
 
-        const pageHeight = page.offsetHeight;
-        page.style.marginBottom = `${pageHeight * (scale - 1)}px`;
-    }
+        if (visualHeight > 0) {
+            viewport.style.height = `${visualHeight}px`;
+        }
+    };
+
+    syncViewportHeight();
+    requestAnimationFrame(syncViewportHeight);
 
     const menuScaled = document.querySelector('.lum-burger-menu__scaled');
 
