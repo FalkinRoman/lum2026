@@ -8,22 +8,55 @@ export function initBlogSlider() {
             return;
         }
 
-        const gap = Number.parseInt(root.dataset.gap || '10', 10);
+        const cards = [...track.querySelectorAll('[data-lum-blog-card]')];
 
-        const step = () => {
-            const card = track.querySelector('[data-lum-blog-card]');
+        if (! cards.length) {
+            return;
+        }
 
-            if (! card) {
+        const getScrollLeftForIndex = (index) => {
+            if (index <= 0) {
                 return 0;
             }
 
-            return card.offsetWidth + gap;
+            if (index >= cards.length - 1) {
+                return Math.max(0, track.scrollWidth - track.clientWidth);
+            }
+
+            return cards[index].offsetLeft;
+        };
+
+        const getActiveIndex = () => {
+            const scrollLeft = track.scrollLeft;
+            let closest = 0;
+            let minDist = Infinity;
+
+            cards.forEach((card, index) => {
+                const targetLeft = getScrollLeftForIndex(index);
+                const dist = Math.abs(targetLeft - scrollLeft);
+
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = index;
+                }
+            });
+
+            return closest;
+        };
+
+        const scrollToIndex = (index, behavior = 'smooth') => {
+            const clamped = Math.max(0, Math.min(cards.length - 1, index));
+
+            track.scrollTo({
+                left: getScrollLeftForIndex(clamped),
+                behavior,
+            });
         };
 
         const syncButtons = () => {
-            const maxScroll = track.scrollWidth - track.clientWidth;
-            const atStart = track.scrollLeft <= 1;
-            const atEnd = track.scrollLeft >= maxScroll - 1;
+            const index = getActiveIndex();
+            const atStart = index <= 0;
+            const atEnd = index >= cards.length - 1;
 
             prev.disabled = atStart;
             next.disabled = atEnd;
@@ -32,15 +65,24 @@ export function initBlogSlider() {
         };
 
         prev.addEventListener('click', () => {
-            track.scrollBy({ left: -step(), behavior: 'smooth' });
+            scrollToIndex(getActiveIndex() - 1);
         });
 
         next.addEventListener('click', () => {
-            track.scrollBy({ left: step(), behavior: 'smooth' });
+            scrollToIndex(getActiveIndex() + 1);
         });
 
         track.addEventListener('scroll', syncButtons, { passive: true });
-        window.addEventListener('resize', syncButtons);
+
+        if ('onscrollend' in window) {
+            track.addEventListener('scrollend', syncButtons, { passive: true });
+        }
+
+        window.addEventListener('resize', () => {
+            scrollToIndex(getActiveIndex(), 'auto');
+            syncButtons();
+        });
+
         syncButtons();
     });
 }

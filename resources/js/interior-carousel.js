@@ -18,6 +18,30 @@ function buildSrc(base, name, suffix = '') {
 function preloadImage(src) {
     const img = new Image();
     img.src = src;
+
+    return img;
+}
+
+function ensureImageLoaded(src) {
+    const img = preloadImage(src);
+
+    if (typeof img.decode === 'function') {
+        return img.decode().catch(() => undefined);
+    }
+
+    return new Promise((resolve) => {
+        if (img.complete) {
+            resolve();
+            return;
+        }
+
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+    });
+}
+
+function isVisiblePanel(panel) {
+    return panel.offsetParent !== null;
 }
 
 function setProgressItem(item, active, activeSrc, lineClass) {
@@ -39,80 +63,55 @@ function setProgressItem(item, active, activeSrc, lineClass) {
     }
 }
 
-function animateImage(img, nextSrc, reducedMotion) {
-    if (! img || img.dataset.currentSrc === nextSrc) {
-        return Promise.resolve();
-    }
-
-    if (reducedMotion) {
-        img.src = nextSrc;
-        img.dataset.currentSrc = nextSrc;
-
-        return Promise.resolve();
-    }
-
-    return new Promise((resolve) => {
-        gsap.to(img, {
-            opacity: 0,
-            x: -24,
-            duration: 0.35,
-            ease: 'power2.inOut',
-            onComplete: () => {
-                img.src = nextSrc;
-                img.dataset.currentSrc = nextSrc;
-                gsap.fromTo(
-                    img,
-                    { opacity: 0, x: 24 },
-                    {
-                        opacity: 1,
-                        x: 0,
-                        duration: 0.45,
-                        ease: 'power2.out',
-                        onComplete: resolve,
-                    },
-                );
-            },
-        });
-    });
+function assignImage(img, src) {
+    img.src = src;
+    img.dataset.currentSrc = src;
 }
 
-function animateSingleImage(img, nextSrc, direction, reducedMotion) {
+function swapSlideImage(img, nextSrc, direction, reducedMotion) {
     if (! img || img.dataset.currentSrc === nextSrc) {
         return Promise.resolve();
     }
 
     if (reducedMotion) {
-        img.src = nextSrc;
-        img.dataset.currentSrc = nextSrc;
+        assignImage(img, nextSrc);
 
         return Promise.resolve();
     }
 
     const offset = direction === 'next' ? 48 : -48;
 
-    return new Promise((resolve) => {
+    return ensureImageLoaded(nextSrc).then(() => new Promise((resolve) => {
         gsap.to(img, {
             opacity: 0,
-            x: -offset,
+            x: direction === 'next' ? -offset : offset,
             duration: 0.35,
             ease: 'power2.inOut',
             onComplete: () => {
-                img.src = nextSrc;
-                img.dataset.currentSrc = nextSrc;
-                gsap.fromTo(
-                    img,
-                    { opacity: 0, x: offset },
-                    {
-                        opacity: 1,
-                        x: 0,
-                        duration: 0.45,
-                        ease: 'power2.out',
-                        onComplete: resolve,
-                    },
-                );
+                gsap.set(img, {
+                    opacity: 0,
+                    x: direction === 'next' ? offset : -offset,
+                });
+                assignImage(img, nextSrc);
+                gsap.to(img, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.45,
+                    ease: 'power2.out',
+                    onComplete: resolve,
+                });
             },
         });
-    });
+    }));
+}
+
+function transferImage(target, source, src) {
+    gsap.set(target, { opacity: 1, x: 0 });
+    assignImage(target, src);
+
+    if (source && source.dataset.currentSrc === src) {
+        gsap.set(source, { opacity: 1, x: 0 });
+    }
 }
 
 export function initInteriorCarousel() {
@@ -160,43 +159,100 @@ export function initInteriorCarousel() {
             });
         };
 
-        const applyState = async (direction = 'next', animate = true) => {
-            const tasks = panels.map((panel) => {
+        const preloadAdjacent = () => {
+            panels.forEach((panel) => {
+                const suffix = panel.dataset.lumInteriorSuffix || '';
+
+                ensureImageLoaded(buildSrc(base, slideName(slides, index + 1), suffix));
+                ensureImageLoaded(buildSrc(base, slideName(slides, index - 1), suffix));
+                ensureImageLoaded(buildSrc(base, slideName(slides, index + 2), suffix));
+            });
+        };
+
+        const setStateSync = () => {
+            panels.forEach((panel) => {
                 const left = panel.querySelector('[data-lum-interior-left]');
                 const right = panel.querySelector('[data-lum-interior-right]');
                 const single = panel.querySelector('[data-lum-interior-single]');
                 const sources = getSources(panel);
 
                 if (single) {
-                    return animate
-                        ? animateSingleImage(single, sources.single, direction, reducedMotion)
-                        : Promise.resolve((single.src = sources.single, single.dataset.currentSrc = sources.single));
+                    assignImage(single, sources.single);
+                    gsap.set(single, { opacity: 1, x: 0 });
+
+                    return;
                 }
 
                 if (left && right) {
-                    if (! animate || reducedMotion) {
-                        left.src = sources.left;
-                        right.src = sources.right;
-                        left.dataset.currentSrc = sources.left;
-                        right.dataset.currentSrc = sources.right;
-
-                        return Promise.resolve();
-                    }
-
-                    return Promise.all([
-                        animateImage(left, sources.left, reducedMotion),
-                        animateImage(right, sources.right, reducedMotion),
-                    ]);
+                    assignImage(left, sources.left);
+                    assignImage(right, sources.right);
+                    gsap.set([left, right], { opacity: 1, x: 0 });
                 }
-
-                return Promise.resolve();
             });
 
             syncProgress();
-            preloadImage(buildSrc(base, slideName(slides, index + 2), ''));
-            preloadImage(buildSrc(base, slideName(slides, index - 1), ''));
+            preloadAdjacent();
+        };
 
-            await Promise.all(tasks);
+        const animatePanel = async (panel, direction) => {
+            const left = panel.querySelector('[data-lum-interior-left]');
+            const right = panel.querySelector('[data-lum-interior-right]');
+            const single = panel.querySelector('[data-lum-interior-single]');
+            const sources = getSources(panel);
+
+            if (single) {
+                await swapSlideImage(single, sources.single, direction, reducedMotion);
+
+                return;
+            }
+
+            if (! left || ! right) {
+                return;
+            }
+
+            if (reducedMotion) {
+                assignImage(left, sources.left);
+                assignImage(right, sources.right);
+
+                return;
+            }
+
+            await ensureImageLoaded(sources.left);
+            await ensureImageLoaded(sources.right);
+
+            if (direction === 'next' && right.dataset.currentSrc === sources.left) {
+                transferImage(left, right, sources.left);
+                await swapSlideImage(right, sources.right, direction, reducedMotion);
+
+                return;
+            }
+
+            if (direction === 'prev' && left.dataset.currentSrc === sources.right) {
+                transferImage(right, left, sources.right);
+                await swapSlideImage(left, sources.left, direction, reducedMotion);
+
+                return;
+            }
+
+            await Promise.all([
+                swapSlideImage(left, sources.left, direction, reducedMotion),
+                swapSlideImage(right, sources.right, direction, reducedMotion),
+            ]);
+        };
+
+        const applyState = async (direction = 'next', animate = true) => {
+            const visiblePanels = panels.filter(isVisiblePanel);
+
+            if (! animate || reducedMotion) {
+                setStateSync();
+
+                return;
+            }
+
+            await Promise.all(visiblePanels.map((panel) => animatePanel(panel, direction)));
+
+            syncProgress();
+            preloadAdjacent();
         };
 
         const go = async (direction) => {
@@ -226,10 +282,11 @@ export function initInteriorCarousel() {
 
         panels.forEach((panel) => {
             panel.querySelectorAll('[data-lum-interior-left], [data-lum-interior-right], [data-lum-interior-single]').forEach((img) => {
+                img.dataset.currentSrc = img.currentSrc || img.src;
                 gsap.set(img, { opacity: 1, x: 0 });
             });
         });
 
-        applyState('next', false);
+        setStateSync();
     });
 }

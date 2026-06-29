@@ -49,6 +49,17 @@ export function initStickyHeader() {
     };
 
     window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+
+    let lastWidth = window.innerWidth;
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth === lastWidth) {
+            return;
+        }
+
+        lastWidth = window.innerWidth;
+        update();
+    }, { passive: true });
+
     update();
 }

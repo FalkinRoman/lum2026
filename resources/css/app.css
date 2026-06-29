@@ -32,10 +32,21 @@
 @layer base {
     html {
         @apply antialiased w-full overflow-x-hidden;
+        overscroll-behavior-y: none;
     }
 
     body {
         @apply w-full overflow-x-hidden bg-lum-ivory text-lum-espresso font-sans;
+        overscroll-behavior-y: none;
+    }
+
+    html.lum-is-loading .lum-page {
+        opacity: 0;
+    }
+
+    html:not(.lum-is-loading) .lum-page {
+        opacity: 1;
+        transition: opacity 0.2s ease;
     }
 
     button,

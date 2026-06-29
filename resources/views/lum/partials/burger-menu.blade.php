@@ -1,6 +1,7 @@
 <div
     id="lum-burger-menu"
     class="lum-burger-menu fixed inset-0 z-[300] hidden"
+    hidden
     aria-hidden="true"
     role="dialog"
     aria-modal="true"

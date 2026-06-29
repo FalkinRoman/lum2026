@@ -77,8 +77,55 @@ function scaleLumPage() {
         stickyScaled.style.transform = `scale(${scale})`;
         syncStickyHeader();
     }
+}
 
-    refreshScrollTriggers();
+function debounce(fn, wait) {
+    let timeoutId = null;
+
+    return (...args) => {
+        if (timeoutId !== null) {
+            window.clearTimeout(timeoutId);
+        }
+
+        timeoutId = window.setTimeout(() => fn(...args), wait);
+    };
+}
+
+let lastLayoutWidth = window.innerWidth;
+let lastLayoutBreakpoint = getLumBreakpoint();
+
+function applyLumLayout({ forceRefresh = false } = {}) {
+    const width = window.innerWidth;
+    const breakpoint = getLumBreakpoint();
+    const layoutChanged = width !== lastLayoutWidth || breakpoint !== lastLayoutBreakpoint;
+
+    scaleLumPage();
+
+    if (layoutChanged || forceRefresh) {
+        lastLayoutWidth = width;
+        lastLayoutBreakpoint = breakpoint;
+        refreshScrollTriggers();
+    }
+}
+
+function initLumViewport() {
+    const onViewportChange = debounce(() => {
+        if (window.innerWidth === lastLayoutWidth) {
+            return;
+        }
+
+        applyLumLayout();
+    }, 120);
+
+    window.addEventListener('resize', onViewportChange, { passive: true });
+
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
+    }
+}
+
+function revealLumApp() {
+    document.documentElement.classList.remove('lum-is-loading');
 }
 
 function initLanguageSwitcher() {
@@ -102,6 +149,7 @@ function initLanguageSwitcher() {
             panel.classList.add('hidden');
             panel.classList.add('opacity-0');
             panel.classList.remove('pointer-events-auto');
+            panel.setAttribute('hidden', '');
             panel.setAttribute('aria-hidden', 'true');
             toggle.setAttribute('aria-expanded', 'false');
         };
@@ -116,6 +164,7 @@ function initLanguageSwitcher() {
             panel.classList.remove('hidden');
             panel.classList.remove('opacity-0');
             panel.classList.add('pointer-events-auto');
+            panel.removeAttribute('hidden');
             panel.setAttribute('aria-hidden', 'false');
             toggle.setAttribute('aria-expanded', 'true');
         };
@@ -266,7 +315,7 @@ function initBackToTop() {
     });
 }
 
-scaleLumPage();
+applyLumLayout({ forceRefresh: true });
 initLanguageSwitcher();
 initBackToTop();
 initLocationCards();
@@ -279,4 +328,10 @@ initShopParallax();
 initFooter3dText();
 initInteriorCarousel();
 initVillasCarousel();
-window.addEventListener('resize', scaleLumPage);
+initLumViewport();
+
+requestAnimationFrame(() => {
+    applyLumLayout();
+
+    requestAnimationFrame(revealLumApp);
+});

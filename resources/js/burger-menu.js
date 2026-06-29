@@ -34,6 +34,7 @@ export function initBurgerMenu() {
     const open = (trigger) => {
         lastTrigger = trigger ?? null;
         menu.classList.remove('hidden');
+        menu.removeAttribute('hidden');
         menu.setAttribute('aria-hidden', 'false');
         document.body.classList.add('overflow-hidden');
 
@@ -69,6 +70,7 @@ export function initBurgerMenu() {
         window.setTimeout(() => {
             if (! menu.classList.contains('is-open')) {
                 menu.classList.add('hidden');
+                menu.setAttribute('hidden', '');
             }
 
             if (scroll) {
