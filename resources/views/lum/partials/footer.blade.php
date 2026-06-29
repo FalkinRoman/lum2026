@@ -1,176 +1,246 @@
 <footer class="lum-container relative h-[780px] bg-lum-espresso mix-blend-multiply tab:h-[1089px] desk:h-[800px]">
     <img src="{{ $img('footer/bg.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover" width="1920" height="800">
 
-    {{-- MOBILE --}}
+    {{-- MOBILE — 375×780 --}}
     <div class="relative h-full tab:hidden">
-        <div class="absolute left-[20px] top-[44px] lum-text-2">
+        <div class="absolute left-1/2 top-[38px] w-[72px] -translate-x-1/2 text-center lum-text-3">
             <p class="font-medium text-lum-ivory">Contact</p>
             <p class="text-lum-ivory-40">Reception</p>
         </div>
-        <div class="absolute left-[20px] top-[100px] w-[335px]">
-            <p class="font-serif text-[42px] leading-[45px] text-lum-ivory">
+
+        <div class="absolute left-[20px] top-[102px] flex w-[335px] flex-col items-center gap-[16px] text-center text-lum-ivory">
+            <p class="w-full font-serif text-[42px] leading-[45px]">
                 @include('lum.partials.link-3d-text', [
                     'href' => 'tel:+94779296087',
                     'text' => '+94 (779) 296-087',
                 ])
             </p>
-            <p class="mt-[24px] font-serif text-[24px] leading-[28px] tracking-[0.24px] text-lum-ivory">
+            <p class="w-full font-serif text-[22px] font-medium leading-[24px] tracking-[0.194px]">
                 @include('lum.partials.link-3d-text', [
                     'href' => 'mailto:dimacake@gmail.com',
                     'text' => 'dimacake@gmail.com',
                 ])
             </p>
         </div>
-        <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-1/2 top-[280px] size-[160px] -translate-x-1/2" width="160" height="160">
-        <div class="absolute left-[20px] top-[500px] flex items-center gap-[12px]">
+
+        <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-[155px] top-[221px] size-[64px]" width="64" height="64">
+
+        <div class="absolute left-[20px] top-[336px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Residence'])
+        </div>
+        <div class="absolute left-[160px] top-[336px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Villas'])
+        </div>
+        <div class="absolute left-[20px] top-[366px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Oculus'])
+        </div>
+        <div class="absolute left-[160px] top-[366px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Ocean'])
+        </div>
+
+        <div class="absolute top-[406px] left-1/2 h-px w-[335px] -translate-x-1/2 bg-lum-ivory-40 opacity-16"></div>
+
+        <div class="absolute left-[20px] top-[437px] flex items-center gap-[12px]">
             <div class="flex items-center gap-[2px]">
-                @for ($i = 0; $i < 4; $i++)<img src="{{ $img('footer/star-full.svg') }}" alt="" class="size-[18px]" width="18" height="18">@endfor
-                <img src="{{ $img('footer/star-half.svg') }}" alt="" class="size-[18px]" width="18" height="18">
+                @for ($i = 0; $i < 4; $i++)
+                    <img src="{{ $img('footer/star-full.svg') }}" alt="" class="size-[16px]" width="16" height="16">
+                @endfor
+                <img src="{{ $img('footer/star-half.svg') }}" alt="" class="size-[16px]" width="16" height="16">
             </div>
-            <p class="lum-text-3 font-medium text-lum-ivory">4.9 <span class="text-lum-ivory-40">/ 139 reviews</span></p>
+            <p class="flex items-center gap-[4px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-ivory">
+                4.9
+                <span class="text-lum-ivory-40">/</span>
+                <span class="text-lum-ivory-40">139 reviews</span>
+            </p>
         </div>
-        <div class="absolute left-[20px] top-[560px] text-[20px] leading-[24px] text-lum-ivory">
-            <p>Thiththagalla road, Walhengoda,</p>
-            <p>Ахангама 80650 Шри-Ланка</p>
+
+        <div class="absolute left-[20px] top-[546px] -translate-y-full font-serif text-[22px] font-medium leading-[24px] tracking-[0.194px] text-lum-ivory">
+            <p>Thiththagalla road,</p>
+            <p>Walhengoda, Ахангама</p>
+            <p>80650 Шри-Ланка</p>
         </div>
-        <div class="absolute left-[20px] top-[640px] flex items-center gap-[10px]">
+
+        <div class="absolute left-[20px] top-[562px]">
             <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">SEE on map</a>
-            @for ($i = 0; $i < 2; $i++)
-                <a href="#" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Social"><img src="{{ $img('footer/instagram.svg') }}" alt="" class="size-[32px]" width="32" height="32"></a>
-            @endfor
         </div>
-        <button type="button" data-lum-back-to-top class="absolute right-[20px] bottom-[120px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
-            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-        </button>
-        <div class="lum-divider absolute bottom-[88px] left-[20px] bg-lum-ivory-40 opacity-100"></div>
-        <div class="absolute bottom-[56px] left-[20px] lum-text-2 text-lum-ivory-40">©Lum — 2026 all rights Reserved</div>
-        <div class="absolute bottom-[32px] left-[20px] flex items-start gap-[24px] lum-text-2">
+        <div class="absolute left-[281px] top-[562px] flex items-center gap-[10px]">
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
+        </div>
+
+        <p class="absolute left-[20px] top-[655px] -translate-y-1/2 text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">©Lum — 2026 all rights Reserved</p>
+
+        <div class="lum-footer-legal absolute left-[calc(50%-68px)] top-[678px] -translate-x-1/2 gap-[40px] text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Privacy Policy', 'classes' => 'lum-link--footer-legal'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Terms of Use', 'classes' => 'lum-link--footer-legal'])
         </div>
+
+        <button type="button" data-lum-back-to-top class="absolute left-[315px] top-[708px] flex -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
+            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        </button>
+
+        @include('lum.partials.footer-credits', [
+            'img' => $img,
+            'creditsClass' => 'lum-footer-credits--mobile',
+            'wrapperClass' => 'absolute left-[276px] top-[737px] -translate-x-full -translate-y-1/2 text-right text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory',
+        ])
     </div>
 
-    {{-- TABLET --}}
+    {{-- TABLET — 960×1089 --}}
     <div class="relative hidden h-full tab:block desk:hidden">
-        <div class="absolute left-[20px] top-[60px] lum-text-2">
+        <div class="absolute left-1/2 top-[64px] w-[72px] -translate-x-1/2 text-center lum-text-2">
             <p class="font-medium text-lum-ivory">Contact</p>
             <p class="text-lum-ivory-40">Reception</p>
         </div>
-        <div class="absolute left-[20px] top-[120px] w-[335px]">
-            <p class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-ivory">
-                @include('lum.partials.link-3d-text', [
-                    'href' => 'tel:+94779296087',
-                    'text' => '+94 (779) 296-087',
-                ])
-            </p>
-            <p class="mt-[32px] font-serif text-[28px] leading-[32px] tracking-[0.28px] text-lum-ivory">
-                @include('lum.partials.link-3d-text', [
-                    'href' => 'mailto:dimacake@gmail.com',
-                    'text' => 'dimacake@gmail.com',
-                ])
-            </p>
+
+        <p class="absolute right-[278px] top-[200px] -translate-y-1/2 whitespace-nowrap text-right font-serif text-[52px] leading-[52px] text-lum-ivory">
+            @include('lum.partials.link-3d-text', [
+                'href' => 'tel:+94779296087',
+                'text' => '+94 (779) 296-087',
+            ])
+        </p>
+        <p class="absolute right-[336px] top-[267px] -translate-y-1/2 whitespace-nowrap text-right font-serif text-[28px] font-medium leading-[34px] tracking-[0.364px] text-lum-ivory">
+            @include('lum.partials.link-3d-text', [
+                'href' => 'mailto:dimacake@gmail.com',
+                'text' => 'dimacake@gmail.com',
+            ])
+        </p>
+
+        <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-[400px] top-[364px] size-[160px]" width="160" height="160">
+
+        <div class="absolute left-[22px] top-[616.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Residence'])
         </div>
-        <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-1/2 top-[400px] size-[200px] -translate-x-1/2" width="200" height="200">
-        <div class="absolute left-[20px] top-[700px] flex items-center gap-[12px]">
+        <div class="absolute left-[250px] top-[616.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Villas'])
+        </div>
+        <div class="absolute left-[22px] top-[646.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Oculus'])
+        </div>
+        <div class="absolute left-[250px] top-[646.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Ocean'])
+        </div>
+
+        <div class="absolute top-[691px] left-[22px] h-px w-[920px] bg-lum-ivory-40 opacity-16"></div>
+
+        <div class="absolute left-[22px] top-[724px] flex items-center gap-[12px]">
             <div class="flex items-center gap-[2px]">
-                @for ($i = 0; $i < 4; $i++)<img src="{{ $img('footer/star-full.svg') }}" alt="" class="size-[18px]" width="18" height="18">@endfor
+                @for ($i = 0; $i < 4; $i++)
+                    <img src="{{ $img('footer/star-full.svg') }}" alt="" class="size-[18px]" width="18" height="18">
+                @endfor
                 <img src="{{ $img('footer/star-half.svg') }}" alt="" class="size-[18px]" width="18" height="18">
             </div>
-            <p class="lum-text-3 font-medium text-lum-ivory">4.9 <span class="text-lum-ivory-40">/ 139 reviews</span></p>
+            <p class="flex items-center gap-[4px] lum-text-3 font-medium text-lum-ivory">
+                4.9
+                <span class="text-lum-ivory-40">/</span>
+                <span class="text-lum-ivory-40">139 reviews</span>
+            </p>
         </div>
-        <div class="absolute left-[20px] top-[760px] text-[24px] leading-[28px] text-lum-ivory">
+
+        <div class="absolute left-[22px] top-[864px] -translate-y-full font-serif text-[28px] font-medium leading-[34px] tracking-[0.364px] text-lum-ivory">
             <p>Thiththagalla road, Walhengoda,</p>
             <p>Ахангама 80650 Шри-Ланка</p>
         </div>
-        <div class="absolute left-[20px] top-[840px] flex items-center gap-[10px]">
+
+        <div class="absolute left-[22px] top-[883px]">
             <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">SEE on map</a>
-            @for ($i = 0; $i < 2; $i++)
-                <a href="#" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Social"><img src="{{ $img('footer/instagram.svg') }}" alt="" class="size-[32px]" width="32" height="32"></a>
-            @endfor
         </div>
-        <button type="button" data-lum-back-to-top class="absolute right-[20px] bottom-[140px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
-            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-        </button>
-        <div class="lum-divider absolute bottom-[88px] left-[20px] bg-lum-ivory-40 opacity-100"></div>
-        <div class="absolute bottom-[56px] left-[20px] lum-text-2 text-lum-ivory-40">©Lum — 2026 all rights Reserved</div>
-        <div class="absolute bottom-[32px] left-1/2 flex -translate-x-1/2 items-start gap-[40px] lum-text-2">
+        <div class="absolute left-[866px] top-[883px] flex items-center gap-[10px]">
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
+        </div>
+
+        <p class="absolute left-[22px] top-[991.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">©Lum — 2026 all rights Reserved</p>
+
+        <div class="lum-footer-legal absolute left-[20px] top-[1024px] gap-[40px] lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Privacy Policy', 'classes' => 'lum-link--footer-legal'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Terms of Use', 'classes' => 'lum-link--footer-legal'])
         </div>
+
+        @include('lum.partials.footer-credits', [
+            'img' => $img,
+            'creditsClass' => 'lum-footer-credits--tablet',
+            'wrapperClass' => 'absolute left-[785px] top-[1036.5px] -translate-x-full -translate-y-1/2 text-right lum-text-2 font-normal text-lum-ivory',
+        ])
+
+        <button type="button" data-lum-back-to-top class="absolute left-[884px] top-[993px] flex -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[12px]" aria-label="Back to top">
+            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        </button>
     </div>
 
-    {{-- DESKTOP (не трогаем) --}}
+    {{-- DESKTOP — 1920×800 --}}
     <div class="relative hidden h-full desk:block">
         <div class="absolute left-[72px] top-[80px] lum-text-2">
             <p class="font-medium text-lum-ivory">Contact</p>
             <p class="text-lum-ivory-40">Reception</p>
         </div>
-        <div class="absolute right-[72px] top-[72px] text-right">
-            <p class="lum-heading-1 text-lum-ivory">
+
+        <div class="absolute right-[72px] top-[72px] text-right text-lum-ivory">
+            <p class="lum-heading-1">
                 @include('lum.partials.link-3d-text', [
                     'href' => 'tel:+94779296087',
                     'text' => '+94 (779) 296-087',
                 ])
             </p>
-            <p class="lum-heading-3 mt-[44px] text-lum-ivory">
+            <p class="lum-heading-3 mt-[44px]">
                 @include('lum.partials.link-3d-text', [
                     'href' => 'mailto:dimacake@gmail.com',
                     'text' => 'dimacake@gmail.com',
                 ])
             </p>
         </div>
+
         <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[240px] -translate-x-1/2 -translate-y-1/2" width="240" height="240">
+
         <div class="absolute left-[72px] top-[491px] flex items-center gap-[12px]">
             <div class="flex items-center gap-[2px]">
-                @for ($i = 0; $i < 4; $i++)<img src="{{ $img('footer/star-full.svg') }}" alt="" class="size-[18px]" width="18" height="18">@endfor
+                @for ($i = 0; $i < 4; $i++)
+                    <img src="{{ $img('footer/star-full.svg') }}" alt="" class="size-[18px]" width="18" height="18">
+                @endfor
                 <img src="{{ $img('footer/star-half.svg') }}" alt="" class="size-[18px]" width="18" height="18">
             </div>
-            <p class="lum-text-3 font-medium text-lum-ivory">4.9 <span class="text-lum-ivory-40">/ 139 reviews</span></p>
+            <p class="flex items-center gap-[4px] lum-text-3 font-medium text-lum-ivory">
+                4.9
+                <span class="text-lum-ivory-40">/</span>
+                <span class="text-lum-ivory-40">139 reviews</span>
+            </p>
         </div>
-        <div class="absolute left-[72px] top-[553px] lum-heading-3 text-lum-ivory">
+
+        <div class="absolute left-[72px] top-[615px] -translate-y-full lum-heading-3 text-lum-ivory">
             <p>Thiththagalla road, Walhengoda,</p>
             <p>Ахангама 80650 Шри-Ланка</p>
         </div>
+
         <div class="absolute left-[72px] top-[635px] flex items-center gap-[10px]">
             <a href="#" class="lum-btn-ivory">SEE on map</a>
-            @for ($i = 0; $i < 2; $i++)
-                <a href="#" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Social"><img src="{{ $img('footer/instagram.svg') }}" alt="" class="size-[32px]" width="32" height="32"></a>
-            @endfor
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
         </div>
-        <nav class="absolute right-[72px] top-[615px] flex gap-[40px] lum-text-2 font-medium text-lum-ivory">
+
+        <nav class="absolute left-[1415px] top-[615px] flex gap-[40px] lum-text-2 font-medium text-lum-ivory">
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Residence'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Oculus'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Ocean'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Villas'])
         </nav>
-        <button type="button" data-lum-back-to-top class="absolute right-[72px] bottom-[93px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
+
+        <button type="button" data-lum-back-to-top class="absolute right-[72px] top-[667px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <div class="lum-divider absolute bottom-[64px] left-[72px] bg-lum-ivory-40 opacity-100"></div>
-        <div class="absolute bottom-[32px] left-[72px] lum-text-2 text-lum-ivory-40">©Lum — 2026 all rights Reserved</div>
-        <div class="absolute bottom-[32px] left-1/2 flex -translate-x-1/2 items-start gap-[40px] lum-text-2">
+
+        <div class="absolute bottom-[64px] left-1/2 h-px w-[1776px] -translate-x-1/2 bg-lum-ivory-40 opacity-16"></div>
+
+        <p class="absolute left-[72px] top-[768.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">©Lum — 2026 all rights Reserved</p>
+
+        <div class="lum-footer-legal absolute left-1/2 top-[756px] -translate-x-1/2 gap-[40px] lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Privacy Policy', 'classes' => 'lum-link--footer-legal'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Terms of Use', 'classes' => 'lum-link--footer-legal'])
         </div>
-        <div class="absolute right-[72px] bottom-[32px] text-right lum-text-2 text-lum-ivory-40">
-            <span>Des & Dev / </span>
-            @include('lum.partials.link-footer-nav', [
-                'img' => $img,
-                'href' => 'https://t.me/ivantaskayev',
-                'label' => 'Ivan Taskayev',
-                'classes' => 'lum-link--footer-legal',
-                'target' => '_blank',
-                'rel' => 'noopener noreferrer',
-            ])
-            <span> & </span>
-            @include('lum.partials.link-footer-nav', [
-                'img' => $img,
-                'href' => 'https://t.me/falroman',
-                'label' => 'Roman Falkin',
-                'classes' => 'lum-link--footer-legal',
-                'target' => '_blank',
-                'rel' => 'noopener noreferrer',
-            ])
-        </div>
+
+        @include('lum.partials.footer-credits', [
+            'img' => $img,
+            'creditsClass' => 'lum-footer-credits--desktop',
+            'wrapperClass' => 'absolute left-[1846px] top-[767.5px] -translate-x-full -translate-y-1/2 text-right lum-text-2 font-normal text-lum-ivory',
+        ])
     </div>
 </footer>
