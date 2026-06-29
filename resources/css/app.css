@@ -37,6 +37,25 @@
     body {
         @apply w-full overflow-x-hidden bg-lum-ivory text-lum-espresso font-sans;
     }
+
+    button,
+    a,
+    input,
+    select,
+    textarea,
+    summary,
+    [role='button'],
+    [tabindex]:not([tabindex='-1']) {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    :focus {
+        outline: none;
+    }
+
+    :focus-visible {
+        outline: none;
+    }
 }
 
 @layer components {
@@ -448,6 +467,18 @@
         @apply pointer-events-none opacity-0;
     }
 
+    .lum-location-card__active::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: var(--color-lum-sand);
+        z-index: 0;
+    }
+
+    .lum-location-card__active > * {
+        z-index: 1;
+    }
+
     @media (hover: hover) and (pointer: fine) {
         .lum-location-card {
             @apply overflow-hidden;
@@ -459,11 +490,11 @@
 
         .lum-location-card__photo-img {
             @apply transition-transform duration-700 ease-out;
-            will-change: transform;
         }
 
         .lum-location-card.is-hover .lum-location-card__photo-img {
             transform: scale(1.08);
+            will-change: transform;
         }
 
         .lum-location-card__photo-overlay {
@@ -478,6 +509,8 @@
             @apply z-[2] opacity-100;
             transform: translate3d(0, 100%, 0);
             transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .lum-location-card.is-hover .lum-location-card__active {

@@ -33,24 +33,39 @@ function animateDisplacementScale(displacement, to, duration = 700) {
     });
 }
 
+function initScrollGuard() {
+    let scrolling = false;
+    let timer = null;
+
+    window.addEventListener('scroll', () => {
+        scrolling = true;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            scrolling = false;
+        }, 150);
+    }, { passive: true });
+
+    return () => scrolling;
+}
+
 export function initLocationCards() {
     if (! window.matchMedia(HOVER_MEDIA).matches) {
         return;
     }
 
+    const isScrolling = initScrollGuard();
+
     document.querySelectorAll('[data-lum-location-card]').forEach((card) => {
-        const filter = document.getElementById(card.dataset.filterId);
+        const filterId = card.dataset.filterId;
+        const filter = filterId ? document.getElementById(filterId) : null;
+        const photo = card.querySelector('[data-lum-location-photo]');
+        const displacement = filter?.querySelector('feDisplacementMap') ?? null;
 
-        if (! filter) {
+        if (! displacement || ! photo) {
             return;
         }
 
-        const displacement = filter.querySelector('feDisplacementMap');
-
-        if (! displacement) {
-            return;
-        }
-
+        const filterUrl = `url(#${filterId})`;
         let running = null;
 
         const run = (to) => {
@@ -68,14 +83,23 @@ export function initLocationCards() {
             });
         };
 
-        card.addEventListener('mouseenter', () => {
-            card.classList.add('is-hover');
-            run(90);
-        });
+        const enter = () => {
+            if (isScrolling()) {
+                return;
+            }
 
-        card.addEventListener('mouseleave', () => {
+            card.classList.add('is-hover');
+            photo.style.filter = filterUrl;
+            run(90);
+        };
+
+        const leave = () => {
             card.classList.remove('is-hover');
+            photo.style.filter = '';
             run(0);
-        });
+        };
+
+        card.addEventListener('mouseenter', enter);
+        card.addEventListener('mouseleave', leave);
     });
 }

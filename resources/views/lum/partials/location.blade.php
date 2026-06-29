@@ -183,7 +183,7 @@
             @foreach ($cards as $index => $card)
                 <article @class(['lum-location-card group relative h-[740px]', $card['width']]) data-lum-location-card data-filter-id="lum-location-filter-{{ $index }}">
                     <div class="lum-location-card__photo absolute inset-0 overflow-hidden">
-                        <img src="{{ $img($card['photo']) }}" alt="" class="lum-location-card__photo-img absolute inset-0 h-full w-full object-cover" style="filter: url(#lum-location-filter-{{ $index }})">
+                        <img src="{{ $img($card['photo']) }}" alt="" class="lum-location-card__photo-img absolute inset-0 h-full w-full object-cover" data-lum-location-photo>
                         <div class="absolute inset-0 {{ $card['photoGradient'] }}"></div>
                         <div class="lum-location-card__photo-overlay absolute inset-0">
                             <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lum-ivory">
@@ -198,7 +198,7 @@
                         </div>
                     </div>
 
-                    <div class="lum-location-card__active absolute inset-0 bg-lum-sand">
+                    <div class="lum-location-card__active absolute inset-0">
                         <div class="lum-location-card__bg">
                             <img src="{{ $img('location/dining-bg.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[1280px] -translate-x-1/2 -translate-y-1/2 max-w-none" width="1280" height="1280">
                         </div>

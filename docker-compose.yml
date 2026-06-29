@@ -1,0 +1,43 @@
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "${APP_PORT:-8000}:8000"
+      - "${VITE_PORT:-5173}:5173"
+    volumes:
+      - .:/var/www/html
+      - lum_vendor:/var/www/html/vendor
+      - lum_node_modules:/var/www/html/node_modules
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:${APP_PORT:-8000}"
+      VITE_DEV_SERVER_URL: "http://localhost:${VITE_PORT:-5173}"
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/html/database/database.sqlite
+
+  web:
+    profiles:
+      - production
+    build:
+      context: .
+      target: production
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: "http://localhost:${WEB_PORT:-8080}"
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/html/database/database.sqlite
+    volumes:
+      - lum_storage:/var/www/html/storage
+      - lum_database:/var/www/html/database
+
+volumes:
+  lum_vendor:
+  lum_node_modules:
+  lum_storage:
+  lum_database:
