@@ -17,12 +17,10 @@
                     <a href="/" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
                     </a>
-                    <button type="button" class="lum-burger-btn lum-burger-btn--espresso-compact absolute right-0 top-1/2 flex w-[56px] -translate-y-1/2 items-center" data-lum-menu-close aria-label="Close menu">
-                        <span class="flex size-[32px] shrink-0 items-center justify-center">
-                            <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
-                        </span>
+                    <button type="button" class="lum-burger-btn lum-burger-btn--espresso absolute right-0 top-1/2 flex -translate-y-1/2 items-center" data-lum-menu-close aria-label="Close menu">
+                        <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                     </button>
-                    <a href="#" class="lum-btn-outline absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">break</a>
+                    <a href="#" class="lum-btn-outline absolute right-[82px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">break</a>
                 </header>
 
                 <p class="absolute left-[20px] top-[104px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso-40" data-lum-menu-reveal="1">Select Language</p>
@@ -76,10 +74,8 @@
                         <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="Contact">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
-                        <button type="button" class="lum-burger-btn lum-burger-btn--espresso-compact flex w-[56px] items-center justify-center" data-lum-menu-close aria-label="Close menu">
-                            <span class="flex size-[32px] shrink-0 items-center justify-center">
-                                <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
-                            </span>
+                        <button type="button" class="lum-burger-btn lum-burger-btn--espresso flex items-center" data-lum-menu-close aria-label="Close menu">
+                            <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
                     </div>
                 </header>
@@ -115,9 +111,7 @@
             <div class="relative hidden h-[732px] w-full desk:block">
                 <header class="absolute left-1/2 top-0 h-[132px] w-[1776px] -translate-x-1/2 border-b border-lum-espresso/16">
                     <button type="button" class="lum-burger-btn lum-burger-btn--espresso absolute left-0 top-1/2 flex -translate-y-1/2 items-center" data-lum-menu-close aria-label="Close menu">
-                        <span class="flex size-[32px] shrink-0 items-center justify-center">
-                            <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
-                        </span>
+                        <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                     </button>
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
                     <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] text-[16px] font-medium leading-[25px] tracking-[0.16px] text-lum-espresso">

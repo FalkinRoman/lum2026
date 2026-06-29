@@ -1,20 +1,5 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="burger">
-<g id="menu" filter="url(#filter0_g_0_37)">
-<path d="M16.5 20.75H6.5V19.25H16.5V20.75Z" fill="var(--fill-0, #2E2720)"/>
-<path d="M25.5 16.75H6.5V15.25H25.5V16.75Z" fill="var(--fill-0, #2E2720)"/>
-<path d="M25.5 12.75H6.5V11.25H25.5V12.75Z" fill="var(--fill-0, #2E2720)"/>
-</g>
-</g>
-<defs>
-<filter id="filter0_g_0_37" x="5.5" y="10.25" width="21" height="11.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feTurbulence type="fractalNoise" baseFrequency="0.05000000074505806 0.05000000074505806" numOctaves="3" seed="7176" />
-<feDisplacementMap in="shape" scale="2" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
-<feMerge result="effect1_texture_0_37">
-<feMergeNode in="displacedImage"/>
-</feMerge>
-</filter>
-</defs>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="6" y="11" width="20" height="2" rx="1" fill="#2E2720"/>
+<rect x="6" y="15" width="20" height="2" rx="1" fill="#2E2720"/>
+<rect x="6" y="19" width="11" height="2" rx="1" fill="#2E2720"/>
 </svg>

@@ -31,12 +31,15 @@
 
 @layer base {
     html {
-        @apply antialiased w-full overflow-x-hidden;
+        @apply antialiased w-full;
+        overflow-x: hidden;
+        overflow-y: auto;
         overscroll-behavior-y: none;
     }
 
     body {
         @apply w-full overflow-x-hidden bg-lum-ivory text-lum-espresso font-sans;
+        overflow-y: visible;
         overscroll-behavior-y: none;
     }
 
@@ -72,7 +75,7 @@
 @layer components {
     .lum-viewport {
         width: 100%;
-        overflow: hidden;
+        overflow: visible;
     }
 
     .lum-page {
@@ -238,6 +241,14 @@
         }
     }
 
+    .lum-burger-btn {
+        @apply inline-flex items-center justify-center;
+        box-sizing: border-box;
+        min-width: 72px;
+        height: 36px;
+        padding-inline: 20px;
+    }
+
     .lum-burger-btn img {
         @apply size-[32px] shrink-0;
         transform: none;
@@ -245,35 +256,32 @@
     }
 
     .lum-burger-btn--ivory {
-        @apply rounded-[50px] border border-transparent bg-lum-ivory px-[20px] py-[2px];
+        @apply rounded-[50px] bg-lum-ivory;
+        border: 1px solid var(--color-lum-ivory);
     }
 
     @media (hover: hover) and (pointer: fine) {
         .lum-burger-btn--ivory:hover {
-            @apply border-lum-espresso bg-transparent;
-        }
-
-        .lum-burger-btn--ivory:hover img {
-            filter: brightness(0);
+            @apply bg-transparent;
+            border-color: var(--color-lum-espresso);
         }
     }
 
     .lum-burger-btn--ivory-compact {
-        @apply justify-center rounded-[50px] border border-transparent bg-lum-ivory px-[20px];
+        @apply rounded-[50px] bg-lum-ivory;
+        border: 1px solid var(--color-lum-ivory);
     }
 
     @media (hover: hover) and (pointer: fine) {
         .lum-burger-btn--ivory-compact:hover {
-            @apply border-lum-espresso bg-transparent;
-        }
-
-        .lum-burger-btn--ivory-compact:hover img {
-            filter: brightness(0);
+            @apply bg-transparent;
+            border-color: var(--color-lum-espresso);
         }
     }
 
     .lum-burger-btn--espresso {
-        @apply rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px] py-[2px];
+        @apply rounded-[50px] bg-lum-ivory;
+        border: 1px solid var(--color-lum-espresso);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -283,7 +291,8 @@
     }
 
     .lum-burger-btn--espresso-compact {
-        @apply justify-center rounded-[50px] border border-lum-espresso bg-lum-ivory px-[20px];
+        @apply rounded-[50px] bg-lum-ivory;
+        border: 1px solid var(--color-lum-espresso);
     }
 
     @media (hover: hover) and (pointer: fine) {

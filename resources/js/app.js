@@ -38,6 +38,10 @@ function syncLumBreakpointAttribute(breakpoint) {
     document.documentElement.dataset.lumBp = breakpoint;
 }
 
+function supportsPageZoom() {
+    return typeof CSS !== 'undefined' && CSS.supports('zoom', '1');
+}
+
 function scaleLumPage() {
     const viewport = document.querySelector('.lum-viewport');
     const page = document.querySelector('.lum-page');
@@ -53,12 +57,22 @@ function scaleLumPage() {
     syncLumBreakpointAttribute(breakpoint);
     page.dataset.lumBreakpoint = breakpoint;
     page.style.width = `${width}px`;
-    page.style.transform = `scale(${scale})`;
-    page.style.transformOrigin = 'top left';
+    viewport.style.removeProperty('height');
+    viewport.style.removeProperty('min-height');
 
-    const pageHeight = page.offsetHeight;
-    page.style.marginBottom = `${pageHeight * (scale - 1)}px`;
-    viewport.style.height = `${pageHeight * scale}px`;
+    if (supportsPageZoom()) {
+        page.style.transform = 'none';
+        page.style.transformOrigin = '';
+        page.style.marginBottom = '0';
+        page.style.zoom = String(scale);
+    } else {
+        page.style.zoom = 'normal';
+        page.style.transform = `scale(${scale})`;
+        page.style.transformOrigin = 'top left';
+
+        const pageHeight = page.offsetHeight;
+        page.style.marginBottom = `${pageHeight * (scale - 1)}px`;
+    }
 
     const menuScaled = document.querySelector('.lum-burger-menu__scaled');
 
@@ -122,6 +136,21 @@ function initLumViewport() {
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
     }
+
+    const page = document.querySelector('.lum-page');
+
+    if (page && typeof ResizeObserver !== 'undefined') {
+        const syncPageHeight = debounce(() => {
+            applyLumLayout();
+        }, 60);
+
+        const observer = new ResizeObserver(syncPageHeight);
+        observer.observe(page);
+    }
+
+    window.addEventListener('load', () => {
+        applyLumLayout({ forceRefresh: true });
+    }, { once: true });
 }
 
 function revealLumApp() {

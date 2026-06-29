@@ -24,7 +24,7 @@
             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <button type="button" class="lum-burger-btn lum-burger-btn--ivory-compact flex w-[56px] items-center justify-center" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
+        <button type="button" class="lum-burger-btn lum-burger-btn--ivory flex items-center" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
             <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>
