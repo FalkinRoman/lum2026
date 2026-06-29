@@ -29,7 +29,7 @@
                 <a href="#" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Social"><img src="{{ $img('footer/instagram.svg') }}" alt="" class="size-[32px]" width="32" height="32"></a>
             @endfor
         </div>
-        <button type="button" class="absolute right-[20px] bottom-[120px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
+        <button type="button" data-lum-back-to-top class="absolute right-[20px] bottom-[120px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div class="lum-divider absolute bottom-[88px] left-[20px] bg-lum-ivory-40 opacity-100"></div>
@@ -68,7 +68,7 @@
                 <a href="#" class="flex items-center rounded-[50px] border border-lum-ivory p-[2px]" aria-label="Social"><img src="{{ $img('footer/instagram.svg') }}" alt="" class="size-[32px]" width="32" height="32"></a>
             @endfor
         </div>
-        <button type="button" class="absolute right-[20px] bottom-[140px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
+        <button type="button" data-lum-back-to-top class="absolute right-[20px] bottom-[140px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div class="lum-divider absolute bottom-[88px] left-[20px] bg-lum-ivory-40 opacity-100"></div>
@@ -113,7 +113,7 @@
             <a href="#">Lum Ocean</a>
             <a href="#">Lum Villas</a>
         </nav>
-        <button type="button" class="absolute right-[72px] bottom-[93px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
+        <button type="button" data-lum-back-to-top class="absolute right-[72px] bottom-[93px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div class="lum-divider absolute bottom-[64px] left-[72px] bg-lum-ivory-40 opacity-100"></div>
