@@ -32,19 +32,15 @@ if ! grep -q '^APP_KEY=base64:' .env 2>/dev/null; then
 fi
 
 # APP_URL must include WEB_PORT when not using host nginx on :80
-WEB_PORT="$(grep -E '^WEB_PORT=' .env 2>/dev/null | cut -d= -f2- | tr -d '"' || true)"
+WEB_PORT="$(grep -E '^WEB_PORT=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
 WEB_PORT="${WEB_PORT:-8080}"
-APP_URL="$(grep -E '^APP_URL=' .env 2>/dev/null | cut -d= -f2- | tr -d '"' || true)"
+APP_URL="$(grep -E '^APP_URL=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
 
 if [ -z "$APP_URL" ]; then
     APP_URL="http://94.103.2.95:${WEB_PORT}"
 elif [ "$WEB_PORT" != "80" ] && ! echo "$APP_URL" | grep -q ":${WEB_PORT}"; then
     APP_URL="${APP_URL%/}:${WEB_PORT}"
 fi
-
-APP_URL="\"${APP_URL#\"}"
-APP_URL="${APP_URL%\"}"
-APP_URL="\"${APP_URL}\""
 
 if grep -q '^APP_URL=' .env; then
     sed -i.bak "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
