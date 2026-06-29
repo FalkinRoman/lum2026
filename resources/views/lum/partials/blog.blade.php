@@ -73,7 +73,11 @@
                         <img src="{{ $img('ui/dot.svg') }}" alt="" class="mb-[12px] size-[6px]" width="6" height="6">
                         <p class="lum-text-2 mb-[24px] font-medium uppercase">SURFING</p>
                         <p class="lum-heading-3 text-lum-espresso">our restaurant & bar<br>is open daily from<br><span class="font-normal italic">9 am to 9 pm.</span></p>
-                        <a href="#" class="lum-text-2 relative mt-[24px] font-medium text-lum-green">Read More<img src="{{ $img('blog/underline.svg') }}" alt="" class="absolute left-1/2 top-[26px] w-[79px] -translate-x-1/2" width="79" height="2"></a>
+                        @include('lum.partials.link-read-more', [
+                            'img' => $img,
+                            'lineWidth' => 79,
+                            'classes' => 'lum-text-2 mt-[24px] font-medium text-lum-green',
+                        ])
                     </div>
                 </article>
             @endforeach

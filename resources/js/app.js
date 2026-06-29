@@ -5,6 +5,7 @@ import { initBlogSlider } from './blog-slider';
 import { initHeroTitle } from './hero-title';
 import { initHeroVideo } from './hero-video';
 import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
+import { initFooter3dText } from './footer-3d-text';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -273,4 +274,5 @@ initStickyHeader();
 initHeroTitle();
 initHeroVideo();
 initShopParallax();
+initFooter3dText();
 window.addEventListener('resize', scaleLumPage);

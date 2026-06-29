@@ -8,8 +8,18 @@
             <p class="text-lum-ivory-40">Reception</p>
         </div>
         <div class="absolute left-[20px] top-[100px] w-[335px]">
-            <p class="font-serif text-[42px] leading-[45px] text-lum-ivory">+94 (779) 296-087</p>
-            <p class="mt-[24px] font-serif text-[24px] leading-[28px] tracking-[0.24px] text-lum-ivory">dimacake@gmail.com</p>
+            <p class="font-serif text-[42px] leading-[45px] text-lum-ivory">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'tel:+94779296087',
+                    'text' => '+94 (779) 296-087',
+                ])
+            </p>
+            <p class="mt-[24px] font-serif text-[24px] leading-[28px] tracking-[0.24px] text-lum-ivory">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'mailto:dimacake@gmail.com',
+                    'text' => 'dimacake@gmail.com',
+                ])
+            </p>
         </div>
         <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-1/2 top-[280px] size-[160px] -translate-x-1/2" width="160" height="160">
         <div class="absolute left-[20px] top-[500px] flex items-center gap-[12px]">
@@ -47,8 +57,18 @@
             <p class="text-lum-ivory-40">Reception</p>
         </div>
         <div class="absolute left-[20px] top-[120px] w-[335px]">
-            <p class="font-serif text-[52px] leading-[52px] text-lum-ivory">+94 (779) 296-087</p>
-            <p class="mt-[32px] font-serif text-[28px] leading-[32px] tracking-[0.28px] text-lum-ivory">dimacake@gmail.com</p>
+            <p class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-ivory">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'tel:+94779296087',
+                    'text' => '+94 (779) 296-087',
+                ])
+            </p>
+            <p class="mt-[32px] font-serif text-[28px] leading-[32px] tracking-[0.28px] text-lum-ivory">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'mailto:dimacake@gmail.com',
+                    'text' => 'dimacake@gmail.com',
+                ])
+            </p>
         </div>
         <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-1/2 top-[400px] size-[200px] -translate-x-1/2" width="200" height="200">
         <div class="absolute left-[20px] top-[700px] flex items-center gap-[12px]">
@@ -86,8 +106,18 @@
             <p class="text-lum-ivory-40">Reception</p>
         </div>
         <div class="absolute right-[72px] top-[72px] text-right">
-            <p class="lum-heading-1 text-lum-ivory">+94 (779) 296-087</p>
-            <p class="lum-heading-3 mt-[44px] text-lum-ivory">dimacake@gmail.com</p>
+            <p class="lum-heading-1 text-lum-ivory">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'tel:+94779296087',
+                    'text' => '+94 (779) 296-087',
+                ])
+            </p>
+            <p class="lum-heading-3 mt-[44px] text-lum-ivory">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'mailto:dimacake@gmail.com',
+                    'text' => 'dimacake@gmail.com',
+                ])
+            </p>
         </div>
         <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-1/2 top-1/2 size-[240px] -translate-x-1/2 -translate-y-1/2" width="240" height="240">
         <div class="absolute left-[72px] top-[491px] flex items-center gap-[12px]">
@@ -108,10 +138,10 @@
             @endfor
         </div>
         <nav class="absolute right-[72px] top-[615px] flex gap-[40px] lum-text-2 font-medium text-lum-ivory">
-            <a href="#" class="relative">Lum Residence<img src="{{ $img('footer/link-underline.svg') }}" alt="" class="absolute left-0 top-[26px] w-full" width="120" height="2"></a>
-            <a href="#">Oculus</a>
-            <a href="#">Lum Ocean</a>
-            <a href="#">Lum Villas</a>
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Residence'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Oculus'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Ocean'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Lum Villas'])
         </nav>
         <button type="button" data-lum-back-to-top class="absolute right-[72px] bottom-[93px] flex size-[40px] -scale-y-100 items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="Back to top">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">

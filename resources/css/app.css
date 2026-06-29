@@ -404,6 +404,132 @@
         @apply text-[14px] leading-[14px] tracking-[0.6px];
     }
 
+    /* Codrops LineHoverStyles — https://tympanus.net/Development/LineHoverStyles/ */
+    .lum-link {
+        @apply relative cursor-pointer no-underline outline-none;
+    }
+
+    .lum-link__text {
+        @apply inline-block;
+    }
+
+    .lum-link__line {
+        @apply block overflow-hidden leading-none;
+    }
+
+    .lum-link__line-img {
+        @apply block h-[2px] w-full max-w-none;
+        transform: scaleX(1);
+        transform-origin: left center;
+    }
+
+    .lum-link--read-more {
+        @apply inline-flex flex-col items-center;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-link--read-more:hover .lum-link__text {
+            transform: translate3d(0, -2px, 0);
+            transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1);
+        }
+
+        .lum-link--read-more:hover .lum-link__line-img {
+            animation: lum-link-line-draw 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+    }
+
+    .lum-link--footer {
+        @apply relative inline-block;
+    }
+
+    .lum-link--footer .lum-link__flip {
+        @apply relative block overflow-hidden;
+        height: 1.25em;
+    }
+
+    .lum-link--footer .lum-link__text {
+        transition: transform 0.3s cubic-bezier(0.5, 0.5, 0.3, 1);
+    }
+
+    .lum-link--footer .lum-link__text--ghost {
+        @apply absolute top-0 left-0;
+        transform: translate3d(150%, 0, 0);
+    }
+
+    .lum-link--footer .lum-link__line {
+        @apply absolute left-0 top-[26px] w-full opacity-0;
+        transition: opacity 0.2s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-link--footer:hover .lum-link__text:not(.lum-link__text--ghost) {
+            transform: translate3d(-150%, 0, 0);
+        }
+
+        .lum-link--footer:hover .lum-link__text--ghost {
+            transform: translate3d(0, 0, 0);
+        }
+
+        .lum-link--footer:hover .lum-link__line {
+            @apply opacity-100;
+        }
+
+        .lum-link--footer:hover .lum-link__line-img {
+            animation: lum-link-line-draw 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+    }
+
+    @keyframes lum-link-line-draw {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    /* Codrops 3DLettersMenuHover — https://tympanus.net/Development/3DLettersMenuHover/ */
+    .lum-3d-text {
+        @apply relative cursor-pointer no-underline outline-none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .lum-3d-text__inner {
+        @apply relative block leading-none;
+    }
+
+    .lum-3d-text__word {
+        @apply inline-block overflow-hidden;
+        perspective: 1000px;
+        perspective-origin: -150% 50%;
+        transform-style: preserve-3d;
+    }
+
+    .lum-3d-text__word--clone {
+        @apply absolute top-0 left-0 h-full w-full;
+    }
+
+    .lum-3d-text__word--clone .lum-3d-text__char {
+        opacity: 0;
+    }
+
+    .lum-3d-text__char {
+        @apply inline-block;
+        transform-origin: 0% 0%;
+        will-change: transform, opacity;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .lum-link--read-more:hover .lum-link__text,
+        .lum-link--footer:hover .lum-link__text,
+        .lum-link--footer:hover .lum-link__text--ghost,
+        .lum-link:hover .lum-link__line-img {
+            animation: none;
+            transform: none;
+        }
+    }
+
     .lum-script {
         @apply font-script lowercase;
     }

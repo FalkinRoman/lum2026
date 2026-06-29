@@ -18,8 +18,11 @@
                     our restaurant &amp; bar is open daily from<br><span class="font-normal italic">9 am to 9 pm.</span>
                 </p>
             </div>
-            <a href="#" class="absolute left-[calc(50%-31px)] top-[160px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-green">Read More</a>
-            <img src="{{ $img('blog/underline.svg') }}" alt="" class="absolute left-1/2 top-[176px] w-[63px] -translate-x-1/2" width="63" height="2">
+            @include('lum.partials.link-read-more', [
+                'img' => $img,
+                'lineWidth' => 63,
+                'classes' => 'absolute left-1/2 top-[160px] -translate-x-1/2 text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-green',
+            ])
         @else
             <div class="absolute left-1/2 top-[32px] flex w-[386px] -translate-x-1/2 flex-col items-center gap-[24px] text-center">
                 <div class="flex flex-col items-center gap-[8px]">
@@ -30,8 +33,11 @@
                     our restaurant &amp; bar<br>is open daily from<br><span class="font-normal italic">9 am to 9 pm.</span>
                 </p>
             </div>
-            <a href="#" class="absolute left-1/2 top-[230px] -translate-x-1/2 lum-text-2 font-medium text-lum-green">Read More</a>
-            <img src="{{ $img('blog/underline.svg') }}" alt="" class="absolute left-1/2 top-[255px] w-[79px] -translate-x-1/2" width="79" height="2">
+            @include('lum.partials.link-read-more', [
+                'img' => $img,
+                'lineWidth' => 79,
+                'classes' => 'absolute left-1/2 top-[230px] -translate-x-1/2 lum-text-2 font-medium text-lum-green',
+            ])
         @endif
     </div>
 </article>
