@@ -42,6 +42,10 @@ elif [ "$WEB_PORT" != "80" ] && ! echo "$APP_URL" | grep -q ":${WEB_PORT}"; then
     APP_URL="${APP_URL%/}:${WEB_PORT}"
 fi
 
+APP_URL="\"${APP_URL#\"}"
+APP_URL="${APP_URL%\"}"
+APP_URL="\"${APP_URL}\""
+
 if grep -q '^APP_URL=' .env; then
     sed -i.bak "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
 else
