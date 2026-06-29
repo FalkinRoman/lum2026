@@ -471,6 +471,14 @@
         transition: opacity 0.2s ease;
     }
 
+    .lum-link--footer-legal {
+        @apply font-normal text-lum-ivory-40;
+    }
+
+    .lum-link--footer-legal .lum-link__line {
+        top: calc(100% + 1px);
+    }
+
     @media (hover: hover) and (pointer: fine) {
         .lum-link--footer:hover .lum-link__text:not(.lum-link__text--ghost) {
             transform: translate3d(-150%, 0, 0);

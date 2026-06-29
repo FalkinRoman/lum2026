@@ -44,9 +44,9 @@
         </button>
         <div class="lum-divider absolute bottom-[88px] left-[20px] bg-lum-ivory-40 opacity-100"></div>
         <div class="absolute bottom-[56px] left-[20px] lum-text-2 text-lum-ivory-40">©Lum — 2026 all rights Reserved</div>
-        <div class="absolute bottom-[32px] left-[20px] flex gap-[24px] lum-text-2 text-lum-ivory-40">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
+        <div class="absolute bottom-[32px] left-[20px] flex items-start gap-[24px] lum-text-2">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Privacy Policy', 'classes' => 'lum-link--footer-legal'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Terms of Use', 'classes' => 'lum-link--footer-legal'])
         </div>
     </div>
 
@@ -93,9 +93,9 @@
         </button>
         <div class="lum-divider absolute bottom-[88px] left-[20px] bg-lum-ivory-40 opacity-100"></div>
         <div class="absolute bottom-[56px] left-[20px] lum-text-2 text-lum-ivory-40">©Lum — 2026 all rights Reserved</div>
-        <div class="absolute bottom-[32px] left-1/2 flex -translate-x-1/2 gap-[40px] lum-text-2 text-lum-ivory-40">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
+        <div class="absolute bottom-[32px] left-1/2 flex -translate-x-1/2 items-start gap-[40px] lum-text-2">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Privacy Policy', 'classes' => 'lum-link--footer-legal'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Terms of Use', 'classes' => 'lum-link--footer-legal'])
         </div>
     </div>
 
@@ -148,10 +148,29 @@
         </button>
         <div class="lum-divider absolute bottom-[64px] left-[72px] bg-lum-ivory-40 opacity-100"></div>
         <div class="absolute bottom-[32px] left-[72px] lum-text-2 text-lum-ivory-40">©Lum — 2026 all rights Reserved</div>
-        <div class="absolute bottom-[32px] left-1/2 flex -translate-x-1/2 gap-[40px] lum-text-2 text-lum-ivory-40">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
+        <div class="absolute bottom-[32px] left-1/2 flex -translate-x-1/2 items-start gap-[40px] lum-text-2">
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Privacy Policy', 'classes' => 'lum-link--footer-legal'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => 'Terms of Use', 'classes' => 'lum-link--footer-legal'])
         </div>
-        <div class="absolute right-[72px] bottom-[32px] text-right lum-text-2 text-lum-ivory-40">Des & Dev / Ivan Taskayev & Roman Falkin</div>
+        <div class="absolute right-[72px] bottom-[32px] text-right lum-text-2 text-lum-ivory-40">
+            <span>Des & Dev / </span>
+            @include('lum.partials.link-footer-nav', [
+                'img' => $img,
+                'href' => 'https://t.me/ivantaskayev',
+                'label' => 'Ivan Taskayev',
+                'classes' => 'lum-link--footer-legal',
+                'target' => '_blank',
+                'rel' => 'noopener noreferrer',
+            ])
+            <span> & </span>
+            @include('lum.partials.link-footer-nav', [
+                'img' => $img,
+                'href' => 'https://t.me/falroman',
+                'label' => 'Roman Falkin',
+                'classes' => 'lum-link--footer-legal',
+                'target' => '_blank',
+                'rel' => 'noopener noreferrer',
+            ])
+        </div>
     </div>
 </footer>
