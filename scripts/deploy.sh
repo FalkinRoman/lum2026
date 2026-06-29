@@ -34,22 +34,30 @@ fi
 # APP_URL must include WEB_PORT when not using host nginx on :80
 WEB_PORT="$(grep -E '^WEB_PORT=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
 WEB_PORT="${WEB_PORT:-8080}"
-APP_URL="$(grep -E '^APP_URL=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
+APP_HOST="$(grep -E '^APP_HOST=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
+APP_HOST="${APP_HOST:-94.103.2.95}"
 
-if [ -z "$APP_URL" ]; then
-    APP_URL="http://94.103.2.95:${WEB_PORT}"
-elif [ "$WEB_PORT" != "80" ] && ! echo "$APP_URL" | grep -q ":${WEB_PORT}"; then
-    APP_URL="${APP_URL%/}:${WEB_PORT}"
-fi
-
-if grep -q '^APP_URL=' .env; then
-    sed -i.bak "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
+if grep -q '^APP_HOST=' .env; then
+    sed -i.bak "s|^APP_HOST=.*|APP_HOST=${APP_HOST}|" .env
 else
-    echo "APP_URL=${APP_URL}" >> .env
+    echo "APP_HOST=${APP_HOST}" >> .env
 fi
+
+if grep -q '^APP_SCHEME=' .env; then
+    sed -i.bak "s|^APP_SCHEME=.*|APP_SCHEME=http|" .env
+else
+    echo "APP_SCHEME=http" >> .env
+fi
+
+if grep -q '^APP_PORT=' .env; then
+    sed -i.bak "s|^APP_PORT=.*|APP_PORT=${WEB_PORT}|" .env
+else
+    echo "APP_PORT=${WEB_PORT}" >> .env
+fi
+
 rm -f .env.bak
 
-echo "Using APP_URL=${APP_URL}"
+echo "Using APP_URL=http://${APP_HOST}:${WEB_PORT}"
 
 echo "Building production image..."
 docker compose --profile production build web
@@ -59,4 +67,4 @@ docker compose --profile production up -d web
 
 echo "Done."
 docker compose --profile production ps
-echo "Site: $(grep '^APP_URL=' .env | cut -d= -f2-) (container port ${WEB_PORT:-8080})"
+echo "Site: http://${APP_HOST}:${WEB_PORT} (container port ${WEB_PORT})"

@@ -33,13 +33,6 @@ fi
 php artisan migrate --force
 
 if [ "$APP_ENV" = "production" ]; then
-    if [ -f .env ]; then
-        APP_URL_FROM_FILE=$(grep -E '^APP_URL=' .env | head -1 | cut -d= -f2- | tr -d '"' | tr -d "'")
-        if [ -n "$APP_URL_FROM_FILE" ]; then
-            export APP_URL="$APP_URL_FROM_FILE"
-        fi
-    fi
-
     php artisan config:cache
     php artisan route:cache
     php artisan view:cache

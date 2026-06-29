@@ -52,7 +52,12 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL') ?: sprintf(
+        '%s://%s:%s',
+        env('APP_SCHEME', 'http'),
+        env('APP_HOST', 'localhost'),
+        env('APP_PORT', '8080'),
+    ),
 
     /*
     |--------------------------------------------------------------------------
