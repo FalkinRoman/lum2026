@@ -7,6 +7,7 @@ import { initHeroVideo } from './hero-video';
 import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
 import { initFooter3dText } from './footer-3d-text';
 import { initInteriorCarousel } from './interior-carousel';
+import { initVillasCarousel } from './villas-carousel';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -277,4 +278,5 @@ initHeroVideo();
 initShopParallax();
 initFooter3dText();
 initInteriorCarousel();
+initVillasCarousel();
 window.addEventListener('resize', scaleLumPage);

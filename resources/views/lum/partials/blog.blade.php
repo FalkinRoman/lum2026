@@ -64,9 +64,9 @@
         </div>
         <div class="absolute left-[72px] top-[398px] flex gap-[64px]">
             @foreach (range(1, 4) as $i)
-                <article class="w-[396px] shrink-0">
+                <article class="lum-blog-card w-[396px] shrink-0">
                     <div class="relative h-[396px] w-[396px] overflow-hidden">
-                        <img src="{{ $img('blog/surfing.jpg') }}" alt="" class="h-full w-full object-cover" width="396" height="396">
+                        <img src="{{ $img('blog/surfing.jpg') }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="396" height="396">
                         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(57,54,46,0.74)]"></div>
                     </div>
                     <div class="flex h-[320px] w-[396px] flex-col items-center bg-lum-sand px-[37px] pt-[44px] text-center">

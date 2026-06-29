@@ -22,7 +22,6 @@
                 'Rosenköster / Brute Wine & Bar',
             ],
             'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
-            'btn' => 'bg-lum-espresso',
             'width' => 'w-[550px]',
         ],
         [
@@ -44,7 +43,6 @@
             'activeImgRotate' => false,
             'listLines' => ['Yoga / Surfing / Padel'],
             'listTop' => ['mob' => 314, 'tab' => 517, 'desk' => 591],
-            'btn' => 'bg-lum-green',
             'width' => 'w-[549px]',
         ],
         [
@@ -71,7 +69,6 @@
                 'Mirissa / Dondra',
             ],
             'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
-            'btn' => 'bg-lum-green',
             'width' => 'w-[550px]',
         ],
     ];
@@ -131,7 +128,7 @@
                     <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
                     @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['mob'], 'tag' => $card['tag'], 'padding' => 'px-[24px] py-[4px]'])
                     @include('lum.partials.location-card-list', ['top' => $card['listTop']['mob'], 'lines' => $card['listLines'], 'class' => 'text-[14px] leading-[22px] tracking-[0.1px]'])
-                    <a href="#" class="lum-btn absolute left-1/2 top-[360px] -translate-x-1/2 {{ $card['btn'] }} px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px] text-lum-ivory">more info</a>
+                    <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">more info</a>
                 </article>
             @endforeach
         </div>
@@ -214,7 +211,7 @@
                         <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso" data-lum-reveal="2">{{ $card['title'] }}</h3>
                         @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag'], 'reveal' => 3])
                         @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines'], 'reveal' => 4])
-                        <a href="#" class="lum-btn absolute left-1/2 top-[640px] -translate-x-1/2 {{ $card['btn'] }} text-lum-ivory" data-lum-reveal="5">more info</a>
+                        <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">more info</a>
                     </div>
                 </article>
             @endforeach

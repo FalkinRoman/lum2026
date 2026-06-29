@@ -364,6 +364,16 @@
         @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-green text-lum-ivory;
     }
 
+    .lum-btn-info {
+        @apply bg-lum-green text-lum-ivory;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-btn.lum-btn-info:hover {
+            @apply border-transparent bg-lum-espresso text-lum-ivory;
+        }
+    }
+
     .lum-btn-outline-ivory {
         @apply inline-flex items-center justify-center rounded-[50px] border border-lum-ivory px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] text-lum-ivory;
     }
@@ -528,6 +538,28 @@
             animation: none;
             transform: none;
         }
+
+        .lum-blog-card__img,
+        .lum-blog-card:hover .lum-blog-card__img {
+            transition: none;
+            transform: none;
+        }
+    }
+
+    .lum-blog-card__img {
+        @apply transition-transform duration-700 ease-out;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-blog-card:hover .lum-blog-card__img {
+            transform: scale(1.08);
+            will-change: transform;
+        }
+    }
+
+    .lum-villas-view-cursor {
+        transition: opacity 0.25s ease;
+        will-change: transform;
     }
 
     .lum-script {

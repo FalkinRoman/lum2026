@@ -2,9 +2,9 @@
     $variant = $variant ?? 'mobile';
 @endphp
 
-<article @class(['shrink-0 snap-start', 'w-[240px]' => $variant === 'mobile', 'w-[450px]' => $variant === 'tablet']) data-lum-blog-card>
+<article @class(['lum-blog-card shrink-0 snap-start', 'w-[240px]' => $variant === 'mobile', 'w-[450px]' => $variant === 'tablet']) data-lum-blog-card>
     <div @class(['relative overflow-hidden', 'h-[240px] w-[240px]' => $variant === 'mobile', 'h-[450px] w-[450px]' => $variant === 'tablet'])>
-        <img src="{{ $img('blog/surfing.jpg') }}" alt="" class="h-full w-full object-cover" width="{{ $variant === 'mobile' ? 240 : 450 }}" height="{{ $variant === 'mobile' ? 240 : 450 }}">
+        <img src="{{ $img('blog/surfing.jpg') }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="{{ $variant === 'mobile' ? 240 : 450 }}" height="{{ $variant === 'mobile' ? 240 : 450 }}">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(57,54,46,0.74)]"></div>
     </div>
     <div @class(['relative bg-lum-sand', 'h-[192px] w-[240px]' => $variant === 'mobile', 'h-[287px] w-[450px]' => $variant === 'tablet'])>
