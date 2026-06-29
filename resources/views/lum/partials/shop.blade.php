@@ -7,7 +7,7 @@
 
     {{-- MOBILE — Figma 16:1609 --}}
     <div class="absolute inset-0 z-10 flex items-center justify-center tab:hidden">
-        <div class="flex w-[335px] flex-col items-center gap-[30px] text-center">
+        <div class="flex w-[335px] flex-col items-center gap-[30px] text-center" data-lum-scroll-reveal>
             <img src="{{ $img('shop/logomark.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             <div class="flex flex-col items-center gap-[24px]">
                 <p class="lum-text-3 font-medium uppercase text-lum-ivory">DISCOVER OUR SHOP</p>
@@ -22,7 +22,7 @@
 
     {{-- TABLET — Figma 16:1078 --}}
     <div class="absolute inset-0 z-10 hidden items-center justify-center tab:flex desk:hidden">
-        <div class="flex w-[920px] flex-col items-center gap-[32px] text-center">
+        <div class="flex w-[920px] flex-col items-center gap-[32px] text-center" data-lum-scroll-reveal>
             <div class="flex flex-col items-center gap-[24px]">
                 <img src="{{ $img('shop/logomark.svg') }}" alt="" class="size-[40px]" width="40" height="40">
                 <p class="lum-text-2 font-medium uppercase text-lum-ivory">DISCOVER OUR SHOP</p>
@@ -38,7 +38,7 @@
 
     {{-- DESKTOP (не трогаем) --}}
     <div class="absolute bottom-0 left-[80px] top-1/2 z-10 hidden w-[1760px] -translate-y-1/2 flex-col items-center gap-[44px] text-center desk:flex">
-        <div class="flex w-full flex-col items-center gap-[44px]">
+        <div class="flex w-full flex-col items-center gap-[44px]" data-lum-scroll-reveal>
             <img src="{{ $img('shop/logomark.svg') }}" alt="" class="size-[64px]" width="64" height="64">
             <div class="flex w-full flex-col items-center gap-[38px]">
                 <p class="lum-eyebrow text-lum-ivory">DISCOVER OUR SHOP</p>

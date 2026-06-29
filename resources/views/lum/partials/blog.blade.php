@@ -2,7 +2,7 @@
     {{-- MOBILE — Figma 16:1579 --}}
     <div class="relative h-full tab:hidden" data-lum-blog-slider data-gap="10">
         <img src="{{ $img('blog/top-wave.svg') }}" alt="" class="absolute left-[20px] top-0 w-[335px]" width="335" height="23">
-        <div class="absolute left-[58.5px] top-[67px] w-[258px] text-center font-serif text-[42px] font-medium italic leading-[45px] text-lum-espresso">
+        <div class="absolute left-[58.5px] top-[67px] w-[258px] text-center font-serif text-[42px] font-medium italic leading-[45px] text-lum-espresso" data-lum-scroll-reveal>
             <p class="whitespace-nowrap">explore. inspire.</p>
             <p>escape.</p>
         </div>
@@ -26,7 +26,7 @@
     {{-- TABLET — Figma 16:1042 --}}
     <div class="relative hidden h-full tab:block desk:hidden" data-lum-blog-slider data-gap="20">
         <img src="{{ $img('blog/top-wave.svg') }}" alt="" class="absolute left-[20px] top-0 w-[920px]" width="920" height="28">
-        <div class="absolute left-[166px] top-[108px] flex w-[628px] items-center justify-center gap-[12px]">
+        <div class="absolute left-[166px] top-[108px] flex w-[628px] items-center justify-center gap-[12px]" data-lum-scroll-reveal>
             <img src="{{ $img('blog/deco-left.svg') }}" alt="" class="w-[72px] rotate-180 scale-y-[-1]" width="72" height="2">
             <h2 class="font-serif text-[52px] font-medium italic leading-[52px] whitespace-nowrap text-lum-espresso">explore. inspire. escape</h2>
             <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[72px]" width="72" height="2">
@@ -54,7 +54,7 @@
     {{-- DESKTOP (не трогаем) --}}
     <div class="relative hidden h-full desk:block">
         <img src="{{ $img('blog/top-wave.svg') }}" alt="" class="absolute left-[72px] top-0 w-[1776px]" width="1776" height="45">
-        <div class="absolute left-1/2 top-[160px] flex -translate-x-1/2 items-center gap-[12px]">
+        <div class="absolute left-1/2 top-[160px] flex -translate-x-1/2 items-center gap-[12px]" data-lum-scroll-reveal>
             <img src="{{ $img('blog/deco-left.svg') }}" alt="" class="w-[108px] rotate-180 scale-y-[-1]" width="108" height="2">
             <h2 class="lum-heading-1 font-medium italic whitespace-nowrap text-lum-espresso">explore. inspire. escape</h2>
             <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[108px]" width="108" height="2">

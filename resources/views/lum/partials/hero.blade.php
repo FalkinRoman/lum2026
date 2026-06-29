@@ -25,7 +25,7 @@
                     </h1>
                 </div>
             </div>
-            <div class="flex h-[48px] w-[48px] shrink-0 items-center justify-center">
+            <div class="lum-hero-scroll-hint flex h-[48px] w-[48px] shrink-0 items-center justify-center">
                 <img src="{{ $img('hero/scroll-arrow-375.svg') }}" alt="" class="w-[48px] rotate-90" width="49" height="7">
             </div>
             <a href="#villas" class="lum-btn-green px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>explore our villas</a>
@@ -60,7 +60,7 @@
                     </h1>
                 </div>
             </div>
-            <div class="flex h-[48px] w-[48px] shrink-0 items-center justify-center">
+            <div class="lum-hero-scroll-hint flex h-[48px] w-[48px] shrink-0 items-center justify-center">
                 <img src="{{ $img('hero/scroll-arrow-960.svg') }}" alt="" class="w-[48px] rotate-90" width="49" height="7">
             </div>
             <a href="#villas" class="lum-btn-green px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>explore our villas</a>
@@ -99,7 +99,7 @@
             </div>
         </div>
 
-        <div class="absolute left-1/2 top-[868px] z-20 flex h-[86px] w-[86px] -translate-x-1/2 items-center justify-center">
+        <div class="lum-hero-scroll-hint absolute left-1/2 top-[868px] z-20 flex h-[86px] w-[86px] -translate-x-1/2 items-center justify-center">
             <img src="{{ $img('hero/scroll-arrow.svg') }}" alt="" class="w-[86px] rotate-90" width="87" height="7">
         </div>
 

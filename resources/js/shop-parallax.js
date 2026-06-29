@@ -19,13 +19,6 @@ export function initShopParallax() {
         return;
     }
 
-    const isTouchViewport = window.matchMedia('(max-width: 1023px), (pointer: coarse)').matches;
-    const isInAppBrowser = /Telegram|Instagram|FBAN|FBAV|Twitter|Line\//i.test(navigator.userAgent);
-
-    if (isTouchViewport || isInAppBrowser) {
-        return;
-    }
-
     gsap.fromTo(
         bg,
         { yPercent: -10 },

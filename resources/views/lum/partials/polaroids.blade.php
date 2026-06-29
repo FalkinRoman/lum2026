@@ -1,13 +1,13 @@
 <section class="lum-container relative h-[1173px] bg-lum-ivory tab:h-[1134px] desk:h-[1299px]">
     {{-- MOBILE --}}
-    <div class="relative h-full tab:hidden">
+    <div class="relative h-full tab:hidden" data-lum-scroll-stagger>
         @foreach ([
             ['left' => '59.07px', 'top' => '107.45px', 'rotate' => '13.51deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '14px'],
             ['left' => '198.36px', 'top' => '156px', 'rotate' => '-0.97deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '14px'],
             ['left' => '91px', 'top' => '852.55px', 'rotate' => '-9.98deg', 'fw' => '153px', 'fh' => '229px', 'pw' => '139px', 'ph' => '135px', 'px' => '7px', 'py' => '10px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '14px'],
         ] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
-                <div class="relative" style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
+                <div class="relative" data-lum-scroll-item style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="absolute inset-0 w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="absolute left-0 right-0 top-[10px] text-center text-[10px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="absolute object-cover" style="left: {{ $polaroid['px'] }}; top: {{ $polaroid['py'] }}; width: {{ $polaroid['pw'] }}; height: {{ $polaroid['ph'] }};">
@@ -26,7 +26,7 @@
             <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(9.07deg);">relax</p>
         </div>
 
-        <div class="absolute left-[20px] top-[450px] flex w-[335px] flex-col items-center gap-[44px]">
+        <div class="absolute left-[20px] top-[450px] flex w-[335px] flex-col items-center gap-[44px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
             <div class="flex flex-col items-center gap-[16px]">
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
                 <div class="text-center">
@@ -46,14 +46,14 @@
     </div>
 
     {{-- TABLET --}}
-    <div class="relative hidden h-full tab:block desk:hidden">
+    <div class="relative hidden h-full tab:block desk:hidden" data-lum-scroll-stagger>
         @foreach ([
             ['left' => '108.77px', 'top' => '147.56px', 'rotate' => '13.51deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '18px'],
             ['left' => '654.73px', 'top' => '138px', 'rotate' => '-0.97deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '18px'],
             ['left' => '380px', 'top' => '184.2px', 'rotate' => '-9.98deg', 'fw' => '251px', 'fh' => '355px', 'pw' => '228px', 'ph' => '222px', 'px' => '12px', 'py' => '32px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '18px'],
         ] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
-                <div class="relative" style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
+                <div class="relative" data-lum-scroll-item style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="absolute inset-0 w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="absolute left-0 right-0 top-[14px] text-center text-[12px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="absolute object-cover" style="left: {{ $polaroid['px'] }}; top: {{ $polaroid['py'] }}; width: {{ $polaroid['pw'] }}; height: {{ $polaroid['ph'] }};">
@@ -72,7 +72,7 @@
             <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(9.07deg);">relax</p>
         </div>
 
-        <div class="absolute left-[80px] top-[695px] flex w-[800px] flex-col items-center gap-[56px]">
+        <div class="absolute left-[80px] top-[695px] flex w-[800px] flex-col items-center gap-[56px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
             <div class="flex flex-col items-center gap-[20px]">
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[8px]" width="8" height="8">
                 <div class="text-center">
@@ -92,17 +92,19 @@
     </div>
 
     {{-- DESKTOP --}}
-    <div class="relative hidden h-full desk:block">
+    <div class="relative hidden h-full desk:block" data-lum-scroll-stagger>
         @foreach ([
             ['left' => '216px', 'top' => '362px', 'rotate' => '13.5deg', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023'],
             ['left' => '787px', 'top' => '109px', 'rotate' => '-5.5deg', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024'],
             ['left' => '1463px', 'top' => '392px', 'rotate' => '-1deg', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023'],
         ] as $polaroid)
             <div class="absolute h-[425px] w-[301px]" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
+                <div class="relative h-full w-full" data-lum-scroll-item>
                 <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="absolute inset-0 w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                 <p class="absolute left-0 right-0 top-[18px] text-center font-sans text-[14px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                 <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="absolute left-[14px] top-[38px] h-[266px] w-[273px] object-cover" width="273" height="266">
                 <p class="lum-script absolute bottom-[28px] left-0 right-0 px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-green">share your impressions</p>
+                </div>
             </div>
         @endforeach
 
@@ -116,7 +118,7 @@
             <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(9.07deg);">relax</p>
         </div>
 
-        <div class="absolute left-[532px] top-[693px] flex w-[856px] flex-col items-center gap-[64px]">
+        <div class="absolute left-[532px] top-[693px] flex w-[856px] flex-col items-center gap-[64px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
             <div class="flex flex-col items-center gap-[24px]">
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">
                 <div class="text-center">

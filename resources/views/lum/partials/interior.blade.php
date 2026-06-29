@@ -22,7 +22,7 @@
     {{-- MOBILE --}}
     <div class="relative h-full tab:hidden" data-lum-interior-panel data-lum-interior-suffix="-sm">
         <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[45px] size-[32px] -translate-x-1/2" width="32" height="32">
-        <div class="absolute left-1/2 top-[107px] -translate-x-1/2 text-center text-lum-espresso">
+        <div class="absolute left-1/2 top-[107px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
             <p class="font-serif text-[36px] font-medium italic leading-[45px] tracking-[-0.72px]">view of the</p>
             <p class="font-serif text-[36px] leading-[45px] tracking-[-0.72px]">INTERIOR</p>
         </div>
@@ -79,7 +79,7 @@
     {{-- TABLET --}}
     <div class="relative hidden h-full tab:block desk:hidden" data-lum-interior-panel>
         <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[61px] size-[40px] -translate-x-1/2" width="40" height="40">
-        <div class="absolute left-1/2 top-[145px] -translate-x-1/2 text-center text-lum-espresso">
+        <div class="absolute left-1/2 top-[145px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
             <p class="font-serif text-[52px] font-medium italic leading-[52px] tracking-[-1.04px]">view of the</p>
             <p class="font-serif text-[52px] leading-[52px] tracking-[-1.04px]">INTERIOR</p>
         </div>
@@ -128,7 +128,7 @@
     {{-- DESKTOP (не трогаем) --}}
     <div class="relative hidden h-full desk:block" data-lum-interior-panel>
         <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[80px] size-[64px] -translate-x-1/2" width="64" height="64">
-        <div class="absolute left-1/2 top-[208px] -translate-x-1/2 text-center text-lum-espresso">
+        <div class="absolute left-1/2 top-[208px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
             <p class="lum-heading-1 font-medium italic tracking-[-1.76px]">view of the</p>
             <p class="lum-heading-1 font-normal tracking-[-1.76px]">INTERIOR</p>
         </div>

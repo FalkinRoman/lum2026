@@ -78,7 +78,7 @@
     {{-- MOBILE --}}
     <div class="relative h-full tab:hidden">
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-0 h-[54px] w-[32px] -translate-x-1/2" width="32" height="54">
-        <div class="absolute left-1/2 top-[78px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[32px] text-center">
+        <div class="absolute left-1/2 top-[78px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[32px] text-center" data-lum-scroll-reveal>
             <h2 class="font-serif text-[36px] leading-[45px] text-lum-espresso">
                 prime location in <span class="font-medium italic">Abangama</span> on the pristine southearn coast of <span class="font-medium italic">Sri Lanka</span>
             </h2>
@@ -138,7 +138,7 @@
     {{-- TABLET --}}
     <div class="relative hidden h-full tab:block desk:hidden">
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[60px] h-[67px] w-[40px] -translate-x-1/2" width="40" height="67">
-        <div class="absolute left-1/2 top-[172px] flex w-[680px] -translate-x-1/2 flex-col items-center gap-[44px] text-center">
+        <div class="absolute left-1/2 top-[172px] flex w-[680px] -translate-x-1/2 flex-col items-center gap-[44px] text-center" data-lum-scroll-reveal>
             <h2 class="font-serif text-[52px] leading-[52px] text-lum-espresso">
                 prime location in <span class="font-medium italic">Abangama</span> on the pristine southearn coast of <span class="font-medium italic">Sri Lanka</span>
             </h2>
@@ -168,7 +168,7 @@
             @endforeach
         </svg>
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
-        <div class="absolute left-[532px] top-[357px] flex w-[856px] flex-col items-center gap-[44px] text-center">
+        <div class="absolute left-[532px] top-[357px] flex w-[856px] flex-col items-center gap-[44px] text-center" data-lum-scroll-reveal>
             <h2 class="lum-heading-1 text-lum-espresso">
                 prime location in <span class="font-medium italic">Abangama</span> on the pristine southearn coast of <span class="font-medium italic">Sri Lanka</span>
             </h2>
