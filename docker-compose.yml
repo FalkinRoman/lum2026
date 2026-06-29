@@ -26,13 +26,16 @@ services:
       target: production
     ports:
       - "${WEB_PORT:-8080}:80"
+    env_file:
+      - .env
     environment:
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_URL: "http://localhost:${WEB_PORT:-8080}"
+      APP_URL: "${APP_URL:-http://localhost:${WEB_PORT:-8080}}"
       DB_CONNECTION: sqlite
       DB_DATABASE: /var/www/html/database/database.sqlite
     volumes:
+      - ./.env:/var/www/html/.env:ro
       - lum_storage:/var/www/html/storage
       - lum_database:/var/www/html/database
 
