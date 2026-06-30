@@ -25,23 +25,40 @@ function preloadImage(src) {
 function ensureImageLoaded(src) {
     const img = preloadImage(src);
 
-    if (typeof img.decode === 'function') {
-        return img.decode().catch(() => undefined);
-    }
+    const loaded = typeof img.decode === 'function'
+        ? img.decode().catch(() => undefined)
+        : new Promise((resolve) => {
+            if (img.complete) {
+                resolve();
+                return;
+            }
 
-    return new Promise((resolve) => {
-        if (img.complete) {
-            resolve();
-            return;
-        }
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+        });
 
-        img.onload = () => resolve();
-        img.onerror = () => resolve();
-    });
+    return Promise.race([
+        loaded,
+        new Promise((resolve) => {
+            window.setTimeout(resolve, 400);
+        }),
+    ]);
 }
 
 function isVisiblePanel(panel) {
     return panel.offsetParent !== null;
+}
+
+function normalizeSrc(src) {
+    if (! src) {
+        return '';
+    }
+
+    try {
+        return new URL(src, window.location.origin).pathname;
+    } catch {
+        return src;
+    }
 }
 
 function setProgressItem(item, active, activeSrc, lineClass) {
@@ -64,54 +81,148 @@ function setProgressItem(item, active, activeSrc, lineClass) {
 }
 
 function assignImage(img, src) {
+    const normalized = normalizeSrc(src);
+
+    if (img.dataset.currentSrc === normalized) {
+        return false;
+    }
+
     img.src = src;
-    img.dataset.currentSrc = src;
+    img.dataset.currentSrc = normalized;
+
+    return true;
 }
 
-function swapSlideImage(img, nextSrc, direction, reducedMotion) {
-    if (! img || img.dataset.currentSrc === nextSrc) {
+function resolveSlideSlot(node) {
+    if (! node) {
+        return { frame: null, img: null };
+    }
+
+    if (node.tagName === 'IMG') {
+        return { frame: node, img: node };
+    }
+
+    return {
+        frame: node,
+        img: node.querySelector('img'),
+    };
+}
+
+function resetSlideMotion(frame) {
+    if (! frame) {
+        return;
+    }
+
+    gsap.killTweensOf(frame);
+    frame.getAnimations().forEach((animation) => animation.cancel());
+    frame.style.opacity = '';
+    frame.style.transform = '';
+    gsap.set(frame, { opacity: 1, x: 0, clearProps: 'transform' });
+}
+
+function swapSlideImage(slot, nextSrc, direction, reducedMotion) {
+    const { frame, img } = resolveSlideSlot(slot);
+
+    if (! frame || ! img || img.dataset.currentSrc === normalizeSrc(nextSrc)) {
         return Promise.resolve();
     }
 
     if (reducedMotion) {
         assignImage(img, nextSrc);
+        resetSlideMotion(frame);
 
         return Promise.resolve();
     }
 
     const offset = direction === 'next' ? 48 : -48;
 
+    resetSlideMotion(frame);
+
     return ensureImageLoaded(nextSrc).then(() => new Promise((resolve) => {
-        gsap.to(img, {
+        gsap.to(frame, {
             opacity: 0,
             x: direction === 'next' ? -offset : offset,
             duration: 0.35,
             ease: 'power2.inOut',
+            overwrite: 'auto',
             onComplete: () => {
-                gsap.set(img, {
+                gsap.set(frame, {
                     opacity: 0,
                     x: direction === 'next' ? offset : -offset,
                 });
                 assignImage(img, nextSrc);
-                gsap.to(img, {
+                gsap.to(frame, {
                     opacity: 1,
                     x: 0,
                     duration: 0.45,
                     ease: 'power2.out',
-                    onComplete: resolve,
+                    overwrite: 'auto',
+                    onComplete: () => {
+                        resetSlideMotion(frame);
+                        resolve();
+                    },
                 });
             },
         });
     }));
 }
 
-function transferImage(target, source, src) {
-    gsap.set(target, { opacity: 1, x: 0 });
-    assignImage(target, src);
+function swapDualSlideImage(slot, nextSrc, direction, reducedMotion) {
+    const { frame, img } = resolveSlideSlot(slot);
 
-    if (source && source.dataset.currentSrc === src) {
-        gsap.set(source, { opacity: 1, x: 0 });
+    if (! frame || ! img || img.dataset.currentSrc === normalizeSrc(nextSrc)) {
+        return Promise.resolve();
     }
+
+    if (reducedMotion) {
+        assignImage(img, nextSrc);
+        resetSlideMotion(frame);
+
+        return Promise.resolve();
+    }
+
+    resetSlideMotion(frame);
+
+    const offset = direction === 'next' ? 48 : -48;
+    const exitX = direction === 'next' ? -offset : offset;
+    const enterX = direction === 'next' ? offset : -offset;
+
+    return ensureImageLoaded(nextSrc).then(() => new Promise((resolve) => {
+        const fadeOut = frame.animate(
+            [
+                { opacity: 1, transform: 'translateX(0px)' },
+                { opacity: 0, transform: `translateX(${exitX}px)` },
+            ],
+            { duration: 350, easing: 'ease-in-out', fill: 'forwards' },
+        );
+
+        Promise.race([
+            fadeOut.finished,
+            new Promise((done) => {
+                window.setTimeout(done, 500);
+            }),
+        ]).then(() => {
+            assignImage(img, nextSrc);
+
+            const fadeIn = frame.animate(
+                [
+                    { opacity: 0, transform: `translateX(${enterX}px)` },
+                    { opacity: 1, transform: 'translateX(0px)' },
+                ],
+                { duration: 450, easing: 'ease-out', fill: 'forwards' },
+            );
+
+            return Promise.race([
+                fadeIn.finished,
+                new Promise((done) => {
+                    window.setTimeout(done, 600);
+                }),
+            ]);
+        }).then(() => {
+            resetSlideMotion(frame);
+            resolve();
+        });
+    }));
 }
 
 export function initInteriorCarousel() {
@@ -171,22 +282,23 @@ export function initInteriorCarousel() {
 
         const setStateSync = () => {
             panels.forEach((panel) => {
-                const left = panel.querySelector('[data-lum-interior-left]');
-                const right = panel.querySelector('[data-lum-interior-right]');
-                const single = panel.querySelector('[data-lum-interior-single]');
+                const leftSlot = resolveSlideSlot(panel.querySelector('[data-lum-interior-left]'));
+                const rightSlot = resolveSlideSlot(panel.querySelector('[data-lum-interior-right]'));
+                const singleSlot = resolveSlideSlot(panel.querySelector('[data-lum-interior-single]'));
                 const sources = getSources(panel);
 
-                if (single) {
-                    assignImage(single, sources.single);
-                    gsap.set(single, { opacity: 1, x: 0 });
+                if (singleSlot.img) {
+                    assignImage(singleSlot.img, sources.single);
+                    resetSlideMotion(singleSlot.frame);
 
                     return;
                 }
 
-                if (left && right) {
-                    assignImage(left, sources.left);
-                    assignImage(right, sources.right);
-                    gsap.set([left, right], { opacity: 1, x: 0 });
+                if (leftSlot.img && rightSlot.img) {
+                    assignImage(leftSlot.img, sources.left);
+                    assignImage(rightSlot.img, sources.right);
+                    resetSlideMotion(leftSlot.frame);
+                    resetSlideMotion(rightSlot.frame);
                 }
             });
 
@@ -195,24 +307,26 @@ export function initInteriorCarousel() {
         };
 
         const animatePanel = async (panel, direction) => {
-            const left = panel.querySelector('[data-lum-interior-left]');
-            const right = panel.querySelector('[data-lum-interior-right]');
-            const single = panel.querySelector('[data-lum-interior-single]');
+            const leftSlot = resolveSlideSlot(panel.querySelector('[data-lum-interior-left]'));
+            const rightSlot = resolveSlideSlot(panel.querySelector('[data-lum-interior-right]'));
+            const singleSlot = resolveSlideSlot(panel.querySelector('[data-lum-interior-single]'));
             const sources = getSources(panel);
 
-            if (single) {
-                await swapSlideImage(single, sources.single, direction, reducedMotion);
+            if (singleSlot.img) {
+                await swapSlideImage(singleSlot.frame, sources.single, direction, reducedMotion);
 
                 return;
             }
 
-            if (! left || ! right) {
+            if (! leftSlot.frame || ! rightSlot.frame) {
                 return;
             }
 
             if (reducedMotion) {
-                assignImage(left, sources.left);
-                assignImage(right, sources.right);
+                assignImage(leftSlot.img, sources.left);
+                assignImage(rightSlot.img, sources.right);
+                resetSlideMotion(leftSlot.frame);
+                resetSlideMotion(rightSlot.frame);
 
                 return;
             }
@@ -220,39 +334,10 @@ export function initInteriorCarousel() {
             await ensureImageLoaded(sources.left);
             await ensureImageLoaded(sources.right);
 
-            if (direction === 'next' && right.dataset.currentSrc === sources.left) {
-                transferImage(left, right, sources.left);
-                await swapSlideImage(right, sources.right, direction, reducedMotion);
-
-                return;
-            }
-
-            if (direction === 'prev' && left.dataset.currentSrc === sources.right) {
-                transferImage(right, left, sources.right);
-                await swapSlideImage(left, sources.left, direction, reducedMotion);
-
-                return;
-            }
-
             await Promise.all([
-                swapSlideImage(left, sources.left, direction, reducedMotion),
-                swapSlideImage(right, sources.right, direction, reducedMotion),
+                swapDualSlideImage(leftSlot.frame, sources.left, direction, reducedMotion),
+                swapDualSlideImage(rightSlot.frame, sources.right, direction, reducedMotion),
             ]);
-        };
-
-        const applyState = async (direction = 'next', animate = true) => {
-            const visiblePanels = panels.filter(isVisiblePanel);
-
-            if (! animate || reducedMotion) {
-                setStateSync();
-
-                return;
-            }
-
-            await Promise.all(visiblePanels.map((panel) => animatePanel(panel, direction)));
-
-            syncProgress();
-            preloadAdjacent();
         };
 
         const go = async (direction) => {
@@ -262,14 +347,31 @@ export function initInteriorCarousel() {
 
             isAnimating = true;
 
-            if (direction === 'next') {
-                index = (index + 1) % total;
-            } else {
-                index = (index - 1 + total) % total;
-            }
+            try {
+                if (direction === 'next') {
+                    index = (index + 1) % total;
+                } else {
+                    index = (index - 1 + total) % total;
+                }
 
-            await applyState(direction, true);
-            isAnimating = false;
+                syncProgress();
+                preloadAdjacent();
+
+                const visiblePanels = panels.filter(isVisiblePanel);
+
+                if (reducedMotion) {
+                    setStateSync();
+
+                    return;
+                }
+
+                await Promise.all(visiblePanels.map((panel) => animatePanel(panel, direction)));
+                preloadAdjacent();
+            } catch {
+                setStateSync();
+            } finally {
+                isAnimating = false;
+            }
         };
 
         prevButtons.forEach((button) => {
@@ -281,9 +383,14 @@ export function initInteriorCarousel() {
         });
 
         panels.forEach((panel) => {
-            panel.querySelectorAll('[data-lum-interior-left], [data-lum-interior-right], [data-lum-interior-single]').forEach((img) => {
-                img.dataset.currentSrc = img.currentSrc || img.src;
-                gsap.set(img, { opacity: 1, x: 0 });
+            panel.querySelectorAll('[data-lum-interior-left], [data-lum-interior-right], [data-lum-interior-single]').forEach((node) => {
+                const { frame, img } = resolveSlideSlot(node);
+
+                if (img) {
+                    img.dataset.currentSrc = normalizeSrc(img.currentSrc || img.src);
+                }
+
+                resetSlideMotion(frame);
             });
         });
 

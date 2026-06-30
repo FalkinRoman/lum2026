@@ -138,19 +138,25 @@
                 <button type="button" @class(['lum-tab lum-tab--l', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
             @endforeach
         </div>
-        <img
-            src="{{ $img('interior/slide-01.webp') }}"
-            alt=""
+        <div
+            class="absolute left-0 top-[605px] h-[620px] w-[928px] overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
             data-lum-interior-left
-            class="absolute left-0 top-[605px] h-[620px] w-[928px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
-            width="928"
-            height="620"
         >
-        <div class="absolute left-[992px] top-[604px] h-[620px] w-[928px] overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]">
+            <img
+                src="{{ $img('interior/slide-01.webp') }}"
+                alt=""
+                class="h-full w-full object-cover"
+                width="928"
+                height="620"
+            >
+        </div>
+        <div
+            class="absolute left-[992px] top-[604px] h-[620px] w-[928px] overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
+            data-lum-interior-right
+        >
             <img
                 src="{{ $img('interior/slide-02.webp') }}"
                 alt=""
-                data-lum-interior-right
                 class="h-full w-full object-cover"
                 width="928"
                 height="620"
