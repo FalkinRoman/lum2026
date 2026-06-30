@@ -1,7 +1,7 @@
 @php
     $network = $network ?? 'instagram';
     $href = $href ?? '#';
-    $label = $label ?? ucfirst($network);
+    $label = $label ?? __('lum.burger_footer.' . $network);
 @endphp
 
 <a

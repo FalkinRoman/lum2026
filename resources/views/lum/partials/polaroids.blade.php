@@ -11,19 +11,19 @@
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="absolute inset-0 w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="absolute left-0 right-0 top-[10px] text-center text-[10px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="absolute object-cover" style="left: {{ $polaroid['px'] }}; top: {{ $polaroid['py'] }}; width: {{ $polaroid['pw'] }}; height: {{ $polaroid['ph'] }};">
-                    <p class="lum-script absolute bottom-[16px] left-0 right-0 px-[8px] text-center leading-[1.1] tracking-[1.1px] text-lum-green" style="font-size: {{ $polaroid['script'] }};">share your impressions</p>
+                    <p class="lum-script absolute bottom-[16px] left-0 right-0 px-[8px] text-center leading-[1.1] tracking-[1.1px] text-lum-green" style="font-size: {{ $polaroid['script'] }};">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
         @endforeach
 
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 51.69px; top: 78.5px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">shine</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.shine') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 281.09px; top: 32.83px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">impressions</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.impressions') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 298.1px; top: 1052px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(9.07deg);">relax</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(9.07deg);">{{ __('lum.polaroids.relax') }}</p>
         </div>
 
         <div class="absolute left-[20px] top-[450px] flex w-[335px] flex-col items-center gap-[44px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
@@ -31,16 +31,14 @@
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
                 <div class="text-center">
                     <h2 class="font-serif text-[42px] leading-[45px] text-lum-espresso">
-                        hard to find,<br><span class="font-medium italic">hard to leave</span>
+                        {{ __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ __('lum.polaroids.title_italic') }}</span>
                     </h2>
                     <p class="mx-auto mt-[24px] max-w-[335px] text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">
-                        Just a few hours from the airport. Light years away from the crowds.
-                        Here you find the true Sri Lanka. And a small resort with a big view, a
-                        great restaurant, and a special sense of calm. Welcome to The Lum.
+                        {{ __('lum.polaroids.body') }}
                     </p>
                 </div>
             </div>
-            <a href="#villas" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">explore our villas</a>
+            <a href="#villas" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.hero.cta') }}</a>
         </div>
         <div class="lum-divider absolute bottom-0 left-[20px]"></div>
     </div>
@@ -57,19 +55,19 @@
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="absolute inset-0 w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="absolute left-0 right-0 top-[14px] text-center text-[12px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="absolute object-cover" style="left: {{ $polaroid['px'] }}; top: {{ $polaroid['py'] }}; width: {{ $polaroid['pw'] }}; height: {{ $polaroid['ph'] }};">
-                    <p class="lum-script absolute bottom-[20px] left-0 right-0 px-[10px] text-center leading-[1.1] tracking-[1.1px] text-lum-green" style="font-size: {{ $polaroid['script'] }};">share your impressions</p>
+                    <p class="lum-script absolute bottom-[20px] left-0 right-0 px-[10px] text-center leading-[1.1] tracking-[1.1px] text-lum-green" style="font-size: {{ $polaroid['script'] }};">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
         @endforeach
 
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 120.97px; top: 12.67px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">shine</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.shine') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 705.41px; top: -70.93px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">impressions</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.impressions') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 606.3px; top: 498px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(9.07deg);">relax</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(9.07deg);">{{ __('lum.polaroids.relax') }}</p>
         </div>
 
         <div class="absolute left-[80px] top-[695px] flex w-[800px] flex-col items-center gap-[56px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
@@ -77,16 +75,14 @@
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[8px]" width="8" height="8">
                 <div class="text-center">
                     <h2 class="font-serif text-[52px] leading-[52px] text-lum-espresso">
-                        hard to find,<br><span class="font-medium italic">hard to leave</span>
+                        {{ __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ __('lum.polaroids.title_italic') }}</span>
                     </h2>
                     <p class="mx-auto mt-[32px] max-w-[800px] text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">
-                        Just a few hours from the airport. Light years away from the crowds.
-                        Here you find the true Sri Lanka. And a small resort with a big view, a
-                        great restaurant, and a special sense of calm. Welcome to The Lum.
+                        {{ __('lum.polaroids.body') }}
                     </p>
                 </div>
             </div>
-            <a href="#villas" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">explore our villas</a>
+            <a href="#villas" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.hero.cta') }}</a>
         </div>
         <div class="lum-divider absolute bottom-0 left-[20px]"></div>
     </div>
@@ -103,19 +99,19 @@
                 <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="absolute inset-0 w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                 <p class="absolute left-0 right-0 top-[18px] text-center font-sans text-[14px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                 <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="absolute left-[14px] top-[38px] h-[266px] w-[273px] object-cover" width="273" height="266">
-                <p class="lum-script absolute bottom-[28px] left-0 right-0 px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-green">share your impressions</p>
+                <p class="lum-script absolute bottom-[28px] left-0 right-0 px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-green">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
         @endforeach
 
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 274.97px; top: 149.67px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">shine</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.shine') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 1468.64px; top: -78px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">impressions</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.impressions') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center mix-blend-hard-light" style="left: 1161.79px; top: 455px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(9.07deg);">relax</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-green" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(9.07deg);">{{ __('lum.polaroids.relax') }}</p>
         </div>
 
         <div class="absolute left-[532px] top-[693px] flex w-[856px] flex-col items-center gap-[64px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
@@ -123,16 +119,14 @@
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">
                 <div class="text-center">
                     <h2 class="lum-heading-1 text-lum-espresso">
-                        hard to find,<br><span class="font-medium italic">hard to leave</span>
+                        {{ __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ __('lum.polaroids.title_italic') }}</span>
                     </h2>
                     <p class="lum-body mx-auto mt-[44px] max-w-[760px] text-lum-espresso">
-                        Just a few hours from the airport. Light years away from the crowds.
-                        Here you find the true Sri Lanka. And a small resort with a big view, a
-                        great restaurant, and a special sense of calm. Welcome to The Lum.
+                        {{ __('lum.polaroids.body') }}
                     </p>
                 </div>
             </div>
-            <a href="#villas" class="lum-btn-dark">explore our villas</a>
+            <a href="#villas" class="lum-btn-dark">{{ __('lum.hero.cta') }}</a>
         </div>
         <div class="lum-divider absolute bottom-0 left-[72px]"></div>
     </div>

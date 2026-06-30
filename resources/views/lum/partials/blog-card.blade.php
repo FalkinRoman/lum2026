@@ -12,10 +12,10 @@
             <div class="absolute left-1/2 top-[calc(50%-26px)] flex w-[200px] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-[16px] text-center">
                 <div class="flex flex-col items-center gap-[6px]">
                     <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
-                    <p class="text-[12px] font-medium uppercase leading-[12px] tracking-[0.6px] text-lum-ground">SURFING</p>
+                    <p class="text-[12px] font-medium uppercase leading-[12px] tracking-[0.6px] text-lum-ground">{{ __('lum.blog.category') }}</p>
                 </div>
                 <p class="font-serif text-[22px] leading-[24px] tracking-[0.19px] text-lum-espresso">
-                    our restaurant &amp; bar is open daily from<br><span class="font-normal italic">9 am to 9 pm.</span>
+                    {{ __('lum.blog.card_line1') }}<br><span class="font-normal italic">{{ __('lum.blog.card_time') }}</span>
                 </p>
             </div>
             @include('lum.partials.link-read-more', [
@@ -27,10 +27,10 @@
             <div class="absolute left-1/2 top-[32px] flex w-[386px] -translate-x-1/2 flex-col items-center gap-[24px] text-center">
                 <div class="flex flex-col items-center gap-[8px]">
                     <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
-                    <p class="lum-text-2 font-medium uppercase text-lum-espresso">SURFING</p>
+                    <p class="lum-text-2 font-medium uppercase text-lum-espresso">{{ __('lum.blog.category') }}</p>
                 </div>
                 <p class="font-serif text-[28px] leading-[34px] tracking-[0.36px] text-lum-espresso">
-                    our restaurant &amp; bar<br>is open daily from<br><span class="font-normal italic">9 am to 9 pm.</span>
+                    {{ __('lum.blog.card_line2') }}<br>{{ __('lum.blog.card_line3') }}<br><span class="font-normal italic">{{ __('lum.blog.card_time') }}</span>
                 </p>
             </div>
             @include('lum.partials.link-read-more', [

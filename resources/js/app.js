@@ -35,6 +35,12 @@ function getLumBreakpoint() {
     return 'desktop';
 }
 
+function getLumScale() {
+    const { width } = LUM_BREAKPOINTS[getLumBreakpoint()];
+
+    return window.innerWidth / width;
+}
+
 function syncLumBreakpointAttribute(breakpoint) {
     document.documentElement.dataset.lumBp = breakpoint;
 }
@@ -87,6 +93,8 @@ function scaleLumPage() {
         stickyScaled.style.transform = `scale(${scale})`;
         syncStickyHeader();
     }
+
+    document.dispatchEvent(new CustomEvent('lum:layout-change'));
 }
 
 function debounce(fn, wait) {
@@ -170,6 +178,60 @@ function initLanguageSwitcher() {
             return;
         }
 
+        const anchor = {
+            parent: panel.parentElement,
+            next: panel.nextSibling,
+        };
+        const isBurgerPanel = Boolean(toggle.closest('.lum-burger-menu'));
+        const designWidth = 320;
+
+        const positionFixedPanel = () => {
+            if (! isBurgerPanel || ! panel.classList.contains('lum-lang-panel--fixed')) {
+                return;
+            }
+
+            const host = toggle.parentElement ?? toggle;
+            const rect = host.getBoundingClientRect();
+            const scale = getLumScale();
+            const visualWidth = designWidth * scale;
+
+            panel.style.width = `${designWidth}px`;
+            panel.style.transformOrigin = 'top left';
+            panel.style.transform = `scale(${scale})`;
+            panel.style.top = `${rect.bottom + 8}px`;
+            panel.style.left = `${Math.max(8, rect.right - visualWidth)}px`;
+        };
+
+        const mountFixedPanel = () => {
+            if (! isBurgerPanel) {
+                return;
+            }
+
+            panel.classList.add('lum-lang-panel--fixed');
+            document.body.appendChild(panel);
+            positionFixedPanel();
+        };
+
+        const restorePanelMount = () => {
+            panel.classList.remove('lum-lang-panel--fixed');
+            panel.style.removeProperty('top');
+            panel.style.removeProperty('left');
+            panel.style.removeProperty('width');
+            panel.style.removeProperty('transform');
+            panel.style.removeProperty('transform-origin');
+
+            if (! anchor.parent || panel.parentElement === anchor.parent) {
+                return;
+            }
+
+            if (anchor.next && anchor.next.parentElement === anchor.parent) {
+                anchor.parent.insertBefore(panel, anchor.next);
+                return;
+            }
+
+            anchor.parent.appendChild(panel);
+        };
+
         const closePanel = () => {
             panel.classList.add('hidden');
             panel.classList.add('opacity-0');
@@ -177,6 +239,7 @@ function initLanguageSwitcher() {
             panel.setAttribute('hidden', '');
             panel.setAttribute('aria-hidden', 'true');
             toggle.setAttribute('aria-expanded', 'false');
+            restorePanelMount();
         };
 
         const openPanel = () => {
@@ -186,17 +249,20 @@ function initLanguageSwitcher() {
                 }
             });
 
+            mountFixedPanel();
             panel.classList.remove('hidden');
             panel.classList.remove('opacity-0');
             panel.classList.add('pointer-events-auto');
             panel.removeAttribute('hidden');
             panel.setAttribute('aria-hidden', 'false');
             toggle.setAttribute('aria-expanded', 'true');
+            positionFixedPanel();
         };
 
-        pairs.push({ panel, toggle, close: closePanel });
+        pairs.push({ panel, toggle, close: closePanel, position: positionFixedPanel });
 
         toggle.addEventListener('click', (event) => {
+            event.preventDefault();
             event.stopPropagation();
 
             if (panel.classList.contains('hidden')) {
@@ -213,33 +279,19 @@ function initLanguageSwitcher() {
                 closePanel();
             });
         });
-
-        panel.querySelectorAll('[data-lum-lang-option]').forEach((button) => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
-
-                const lang = button.getAttribute('data-lum-lang-option');
-                const check = panel.querySelector('.lum-lang-panel__check');
-
-                panel.querySelectorAll('[data-lum-lang-option]').forEach((option) => {
-                    option.classList.remove('is-active');
-                    option.removeAttribute('aria-current');
-                });
-
-                button.classList.add('is-active');
-                button.setAttribute('aria-current', 'true');
-
-                if (check && lang) {
-                    const isDesktop = window.innerWidth >= 1024;
-                    check.style.top = lang === 'ru'
-                        ? (isDesktop ? '72px' : '71px')
-                        : '110px';
-                }
-
-                closePanel();
-            });
-        });
     });
+
+    const repositionOpenPanels = () => {
+        pairs.forEach(({ panel, position }) => {
+            if (! panel.classList.contains('hidden') && typeof position === 'function') {
+                position();
+            }
+        });
+    };
+
+    window.addEventListener('resize', repositionOpenPanels);
+    window.addEventListener('scroll', repositionOpenPanels, { passive: true });
+    document.addEventListener('lum:layout-change', repositionOpenPanels);
 
     document.addEventListener('click', (event) => {
         pairs.forEach(({ panel, toggle, close }) => {
@@ -265,6 +317,10 @@ function initLanguageSwitcher() {
                 close();
             }
         });
+    });
+
+    document.addEventListener('lum:close-lang-panels', () => {
+        pairs.forEach(({ close }) => close());
     });
 }
 

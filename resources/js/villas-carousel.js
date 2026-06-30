@@ -211,13 +211,11 @@ export function initVillasCarousel() {
                 }
 
                 if (subtitle) {
-                    if (subtitleLine2 && slide.subtitle.includes(' and ')) {
-                        const [line1, line2] = slide.subtitle.split(' and ');
-
-                        subtitle.textContent = `${line1} and`;
-                        subtitleLine2.textContent = line2;
+                    if (subtitleLine2 && (slide.subtitleLine1 ?? slide.subtitle)) {
+                        subtitle.textContent = slide.subtitleLine1 ?? slide.subtitle;
+                        subtitleLine2.textContent = slide.subtitleLine2 ?? '';
                     } else {
-                        subtitle.textContent = slide.subtitle;
+                        subtitle.textContent = slide.subtitle ?? slide.subtitleLine1 ?? '';
                     }
                 }
 

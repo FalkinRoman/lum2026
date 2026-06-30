@@ -1,46 +1,11 @@
 @php
-    $villasSlides = [
-        [
-            'photo' => 'slide-01',
-            'oval' => 'oval-01',
-            'titleNormal' => 'Lum ',
-            'titleItalic' => 'Villas',
-            'titleMobileNormal' => 'Lum',
-            'titleMobileItalic' => ' Villas',
-            'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
-            'href' => '#',
-        ],
-        [
-            'photo' => 'slide-02',
-            'oval' => 'oval-02',
-            'titleNormal' => 'Lum ',
-            'titleItalic' => 'Ocean',
-            'titleMobileNormal' => 'Lum',
-            'titleMobileItalic' => ' Ocean',
-            'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
-            'href' => '#',
-        ],
-        [
-            'photo' => 'slide-03',
-            'oval' => 'oval-03',
-            'titleNormal' => '',
-            'titleItalic' => 'Oculus',
-            'titleMobileNormal' => '',
-            'titleMobileItalic' => 'Oculus',
-            'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
-            'href' => '#',
-        ],
-        [
-            'photo' => 'slide-04',
-            'oval' => 'oval-04',
-            'titleNormal' => 'Lum ',
-            'titleItalic' => 'Residence',
-            'titleMobileNormal' => 'Lum',
-            'titleMobileItalic' => ' Residence',
-            'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
-            'href' => '#',
-        ],
-    ];
+    $villasSlides = array_map(fn ($slide) => array_merge($slide, [
+        'subtitleLine1' => __('lum.villas.subtitle_line1'),
+        'subtitleLine2' => __('lum.villas.subtitle_line2'),
+    ]), trans('lum.villas.slides'));
+    $villasLifestyle = '<span class="lum-script text-[24px] text-lum-green">' . e(__('lum.villas.lifestyle')) . ' </span>';
+    $villasLifestyleTab = '<span class="lum-script text-[26px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
+    $villasLifestyleDesk = '<span class="lum-script text-[28px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
     $villasStart = 0;
 @endphp
 
@@ -55,14 +20,14 @@
     {{-- MOBILE — Figma 16:1479 + 16:1488 --}}
     <div class="relative h-full overflow-visible tab:hidden" data-lum-villas-panel data-lum-villas-suffix="-sm">
         <div class="absolute left-1/2 top-[44px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[16px] text-center">
-            <p class="lum-text-3 font-medium uppercase text-lum-espresso">Hotel and restaurant & bar</p>
+            <p class="lum-text-3 font-medium uppercase text-lum-espresso">{{ __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="335" height="1">
             <div class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">
-                <p>A BOUTIQUE HOTEL, RESTAURANT, AND</p>
-                <p><span class="lum-script text-[24px] text-lum-green">lifestyle </span>SPACE FOR RELAX, SURFING,</p>
-                <p>AND BEAUTIFUL LIVING BY THE OCEAN.</p>
-                <p>EUROPEAN CUISINE, GRILL PARTIES, DELICIOUS COCKTAILS, AND THE ATMOSPHERE OF</p>
-                <p>A TROPICAL EVENING.</p>
+                <p>{{ __('lum.villas.intro_mobile_1') }}</p>
+                <p>{!! $villasLifestyle !!}{{ __('lum.villas.intro_mobile_2') }}</p>
+                <p>{{ __('lum.villas.intro_mobile_3') }}</p>
+                <p>{{ __('lum.villas.intro_mobile_4') }}</p>
+                <p>{{ __('lum.villas.intro_mobile_5') }}</p>
             </div>
         </div>
 
@@ -80,8 +45,8 @@
                 </div>
 
                 <div class="absolute left-1/2 top-[181px] w-[335px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88">
-                    <p data-lum-villas-subtitle>Sleeps 4 adults — with 2 pools, 2 bedrooms</p>
-                    <p data-lum-villas-subtitle-line2>and 2 bathrooms</p>
+                    <p data-lum-villas-subtitle>{{ __('lum.villas.subtitle_line1') }}</p>
+                    <p data-lum-villas-subtitle-line2>{{ __('lum.villas.subtitle_line2') }}</p>
                 </div>
 
                 <h2 class="absolute left-1/2 top-[275px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[56px] leading-[56px] text-lum-ivory">
@@ -93,10 +58,10 @@
                 <img src="{{ $img('villas/oval-01-sm.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="140" height="188">
             </div>
 
-            <button type="button" data-lum-villas-prev class="absolute left-[58px] top-[530px] z-20 flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Previous">
+            <button type="button" data-lum-villas-prev class="absolute left-[58px] top-[530px] z-20 flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.previous') }}">
                 <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
             </button>
-            <button type="button" data-lum-villas-next class="absolute left-[278px] top-[530px] z-20 flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Next">
+            <button type="button" data-lum-villas-next class="absolute left-[278px] top-[530px] z-20 flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.next') }}">
                 <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
             </button>
         </div>
@@ -105,12 +70,12 @@
     {{-- TABLET — Figma 16:949 --}}
     <div class="relative hidden h-full overflow-visible tab:block desk:hidden" data-lum-villas-panel>
         <div class="absolute left-1/2 top-[60px] flex w-[640px] -translate-x-1/2 flex-col items-center gap-[16px] text-center">
-            <p class="lum-text-2 font-medium uppercase text-lum-espresso">Hotel and restaurant & bar</p>
+            <p class="lum-text-2 font-medium uppercase text-lum-espresso">{{ __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="640" height="1">
             <div class="lum-text-2 text-lum-espresso">
-                <p>A BOUTIQUE HOTEL, RESTAURANT, AND <span class="lum-script text-[26px] text-lum-green">lifestyle</span> SPACE FOR RELAX, SURFING,</p>
-                <p>AND BEAUTIFUL LIVING BY THE OCEAN. EUROPEAN CUISINE, GRILL PARTIES,</p>
-                <p>DELICIOUS COCKTAILS, AND THE ATMOSPHERE OF A TROPICAL EVENING.</p>
+                <p>{!! __('lum.villas.intro_tablet', ['lifestyle' => $villasLifestyleTab]) !!}</p>
+                <p>{{ __('lum.villas.intro_tablet_2') }}</p>
+                <p>{{ __('lum.villas.intro_tablet_3') }}</p>
             </div>
         </div>
 
@@ -128,7 +93,7 @@
         </div>
 
         <p data-lum-villas-subtitle class="absolute left-1/2 top-[523px] -translate-x-1/2 whitespace-nowrap lum-text-2 text-lum-ivory-88">
-            Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms
+            {{ __('lum.villas.subtitle') }}
         </p>
 
         <h2 class="absolute left-1/2 top-[calc(50%+91px)] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[80px] leading-[80px] text-lum-ivory">
@@ -139,10 +104,10 @@
             <img src="{{ $img('villas/oval-01.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="180" height="240">
         </div>
 
-        <button type="button" data-lum-villas-prev class="absolute left-[20px] top-[calc(50%+91px)] z-20 flex size-[56px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Previous">
+        <button type="button" data-lum-villas-prev class="absolute left-[20px] top-[calc(50%+91px)] z-20 flex size-[56px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="{{ __('lum.aria.previous') }}">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-villas-next class="absolute right-[20px] top-[calc(50%+91px)] z-20 flex size-[56px] -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="Next">
+        <button type="button" data-lum-villas-next class="absolute right-[20px] top-[calc(50%+91px)] z-20 flex size-[56px] -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-ivory p-[12px]" aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>
@@ -150,13 +115,13 @@
     {{-- DESKTOP — Figma 16:627 --}}
     <div class="relative hidden h-full overflow-visible desk:block" data-lum-villas-panel>
         <div class="absolute left-1/2 top-[80px] flex w-[530px] -translate-x-1/2 flex-col items-center gap-[24px] text-center">
-            <p class="lum-eyebrow text-lum-espresso">Hotel and restaurant & bar</p>
+            <p class="lum-eyebrow text-lum-espresso">{{ __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-[2px] w-full" width="530" height="2">
             <div class="lum-body text-lum-espresso">
-                <p>A BOUTIQUE HOTEL, RESTAURANT, AND <span class="lum-script text-[28px] text-lum-green">lifestyle</span> SPACE FOR</p>
-                <p>RELAX, SURFING, AND BEAUTIFUL LIVING BY THE OCEAN.</p>
-                <p>EUROPEAN CUISINE, GRILL PARTIES, DELICIOUS COCKTAILS,</p>
-                <p>AND THE ATMOSPHERE OF A TROPICAL EVENING.</p>
+                <p>{!! __('lum.villas.intro_desk_1', ['lifestyle' => $villasLifestyleDesk]) !!}</p>
+                <p>{{ __('lum.villas.intro_desk_2') }}</p>
+                <p>{{ __('lum.villas.intro_desk_3') }}</p>
+                <p>{{ __('lum.villas.intro_desk_4') }}</p>
             </div>
         </div>
 
@@ -169,7 +134,7 @@
             <div class="absolute inset-y-0 left-[32px] w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
             <div class="absolute inset-y-0 right-0 w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
 
-            <button type="button" data-lum-villas-view-cursor class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] cursor-pointer items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0" aria-label="View villa">VIEW</button>
+            <button type="button" data-lum-villas-view-cursor class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] cursor-pointer items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0" aria-label="{{ __('lum.aria.view_villa') }}">{{ __('lum.villas.view') }}</button>
         </div>
 
         <div class="absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
@@ -179,7 +144,7 @@
         </div>
 
         <p data-lum-villas-subtitle class="absolute left-1/2 top-[698px] -translate-x-1/2 whitespace-nowrap lum-body text-lum-ivory-88">
-            Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms
+            {{ __('lum.villas.subtitle') }}
         </p>
 
         <h2 class="absolute left-1/2 top-[873px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[164px] leading-[170px] text-lum-ivory">
@@ -190,13 +155,13 @@
             <img src="{{ $img('villas/oval-01.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="320" height="430">
         </div>
 
-        <button type="button" data-lum-villas-prev class="absolute left-[72px] top-[calc(50%+166.5px)] z-20 flex size-[64px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Previous">
+        <button type="button" data-lum-villas-prev class="absolute left-[72px] top-[calc(50%+166.5px)] z-20 flex size-[64px] -translate-y-1/2 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="{{ __('lum.aria.previous') }}">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-villas-next class="absolute left-[1848px] top-[calc(50%+166.5px)] z-20 flex size-[64px] -translate-x-1/2 -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Next">
+        <button type="button" data-lum-villas-next class="absolute left-[1848px] top-[calc(50%+166.5px)] z-20 flex size-[64px] -translate-x-1/2 -translate-y-1/2 -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <a href="#" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">VIEW</a>
+        <a href="#" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">{{ __('lum.villas.view') }}</a>
     </div>
 </section>

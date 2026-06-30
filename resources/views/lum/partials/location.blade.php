@@ -1,77 +1,5 @@
 @php
-    $cards = [
-        [
-            'title' => 'Dining',
-            'photo' => 'location/card-dining.jpg',
-            'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
-            'photoLines' => [
-                ['text' => 'Flavors of Sri Lanka,', 'italic' => false],
-                ['text' => 'thoughtfully prepared', 'italic' => true],
-            ],
-            'photoLabel' => 'Dining',
-            'tag' => 'restaurants <span class="font-medium italic" style="white-space: nowrap;">worth</span> traveling for',
-            'tagTop' => ['mob' => 56, 'tab' => 80, 'desk' => 128],
-            'activeImg' => 'location/dining.webp',
-            'activeImgClass' => 'object-cover opacity-90',
-            'activeImgDesk' => 'h-[160px] w-[273px]',
-            'activeImgTab' => 'h-[128px] w-[218px]',
-            'activeImgMob' => 'h-[96px] w-[163px]',
-            'activeImgRotate' => false,
-            'listLines' => [
-                'Lum Restaurant & Bar / Sandwich Spot /',
-                'Rosenköster / Brute Wine & Bar',
-            ],
-            'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
-            'width' => 'w-[550px]',
-        ],
-        [
-            'title' => 'Relax',
-            'photo' => 'location/card-yoga.jpg',
-            'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
-            'photoLines' => [
-                ['text' => 'We offer private', 'italic' => false],
-                ['text' => 'yoga sessions', 'italic' => true],
-            ],
-            'photoLabel' => 'Relax',
-            'tag' => 'new energy from <span class="font-medium italic" style="white-space: nowrap;">old tradition</span>',
-            'tagTop' => ['mob' => 56, 'tab' => 80, 'desk' => 128],
-            'activeImg' => 'location/relax-sun.webp',
-            'activeImgClass' => 'object-contain',
-            'activeImgDesk' => 'h-[269px] w-[273px]',
-            'activeImgTab' => 'h-[214px] w-[218px]',
-            'activeImgMob' => 'h-[160px] w-[163px]',
-            'activeImgRotate' => false,
-            'listLines' => ['Yoga / Surfing / Padel'],
-            'listTop' => ['mob' => 314, 'tab' => 517, 'desk' => 591],
-            'width' => 'w-[549px]',
-        ],
-        [
-            'title' => 'Discover',
-            'photo' => 'location/card-discover.jpg',
-            'photoGradient' => 'bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]',
-            'photoLines' => [
-                ['text' => 'Sri Lanka as it', 'italic' => false],
-                ['text' => 'used to be', 'italic' => true],
-            ],
-            'photoLabel' => 'discover',
-            'tag' => 'welcome to the <span class="font-medium italic" style="white-space: nowrap;">true Sri Lanka</span>',
-            'tagTop' => ['mob' => 56, 'tab' => 79, 'desk' => 128],
-            'activeImg' => 'location/discover-map.webp',
-            'activeImgClass' => 'object-cover',
-            'activeImgDesk' => 'size-[240px]',
-            'activeImgTab' => 'size-[200px]',
-            'activeImgMobSize' => 140,
-            'activeImgMobCenter' => true,
-            'activeImgMobTopShift' => 0,
-            'activeImgRotate' => true,
-            'listLines' => [
-                'Galle Fort / Koggala Lake /',
-                'Mirissa / Dondra',
-            ],
-            'listTop' => ['mob' => 292, 'tab' => 492, 'desk' => 566],
-            'width' => 'w-[550px]',
-        ],
-    ];
+    $cards = trans('lum.location.cards');
 @endphp
 
 <section class="lum-container relative h-[1865px] bg-lum-ivory tab:h-[2102px] desk:h-[1939px]">
@@ -80,11 +8,11 @@
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-0 h-[54px] w-[32px] -translate-x-1/2" width="32" height="54">
         <div class="absolute left-1/2 top-[78px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[32px] text-center" data-lum-scroll-reveal>
             <h2 class="font-serif text-[36px] leading-[45px] text-lum-espresso">
-                prime location in <span class="font-medium italic">Abangama</span> on the pristine southearn coast of <span class="font-medium italic">Sri Lanka</span>
+                {!! __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="h-px w-full" width="335" height="1">
         </div>
-        <a href="#" class="lum-btn-dark absolute left-1/2 top-[380px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">See on map</a>
+        <a href="#" class="lum-btn-dark absolute left-1/2 top-[380px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
 
         <div class="absolute left-[20px] top-[476px] flex w-[335px] flex-col gap-[24px]">
             @foreach ($cards as $card)
@@ -128,7 +56,7 @@
                     <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
                     @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['mob'], 'tag' => $card['tag'], 'padding' => 'px-[24px] py-[4px]'])
                     @include('lum.partials.location-card-list', ['top' => $card['listTop']['mob'], 'lines' => $card['listLines'], 'class' => 'text-[14px] leading-[22px] tracking-[0.1px]'])
-                    <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">more info</a>
+                    <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.more_info') }}</a>
                 </article>
             @endforeach
         </div>
@@ -140,11 +68,11 @@
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[60px] h-[67px] w-[40px] -translate-x-1/2" width="40" height="67">
         <div class="absolute left-1/2 top-[172px] flex w-[680px] -translate-x-1/2 flex-col items-center gap-[44px] text-center" data-lum-scroll-reveal>
             <h2 class="font-serif text-[52px] leading-[52px] text-lum-espresso">
-                prime location in <span class="font-medium italic">Abangama</span> on the pristine southearn coast of <span class="font-medium italic">Sri Lanka</span>
+                {!! __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="h-[2px] w-[580px]" width="580" height="2">
         </div>
-        <a href="#" class="lum-btn-dark absolute left-1/2 top-[490px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">See on map</a>
+        <a href="#" class="lum-btn-dark absolute left-1/2 top-[490px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
 
         <div class="absolute left-[20px] top-[642px] w-[920px]">
             <div class="flex gap-[20px]">
@@ -170,11 +98,11 @@
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
         <div class="absolute left-[532px] top-[357px] flex w-[856px] flex-col items-center gap-[44px] text-center" data-lum-scroll-reveal>
             <h2 class="lum-heading-1 text-lum-espresso">
-                prime location in <span class="font-medium italic">Abangama</span> on the pristine southearn coast of <span class="font-medium italic">Sri Lanka</span>
+                {!! __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="h-[2px] w-full" width="856" height="2">
         </div>
-        <a href="#" class="lum-btn-dark absolute left-1/2 top-[843px] -translate-x-1/2">See on map</a>
+        <a href="#" class="lum-btn-dark absolute left-1/2 top-[843px] -translate-x-1/2">{{ __('lum.location.see_on_map') }}</a>
 
         <div class="absolute left-[72px] top-[1039px] flex gap-[64px]">
             @foreach ($cards as $index => $card)
@@ -211,7 +139,7 @@
                         <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso" data-lum-reveal="2">{{ $card['title'] }}</h3>
                         @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag'], 'reveal' => 3])
                         @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines'], 'reveal' => 4])
-                        <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">more info</a>
+                        <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">{{ __('lum.location.more_info') }}</a>
                     </div>
                 </article>
             @endforeach

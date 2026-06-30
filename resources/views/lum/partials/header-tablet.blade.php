@@ -4,12 +4,12 @@
     </a>
 
     <div class="absolute right-0 top-[24px] flex items-center gap-[10px]">
-        <div class="relative">
+        <div class="relative z-[5100]">
             <button
                 type="button"
                 class="lum-icon-btn lum-icon-btn--ivory-filled-s"
                 data-lum-lang-toggle
-                aria-label="Language"
+                aria-label="{{ __('lum.aria.language') }}"
                 aria-expanded="false"
                 aria-controls="lum-lang-panel"
             >
@@ -18,13 +18,13 @@
             @include('lum.partials.language-switcher')
         </div>
 
-        <a href="#" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">take a break</a>
+        <a href="#" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
 
-        <button type="button" class="lum-icon-btn lum-icon-btn--ivory-filled-s" aria-label="Contact">
+        <button type="button" class="lum-icon-btn lum-icon-btn--ivory-filled-s" aria-label="{{ __('lum.aria.contact') }}">
             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <button type="button" class="lum-burger-btn lum-burger-btn--ivory flex items-center" aria-label="Menu" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
+        <button type="button" class="lum-burger-btn lum-burger-btn--ivory flex items-center" aria-label="{{ __('lum.aria.menu') }}" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
             <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>

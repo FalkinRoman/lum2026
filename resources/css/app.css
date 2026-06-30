@@ -92,6 +92,12 @@
         @apply opacity-100;
     }
 
+    .lum-lang-panel--fixed {
+        position: fixed !important;
+        right: auto !important;
+        z-index: 5200 !important;
+    }
+
     .lum-lang-option {
         @apply transition-colors duration-300 ease-out;
     }
@@ -792,6 +798,15 @@
 }
 
 @layer components {
+    .lum-burger-menu__backdrop {
+        opacity: 0;
+        transition: opacity 0.55s ease;
+    }
+
+    .lum-burger-menu.is-open .lum-burger-menu__backdrop {
+        opacity: 1;
+    }
+
     .lum-burger-menu__scroll {
         opacity: 0;
         -webkit-overflow-scrolling: touch;
@@ -810,6 +825,7 @@
 
     .lum-burger-menu.is-open .lum-burger-menu__drawer {
         transform: translate3d(0, 0, 0);
+        overflow: visible;
     }
 
     .lum-burger-menu__hitarea {

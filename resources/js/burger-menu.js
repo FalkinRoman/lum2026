@@ -59,6 +59,7 @@ export function initBurgerMenu() {
     };
 
     const close = () => {
+        document.dispatchEvent(new CustomEvent('lum:close-lang-panels'));
         menu.classList.remove('is-open');
         menu.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('overflow-hidden');
@@ -91,6 +92,10 @@ export function initBurgerMenu() {
 
     const handleBackdropClose = (event) => {
         if (! menu.classList.contains('is-open')) {
+            return;
+        }
+
+        if (event.target.closest('[data-lum-lang-toggle], .lum-lang-panel')) {
             return;
         }
 

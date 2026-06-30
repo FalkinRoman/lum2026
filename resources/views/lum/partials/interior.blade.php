@@ -1,9 +1,13 @@
 @php
-    $interiorTabs = ['✓ONE—STORY' => true, 'TWO—STORY' => false, 'KITCHEN' => false, 'BEDROOM' => false, 'BATHROOM' => false, 'BASEMENT' => false];
+    $interiorTabLabels = trans('lum.interior.tabs');
+    $interiorTabs = [];
+    foreach ($interiorTabLabels as $i => $label) {
+        $interiorTabs[($i === 0 ? '✓' : '') . $label] = $i === 0;
+    }
     $interiorMobileTabRows = [
-        ['✓ONE—STORY' => true, 'TWO—STORY' => false],
-        ['KITCHEN' => false, 'BEDROOM' => false, 'BATHROOM' => false],
-        ['BASEMENT' => false],
+        array_slice($interiorTabs, 0, 2, true),
+        array_slice($interiorTabs, 2, 3, true),
+        array_slice($interiorTabs, 5, 1, true),
     ];
     $interiorSlides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
     $interiorTotal = 7;
@@ -23,8 +27,8 @@
     <div class="relative h-full tab:hidden" data-lum-interior-panel data-lum-interior-suffix="-sm">
         <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[45px] size-[32px] -translate-x-1/2" width="32" height="32">
         <div class="absolute left-1/2 top-[107px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
-            <p class="font-serif text-[36px] font-medium italic leading-[45px] tracking-[-0.72px]">view of the</p>
-            <p class="font-serif text-[36px] leading-[45px] tracking-[-0.72px]">INTERIOR</p>
+            <p class="font-serif text-[36px] font-medium italic leading-[45px] tracking-[-0.72px]">{{ __('lum.interior.title_normal') }}</p>
+            <p class="font-serif text-[36px] leading-[45px] tracking-[-0.72px]">{{ __('lum.interior.title_caps') }}</p>
         </div>
         <div class="absolute left-1/2 top-[172px] h-[41px] w-[201px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]"></div>
         <div class="absolute left-0 top-[252px] z-20 flex w-full flex-col items-center gap-[8px]">
@@ -46,10 +50,10 @@
                 height="260"
             >
             <div class="absolute left-1/2 top-[260px] z-10 flex -translate-x-1/2 -translate-y-1/2 gap-[10px]">
-                <button type="button" data-lum-interior-prev class="flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Previous">
+                <button type="button" data-lum-interior-prev class="flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.previous') }}">
                     <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
                 </button>
-                <button type="button" data-lum-interior-next class="flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="Next">
+                <button type="button" data-lum-interior-next class="flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.next') }}">
                     <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
                 </button>
             </div>
@@ -80,8 +84,8 @@
     <div class="relative hidden h-full tab:block desk:hidden" data-lum-interior-panel>
         <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[61px] size-[40px] -translate-x-1/2" width="40" height="40">
         <div class="absolute left-1/2 top-[145px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
-            <p class="font-serif text-[52px] font-medium italic leading-[52px] tracking-[-1.04px]">view of the</p>
-            <p class="font-serif text-[52px] leading-[52px] tracking-[-1.04px]">INTERIOR</p>
+            <p class="font-serif text-[52px] font-medium italic leading-[52px] tracking-[-1.04px]">{{ __('lum.interior.title_normal') }}</p>
+            <p class="font-serif text-[52px] leading-[52px] tracking-[-1.04px]">{{ __('lum.interior.title_caps') }}</p>
         </div>
         <div class="absolute left-1/2 top-[217px] h-[71px] w-[281px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]"></div>
         <div class="absolute left-[127px] top-[325px] flex flex-nowrap items-center gap-[10px]">
@@ -97,10 +101,10 @@
             width="960"
             height="641"
         >
-        <button type="button" data-lum-interior-prev class="absolute left-[414px] top-[1034px] flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="Previous">
+        <button type="button" data-lum-interior-prev class="absolute left-[414px] top-[1034px] flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="{{ __('lum.aria.previous') }}">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
         </button>
-        <button type="button" data-lum-interior-next class="absolute left-[490px] top-[1034px] flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="Next">
+        <button type="button" data-lum-interior-next class="absolute left-[490px] top-[1034px] flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
         </button>
         <div class="absolute left-1/2 top-[1134px] flex w-[378px] -translate-x-1/2 flex-col items-center gap-[24px]">
@@ -129,8 +133,8 @@
     <div class="relative hidden h-full desk:block" data-lum-interior-panel>
         <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[80px] size-[64px] -translate-x-1/2" width="64" height="64">
         <div class="absolute left-1/2 top-[208px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
-            <p class="lum-heading-1 font-medium italic tracking-[-1.76px]">view of the</p>
-            <p class="lum-heading-1 font-normal tracking-[-1.76px]">INTERIOR</p>
+            <p class="lum-heading-1 font-medium italic tracking-[-1.76px]">{{ __('lum.interior.title_normal') }}</p>
+            <p class="lum-heading-1 font-normal tracking-[-1.76px]">{{ __('lum.interior.title_caps') }}</p>
         </div>
         <div class="absolute left-1/2 top-[328.64px] h-[80px] w-[440px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]"></div>
         <div class="absolute left-1/2 top-[484px] flex -translate-x-1/2 flex-nowrap items-center gap-[10px]">
@@ -163,10 +167,10 @@
             >
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]"></div>
         </div>
-        <button type="button" data-lum-interior-prev class="absolute left-[72px] top-[884px] flex size-[64px] rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Previous">
+        <button type="button" data-lum-interior-prev class="absolute left-[72px] top-[884px] flex size-[64px] rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="{{ __('lum.aria.previous') }}">
             <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-interior-next class="absolute left-[1784px] top-[884px] flex size-[64px] -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="Next">
+        <button type="button" data-lum-interior-next class="absolute left-[1784px] top-[884px] flex size-[64px] -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]" aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div class="absolute left-[771px] top-[1300px] flex w-[378px] flex-col items-center gap-[24px]">

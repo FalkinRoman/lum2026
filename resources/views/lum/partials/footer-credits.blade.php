@@ -4,11 +4,11 @@
 @endphp
 
 <p @class(['lum-footer-credits', $creditsClass, $wrapperClass])>
-    <span>Des &amp; Dev /&nbsp;</span>
+    <span>{{ __('lum.footer.credits_prefix') }}&nbsp;</span>
     @include('lum.partials.link-footer-nav', [
         'img' => $img,
         'href' => 'https://t.me/ivantaskayev',
-        'label' => 'Ivan Taskayev',
+        'label' => __('lum.footer.ivan'),
         'classes' => 'lum-link--footer-credits',
         'target' => '_blank',
         'rel' => 'noopener noreferrer',
@@ -17,7 +17,7 @@
     @include('lum.partials.link-footer-nav', [
         'img' => $img,
         'href' => 'https://t.me/falroman',
-        'label' => 'Roman Falkin',
+        'label' => __('lum.footer.roman'),
         'classes' => 'lum-link--footer-credits',
         'target' => '_blank',
         'rel' => 'noopener noreferrer',
