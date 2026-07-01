@@ -11,13 +11,10 @@
         @include('lum.partials.polaroids', ['img' => $img])
         @include('lum.partials.villas', ['img' => $img])
         @include('lum.partials.location', ['img' => $img])
-        @include('lum.partials.interior', ['img' => $img])
+        @include('lum.partials.impression', ['img' => $img])
         @include('lum.partials.blog', ['img' => $img])
         @include('lum.partials.shop', ['img' => $img])
         @include('lum.partials.footer', ['img' => $img])
     </div>
 </div>
-
-@include('lum.partials.burger-menu')
-@include('lum.partials.header-sticky')
 @endsection

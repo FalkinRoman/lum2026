@@ -10,7 +10,7 @@
         html.lum-is-loading .lum-page { opacity: 0; }
         .lum-burger-menu[hidden] { display: none !important; }
         .lum-lang-panel[hidden] { display: none !important; }
-        .lum-sticky-header { visibility: hidden; }
+        .lum-sticky-header:not(.is-visible) { visibility: hidden; }
     </style>
     <script>
         (function () {
@@ -26,8 +26,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;0,800;1,400&family=Marck+Script&family=Vollkorn:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        setTimeout(function () {
+            document.documentElement.classList.remove('lum-is-loading');
+        }, 4000);
+    </script>
 </head>
 <body class="w-full">
     @yield('content')
+
+    @include('lum.partials.burger-menu')
+    <x-lum.sticky-header />
 </body>
 </html>

@@ -1,0 +1,167 @@
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const INTRO_EASE = 'power3.out';
+const INTRO_DURATION = 1.15;
+const INTRO_STAGGER = 0.18;
+
+function isVisibleElement(element) {
+    return element.offsetParent !== null || element.getClientRects().length > 0;
+}
+
+function initVillaIntro(root) {
+    const items = [...root.querySelectorAll('[data-lum-stay-intro-item]')]
+        .filter((item) => ! item.closest('[data-lum-hero-title]'))
+        .sort((left, right) => (
+            Number(left.dataset.lumStayIntroOrder || 0) - Number(right.dataset.lumStayIntroOrder || 0)
+        ));
+
+    if (! items.length) {
+        return;
+    }
+
+    gsap.fromTo(
+        items,
+        { y: 56, opacity: 0 },
+        {
+            y: 0,
+            opacity: 1,
+            duration: INTRO_DURATION,
+            ease: INTRO_EASE,
+            stagger: INTRO_STAGGER,
+            delay: 0.22,
+            onComplete: () => {
+                gsap.set(items, { clearProps: 'transform' });
+            },
+        },
+    );
+}
+
+function initVillaEyebrow(node) {
+    gsap.fromTo(
+        node,
+        { y: 20, opacity: 0 },
+        {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: INTRO_EASE,
+            scrollTrigger: {
+                trigger: node,
+                start: 'top 92%',
+                once: true,
+                invalidateOnRefresh: true,
+            },
+            onComplete: () => {
+                gsap.set(node, { clearProps: 'transform' });
+            },
+        },
+    );
+}
+
+function initVillaDivider(node) {
+    gsap.fromTo(
+        node,
+        { scale: 0.6, opacity: 0, rotation: -90 },
+        {
+            scale: 1,
+            opacity: 1,
+            rotation: 0,
+            duration: 1,
+            ease: 'back.out(1.5)',
+            scrollTrigger: {
+                trigger: node,
+                start: 'top 95%',
+                once: true,
+                invalidateOnRefresh: true,
+            },
+            onComplete: () => {
+                gsap.set(node, { clearProps: 'transform' });
+            },
+        },
+    );
+}
+
+function initVillaPolaroid(node, index) {
+    gsap.fromTo(
+        node,
+        { y: 48, opacity: 0 },
+        {
+            y: 0,
+            opacity: 1,
+            duration: 1.1,
+            delay: index * 0.1,
+            ease: INTRO_EASE,
+            scrollTrigger: {
+                trigger: node,
+                start: 'top 92%',
+                once: true,
+                invalidateOnRefresh: true,
+            },
+        },
+    );
+}
+
+function initVillaCard(card, index) {
+    gsap.fromTo(
+        card,
+        { y: 44, opacity: 0, scale: 1.06 },
+        {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.05,
+            delay: index * 0.1,
+            ease: INTRO_EASE,
+            scrollTrigger: {
+                trigger: card,
+                start: 'top 88%',
+                once: true,
+                invalidateOnRefresh: true,
+            },
+            onComplete: () => {
+                gsap.set(card, { clearProps: 'transform,opacity' });
+            },
+        },
+    );
+}
+
+export function initVillaPage() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    document.querySelectorAll('[data-lum-villa-intro]').forEach((root) => {
+        if (isVisibleElement(root)) {
+            initVillaIntro(root);
+        }
+    });
+
+    document.querySelectorAll('[data-lum-villa-polaroid]').forEach((node, index) => {
+        if (isVisibleElement(node)) {
+            initVillaPolaroid(node, index);
+        }
+    });
+
+    document.querySelectorAll('[data-lum-villa-card]').forEach((card, index) => {
+        if (isVisibleElement(card)) {
+            initVillaCard(card, index);
+        }
+    });
+
+    document.querySelectorAll('[data-lum-villa-eyebrow]').forEach((node) => {
+        if (isVisibleElement(node)) {
+            initVillaEyebrow(node);
+        }
+    });
+
+    document.querySelectorAll('[data-lum-villa-divider]').forEach((node) => {
+        if (isVisibleElement(node)) {
+            initVillaDivider(node);
+        }
+    });
+
+    ScrollTrigger.refresh();
+}

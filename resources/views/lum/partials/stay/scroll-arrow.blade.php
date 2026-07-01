@@ -4,11 +4,14 @@
         'tab' => ['box' => 86, 'arrow' => 86, 'file' => 'stay/scroll-arrow-tab.svg', 'width' => 87],
         default => ['box' => 86, 'arrow' => 86, 'file' => 'stay/scroll-arrow-desk.svg', 'width' => 87],
     };
+    $marginClass = $marginClass ?? 'mt-[44px]';
 @endphp
 
 <div
-    class="lum-hero-scroll-hint pointer-events-none absolute left-1/2 z-20 flex -translate-x-1/2 items-center justify-center"
-    style="top: {{ $top }}px; width: {{ $sizes['box'] }}px; height: {{ $sizes['box'] }}px"
+    class="lum-hero-scroll-hint lum-stay-arrow {{ $marginClass }} flex items-center justify-center opacity-0"
+    style="width: {{ $sizes['box'] }}px; height: {{ $sizes['box'] }}px"
+    data-lum-stay-intro-item="arrow"
+    aria-hidden="true"
 >
     <img
         src="{{ $img($sizes['file']) }}"

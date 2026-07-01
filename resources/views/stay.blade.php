@@ -14,7 +14,4 @@
         @include('lum.partials.footer', ['img' => $img])
     </div>
 </div>
-
-@include('lum.partials.burger-menu')
-@include('lum.partials.header-sticky')
 @endsection

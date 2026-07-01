@@ -6,6 +6,8 @@ import { initHeroTitle } from './hero-title';
 import { initHeroVideo } from './hero-video';
 import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
 import { initScrollReveal } from './scroll-reveal';
+import { initStayPage } from './stay-page';
+import { initVillaPage } from './villa-page';
 import { initFooter3dText } from './footer-3d-text';
 import { initInteriorCarousel } from './interior-carousel';
 import { initVillasCarousel } from './villas-carousel';
@@ -419,8 +421,11 @@ initLumViewport();
 requestAnimationFrame(() => {
     applyLumLayout();
     initScrollReveal();
+    initStayPage();
+    initVillaPage();
 
     requestAnimationFrame(() => {
+        applyLumLayout({ forceRefresh: true });
         refreshScrollTriggers();
         revealLumApp();
     });

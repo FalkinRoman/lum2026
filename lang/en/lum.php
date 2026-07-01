@@ -295,4 +295,91 @@ return [
             ],
         ],
     ],
+
+    'villa' => [
+        'impression' => [
+            'title_normal' => 'get an',
+            'title_caps' => 'IMPRESSION',
+            'tabs' => ['ONE—STORY', 'TWO—STORY', 'KITCHEN', 'BEDROOM', 'BATHROOM', 'BASEMENT'],
+        ],
+        'facilities' => [
+            'eyebrow' => 'facilities',
+            'title_normal' => 'The villa is',
+            'title_italic' => 'equipped with',
+            'items_left' => [
+                'Air conditioning',
+                'Satellite TV and dvd player',
+                'Safety Box',
+                'WIFI',
+                'Hair Dryer',
+            ],
+            'items_right' => [
+                'Bathrobes and slippers',
+                'Organic Toiletries',
+                'Bathroom with open-air shower',
+                'Small veranda',
+                'Coffee- and tea making facilities',
+            ],
+        ],
+        'residence' => [
+            'meta_title' => 'Lum Residence — Lum',
+            'hero' => [
+                'eyebrow' => 'SLEEPS 4 ADULTS — WITH 2 POOLS, 2 BEDROOMS AND 2 BATHROOMS',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Residence',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'simple and',
+                'title_italic' => 'elegant',
+                'body' => '68 sqm villas designed in Sri Lankas style surrounded by tropical gardens. The villa has a spacious bedroom with an adjacent seating area and a desk for writing and reading, as well as a veranda just big enough for the two of you. The bathrooms are equipped with open-air showers.',
+                'body_bottom' => '68 sqm villas designed in Sri Lankas style surrounded by tropical gardens. The villa has a spacious bedroom with an adjacent seating area and a desk for writing and reading, as well as a veranda just big enough for the two of you. The bathrooms are equipped with open-air showers.',
+            ],
+        ],
+        'oculus' => [
+            'meta_title' => 'Oculus — Lum',
+            'hero' => [
+                'eyebrow' => 'SLEEPS 4 ADULTS — WITH 2 POOLS, 2 BEDROOMS AND 2 BATHROOMS',
+                'title_normal' => '',
+                'title_italic' => 'Oculus',
+            ],
+            'gallery' => [
+                'eyebrow' => 'Oculus',
+                'title_normal' => 'open and',
+                'title_italic' => 'light',
+                'body' => 'A calm one-story villa framed by tropical gardens and natural light. Spacious living flows into a private veranda — a quiet place to read, write, and slow down together.',
+                'body_bottom' => 'Designed in Sri Lankan style with open-air showers, generous seating, and a sense of privacy that still feels connected to the landscape around you.',
+            ],
+        ],
+        'ocean' => [
+            'meta_title' => 'Lum Ocean — Lum',
+            'hero' => [
+                'eyebrow' => 'SLEEPS 4 ADULTS — WITH 2 POOLS, 2 BEDROOMS AND 2 BATHROOMS',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Ocean',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Ocean',
+                'title_normal' => 'close to the',
+                'title_italic' => 'sea',
+                'body' => 'Ocean views, warm breezes, and interiors that keep the horizon close. A villa for mornings on the veranda and evenings that linger longer than planned.',
+                'body_bottom' => 'Spacious bedrooms, open-air showers, and tropical gardens create a retreat that feels both private and deeply connected to the south coast.',
+            ],
+        ],
+        'villas' => [
+            'meta_title' => 'Lum Villas — Lum',
+            'hero' => [
+                'eyebrow' => 'SLEEPS 4 ADULTS — WITH 2 POOLS, 2 BEDROOMS AND 2 BATHROOMS',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Villas',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Villas',
+                'title_normal' => 'space to',
+                'title_italic' => 'breathe',
+                'body' => 'A collection of villas shaped for unhurried days — generous layouts, garden views, and the kind of calm that makes you want to stay one more night.',
+                'body_bottom' => 'Each villa combines Sri Lankan character with modern comfort: verandas for two, bedrooms with room to unwind, and bathrooms open to the sky.',
+            ],
+        ],
+    ],
 ];

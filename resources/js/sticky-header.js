@@ -17,8 +17,40 @@ export function syncStickyHeader() {
     stickyHeader.style.height = `${rect.height}px`;
 }
 
-function isVisibleElement(element) {
-    return element.offsetParent !== null || element.getClientRects().length > 0;
+function isVisibleTrigger(element) {
+    if (! element.isConnected) {
+        return false;
+    }
+
+    let node = element;
+
+    while (node) {
+        const style = window.getComputedStyle(node);
+
+        if (style.display === 'none' || style.visibility === 'hidden') {
+            return false;
+        }
+
+        node = node.parentElement;
+    }
+
+    const rect = element.getBoundingClientRect();
+
+    return rect.height > 0 || rect.width > 0 || element.getClientRects().length > 0;
+}
+
+function getInlineHeaderHeight() {
+    return window.innerWidth >= 1024 ? 132 : 80;
+}
+
+function shouldShowStickyHeader() {
+    const triggers = [...document.querySelectorAll('[data-lum-sticky-trigger]')].filter(isVisibleTrigger);
+
+    if (triggers.length) {
+        return triggers.some((trigger) => trigger.getBoundingClientRect().bottom < 0);
+    }
+
+    return window.scrollY > getInlineHeaderHeight();
 }
 
 export function initStickyHeader() {
@@ -34,19 +66,12 @@ export function initStickyHeader() {
     };
 
     const update = () => {
-        const trigger = [...document.querySelectorAll('[data-lum-sticky-trigger]')]
-            .find(isVisibleElement);
-
-        if (! trigger) {
-            setVisible(false);
-
-            return;
-        }
-
-        setVisible(trigger.getBoundingClientRect().bottom < 0);
+        setVisible(shouldShowStickyHeader());
+        syncStickyHeader();
     };
 
     window.addEventListener('scroll', update, { passive: true });
+    document.addEventListener('lum:layout-change', update);
 
     let lastWidth = window.innerWidth;
 
@@ -58,6 +83,8 @@ export function initStickyHeader() {
         lastWidth = window.innerWidth;
         update();
     }, { passive: true });
+
+    window.addEventListener('load', update, { once: true });
 
     update();
 }

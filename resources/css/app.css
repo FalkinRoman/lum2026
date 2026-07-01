@@ -930,6 +930,25 @@
         animation: lum-scroll-hint 2.4s ease-in-out infinite;
     }
 
+    .lum-stay-arrow {
+        opacity: 0;
+    }
+
+    .lum-stay-arrow.is-visible {
+        opacity: 1;
+    }
+
+    .lum-stay-property-link__photo {
+        transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+        will-change: transform;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-stay-property-link:hover .lum-stay-property-link__photo {
+            transform: scale(1.06);
+        }
+    }
+
     .lum-shop__bg-img {
         top: -15%;
         left: 0;
@@ -952,8 +971,16 @@
             transform: none !important;
         }
 
+        .lum-stay-property-link:hover .lum-stay-property-link__photo {
+            transform: none;
+        }
+
         .lum-hero-scroll-hint {
             animation: none;
+            opacity: 1;
+        }
+
+        .lum-stay-arrow {
             opacity: 1;
         }
     }

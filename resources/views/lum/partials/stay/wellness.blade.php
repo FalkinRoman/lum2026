@@ -1,11 +1,11 @@
-<section class="lum-container relative bg-lum-ivory">
+<section class="lum-container relative bg-lum-ivory" data-lum-stay-wellness>
     {{-- MOBILE — Figma 73:752 + 73:754 --}}
     <div class="relative tab:hidden">
-        <div class="relative z-[1] h-[660px] overflow-hidden">
+        <div class="relative z-[1] h-[660px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $img('stay/wellness-hero.webp') }}" alt="" class="h-full w-full object-cover" width="375" height="660" loading="lazy">
         </div>
 
-        <div class="pointer-events-none absolute left-1/2 z-[3] h-[188px] w-[140px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 513px">
+        <div class="pointer-events-none absolute left-1/2 z-[3] h-[188px] w-[140px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 513px" data-lum-stay-wellness-oval>
             <img src="{{ $img('stay/wellness-oval.webp') }}" alt="" class="h-full w-full object-cover" width="140" height="188" loading="lazy">
         </div>
 
@@ -35,11 +35,11 @@
 
     {{-- TABLET — Figma 73:658 + 73:660 --}}
     <div class="relative hidden tab:block desk:hidden">
-        <div class="relative z-[1] h-[660px] overflow-hidden">
+        <div class="relative z-[1] h-[660px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $img('stay/wellness-hero.webp') }}" alt="" class="h-full w-full object-cover" width="960" height="660" loading="lazy">
         </div>
 
-        <div class="pointer-events-none absolute left-1/2 z-[3] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 473px">
+        <div class="pointer-events-none absolute left-1/2 z-[3] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 473px" data-lum-stay-wellness-oval>
             <img src="{{ $img('stay/wellness-oval.webp') }}" alt="" class="h-full w-full object-cover" width="180" height="240" loading="lazy">
         </div>
 
@@ -69,11 +69,11 @@
 
     {{-- DESKTOP — Figma 73:563 --}}
     <div class="relative hidden h-[1698px] desk:block">
-        <div class="absolute left-0 top-0 h-[820px] w-full overflow-hidden">
+        <div class="absolute left-0 top-0 h-[820px] w-full overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $img('stay/wellness-hero.webp') }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
         </div>
 
-        <div class="absolute left-1/2 top-[550px] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]">
+        <div class="absolute left-1/2 top-[550px] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
             <img src="{{ $img('stay/wellness-oval.webp') }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
         </div>
 
