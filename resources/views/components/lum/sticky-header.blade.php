@@ -3,7 +3,11 @@
 ])
 
 @php
-    $activeNav = $activeNav ?? (request()->routeIs('stay') ? 'stay' : null);
+    $activeNav = $activeNav ?? match (true) {
+        request()->routeIs('stay') => 'stay',
+        request()->routeIs('dining') => 'dining',
+        default => null,
+    };
 @endphp
 
 <header
@@ -78,7 +82,7 @@
                             <span>{{ __('lum.nav.stay') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="#" class="lum-nav-link--inline">
+                        <a href="{{ route('dining') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'dining'])>
                             <span>{{ __('lum.nav.dining') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>

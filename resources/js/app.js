@@ -128,6 +128,18 @@ function applyLumLayout({ forceRefresh = false } = {}) {
     }
 }
 
+function initMobileZoomGuard() {
+    if (! window.matchMedia('(pointer: coarse)').matches) {
+        return;
+    }
+
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach((eventName) => {
+        document.addEventListener(eventName, (event) => {
+            event.preventDefault();
+        }, { passive: false });
+    });
+}
+
 function initLumViewport() {
     const onViewportChange = debounce(() => {
         if (window.innerWidth === lastLayoutWidth) {
@@ -404,6 +416,7 @@ function initBackToTop() {
 }
 
 applyLumLayout({ forceRefresh: true });
+initMobileZoomGuard();
 initLanguageSwitcher();
 initBackToTop();
 initLocationCards();

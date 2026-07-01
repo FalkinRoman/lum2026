@@ -1,57 +1,77 @@
 <?php
 
-$base = dirname(__DIR__) . '/public/images/lum/villa';
+declare(strict_types=1);
 
-$assets = [
-    'hero.jpg' => 'https://www.figma.com/api/mcp/asset/73b9ae2b-2167-4453-b356-fea80f5d366a',
-    'gallery-01.jpg' => 'https://www.figma.com/api/mcp/asset/e0a2ce44-6913-422a-8b51-e47b0892a6e2',
-    'gallery-02.jpg' => 'https://www.figma.com/api/mcp/asset/66a0a391-34c2-4df9-8b6e-ae79fa05bb0d',
-    'gallery-03.jpg' => 'https://www.figma.com/api/mcp/asset/f0ac64e6-b84f-4996-8bbb-cae90d843002',
-    'facilities-left.jpg' => 'https://www.figma.com/api/mcp/asset/d8d59f76-2b1c-4e64-875c-9a006fdb094c',
-    'facilities-right.jpg' => 'https://www.figma.com/api/mcp/asset/db0f2145-82c1-43a4-87c9-23ea29efd631',
-    'impression/slide-01.jpg' => 'https://www.figma.com/api/mcp/asset/cc32912f-7682-450f-b62b-c452260ec580',
-    'impression/slide-02.jpg' => 'https://www.figma.com/api/mcp/asset/c9ae99ad-3815-487d-9e4f-4689e5687fb1',
-    'impression/slide-03.jpg' => 'https://www.figma.com/api/mcp/asset/722c8039-7cc4-46f0-995c-cadba7400530',
-    'impression/slide-04.jpg' => 'https://www.figma.com/api/mcp/asset/e2731f39-b690-4d73-acad-b6529d521f13',
-    'divider-sun.svg' => 'https://www.figma.com/api/mcp/asset/6ef7724b-5608-4a94-be47-79364f4f778e',
+$projectRoot = dirname(__DIR__);
+$villaBase = $projectRoot . '/public/images/lum/villa';
+
+$legacyAliases = [
+    'hero.jpg' => 'hero.webp',
+    'gallery-01.jpg' => 'gallery-01.webp',
+    'gallery-02.jpg' => 'gallery-02.webp',
+    'gallery-03.jpg' => 'gallery-03.webp',
+    'facilities-left.jpg' => 'facilities-left.webp',
+    'facilities-right.jpg' => 'facilities-right.webp',
+    'impression/slide-01.jpg' => 'impression/slide-01.webp',
+    'impression/slide-02.jpg' => 'impression/slide-02.webp',
+    'impression/slide-03.jpg' => 'impression/slide-03.webp',
+    'impression/slide-04.jpg' => 'impression/slide-04.webp',
 ];
 
-function streamDownload(string $url, string $dest): bool
+function ensureAlias(string $villaBase, string $target, string $source): void
 {
-    $in = fopen($url, 'r', false, stream_context_create([
-        'http' => ['follow_location' => 1, 'timeout' => 120],
-        'ssl' => ['verify_peer' => true],
-    ]));
+    $targetPath = $villaBase . '/' . $target;
+    $sourcePath = $villaBase . '/' . $source;
 
-    if ($in === false) {
-        return false;
+    if (! file_exists($sourcePath)) {
+        echo "MISSING source for alias {$target} <- {$source}\n";
+
+        return;
     }
 
-    $out = fopen($dest, 'w');
+    if (file_exists($targetPath) && filesize($targetPath) > 0) {
+        echo "OK {$target}\n";
 
-    if ($out === false) {
-        fclose($in);
-
-        return false;
+        return;
     }
 
-    stream_copy_to_stream($in, $out);
-    fclose($in);
-    fclose($out);
+    if (! is_dir(dirname($targetPath))) {
+        mkdir(dirname($targetPath), 0777, true);
+    }
 
-    return filesize($dest) > 0;
+    copy($sourcePath, $targetPath);
+    echo "ALIAS {$target} <- {$source}\n";
 }
 
-foreach ($assets as $path => $url) {
-    $out = $base . '/' . $path;
+if (file_exists($projectRoot . '/scripts/sync-asset-manifest.php')) {
+    require $projectRoot . '/scripts/sync-asset-manifest.php';
+}
 
-    if (! is_dir(dirname($out))) {
-        mkdir(dirname($out), 0777, true);
+$manifest = file_exists($projectRoot . '/scripts/asset-manifest-villa.php')
+    ? require $projectRoot . '/scripts/asset-manifest-villa.php'
+    : [];
+
+$ok = 0;
+$missing = 0;
+
+foreach ($manifest as $path => $status) {
+    $full = $villaBase . '/' . $path;
+
+    if (file_exists($full) && filesize($full) > 0) {
+        $ok++;
+        continue;
     }
 
-    if (streamDownload($url, $out)) {
-        echo "OK {$path} (" . filesize($out) . ")\n";
-    } else {
-        echo "FAIL {$path}\n";
-    }
+    $missing++;
+    echo "MISSING villa/{$path}\n";
+}
+
+foreach ($legacyAliases as $target => $source) {
+    ensureAlias($villaBase, $target, $source);
+}
+
+echo "\nVilla local assets: {$ok}/" . count($manifest) . "\n";
+
+if ($missing > 0) {
+    echo "Still missing: {$missing}\n";
 }

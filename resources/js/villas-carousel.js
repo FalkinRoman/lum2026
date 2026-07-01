@@ -276,7 +276,45 @@ export function initVillasCarousel() {
 
         state.index = index;
 
-        initViewCursor(root, () => slides[state.index]?.href || '#');
+        const getCurrentHref = () => slides[state.index]?.href || '#';
+
+        const navigateToCurrent = () => {
+            const href = getCurrentHref();
+
+            if (href && href !== '#') {
+                window.location.href = href;
+            }
+        };
+
+        const syncViewLinks = () => {
+            const href = getCurrentHref();
+            root.querySelector('[data-lum-villas-view-fixed]')?.setAttribute('href', href);
+        };
+
+        initViewCursor(root, getCurrentHref);
+
+        panels.forEach((panel) => {
+            const slider = panel.querySelector('[data-lum-villas-slider]');
+
+            if (slider) {
+                slider.addEventListener('click', (event) => {
+                    if (event.target.closest('[data-lum-villas-prev], [data-lum-villas-next], [data-lum-villas-view-cursor]')) {
+                        return;
+                    }
+
+                    navigateToCurrent();
+                });
+            }
+
+            panel.querySelectorAll('[data-lum-villas-oval-hit]').forEach((target) => {
+                target.addEventListener('click', navigateToCurrent);
+            });
+        });
+
+        root.querySelector('[data-lum-villas-view-fixed]')?.addEventListener('click', (event) => {
+            event.preventDefault();
+            navigateToCurrent();
+        });
 
         const go = async (direction) => {
             if (isAnimating) {
@@ -293,6 +331,7 @@ export function initVillasCarousel() {
 
             state.index = index;
             await applyState(true);
+            syncViewLinks();
             isAnimating = false;
         };
 
@@ -311,5 +350,6 @@ export function initVillasCarousel() {
         });
 
         applyState(false);
+        syncViewLinks();
     });
 }

@@ -1,4 +1,7 @@
 <footer class="lum-container relative h-[780px] bg-lum-espresso mix-blend-multiply tab:h-[1089px] desk:h-[800px]">
+@php
+    $villaUrl = fn (string $slug) => route('villa.show', $slug);
+@endphp
     <img src="{{ $img('footer/bg.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover" width="1920" height="800">
 
     {{-- MOBILE — 375×780 --}}
@@ -26,16 +29,16 @@
         <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-[155px] top-[221px] size-[64px]" width="64" height="64">
 
         <div class="absolute left-[20px] top-[336px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_residence')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_residence'), 'href' => $villaUrl('residence')])
         </div>
         <div class="absolute left-[160px] top-[336px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas'), 'href' => $villaUrl('villas')])
         </div>
         <div class="absolute left-[20px] top-[366px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.oculus')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.oculus'), 'href' => $villaUrl('oculus')])
         </div>
         <div class="absolute left-[160px] top-[366px] -translate-y-1/2 lum-text-3 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_ocean')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_ocean'), 'href' => $villaUrl('ocean')])
         </div>
 
         <div class="absolute top-[406px] left-1/2 h-px w-[335px] -translate-x-1/2 bg-lum-ivory-40 opacity-16"></div>
@@ -109,16 +112,16 @@
         <img src="{{ $img('footer/logomark.svg') }}" alt="" class="absolute left-[400px] top-[364px] size-[160px]" width="160" height="160">
 
         <div class="absolute left-[22px] top-[616.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_residence')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_residence'), 'href' => $villaUrl('residence')])
         </div>
         <div class="absolute left-[250px] top-[616.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas'), 'href' => $villaUrl('villas')])
         </div>
         <div class="absolute left-[22px] top-[646.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.oculus')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.oculus'), 'href' => $villaUrl('oculus')])
         </div>
         <div class="absolute left-[250px] top-[646.5px] -translate-y-1/2 lum-text-2 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_ocean')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_ocean'), 'href' => $villaUrl('ocean')])
         </div>
 
         <div class="absolute top-[691px] left-[22px] h-px w-[920px] bg-lum-ivory-40 opacity-16"></div>
@@ -218,10 +221,10 @@
         </div>
 
         <nav class="absolute left-[1415px] top-[615px] flex gap-[40px] lum-text-2 font-medium text-lum-ivory">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_residence')])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.oculus')])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_ocean')])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_residence'), 'href' => $villaUrl('residence')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.oculus'), 'href' => $villaUrl('oculus')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_ocean'), 'href' => $villaUrl('ocean')])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas'), 'href' => $villaUrl('villas')])
         </nav>
 
         <button type="button" data-lum-back-to-top class="absolute right-[72px] top-[667px] flex size-[40px] items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">

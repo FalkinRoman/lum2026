@@ -36,12 +36,15 @@
         overflow-x: clip;
         overflow-y: scroll;
         overscroll-behavior-y: none;
+        touch-action: manipulation;
+        -webkit-text-size-adjust: 100%;
     }
 
     body {
         @apply w-full bg-lum-ivory text-lum-espresso font-sans;
         overflow-x: clip;
         overscroll-behavior-y: none;
+        touch-action: manipulation;
     }
 
     html.lum-is-loading .lum-page {
@@ -78,6 +81,7 @@
         width: 100%;
         overflow: visible;
         position: relative;
+        touch-action: manipulation;
     }
 
     .lum-page {
@@ -609,6 +613,13 @@
     .lum-villas-view-cursor {
         transition: opacity 0.25s ease;
         will-change: transform;
+        cursor: default;
+    }
+
+    [data-lum-villas-slider],
+    [data-lum-villas-slider] [data-lum-villas-photo],
+    [data-lum-villas-oval-hit] {
+        cursor: default;
     }
 
     .lum-script {
@@ -931,6 +942,17 @@
 
     .lum-stay-property-link__shade {
         transition: opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .lum-dining-card__photo {
+        transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+        will-change: transform;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-dining-card:hover .lum-dining-card__photo {
+            transform: scale(1.06);
+        }
     }
 
     .lum-villa-polaroid__script {

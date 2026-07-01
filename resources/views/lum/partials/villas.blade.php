@@ -2,6 +2,7 @@
     $villasSlides = array_map(fn ($slide) => array_merge($slide, [
         'subtitleLine1' => __('lum.villas.subtitle_line1'),
         'subtitleLine2' => __('lum.villas.subtitle_line2'),
+        'href' => route('villa.show', $slide['slug']),
     ]), trans('lum.villas.slides'));
     $villasLifestyle = '<span class="lum-script text-[24px] text-lum-green">' . e(__('lum.villas.lifestyle')) . ' </span>';
     $villasLifestyleTab = '<span class="lum-script text-[26px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
@@ -54,7 +55,7 @@
                 </h2>
             </div>
 
-            <div class="absolute left-[118px] top-[422px] z-20 h-[188px] w-[140px] overflow-hidden rounded-[50%]">
+            <div class="absolute left-[118px] top-[422px] z-20 h-[188px] w-[140px] overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
                 <img src="{{ $img('villas/oval-01-sm.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="140" height="188">
             </div>
 
@@ -100,7 +101,7 @@
             <span data-lum-villas-title-normal class="font-normal">Lum </span><span data-lum-villas-title-italic class="font-medium italic">Villas</span>
         </h2>
 
-        <div class="absolute left-1/2 top-[842px] z-20 h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]">
+        <div class="absolute left-1/2 top-[842px] z-20 h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
             <img src="{{ $img('villas/oval-01.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="180" height="240">
         </div>
 
@@ -134,7 +135,7 @@
             <div class="absolute inset-y-0 left-[32px] w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
             <div class="absolute inset-y-0 right-0 w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
 
-            <button type="button" data-lum-villas-view-cursor class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] cursor-pointer items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0" aria-label="{{ __('lum.aria.view_villa') }}">{{ __('lum.villas.view') }}</button>
+            <button type="button" data-lum-villas-view-cursor class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] cursor-default items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0" aria-label="{{ __('lum.aria.view_villa') }}">{{ __('lum.villas.view') }}</button>
         </div>
 
         <div class="absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
@@ -151,7 +152,7 @@
             <span data-lum-villas-title-normal class="font-normal">Lum </span><span data-lum-villas-title-italic class="font-medium italic">Villas</span>
         </h2>
 
-        <div class="absolute left-1/2 top-[1143px] z-20 h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]">
+        <div class="absolute left-1/2 top-[1143px] z-20 h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
             <img src="{{ $img('villas/oval-01.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="320" height="430">
         </div>
 
@@ -162,6 +163,6 @@
             <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <a href="#" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">{{ __('lum.villas.view') }}</a>
+        <a href="{{ route('villa.show', 'villas') }}" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">{{ __('lum.villas.view') }}</a>
     </div>
 </section>

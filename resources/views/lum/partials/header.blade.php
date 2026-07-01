@@ -32,7 +32,7 @@
             <span>{{ __('lum.nav.stay') }}</span>
             <span class="lum-nav-link__dot" aria-hidden="true"></span>
         </a>
-        <a href="#" class="lum-nav-link--inline">
+        <a href="{{ route('dining') }}" @class(['lum-nav-link--inline', 'is-active' => $headerActive === 'dining'])>
             <span>{{ __('lum.nav.dining') }}</span>
             <span class="lum-nav-link__dot" aria-hidden="true"></span>
         </a>

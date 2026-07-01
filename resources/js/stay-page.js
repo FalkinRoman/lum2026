@@ -33,6 +33,12 @@ function clearImageMotion(image) {
 }
 
 function getFirstRowCount(root) {
+    const custom = Number(root.dataset.lumIntroFirstRow);
+
+    if (custom > 0) {
+        return custom;
+    }
+
     if (root.classList.contains('desk:block')) {
         return 2;
     }
@@ -244,7 +250,7 @@ function initStayWellness(section) {
 export function initStayPage() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (! document.querySelector('[data-lum-stay-page]')) {
+    if (! document.querySelector('[data-lum-stay-page], [data-lum-dining-page]')) {
         return;
     }
 

@@ -11,6 +11,10 @@ Route::get('/stay', function () {
     return view('stay');
 })->name('stay');
 
+Route::get('/dining', function () {
+    return view('dining');
+})->name('dining');
+
 Route::get('/stay/{slug}', function (string $slug) {
     $slugs = collect(trans('lum.stay.properties'))->pluck('slug');
 
