@@ -38,7 +38,7 @@
                     </p>
                 </div>
             </div>
-            <a href="#villas" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.hero.cta') }}</a>
+            <a href="{{ route('stay') }}" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.hero.cta') }}</a>
         </div>
         <div class="lum-divider absolute bottom-0 left-[20px]"></div>
     </div>
@@ -82,7 +82,7 @@
                     </p>
                 </div>
             </div>
-            <a href="#villas" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.hero.cta') }}</a>
+            <a href="{{ route('stay') }}" class="lum-btn-dark px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.hero.cta') }}</a>
         </div>
         <div class="lum-divider absolute bottom-0 left-[20px]"></div>
     </div>
@@ -126,7 +126,7 @@
                     </p>
                 </div>
             </div>
-            <a href="#villas" class="lum-btn-dark">{{ __('lum.hero.cta') }}</a>
+            <a href="{{ route('stay') }}" class="lum-btn-dark">{{ __('lum.hero.cta') }}</a>
         </div>
         <div class="lum-divider absolute bottom-0 left-[72px]"></div>
     </div>

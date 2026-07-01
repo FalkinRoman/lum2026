@@ -3,6 +3,7 @@
 return [
     'meta' => [
         'title' => 'Lum — Sri Lanka',
+        'stay_title' => 'Lum — Stay',
     ],
 
     'lang' => [
@@ -253,5 +254,45 @@ return [
         'instagram' => 'Instagram',
         'whatsapp' => 'WhatsApp',
         'telegram' => 'Telegram',
+    ],
+
+    'stay' => [
+        'title_line1' => 'our projects',
+        'title_line2' => 'in the south of',
+        'title_italic' => 'Sri Lanka',
+        'eyebrow' => 'Places you’ll want to return to',
+        'quote' => '“I need everything to be taken care of”',
+        'note_line1' => 'Or slow down yoga, meditation,',
+        'note_line2' => 'massage or a siberian banya',
+        'properties' => [
+            [
+                'slug' => 'residence',
+                'image' => 'residence.webp',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Residance',
+                'subtitle' => 'SLEEPS 4 ADULTS — WITH 2 POOLS, 2 BEDROOMS AND 2 BATHROOMS',
+            ],
+            [
+                'slug' => 'oculus',
+                'image' => 'oculus.webp',
+                'title_normal' => '',
+                'title_italic' => 'Oculus',
+                'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
+            ],
+            [
+                'slug' => 'ocean',
+                'image' => 'ocean.webp',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Ocean',
+                'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
+            ],
+            [
+                'slug' => 'villas',
+                'image' => 'villas.webp',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Villas',
+                'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
+            ],
+        ],
     ],
 ];

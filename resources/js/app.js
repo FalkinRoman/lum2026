@@ -154,7 +154,12 @@ function initLumViewport() {
 
     window.addEventListener('load', () => {
         applyLumLayout({ forceRefresh: true });
+        refreshScrollTriggers();
     }, { once: true });
+
+    document.addEventListener('lum:layout-change', () => {
+        refreshScrollTriggers();
+    });
 }
 
 function revealLumApp() {
@@ -406,7 +411,6 @@ initStickyHeader();
 initHeroTitle();
 initHeroVideo();
 initShopParallax();
-initScrollReveal();
 initFooter3dText();
 initInteriorCarousel();
 initVillasCarousel();
@@ -414,6 +418,10 @@ initLumViewport();
 
 requestAnimationFrame(() => {
     applyLumLayout();
+    initScrollReveal();
 
-    requestAnimationFrame(revealLumApp);
+    requestAnimationFrame(() => {
+        refreshScrollTriggers();
+        revealLumApp();
+    });
 });

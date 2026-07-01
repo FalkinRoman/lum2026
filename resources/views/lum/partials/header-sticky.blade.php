@@ -65,7 +65,7 @@
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
 
                     <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] lum-text-2 font-medium text-lum-espresso">
-                        <a href="#" class="lum-nav-link is-active">
+                        <a href="{{ route('stay') }}" @class(['lum-nav-link', 'is-active' => request()->routeIs('stay')])>
                             <span>{{ __('lum.nav.stay') }}</span>
                             <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="lum-nav-link__dot" width="6" height="6">
                         </a>

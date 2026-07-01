@@ -3,6 +3,7 @@
 return [
     'meta' => [
         'title' => 'Lum — Шри-Ланка',
+        'stay_title' => 'Lum — Проживание',
     ],
 
     'lang' => [
@@ -253,5 +254,45 @@ return [
         'instagram' => 'Instagram',
         'whatsapp' => 'WhatsApp',
         'telegram' => 'Telegram',
+    ],
+
+    'stay' => [
+        'title_line1' => 'наши проекты',
+        'title_line2' => 'на юге',
+        'title_italic' => 'Шри-Ланки',
+        'eyebrow' => 'Места, в которые хочется возвращаться',
+        'quote' => '«Мне нужно, чтобы обо всём позаботились»',
+        'note_line1' => 'Или замедлиться: йога, медитация,',
+        'note_line2' => 'массаж или сибирская баня',
+        'properties' => [
+            [
+                'slug' => 'residence',
+                'image' => 'residence.webp',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Residence',
+                'subtitle' => 'ДО 4 ВЗРОСЛЫХ — 2 БАССЕЙНА, 2 СПАЛЬНИ И 2 ВАННЫЕ',
+            ],
+            [
+                'slug' => 'oculus',
+                'image' => 'oculus.webp',
+                'title_normal' => '',
+                'title_italic' => 'Oculus',
+                'subtitle' => 'До 4 взрослых — 2 бассейна, 2 спальни и 2 ванные',
+            ],
+            [
+                'slug' => 'ocean',
+                'image' => 'ocean.webp',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Ocean',
+                'subtitle' => 'До 4 взрослых — 2 бассейна, 2 спальни и 2 ванные',
+            ],
+            [
+                'slug' => 'villas',
+                'image' => 'villas.webp',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Villas',
+                'subtitle' => 'До 4 взрослых — 2 бассейна, 2 спальни и 2 ванные',
+            ],
+        ],
     ],
 ];

@@ -19,7 +19,7 @@
                 w <= 430 ? 'mobile' : w <= 1023 ? 'tablet' : 'desktop';
         })();
     </script>
-    <title>{{ __('lum.meta.title') }}</title>
+    <title>@yield('title', __('lum.meta.title'))</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">

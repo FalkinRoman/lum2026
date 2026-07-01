@@ -17,6 +17,10 @@ export function syncStickyHeader() {
     stickyHeader.style.height = `${rect.height}px`;
 }
 
+function isVisibleElement(element) {
+    return element.offsetParent !== null || element.getClientRects().length > 0;
+}
+
 export function initStickyHeader() {
     const header = document.getElementById('lum-sticky-header');
 
@@ -24,18 +28,14 @@ export function initStickyHeader() {
         return;
     }
 
-    const getActiveTrigger = () => (
-        [...document.querySelectorAll('[data-lum-sticky-trigger]')]
-            .find((element) => element.offsetParent !== null)
-    );
-
     const setVisible = (visible) => {
         header.classList.toggle('is-visible', visible);
         header.setAttribute('aria-hidden', visible ? 'false' : 'true');
     };
 
     const update = () => {
-        const trigger = getActiveTrigger();
+        const trigger = [...document.querySelectorAll('[data-lum-sticky-trigger]')]
+            .find(isVisibleElement);
 
         if (! trigger) {
             setVisible(false);
@@ -43,9 +43,7 @@ export function initStickyHeader() {
             return;
         }
 
-        const rect = trigger.getBoundingClientRect();
-
-        setVisible(rect.bottom < 0);
+        setVisible(trigger.getBoundingClientRect().bottom < 0);
     };
 
     window.addEventListener('scroll', update, { passive: true });
