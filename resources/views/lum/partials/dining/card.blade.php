@@ -29,5 +29,5 @@
 @if ($isOpeningSoon)
     <span @class([$btnClass, 'pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</span>
 @else
-    <a href="#" @class([$btnClass, 'absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</a>
+    <a href="{{ route('restaurant.show', $venue['slug']) }}" @class([$btnClass, 'absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</a>
 @endif

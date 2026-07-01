@@ -92,7 +92,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" class="lum-btn-green absolute left-1/2 top-[744px] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.nav.take_a_break') }}</a>
+            <a href="#" class="lum-btn-green absolute left-1/2 top-[744px] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
         @endif
     </div>
 
@@ -146,7 +146,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" class="lum-btn-green absolute left-1/2 top-[1212px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.nav.take_a_break') }}</a>
+            <a href="#" class="lum-btn-green absolute left-1/2 top-[1212px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
         @endif
     </div>
 
@@ -217,7 +217,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" class="lum-btn-green absolute left-1/2 top-[1399px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.nav.take_a_break') }}</a>
+            <a href="#" class="lum-btn-green absolute left-1/2 top-[1399px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
         @endif
     </div>
 </section>

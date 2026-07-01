@@ -7,7 +7,7 @@
     $img = fn (string $path) => asset('images/lum/' . $path);
 @endphp
 
-<div class="lum-viewport">
+<div class="lum-viewport" data-lum-dining-page>
     <div class="lum-page">
         @include('lum.partials.dining.venues', ['img' => $img])
         @include('lum.partials.dining.experience', ['img' => $img])

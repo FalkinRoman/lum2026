@@ -4,7 +4,8 @@
 
 @php
     $activeNav = $activeNav ?? match (true) {
-        request()->routeIs('stay') => 'stay',
+        request()->routeIs('restaurant.show') => null,
+        request()->routeIs('stay', 'villa.show') => 'stay',
         request()->routeIs('dining') => 'dining',
         default => null,
     };
@@ -12,7 +13,7 @@
 
 <header
     id="lum-sticky-header"
-    class="lum-sticky-header fixed inset-x-0 top-0 z-[200] overflow-hidden"
+    class="lum-sticky-header fixed inset-x-0 top-0 z-[200] overflow-visible"
     aria-hidden="true"
     {{ $attributes }}
 >

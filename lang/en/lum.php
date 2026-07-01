@@ -310,6 +310,7 @@ return [
         'opening_soon' => 'Opening Soon',
         'venues' => [
             [
+                'slug' => 'restaurant-bar',
                 'image' => 'restaurant-bar.webp',
                 'eyebrow' => 'RIGHT WAY TO START A DAY',
                 'subtitle' => 'sourdough / avocado / chili flakes / poached egg',
@@ -319,6 +320,7 @@ return [
                 'overlays' => ['bg-black/32', 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent'],
             ],
             [
+                'slug' => 'sandwich-spot',
                 'image' => 'sandwich-spot.webp',
                 'eyebrow' => 'DRINK OF THE NIGHT',
                 'subtitle' => 'tequila / grapefruit / lime',
@@ -328,6 +330,7 @@ return [
                 'overlays' => ['bg-black/32'],
             ],
             [
+                'slug' => 'rosenkoester',
                 'image' => 'rosenkoester.webp',
                 'eyebrow' => 'MORNING WARMTH',
                 'subtitle' => 'sun / coffee',
@@ -337,6 +340,7 @@ return [
                 'overlays' => ['bg-black/32'],
             ],
             [
+                'slug' => 'brute-wine-bar',
                 'image' => 'brute-wine-bar.webp',
                 'eyebrow' => 'DRINK OF THE NIGHT',
                 'subtitle' => 'tequila / grapefruit / lime',
@@ -344,6 +348,166 @@ return [
                 'title_italic' => 'Wine & Bar',
                 'cta' => 'opening_soon',
                 'overlays' => ['bg-black/32', 'bg-gradient-to-t from-[rgba(22,5,5,0.48)] to-transparent'],
+            ],
+        ],
+    ],
+
+    'restaurant' => [
+        'book_table' => 'book a table',
+        'menu_eyebrow' => 'tropical, local and good',
+        'menu_title_normal' => 'our ',
+        'menu_title_italic' => 'menu',
+        'menu_categories' => [
+            ['key' => 'starters', 'label' => 'Starters'],
+            ['key' => 'mains', 'label' => 'Mains'],
+            ['key' => 'desserts', 'label' => 'Desserts'],
+            ['key' => 'lunch', 'label' => 'Lunch'],
+            ['key' => 'breakfast', 'label' => 'Breakfast'],
+        ],
+        'menu_items' => [
+            'starters' => [
+                [
+                    'name' => 'Kangkung w. Aromatic Spices',
+                    'description' => 'water spinach · rice · sesame dukkah · homemade coconut oil · parsley · browned butter · aromatic spices',
+                    'price' => '250K LKR',
+                ],
+                [
+                    'name' => 'Kangkung w. Aromatic Spices',
+                    'description' => 'water spinach · rice · sesame dukkah · homemade coconut oil · parsley · browned butter · aromatic spices',
+                    'price' => '250K LKR',
+                ],
+                [
+                    'name' => 'Kangkung w. Aromatic Spices',
+                    'description' => 'water spinach · rice · sesame dukkah · homemade coconut oil · parsley · browned butter · aromatic spices',
+                    'price' => '250K LKR',
+                ],
+                [
+                    'name' => 'Kangkung w. Aromatic Spices',
+                    'description' => 'water spinach · rice · sesame dukkah · homemade coconut oil · parsley · browned butter · aromatic spices',
+                    'price' => '250K LKR',
+                ],
+            ],
+            'mains' => [
+                [
+                    'name' => 'Grilled Snapper',
+                    'description' => 'line-caught fish · lime leaf · coconut sambol · seasonal greens',
+                    'price' => '320K LKR',
+                ],
+                [
+                    'name' => 'Entrecote, tomato, beans',
+                    'description' => 'charcoal grill · confit tomato · butter beans · herb jus',
+                    'price' => '480K LKR',
+                ],
+            ],
+            'desserts' => [
+                [
+                    'name' => 'Coconut Panna Cotta',
+                    'description' => 'local coconut · palm sugar · passion fruit',
+                    'price' => '180K LKR',
+                ],
+            ],
+            'lunch' => [
+                [
+                    'name' => 'Avocado on Sourdough',
+                    'description' => 'sourdough · avocado · chili flakes · poached egg',
+                    'price' => '220K LKR',
+                ],
+            ],
+            'breakfast' => [
+                [
+                    'name' => 'Morning Bowl',
+                    'description' => 'granola · tropical fruit · coconut yogurt · honey',
+                    'price' => '190K LKR',
+                ],
+            ],
+        ],
+        'impression' => [
+            'title_normal' => 'get an',
+            'title_caps' => 'IMPRESSION',
+            'tabs' => ['ONE—STORY', 'TWO—STORY', 'KITCHEN', 'BEDROOM', 'BATHROOM', 'BASEMENT'],
+        ],
+        'restaurant-bar' => [
+            'meta_title' => 'Lum Restaurant & Bar — Lum',
+            'hero' => [
+                'eyebrow' => 'A restaurant well worth a journey',
+                'title_normal' => 'Lum ',
+                'title_italic' => 'Restaurant & Bar',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum restaurant & bar',
+                'title_normal' => 'simple and ',
+                'title_italic' => 'elegant',
+                'body' => 'European cuisine with Sri Lankan warmth. Open daily from breakfast through dinner — grill evenings, fresh seafood, and cocktails at the bar overlooking the ocean.',
+                'body_bottom' => 'A place to linger: long lunches, sunset drinks, and the kind of dinner that turns into a late night without trying.',
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
+            ],
+        ],
+        'sandwich-spot' => [
+            'meta_title' => 'Sandwich Spot — Lum',
+            'hero' => [
+                'eyebrow' => 'Quick bites worth the stop',
+                'title_normal' => 'Sandwich ',
+                'title_italic' => 'Spot',
+            ],
+            'gallery' => [
+                'eyebrow' => 'sandwich spot',
+                'title_normal' => 'fresh and ',
+                'title_italic' => 'generous',
+                'body' => 'Casual counter service with serious flavour. Fresh sandwiches, good coffee, and the kind of lunch you actually look forward to between surf sessions.',
+                'body_bottom' => 'Grab something to go or settle in at a table — either way, portions are honest and ingredients are local where it counts.',
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
+            ],
+        ],
+        'rosenkoester' => [
+            'meta_title' => 'Rosenköster — Lum',
+            'hero' => [
+                'eyebrow' => 'Morning warmth, every day',
+                'title_normal' => 'Rosen',
+                'title_italic' => 'köster',
+            ],
+            'gallery' => [
+                'eyebrow' => 'rosenköster',
+                'title_normal' => 'warm and ',
+                'title_italic' => 'welcoming',
+                'body' => 'A morning-first bakery and café. Coffee, pastries, and the quiet ritual of starting the day well before the heat sets in.',
+                'body_bottom' => 'Sun on the terrace, a proper flat white, and something still warm from the oven — the simplest pleasures, done right.',
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
+            ],
+        ],
+        'brute-wine-bar' => [
+            'meta_title' => 'Brute Wine & Bar — Lum',
+            'hero' => [
+                'eyebrow' => 'Natural wines, late evenings',
+                'title_normal' => 'Brute ',
+                'title_italic' => 'Wine & Bar',
+            ],
+            'gallery' => [
+                'eyebrow' => 'brute wine & bar',
+                'title_normal' => 'bold and ',
+                'title_italic' => 'refined',
+                'body' => 'Natural wines, small plates, and a bar that stays open late. For evenings when you want something refined but never stiff.',
+                'body_bottom' => 'A curated list of bottles, bartenders who care, and a room that gets better as the night goes on.',
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
             ],
         ],
     ],

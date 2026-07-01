@@ -9,6 +9,7 @@ import { initScrollReveal } from './scroll-reveal';
 import { initStayPage } from './stay-page';
 import { initVillaPage } from './villa-page';
 import { initFooter3dText } from './footer-3d-text';
+import { initRestaurantMenu } from './restaurant-menu';
 import { initInteriorCarousel } from './interior-carousel';
 import { initVillasCarousel } from './villas-carousel';
 
@@ -202,10 +203,12 @@ function initLanguageSwitcher() {
             next: panel.nextSibling,
         };
         const isBurgerPanel = Boolean(toggle.closest('.lum-burger-menu'));
+        const isStickyPanel = Boolean(toggle.closest('.lum-sticky-header'));
+        const useFixedPanel = isBurgerPanel || isStickyPanel;
         const designWidth = 320;
 
         const positionFixedPanel = () => {
-            if (! isBurgerPanel || ! panel.classList.contains('lum-lang-panel--fixed')) {
+            if (! useFixedPanel || ! panel.classList.contains('lum-lang-panel--fixed')) {
                 return;
             }
 
@@ -222,7 +225,7 @@ function initLanguageSwitcher() {
         };
 
         const mountFixedPanel = () => {
-            if (! isBurgerPanel) {
+            if (! useFixedPanel) {
                 return;
             }
 
@@ -436,6 +439,7 @@ requestAnimationFrame(() => {
     initScrollReveal();
     initStayPage();
     initVillaPage();
+    initRestaurantMenu();
 
     requestAnimationFrame(() => {
         applyLumLayout({ forceRefresh: true });

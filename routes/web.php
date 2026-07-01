@@ -15,6 +15,22 @@ Route::get('/dining', function () {
     return view('dining');
 })->name('dining');
 
+Route::get('/dining/{slug}', function (string $slug) {
+    $slugs = collect(trans('lum.dining.venues'))->pluck('slug');
+
+    if (! $slugs->contains($slug)) {
+        abort(404);
+    }
+
+    $restaurant = trans("lum.restaurant.{$slug}");
+
+    if (! is_array($restaurant)) {
+        abort(404);
+    }
+
+    return view('restaurant', compact('slug', 'restaurant'));
+})->name('restaurant.show');
+
 Route::get('/stay/{slug}', function (string $slug) {
     $slugs = collect(trans('lum.stay.properties'))->pluck('slug');
 

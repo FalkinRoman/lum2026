@@ -78,6 +78,9 @@ if (file_exists($projectRoot . '/scripts/asset-manifest-lum.php')) {
 $remoteAssets = [
     // Refresh only if missing locally. Figma MCP URLs expire after ~7 days.
     'dining/restaurant-bar.webp' => 'https://www.figma.com/api/mcp/asset/a1c00005-8942-48e7-8245-6e385a73964d',
+    'dining/detail/shared/divider.svg' => 'https://www.figma.com/api/mcp/asset/37ae78ba-621a-40b4-bd70-985d18f4925f',
+    'dining/detail/shared/divider-tab.svg' => 'https://www.figma.com/api/mcp/asset/1681fcd8-31cb-414d-b480-b4c825c74d5c',
+    'dining/detail/shared/divider-mob.svg' => 'https://www.figma.com/api/mcp/asset/6e36744e-32c3-44c0-805f-f02a556a13b1',
 ];
 
 $ok = 0;
