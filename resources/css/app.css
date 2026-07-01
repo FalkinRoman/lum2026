@@ -949,9 +949,21 @@
         will-change: transform;
     }
 
+    .lum-dining-card__shade {
+        transition: opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    [data-lum-discover-page] .lum-dining-card {
+        @apply cursor-pointer;
+    }
+
     @media (hover: hover) and (pointer: fine) {
         .lum-dining-card:hover .lum-dining-card__photo {
             transform: scale(1.06);
+        }
+
+        .lum-dining-card:hover .lum-dining-card__shade {
+            opacity: 0;
         }
     }
 

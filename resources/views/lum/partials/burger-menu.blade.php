@@ -141,11 +141,11 @@
                             <span>{{ __('lum.nav.dining') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="#" class="lum-nav-link--inline">
+                        <a href="{{ route('relax') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('relax')])>
                             <span>{{ __('lum.nav.relax') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="#" class="lum-nav-link--inline">
+                        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('discover')])>
                             <span>{{ __('lum.nav.discover') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>

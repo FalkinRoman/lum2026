@@ -7,6 +7,8 @@
         request()->routeIs('restaurant.show') => null,
         request()->routeIs('stay', 'villa.show') => 'stay',
         request()->routeIs('dining') => 'dining',
+        request()->routeIs('relax') => 'relax',
+        request()->routeIs('discover') => 'discover',
         default => null,
     };
 @endphp
@@ -87,11 +89,11 @@
                             <span>{{ __('lum.nav.dining') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="#" class="lum-nav-link--inline">
+                        <a href="{{ route('relax') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'relax'])>
                             <span>{{ __('lum.nav.relax') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="#" class="lum-nav-link--inline">
+                        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'discover'])>
                             <span>{{ __('lum.nav.discover') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>

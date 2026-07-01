@@ -81,6 +81,13 @@ $remoteAssets = [
     'dining/detail/shared/divider.svg' => 'https://www.figma.com/api/mcp/asset/37ae78ba-621a-40b4-bd70-985d18f4925f',
     'dining/detail/shared/divider-tab.svg' => 'https://www.figma.com/api/mcp/asset/1681fcd8-31cb-414d-b480-b4c825c74d5c',
     'dining/detail/shared/divider-mob.svg' => 'https://www.figma.com/api/mcp/asset/6e36744e-32c3-44c0-805f-f02a556a13b1',
+    'relax/yoga.webp' => 'https://www.figma.com/api/mcp/asset/ac88d841-f3f3-4069-ae2f-e162e6814ccd',
+    'relax/surfing.webp' => 'https://www.figma.com/api/mcp/asset/fefb0c10-f1f9-4f50-ba67-3aba581058e2',
+    'relax/padel.webp' => 'https://www.figma.com/api/mcp/asset/4d79e9a5-c13b-441c-a494-bdc95b0bbcd2',
+    'relax/wellness-hero.webp' => 'https://www.figma.com/api/mcp/asset/092f7782-ba61-4255-9bbb-49cd63c8a788',
+    'relax/wellness-oval.webp' => 'https://www.figma.com/api/mcp/asset/ddafa8ee-e5c6-48c2-9584-4e2cbc5578e1',
+    'relax/wellness-hero-mob.webp' => 'https://www.figma.com/api/mcp/asset/1a72694f-1373-487a-ac0b-40ed524718d7',
+    'relax/wellness-hero-tab.webp' => 'https://www.figma.com/api/mcp/asset/3446f656-87e9-402a-8ac9-70c07aad7e5f',
 ];
 
 $ok = 0;

@@ -250,7 +250,7 @@ function initStayWellness(section) {
 export function initStayPage() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (! document.querySelector('[data-lum-stay-page], [data-lum-dining-page], [data-lum-restaurant-page]')) {
+    if (! document.querySelector('[data-lum-stay-page], [data-lum-dining-page], [data-lum-restaurant-page], [data-lum-relax-page], [data-lum-discover-page]')) {
         return;
     }
 
@@ -280,6 +280,8 @@ export function initStayPage() {
         if (! root || index < getFirstRowCount(root)) {
             return;
         }
+
+        gsap.set(image, imageMotionFrom(image));
 
         revealPropertyPair(image, findStayPropertyCopy(image), index);
     });

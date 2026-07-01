@@ -5,6 +5,8 @@ return [
         'title' => 'Lum — Шри-Ланка',
         'stay_title' => 'Lum — Проживание',
         'dining_title' => 'Lum — Ресторан',
+        'relax_title' => 'Lum — Отдых',
+        'discover_title' => 'Lum — Открыть',
     ],
 
     'lang' => [
@@ -157,6 +159,7 @@ return [
             ],
             [
                 'title' => 'Отдых',
+                'route' => 'relax',
                 'photo' => 'location/card-yoga.jpg',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
                 'photoLines' => [
@@ -178,6 +181,7 @@ return [
             ],
             [
                 'title' => 'Открыть',
+                'route' => 'discover',
                 'photo' => 'location/card-discover.jpg',
                 'photoGradient' => 'bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]',
                 'photoLines' => [
@@ -348,6 +352,63 @@ return [
                 'title_italic' => 'Wine & Bar',
                 'cta' => 'opening_soon',
                 'overlays' => ['bg-black/32', 'bg-gradient-to-t from-[rgba(22,5,5,0.48)] to-transparent'],
+            ],
+        ],
+    ],
+
+    'relax' => [
+        'title_line1' => 'какой отдых в',
+        'title_italic' => 'Шри-Ланке',
+        'title_line2' => ' ты выберешь?',
+        'eyebrow' => 'Начинай утро с сёрфинга и заканчивай день красивым закатом у океана',
+        'eyebrow_line1' => 'Начинай утро с сёрфинга и',
+        'eyebrow_line2' => 'заканчивай день красивым закатом у океана',
+        'activities' => [
+            [
+                'image' => 'yoga.webp',
+                'label_before' => 'полный ',
+                'label_italic' => 'перезагруз',
+                'label_after' => '…',
+                'name' => 'ЙОГА',
+            ],
+            [
+                'image' => 'surfing.webp',
+                'label_all_italic' => 'красивый закат у океана',
+                'name' => 'СЁРФИНГ',
+            ],
+            [
+                'image' => 'padel.webp',
+                'label_italic' => 'падел',
+                'label_after' => ' на острове',
+                'name' => 'ПАДЕЛ',
+            ],
+        ],
+    ],
+
+    'discover' => [
+        'title_normal' => 'медленная жизнь и ',
+        'title_italic' => 'океан круглый год',
+        'eyebrow' => 'Мне нужны новые впечатления',
+        'places' => [
+            [
+                'image' => 'galle-fort.webp',
+                'title' => 'Galle Fort',
+                'region' => 'Юго-западное побережье Шри-Ланки',
+            ],
+            [
+                'image' => 'koggala-lake.webp',
+                'title' => 'Koggala Lake',
+                'region' => 'Юго-западное побережье Шри-Ланки',
+            ],
+            [
+                'image' => 'mirissa.webp',
+                'title' => 'Mirissa',
+                'region' => 'Юго-западное побережье Шри-Ланки',
+            ],
+            [
+                'image' => 'dondra.webp',
+                'title' => 'Dondra',
+                'region' => 'Юго-западное побережье Шри-Ланки',
             ],
         ],
     ],

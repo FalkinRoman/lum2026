@@ -15,6 +15,14 @@ Route::get('/dining', function () {
     return view('dining');
 })->name('dining');
 
+Route::get('/relax', function () {
+    return view('relax');
+})->name('relax');
+
+Route::get('/discover', function () {
+    return view('discover');
+})->name('discover');
+
 Route::get('/dining/{slug}', function (string $slug) {
     $slugs = collect(trans('lum.dining.venues'))->pluck('slug');
 

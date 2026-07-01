@@ -7,7 +7,7 @@
 
 <img src="{{ $img('dining/' . $venue['image']) }}" alt="" class="lum-dining-card__photo absolute inset-0 h-full w-full object-cover" width="{{ $width }}" height="{{ $height }}" loading="lazy">
 @foreach ($overlays as $overlay)
-    <span @class(['pointer-events-none absolute inset-0 z-[1]', $overlay]) aria-hidden="true"></span>
+    <span @class(['lum-dining-card__shade pointer-events-none absolute inset-0 z-[1]', $overlay]) aria-hidden="true"></span>
 @endforeach
 
 <div class="pointer-events-none absolute inset-x-0 z-[2] flex flex-col items-center gap-[4px] px-[24px]" style="top: {{ $eyebrowTop }}px">

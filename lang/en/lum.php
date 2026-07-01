@@ -5,6 +5,8 @@ return [
         'title' => 'Lum — Sri Lanka',
         'stay_title' => 'Lum — Stay',
         'dining_title' => 'Lum — Dining',
+        'relax_title' => 'Lum — Relax',
+        'discover_title' => 'Lum — Discover',
     ],
 
     'lang' => [
@@ -157,6 +159,7 @@ return [
             ],
             [
                 'title' => 'Relax',
+                'route' => 'relax',
                 'photo' => 'location/card-yoga.jpg',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
                 'photoLines' => [
@@ -178,6 +181,7 @@ return [
             ],
             [
                 'title' => 'Discover',
+                'route' => 'discover',
                 'photo' => 'location/card-discover.jpg',
                 'photoGradient' => 'bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]',
                 'photoLines' => [
@@ -348,6 +352,63 @@ return [
                 'title_italic' => 'Wine & Bar',
                 'cta' => 'opening_soon',
                 'overlays' => ['bg-black/32', 'bg-gradient-to-t from-[rgba(22,5,5,0.48)] to-transparent'],
+            ],
+        ],
+    ],
+
+    'relax' => [
+        'title_line1' => 'what kind of vacation in',
+        'title_italic' => 'Sri Lanka',
+        'title_line2' => ' will you choose?',
+        'eyebrow' => 'Start every morning with surfing and end your day with a beautiful ocean sunset',
+        'eyebrow_line1' => 'Start every morning with surfing and',
+        'eyebrow_line2' => 'end your day with a beautiful ocean sunset',
+        'activities' => [
+            [
+                'image' => 'yoga.webp',
+                'label_before' => 'a full ',
+                'label_italic' => 'reset',
+                'label_after' => '…',
+                'name' => 'YOGA',
+            ],
+            [
+                'image' => 'surfing.webp',
+                'label_all_italic' => 'a beautiful ocean sunset',
+                'name' => 'SURFING',
+            ],
+            [
+                'image' => 'padel.webp',
+                'label_italic' => 'like padel',
+                'label_after' => ' on the island',
+                'name' => 'PADEL',
+            ],
+        ],
+    ],
+
+    'discover' => [
+        'title_normal' => 'slow living and ',
+        'title_italic' => 'ocean all year around',
+        'eyebrow' => 'I need new experiences',
+        'places' => [
+            [
+                'image' => 'galle-fort.webp',
+                'title' => 'Galle Fort',
+                'region' => 'Southwest coast of Sri Lanka',
+            ],
+            [
+                'image' => 'koggala-lake.webp',
+                'title' => 'Koggala Lake',
+                'region' => 'Southwest coast of Sri Lanka',
+            ],
+            [
+                'image' => 'mirissa.webp',
+                'title' => 'Mirissa',
+                'region' => 'Southwest coast of Sri Lanka',
+            ],
+            [
+                'image' => 'dondra.webp',
+                'title' => 'Dondra',
+                'region' => 'Southwest coast of Sri Lanka',
             ],
         ],
     ],
