@@ -12,6 +12,7 @@
     --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Vollkorn', ui-serif, Georgia, serif;
     --font-script: 'Marck Script', cursive;
+    --font-villa-hand: 'Kalam', cursive;
 
     --color-lum-ivory: #fffddf;
     --color-lum-ivory-88: rgb(255 253 223 / 0.88);
@@ -308,41 +309,26 @@
         }
     }
 
-    .lum-nav-link {
-        @apply relative flex flex-col items-center gap-[5px];
+    .lum-nav-link,
+    .lum-nav-link--inline {
+        @apply inline-flex flex-col items-center gap-[5px];
     }
 
     .lum-nav-link__dot {
-        @apply size-[6px] opacity-0 scale-75 transition-all duration-300 ease-out;
+        @apply size-[6px] shrink-0 rounded-full opacity-0 transition-[opacity,transform] duration-300 ease-out;
     }
 
     @media (hover: hover) and (pointer: fine) {
-        .lum-nav-link:hover .lum-nav-link__dot {
-            @apply opacity-100 scale-100;
+        .lum-nav-link:hover:not(.is-active) .lum-nav-link__dot,
+        .lum-nav-link--inline:hover:not(.is-active) .lum-nav-link__dot {
+            @apply translate-y-[2px] opacity-100 bg-current;
         }
     }
 
-    .lum-nav-link.is-active .lum-nav-link__dot {
-        @apply opacity-100 scale-100;
-    }
-
-    .lum-nav-link--inline {
-        @apply relative flex h-[25px] items-center;
-    }
-
-    .lum-nav-link--inline::after {
-        content: '';
-        @apply absolute -bottom-[5px] left-1/2 size-[6px] -translate-x-1/2 rounded-full bg-current opacity-0 scale-75 transition-all duration-300 ease-out;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .lum-nav-link--inline:hover::after {
-            @apply opacity-100 scale-100;
-        }
-    }
-
-    .lum-nav-link--inline.is-active::after {
-        @apply opacity-100 scale-100;
+    .lum-nav-link.is-active .lum-nav-link__dot,
+    .lum-nav-link--inline.is-active .lum-nav-link__dot {
+        @apply opacity-100;
+        background-color: var(--color-lum-green);
     }
 
     .lum-tab {
@@ -943,9 +929,29 @@
         will-change: transform;
     }
 
+    .lum-stay-property-link__shade {
+        transition: opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .lum-villa-polaroid__script {
+        color: #2d62e8;
+        font-family: var(--font-villa-hand);
+        font-weight: 400;
+        text-transform: uppercase;
+    }
+
+    .lum-villa-polaroid__share {
+        transform: rotate(-9deg);
+        transform-origin: center center;
+    }
+
     @media (hover: hover) and (pointer: fine) {
         .lum-stay-property-link:hover .lum-stay-property-link__photo {
             transform: scale(1.06);
+        }
+
+        .lum-stay-property-link:hover .lum-stay-property-link__shade {
+            opacity: 0;
         }
     }
 

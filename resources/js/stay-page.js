@@ -14,8 +14,22 @@ function isCenteredElement(element) {
     return element.classList.contains('-translate-x-1/2');
 }
 
-function centeredProps(element) {
-    return isCenteredElement(element) ? { xPercent: -50 } : {};
+function imageMotionFrom(image) {
+    return isCenteredElement(image)
+        ? { marginTop: 36, opacity: 0 }
+        : { y: 36, opacity: 0 };
+}
+
+function imageMotionTo(image) {
+    return isCenteredElement(image)
+        ? { marginTop: 0, opacity: 1 }
+        : { y: 0, opacity: 1 };
+}
+
+function clearImageMotion(image) {
+    gsap.set(image, {
+        clearProps: isCenteredElement(image) ? 'marginTop,opacity' : 'transform,opacity',
+    });
 }
 
 function getFirstRowCount(root) {
@@ -60,7 +74,7 @@ function initStayHeroIntro(root) {
     gsap.set(heroItems, { y: 28, opacity: 0 });
 
     images.forEach((image) => {
-        gsap.set(image, { ...centeredProps(image), y: 36, opacity: 0 });
+        gsap.set(image, imageMotionFrom(image));
     });
 
     copies.forEach((copy) => {
@@ -74,9 +88,7 @@ function initStayHeroIntro(root) {
             gsap.set(heroItems, { clearProps: 'transform,opacity' });
 
             images.forEach((image) => {
-                gsap.set(image, {
-                    clearProps: isCenteredElement(image) ? 'y,opacity' : 'transform,opacity',
-                });
+                clearImageMotion(image);
             });
 
             copies.forEach((copy) => {
@@ -111,9 +123,7 @@ function initStayHeroIntro(root) {
 
     images.forEach((image, index) => {
         timeline.to(image, {
-            ...centeredProps(image),
-            y: 0,
-            opacity: 1,
+            ...imageMotionTo(image),
             duration: 0.88,
             ease: EASE_SOFT,
         }, index === 0 ? '-=0.12' : `-=${0.72 - index * 0.06}`);
@@ -132,13 +142,13 @@ function initStayHeroIntro(root) {
 
 function revealPropertyPair(image, copy, index) {
     const direction = index % 2 === 0 ? -18 : 18;
+    const centered = isCenteredElement(image);
 
     gsap.fromTo(
         image,
-        { ...centeredProps(image), y: 32, opacity: 0 },
+        centered ? { marginTop: 32, opacity: 0 } : { y: 32, opacity: 0 },
         {
-            ...centeredProps(image),
-            y: 0,
+            ...(centered ? { marginTop: 0 } : { y: 0 }),
             opacity: 1,
             duration: 0.9,
             ease: EASE_SOFT,
@@ -149,9 +159,7 @@ function revealPropertyPair(image, copy, index) {
                 invalidateOnRefresh: true,
             },
             onComplete: () => {
-                gsap.set(image, {
-                    clearProps: isCenteredElement(image) ? 'y,opacity' : 'transform,opacity',
-                });
+                clearImageMotion(image);
             },
         },
     );

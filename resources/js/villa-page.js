@@ -11,6 +11,28 @@ function isVisibleElement(element) {
     return element.offsetParent !== null || element.getClientRects().length > 0;
 }
 
+function initVillaEyebrow(node) {
+    gsap.fromTo(
+        node,
+        { marginTop: 20, opacity: 0 },
+        {
+            marginTop: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: INTRO_EASE,
+            scrollTrigger: {
+                trigger: node,
+                start: 'top 92%',
+                once: true,
+                invalidateOnRefresh: true,
+            },
+            onComplete: () => {
+                gsap.set(node, { clearProps: 'marginTop,opacity' });
+            },
+        },
+    );
+}
+
 function initVillaIntro(root) {
     const items = [...root.querySelectorAll('[data-lum-stay-intro-item]')]
         .filter((item) => ! item.closest('[data-lum-hero-title]'))
@@ -34,28 +56,6 @@ function initVillaIntro(root) {
             delay: 0.22,
             onComplete: () => {
                 gsap.set(items, { clearProps: 'transform' });
-            },
-        },
-    );
-}
-
-function initVillaEyebrow(node) {
-    gsap.fromTo(
-        node,
-        { y: 20, opacity: 0 },
-        {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: INTRO_EASE,
-            scrollTrigger: {
-                trigger: node,
-                start: 'top 92%',
-                once: true,
-                invalidateOnRefresh: true,
-            },
-            onComplete: () => {
-                gsap.set(node, { clearProps: 'transform' });
             },
         },
     );
@@ -85,6 +85,8 @@ function initVillaDivider(node) {
 }
 
 function initVillaPolaroid(node, index) {
+    const rotate = node.style.transform || '';
+
     gsap.fromTo(
         node,
         { y: 48, opacity: 0 },
@@ -94,6 +96,13 @@ function initVillaPolaroid(node, index) {
             duration: 1.1,
             delay: index * 0.1,
             ease: INTRO_EASE,
+            onUpdate() {
+                const y = gsap.getProperty(node, 'y') || 0;
+                node.style.transform = `${rotate} translateY(${y}px)`.trim();
+            },
+            onComplete() {
+                node.style.transform = rotate;
+            },
             scrollTrigger: {
                 trigger: node,
                 start: 'top 92%',

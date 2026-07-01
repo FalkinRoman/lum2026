@@ -49,7 +49,8 @@
 
             <a href="{{ route('villa.show', $property['slug']) }}" class="lum-stay-property-link absolute left-1/2 block h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['imageTop'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 <img src="{{ $img('stay/' . $property['image']) }}" alt="" class="lum-stay-property-link__photo h-full w-full object-cover" width="335" height="390" loading="lazy">
-                <img src="{{ $img('stay/logomark.svg') }}" alt="" class="absolute left-1/2 top-[326px] size-[32px] -translate-x-1/2" width="32" height="32">
+                <span class="lum-stay-property-link__shade pointer-events-none absolute inset-0 z-[1] bg-black/24" aria-hidden="true"></span>
+                <img src="{{ $img('stay/logomark.svg') }}" alt="" class="absolute left-1/2 top-[326px] z-[2] size-[32px] -translate-x-1/2" width="32" height="32">
             </a>
 
             <div class="absolute left-1/2 flex w-[335px] -translate-x-1/2 flex-col items-center gap-[16px] text-center" style="top: {{ $layout['textTop'] }}px" data-lum-stay-property-copy data-lum-stay-property="{{ $index }}">
@@ -90,7 +91,8 @@
 
             <a href="{{ route('villa.show', $property['slug']) }}" class="lum-stay-property-link absolute block h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['imageTop'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 <img src="{{ $img('stay/' . $property['image']) }}" alt="" class="lum-stay-property-link__photo h-full w-full object-cover" width="450" height="525" loading="lazy">
-                <img src="{{ $img('stay/logomark.svg') }}" alt="" class="absolute left-1/2 top-[440px] size-[40px] -translate-x-1/2" width="40" height="40">
+                <span class="lum-stay-property-link__shade pointer-events-none absolute inset-0 z-[1] bg-black/24" aria-hidden="true"></span>
+                <img src="{{ $img('stay/logomark.svg') }}" alt="" class="absolute left-1/2 top-[440px] z-[2] size-[40px] -translate-x-1/2" width="40" height="40">
             </a>
 
             <div class="absolute flex w-[450px] flex-col items-center gap-[12px] text-center" style="left: {{ $layout['left'] }}px; top: {{ $layout['textTop'] }}px" data-lum-stay-property-copy data-lum-stay-property="{{ $index }}">
@@ -131,7 +133,8 @@
 
             <a href="{{ route('villa.show', $property['slug']) }}" class="lum-stay-property-link absolute block h-[820px] w-[703px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['imageTop'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 <img src="{{ $img('stay/' . $property['image']) }}" alt="" class="lum-stay-property-link__photo h-full w-full object-cover" width="703" height="820" loading="lazy">
-                <img src="{{ $img('stay/logomark.svg') }}" alt="" class="absolute left-1/2 top-[684px] size-[64px] -translate-x-1/2" width="64" height="64">
+                <span class="lum-stay-property-link__shade pointer-events-none absolute inset-0 z-[1] bg-black/24" aria-hidden="true"></span>
+                <img src="{{ $img('stay/logomark.svg') }}" alt="" class="absolute left-1/2 top-[684px] z-[2] size-[64px] -translate-x-1/2" width="64" height="64">
             </a>
 
             <div class="absolute flex w-[703px] flex-col items-center gap-[16px] text-center" style="left: {{ $layout['left'] }}px; top: {{ $layout['textTop'] }}px" data-lum-stay-property-copy data-lum-stay-property="{{ $index }}">

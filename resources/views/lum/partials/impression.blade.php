@@ -4,7 +4,7 @@
     $imgBase = $imgBase ?? 'interior';
     $showLogomark = $showLogomark ?? ($variant === 'home');
     $showCta = $showCta ?? false;
-    $startIndex = $startIndex ?? ($variant === 'villa' ? 2 : 0);
+    $startIndex = $startIndex ?? 0;
 
     $sectionHeights = match ($variant) {
         'villa' => 'h-[856px] tab:h-[1324px] desk:h-[1555px]',
@@ -92,7 +92,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" class="lum-btn-green absolute left-1/2 top-[744px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.nav.take_a_break') }}</a>
+            <a href="#" class="lum-btn-green absolute left-1/2 top-[744px] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.nav.take_a_break') }}</a>
         @endif
     </div>
 

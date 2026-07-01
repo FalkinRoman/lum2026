@@ -73,14 +73,23 @@
 
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
 
-                    <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] lum-text-2 font-medium text-lum-espresso">
-                        <a href="{{ route('stay') }}" @class(['lum-nav-link', 'is-active' => $activeNav === 'stay'])>
+                    <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible lum-text-2 font-medium text-lum-espresso">
+                        <a href="{{ route('stay') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'stay'])>
                             <span>{{ __('lum.nav.stay') }}</span>
-                            <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="lum-nav-link__dot" width="6" height="6">
+                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="#" class="lum-nav-link--inline">{{ __('lum.nav.dining') }}</a>
-                        <a href="#" class="lum-nav-link--inline">{{ __('lum.nav.relax') }}</a>
-                        <a href="#" class="lum-nav-link--inline">{{ __('lum.nav.discover') }}</a>
+                        <a href="#" class="lum-nav-link--inline">
+                            <span>{{ __('lum.nav.dining') }}</span>
+                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                        </a>
+                        <a href="#" class="lum-nav-link--inline">
+                            <span>{{ __('lum.nav.relax') }}</span>
+                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                        </a>
+                        <a href="#" class="lum-nav-link--inline">
+                            <span>{{ __('lum.nav.discover') }}</span>
+                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                        </a>
                     </nav>
 
                     <a href="{{ route('home') }}" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">

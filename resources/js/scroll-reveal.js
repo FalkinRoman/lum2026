@@ -14,6 +14,30 @@ function parseStart(element) {
     return element.dataset.lumScrollStart || 'top 88%';
 }
 
+function isCenteredElement(element) {
+    return element.classList.contains('-translate-x-1/2');
+}
+
+function revealMotionProps(element, travel, fadeOnly) {
+    if (fadeOnly) {
+        return { from: {}, to: {}, clearProps: 'opacity' };
+    }
+
+    if (isCenteredElement(element)) {
+        return {
+            from: { marginTop: travel, opacity: 0 },
+            to: { marginTop: 0, opacity: 1 },
+            clearProps: 'marginTop,opacity',
+        };
+    }
+
+    return {
+        from: { y: travel, opacity: 0 },
+        to: { y: 0, opacity: 1 },
+        clearProps: 'transform,opacity',
+    };
+}
+
 function revealElement(element) {
     if (element.closest('[data-lum-scroll-stagger]') && element.hasAttribute('data-lum-scroll-item')) {
         return;
@@ -22,17 +46,18 @@ function revealElement(element) {
     const fadeOnly = element.hasAttribute('data-lum-scroll-fade');
     const travel = fadeOnly ? 0 : (Number(element.dataset.lumScrollRevealY) || 48);
     const delay = Number(element.dataset.lumScrollRevealDelay) || 0;
+    const motion = revealMotionProps(element, travel, fadeOnly);
 
     gsap.fromTo(
         element,
-        fadeOnly ? { opacity: 0 } : { y: travel, opacity: 0 },
+        fadeOnly ? { opacity: 0 } : motion.from,
         {
-            y: fadeOnly ? undefined : 0,
             opacity: 1,
+            ...(fadeOnly ? {} : motion.to),
             duration: REVEAL_DURATION,
             delay,
             ease: REVEAL_EASE,
-            force3D: ! fadeOnly,
+            force3D: ! fadeOnly && ! isCenteredElement(element),
             scrollTrigger: {
                 trigger: element,
                 start: parseStart(element),
@@ -40,9 +65,7 @@ function revealElement(element) {
                 invalidateOnRefresh: true,
             },
             onComplete: () => {
-                if (! fadeOnly) {
-                    gsap.set(element, { clearProps: 'transform' });
-                }
+                gsap.set(element, { clearProps: motion.clearProps });
             },
         },
     );
