@@ -61,29 +61,6 @@ function initVillaIntro(root) {
     );
 }
 
-function initVillaDivider(node) {
-    gsap.fromTo(
-        node,
-        { scale: 0.6, opacity: 0, rotation: -90 },
-        {
-            scale: 1,
-            opacity: 1,
-            rotation: 0,
-            duration: 1,
-            ease: 'back.out(1.5)',
-            scrollTrigger: {
-                trigger: node,
-                start: 'top 95%',
-                once: true,
-                invalidateOnRefresh: true,
-            },
-            onComplete: () => {
-                gsap.set(node, { clearProps: 'transform' });
-            },
-        },
-    );
-}
-
 function initVillaPolaroid(node, index) {
     const rotate = node.style.transform || '';
 
@@ -163,12 +140,6 @@ export function initVillaPage() {
     document.querySelectorAll('[data-lum-villa-eyebrow]').forEach((node) => {
         if (isVisibleElement(node)) {
             initVillaEyebrow(node);
-        }
-    });
-
-    document.querySelectorAll('[data-lum-villa-divider]').forEach((node) => {
-        if (isVisibleElement(node)) {
-            initVillaDivider(node);
         }
     });
 

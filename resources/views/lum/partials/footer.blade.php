@@ -79,7 +79,7 @@
         </div>
 
         <button type="button" data-lum-back-to-top class="absolute left-[315px] top-[708px] flex items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
-            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px] -scale-y-100" width="32" height="32">
         </button>
 
         @include('lum.partials.footer-credits', [
@@ -167,7 +167,7 @@
         ])
 
         <button type="button" data-lum-back-to-top class="absolute left-[884px] top-[993px] flex items-center justify-center rounded-full bg-lum-ivory p-[12px]" aria-label="{{ __('lum.aria.back_to_top') }}">
-            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px] -scale-y-100" width="32" height="32">
         </button>
     </div>
 
@@ -228,7 +228,7 @@
         </nav>
 
         <button type="button" data-lum-back-to-top class="absolute right-[72px] top-[667px] flex size-[40px] items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
-            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+            <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px] -scale-y-100" width="32" height="32">
         </button>
 
         <div class="absolute bottom-[64px] left-1/2 h-px w-[1776px] -translate-x-1/2 bg-lum-ivory-40 opacity-16"></div>

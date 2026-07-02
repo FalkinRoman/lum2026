@@ -145,9 +145,11 @@
                             <span>{{ __('lum.nav.relax') }}</span>
                             <span class="lum-nav-link__dot" aria-hidden="true"></span>
                         </a>
-                        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('discover')])>
+                        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('discover', 'discover.show')])>
                             <span>{{ __('lum.nav.discover') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                            @unless (request()->routeIs('discover.show'))
+                                <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                            @endunless
                         </a>
                     </nav>
                     <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">

@@ -46,7 +46,7 @@
         @foreach ($places as $index => $place)
             @php $layout = $mobileLayout[$index]; @endphp
 
-            <div class="lum-dining-card absolute left-1/2 h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('discover.show', $place['slug']) }}" class="lum-dining-card absolute left-1/2 block h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.discover.card', [
                     'img' => $img,
                     'place' => $place,
@@ -59,7 +59,7 @@
                     'pinSize' => 48,
                     'pinIconSize' => 16,
                 ])
-            </div>
+            </a>
         @endforeach
     </div>
 
@@ -85,7 +85,7 @@
         @foreach ($places as $index => $place)
             @php $layout = $tabletLayout[$index]; @endphp
 
-            <div class="lum-dining-card absolute h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('discover.show', $place['slug']) }}" class="lum-dining-card absolute block h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.discover.card', [
                     'img' => $img,
                     'place' => $place,
@@ -97,7 +97,7 @@
                     'pinSize' => 56,
                     'pinIconSize' => 20,
                 ])
-            </div>
+            </a>
         @endforeach
     </div>
 
@@ -123,14 +123,14 @@
         @foreach ($places as $index => $place)
             @php $layout = $desktopLayout[$index]; @endphp
 
-            <div class="lum-dining-card absolute h-[740px] w-[549px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('discover.show', $place['slug']) }}" class="lum-dining-card absolute block h-[740px] w-[549px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.discover.card', [
                     'img' => $img,
                     'place' => $place,
                     'width' => 549,
                     'height' => 740,
                 ])
-            </div>
+            </a>
         @endforeach
     </div>
 </section>

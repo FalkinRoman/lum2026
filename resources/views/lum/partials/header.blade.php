@@ -1,6 +1,7 @@
 @php
     $headerTone = $headerTone ?? 'ivory';
     $headerActive = $headerActive ?? null;
+    $hideDiscoverDot = $hideDiscoverDot ?? request()->routeIs('discover.show');
     $isEspresso = $headerTone === 'espresso';
     $stayHref = route('stay');
 @endphp
@@ -42,7 +43,9 @@
         </a>
         <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => $headerActive === 'discover'])>
             <span>{{ __('lum.nav.discover') }}</span>
-            <span class="lum-nav-link__dot" aria-hidden="true"></span>
+            @unless ($hideDiscoverDot && $headerActive === 'discover')
+                <span class="lum-nav-link__dot" aria-hidden="true"></span>
+            @endunless
         </a>
     </nav>
 

@@ -8,9 +8,10 @@
         request()->routeIs('stay', 'villa.show') => 'stay',
         request()->routeIs('dining') => 'dining',
         request()->routeIs('relax') => 'relax',
-        request()->routeIs('discover') => 'discover',
+        request()->routeIs('discover', 'discover.show') => 'discover',
         default => null,
     };
+    $hideDiscoverDot = request()->routeIs('discover.show');
 @endphp
 
 <header
@@ -95,7 +96,9 @@
                         </a>
                         <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'discover'])>
                             <span>{{ __('lum.nav.discover') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                            @unless ($hideDiscoverDot && $activeNav === 'discover')
+                                <span class="lum-nav-link__dot" aria-hidden="true"></span>
+                            @endunless
                         </a>
                     </nav>
 

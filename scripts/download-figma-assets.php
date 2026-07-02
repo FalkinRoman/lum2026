@@ -88,6 +88,13 @@ $remoteAssets = [
     'relax/wellness-oval.webp' => 'https://www.figma.com/api/mcp/asset/ddafa8ee-e5c6-48c2-9584-4e2cbc5578e1',
     'relax/wellness-hero-mob.webp' => 'https://www.figma.com/api/mcp/asset/1a72694f-1373-487a-ac0b-40ed524718d7',
     'relax/wellness-hero-tab.webp' => 'https://www.figma.com/api/mcp/asset/3446f656-87e9-402a-8ac9-70c07aad7e5f',
+    'discover/detail/galle-fort/wellness-hero.webp' => 'https://www.figma.com/api/mcp/asset/1d3b9ab9-6672-4fc6-a40b-38890dc174d5',
+    'discover/detail/galle-fort/oval.webp' => 'https://www.figma.com/api/mcp/asset/f1fcdcd5-fe04-46fb-853c-e8bb3284f5e9',
+    'discover/detail/galle-fort/gallery-01.webp' => 'https://www.figma.com/api/mcp/asset/2cffd5a5-38c9-40c3-acf3-04f72dc4b958',
+    'discover/detail/galle-fort/gallery-02.webp' => 'https://www.figma.com/api/mcp/asset/fd566f1e-6f1d-4e79-8cfd-646934d21f59',
+    'discover/detail/galle-fort/gallery-03.webp' => 'https://www.figma.com/api/mcp/asset/392d0aad-42a1-479a-a0f2-ca9a6a5f3766',
+    'discover/detail/galle-fort/package-01.webp' => 'https://www.figma.com/api/mcp/asset/9431a297-4e6e-4867-ad4f-dc5d506e99fe',
+    'discover/detail/galle-fort/package-02.webp' => 'https://www.figma.com/api/mcp/asset/995aa515-556f-4376-8849-1a4b384c5d6a',
 ];
 
 $ok = 0;

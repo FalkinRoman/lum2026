@@ -23,6 +23,22 @@ Route::get('/discover', function () {
     return view('discover');
 })->name('discover');
 
+Route::get('/discover/{slug}', function (string $slug) {
+    $slugs = collect(trans('lum.discover.places'))->pluck('slug');
+
+    if (! $slugs->contains($slug)) {
+        abort(404);
+    }
+
+    $excursion = trans("lum.excursion.{$slug}");
+
+    if (! is_array($excursion)) {
+        abort(404);
+    }
+
+    return view('excursion', compact('slug', 'excursion'));
+})->name('discover.show');
+
 Route::get('/dining/{slug}', function (string $slug) {
     $slugs = collect(trans('lum.dining.venues'))->pluck('slug');
 
