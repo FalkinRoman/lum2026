@@ -42,9 +42,9 @@
                         {{ __('lum.nav.home') }}
                         <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
                     </a>
-                    <a href="#" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
-                    <a href="#" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
-                    <a href="#" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
+                    <a href="{{ route('shop') }}" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
+                    <a href="{{ route('contacts') }}" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
+                    <a href="{{ route('blog') }}" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
                 </nav>
 
                 <div class="absolute left-[20px] top-[300px] h-px w-[335px] bg-lum-espresso/16" data-lum-menu-reveal="3"></div>
@@ -89,9 +89,9 @@
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-burger-tab'])
                         </div>
                         <a href="#" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
-                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
+                        <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-                        </button>
+                        </a>
                         <button type="button" class="lum-burger-btn lum-burger-btn--espresso flex items-center" data-lum-menu-close aria-label="{{ __('lum.aria.close_menu') }}">
                             <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </button>
@@ -110,9 +110,9 @@
                         <span class="text-lum-espresso/16">/</span>
                         <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.villas', [], 'en') }}</a>
                     </div>
-                    <a href="#" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
-                    <a href="#" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
-                    <a href="#" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
+                    <a href="{{ route('shop') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
+                    <a href="{{ route('contacts') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
+                    <a href="{{ route('blog') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
                 </nav>
 
                 <div class="absolute left-[20px] top-[368px] z-10 h-[480px] w-[920px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
@@ -170,9 +170,9 @@
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-burger-desk'])
                         </div>
                         <a href="#" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
-                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
+                        <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-                        </button>
+                        </a>
                     </div>
                 </header>
 
@@ -188,9 +188,9 @@
                         <span class="text-lum-espresso/16">/</span>
                         <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.villas', [], 'en') }}</a>
                     </div>
-                    <a href="#" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
-                    <a href="#" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
-                    <a href="#" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
+                    <a href="{{ route('shop') }}" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
+                    <a href="{{ route('contacts') }}" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
+                    <a href="{{ route('blog') }}" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
                 </nav>
 
                 <div class="absolute right-[72px] top-[168px] z-10 h-[528px] w-[703px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">

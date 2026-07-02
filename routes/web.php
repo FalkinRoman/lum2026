@@ -71,4 +71,32 @@ Route::get('/stay/{slug}', function (string $slug) {
     return view('villa', compact('slug', 'villa'));
 })->name('villa.show');
 
+Route::get('/blog', function () {
+    return view('blog');
+})->name('blog');
+
+Route::get('/blog/{slug}', function (string $slug) {
+    $slugs = collect(trans('lum.blog.posts'))->pluck('slug');
+
+    if (! $slugs->contains($slug)) {
+        abort(404);
+    }
+
+    $post = trans("lum.post.{$slug}");
+
+    if (! is_array($post)) {
+        abort(404);
+    }
+
+    return view('post', compact('slug', 'post'));
+})->name('blog.show');
+
+Route::get('/contacts', function () {
+    return view('contacts');
+})->name('contacts');
+
+Route::get('/shop', function () {
+    return view('shop');
+})->name('shop');
+
 Route::get('/locale/{locale}', LocaleController::class)->name('locale.switch');

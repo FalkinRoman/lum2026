@@ -1,3 +1,7 @@
+@php
+    $blogPosts = trans('lum.blog.posts');
+    $sliderPosts = array_merge($blogPosts, [$blogPosts[0]]);
+@endphp
 <section class="lum-container relative h-[777px] bg-lum-ivory tab:h-[1244px] desk:h-[1274px]">
     {{-- MOBILE — Figma 16:1579 --}}
     <div class="relative h-full tab:hidden" data-lum-blog-slider data-gap="10">
@@ -8,8 +12,8 @@
         </div>
         <div class="absolute left-[20px] top-[201px] w-[355px] overflow-hidden">
             <div class="flex w-full gap-[10px] overflow-x-auto scroll-smooth pr-[20px] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory" data-lum-blog-track>
-                @foreach (range(1, 4) as $i)
-                    @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'mobile'])
+                @foreach ($sliderPosts as $post)
+                    @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'mobile', 'post' => $post])
                 @endforeach
             </div>
         </div>
@@ -36,8 +40,8 @@
         </div>
         <div class="absolute left-[20px] top-[287px] w-[920px] overflow-hidden">
             <div class="flex w-full gap-[20px] overflow-x-auto scroll-smooth pr-[20px] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory" data-lum-blog-track>
-                @foreach (range(1, 4) as $i)
-                    @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'tablet'])
+                @foreach ($sliderPosts as $post)
+                    @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'tablet', 'post' => $post])
                 @endforeach
             </div>
         </div>
@@ -63,23 +67,24 @@
             <span class="lum-headline uppercase text-lum-ivory">{{ __('lum.blog.label') }}</span>
         </div>
         <div class="absolute left-[72px] top-[398px] flex gap-[64px]">
-            @foreach (range(1, 4) as $i)
-                <article class="lum-blog-card w-[396px] shrink-0">
+            @foreach ($blogPosts as $post)
+                <a href="{{ route('blog.show', $post['slug']) }}" class="lum-blog-card w-[396px] shrink-0">
                     <div class="relative h-[396px] w-[396px] overflow-hidden">
-                        <img src="{{ $img('blog/surfing.jpg') }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="396" height="396">
+                        <img src="{{ $img('blog/' . $post['image']) }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="396" height="396">
                         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(57,54,46,0.74)]"></div>
                     </div>
                     <div class="flex h-[320px] w-[396px] flex-col items-center bg-lum-sand px-[37px] pt-[44px] text-center">
                         <img src="{{ $img('ui/dot.svg') }}" alt="" class="mb-[12px] size-[6px]" width="6" height="6">
-                        <p class="lum-text-2 mb-[24px] font-medium uppercase">{{ __('lum.blog.category') }}</p>
-                        <p class="lum-heading-3 text-lum-espresso">{{ __('lum.blog.card_line2') }}<br>{{ __('lum.blog.card_line3') }}<br><span class="font-normal italic">{{ __('lum.blog.card_time') }}</span></p>
+                        <p class="lum-text-2 mb-[24px] font-medium uppercase">{{ $post['tags'][0] }}</p>
+                        <p class="lum-heading-3 text-lum-espresso">{{ $post['title'] }}</p>
                         @include('lum.partials.link-read-more', [
                             'img' => $img,
+                            'href' => route('blog.show', $post['slug']),
                             'lineWidth' => 79,
-                            'classes' => 'lum-text-2 mt-[24px] font-medium text-lum-green',
+                            'classes' => 'lum-text-2 mt-[24px] font-medium text-lum-green pointer-events-none',
                         ])
                     </div>
-                </article>
+                </a>
             @endforeach
         </div>
     </div>

@@ -38,13 +38,13 @@
             'lum-btn-outline' => $isEspresso,
         ])>{{ __('lum.nav.take_a_break') }}</a>
 
-        <button type="button" @class([
+        <a href="{{ route('contacts') }}" @class([
             'lum-icon-btn',
             'lum-icon-btn--ivory-filled-s' => ! $isEspresso,
             'lum-icon-btn--espresso-filled' => $isEspresso,
         ]) aria-label="{{ __('lum.aria.contact') }}">
             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-        </button>
+        </a>
 
         <button type="button" @class([
             'lum-burger-btn flex items-center',

@@ -7,6 +7,9 @@ return [
         'dining_title' => 'Lum — Dining',
         'relax_title' => 'Lum — Relax',
         'discover_title' => 'Lum — Discover',
+        'blog_title' => 'Lum — Blog',
+        'contact_title' => 'Lum — Contacts',
+        'shop_title' => 'Lum — Shop',
     ],
 
     'lang' => [
@@ -226,6 +229,87 @@ return [
         'card_line3' => 'is open daily from',
         'card_time' => '9 am to 9 pm.',
         'read_more' => 'Read More',
+        'page_title' => 'blog',
+        'back' => 'back',
+        'tabs' => ['all', 'food', 'ocean', 'lifestyle'],
+        'posts' => [
+            [
+                'slug' => 'sri-lanka-guide',
+                'title' => 'The Sri Lanka Guide',
+                'excerpt' => 'Just a few hours from the airport. Light years away from the crowds. Here you you find the true Sri Lanka. And a small resort with a big view, a great restaurant, and a special sense of calm. Welcome to The Lum.',
+                'image' => 'posts/sri-lanka-guide.webp',
+                'tags' => ['Food', 'Ocean'],
+                'categories' => ['food', 'ocean'],
+            ],
+            [
+                'slug' => 'nervous-system-retreat',
+                'title' => 'The 7-Day Nervous System Reset Retreat',
+                'excerpt' => 'Just a journey away from the ordinary. Far from the noise, close to nature. Discover the hidden beauty of Sri Lanka, where ocean views, mindful moments, and effortless calm come together. Welcome to LUM Ocean.',
+                'image' => 'posts/nervous-system-retreat.webp',
+                'tags' => ['Food', 'Ocean'],
+                'categories' => ['food', 'lifestyle'],
+            ],
+            [
+                'slug' => 'lum-ocean-trip',
+                'title' => 'Lum Ocean Trip',
+                'excerpt' => 'A boutique hotel, restaurant, and lifestyle space for Relax, Surfing, and beautiful living by the ocean. European cuisine, grill parties, delicious cocktails, And the atmosphere of a tropical evening.',
+                'image' => 'posts/lum-ocean-trip.webp',
+                'tags' => ['Food', 'Ocean'],
+                'categories' => ['ocean', 'lifestyle'],
+            ],
+        ],
+    ],
+
+    'post' => [
+        'nervous-system-retreat' => [
+            'meta_title' => 'The 7-Day Nervous System Reset Retreat — Lum',
+            'title' => 'The 7-Day Nervous System Reset Retreat',
+            'excerpt' => 'Just a journey away from the ordinary. Far from the noise, close to nature. Discover the hidden beauty of Sri Lanka, where ocean views, mindful moments, and effortless calm come together. Welcome to LUM Ocean.',
+            'tags' => ['Food', 'Ocean'],
+            'hero' => 'detail/nervous-system-retreat/hero.webp',
+            'body' => [
+                'A week designed to slow the pulse and widen the horizon — morning yoga above the ocean, guided breathwork, and long afternoons with nowhere to be.',
+                'Each day balances movement and rest: coastal walks, tea in the garden, and evenings that end with the sound of the sea.',
+            ],
+        ],
+        'sri-lanka-guide' => [
+            'meta_title' => 'The Sri Lanka Guide — Lum',
+            'title' => 'The Sri Lanka Guide',
+            'excerpt' => 'Just a few hours from the airport. Light years away from the crowds. Here you you find the true Sri Lanka. And a small resort with a big view, a great restaurant, and a special sense of calm. Welcome to The Lum.',
+            'tags' => ['Food', 'Ocean'],
+            'hero' => 'posts/sri-lanka-guide.webp',
+            'body' => [
+                'From Galle Fort to hidden coves along the south coast, this is the Sri Lanka we return to — unhurried, generous, and full of light.',
+            ],
+        ],
+        'lum-ocean-trip' => [
+            'meta_title' => 'Lum Ocean Trip — Lum',
+            'title' => 'Lum Ocean Trip',
+            'excerpt' => 'A boutique hotel, restaurant, and lifestyle space for Relax, Surfing, and beautiful living by the ocean. European cuisine, grill parties, delicious cocktails, And the atmosphere of a tropical evening.',
+            'tags' => ['Food', 'Ocean'],
+            'hero' => 'posts/lum-ocean-trip.webp',
+            'body' => [
+                'Surf at dawn, lunch under the palms, and sunset drinks as the tide turns — Lum Ocean is a rhythm, not a schedule.',
+            ],
+        ],
+    ],
+
+    'contact' => [
+        'title' => 'contacts',
+        'address' => 'Thiththagalla road, Ahangama, Sri Lanka',
+        'phone' => '+94 (779) 296-087',
+        'email' => 'dimacake@gmail.com',
+        'see_on_map' => 'see on map',
+        'hours' => [
+            ['label' => 'MON - FRI', 'value' => '10:00 - 19:00'],
+            ['label' => 'SAT', 'value' => '10:00 - 18:00'],
+        ],
+        'legal' => [
+            ['label' => 'IE', 'value' => 'Dmitry Nikolaevich Malashchitsky'],
+            ['label' => 'Phone', 'value' => '+7 (916) 934-11-44'],
+            ['label' => 'TIN', 'value' => '032614495407'],
+            ['label' => 'PSRN', 'value' => '325508100401521'],
+        ],
     ],
 
     'shop' => [
@@ -233,6 +317,26 @@ return [
         'title_normal' => 'Visit the',
         'title_italic' => 'Lum Shop',
         'cta' => 'view shop',
+        'page_title' => 'lum shop',
+        'buy' => 'buy now',
+        'products' => [
+            [
+                'slug' => 'ocean-tee',
+                'title' => 'LUM OCEAN TEE',
+                'subtitle' => 'Classic Sun 100% Cotton · Washed & worn',
+                'image' => 'products/ocean-tee.webp',
+                'colors' => ['#C4A574', '#C76B3C', '#8B9EA8', '#3D4A52'],
+                'sizes' => ['S', 'M', 'L', 'XL'],
+            ],
+            [
+                'slug' => 'lum-cup',
+                'title' => 'LUM CUP',
+                'subtitle' => 'Organic Cotton · Vintage Wash',
+                'image' => 'products/lum-cup.webp',
+                'colors' => ['#E8DCC8', '#D4783C', '#2E4A52', '#1A1A1A'],
+                'sizes' => ['S', 'M', 'L', 'XL'],
+            ],
+        ],
     ],
 
     'footer' => [

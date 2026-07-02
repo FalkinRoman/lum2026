@@ -55,7 +55,7 @@ function initVillaIntro(root) {
             stagger: INTRO_STAGGER,
             delay: 0.22,
             onComplete: () => {
-                gsap.set(items, { clearProps: 'transform' });
+                gsap.set(items, { clearProps: 'y,opacity' });
             },
         },
     );
@@ -108,7 +108,7 @@ function initVillaCard(card, index) {
                 invalidateOnRefresh: true,
             },
             onComplete: () => {
-                gsap.set(card, { clearProps: 'transform,opacity' });
+                gsap.set(card, { clearProps: 'y,opacity,scale' });
             },
         },
     );

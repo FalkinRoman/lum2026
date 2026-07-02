@@ -95,6 +95,15 @@ $remoteAssets = [
     'discover/detail/galle-fort/gallery-03.webp' => 'https://www.figma.com/api/mcp/asset/392d0aad-42a1-479a-a0f2-ca9a6a5f3766',
     'discover/detail/galle-fort/package-01.webp' => 'https://www.figma.com/api/mcp/asset/9431a297-4e6e-4867-ad4f-dc5d506e99fe',
     'discover/detail/galle-fort/package-02.webp' => 'https://www.figma.com/api/mcp/asset/995aa515-556f-4376-8849-1a4b384c5d6a',
+    'blog/posts/sri-lanka-guide.webp' => 'https://www.figma.com/api/mcp/asset/71c78a94-ebf6-40d9-95c5-7bbb33768209',
+    'blog/posts/nervous-system-retreat.webp' => 'https://www.figma.com/api/mcp/asset/71c78a94-ebf6-40d9-95c5-7bbb33768209',
+    'blog/posts/lum-ocean-trip.webp' => 'https://www.figma.com/api/mcp/asset/cbfbd177-e13b-44a2-9275-e06f3eb28005',
+    'blog/detail/nervous-system-retreat/hero.webp' => 'https://www.figma.com/api/mcp/asset/edb2b493-25a0-4774-88d5-de8dd3ed296b',
+    'contact/map-mob.webp' => 'https://www.figma.com/api/mcp/asset/b5b8f797-78c5-4d83-b192-9fdb5db4ff00',
+    'contact/map-desk.webp' => 'https://www.figma.com/api/mcp/asset/b5b8f797-78c5-4d83-b192-9fdb5db4ff00',
+    'contact/hero.webp' => 'https://www.figma.com/api/mcp/asset/72416b02-6aef-48ba-9c64-9408d285d13a',
+    'shop/products/ocean-tee.webp' => 'https://www.figma.com/api/mcp/asset/d6624436-5a80-4bf3-81bd-9a16cfc7a31e',
+    'shop/products/lum-cup.webp' => 'https://www.figma.com/api/mcp/asset/128e6fe1-aac2-476f-8433-241f4b25f5e7',
 ];
 
 $ok = 0;

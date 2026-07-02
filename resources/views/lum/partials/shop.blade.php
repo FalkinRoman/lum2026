@@ -15,7 +15,7 @@
                     <p class="font-serif text-[56px] leading-[56px]"><span class="font-normal not-italic">{{ __('lum.shop.title_normal') }}</span></p>
                     <p class="font-serif text-[56px] font-medium italic leading-[56px]">{{ __('lum.shop.title_italic') }}</p>
                 </div>
-                <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.shop.cta') }}</a>
+                <a href="{{ route('shop') }}" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.shop.cta') }}</a>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
                 <h2 class="whitespace-nowrap font-serif text-[80px] leading-[80px] text-lum-ivory"><span class="font-normal not-italic">{{ __('lum.shop.title_normal') }} </span><span class="italic">{{ __('lum.shop.title_italic') }}</span></h2>
                 <img src="{{ $img('shop/deco-right.svg') }}" alt="" class="w-[72px]" width="72" height="2">
             </div>
-            <a href="#" class="rounded-[50px] bg-lum-ivory px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold uppercase leading-[25px] tracking-[3.2px] text-lum-espresso">{{ __('lum.shop.cta') }}</a>
+            <a href="{{ route('shop') }}" class="rounded-[50px] bg-lum-ivory px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold uppercase leading-[25px] tracking-[3.2px] text-lum-espresso">{{ __('lum.shop.cta') }}</a>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
                     <h2 class="lum-heading-1-hero text-lum-ivory"><span class="font-normal not-italic">{{ __('lum.shop.title_normal') }} </span><span class="italic">{{ __('lum.shop.title_italic') }}</span></h2>
                     <img src="{{ $img('shop/deco-right.svg') }}" alt="" class="w-[108px]" width="108" height="2">
                 </div>
-                <a href="#" class="lum-btn-ivory">{{ __('lum.shop.cta') }}</a>
+                <a href="{{ route('shop') }}" class="lum-btn-ivory">{{ __('lum.shop.cta') }}</a>
             </div>
         </div>
     </div>

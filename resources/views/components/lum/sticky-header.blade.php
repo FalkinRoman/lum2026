@@ -61,9 +61,9 @@
 
                         <a href="#" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
 
-                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
+                        <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-                        </button>
+                        </a>
 
                         <button type="button" class="lum-burger-btn lum-burger-btn--espresso flex items-center" aria-label="{{ __('lum.aria.menu') }}" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
                             <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
@@ -121,9 +121,9 @@
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-sticky-desk'])
                         </div>
                         <a href="#" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
-                        <button type="button" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
+                        <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

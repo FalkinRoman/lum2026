@@ -124,6 +124,7 @@
     .lum-btn,
     .lum-btn-ivory,
     .lum-btn-dark,
+    .lum-btn-espresso,
     .lum-icon-btn,
     .lum-burger-btn,
     .lum-nav-link,
@@ -165,7 +166,8 @@
     .lum-btn-green,
     .lum-btn,
     .lum-btn-ivory,
-    .lum-btn-dark {
+    .lum-btn-dark,
+    .lum-btn-espresso {
         @apply border border-transparent;
     }
 
@@ -375,6 +377,16 @@
 
     .lum-btn-dark {
         @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-ground text-lum-ivory;
+    }
+
+    .lum-btn-espresso {
+        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent bg-lum-espresso text-lum-ivory;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-btn-espresso:hover {
+            @apply border-lum-espresso bg-transparent text-lum-espresso;
+        }
     }
 
     .lum-btn-green {
