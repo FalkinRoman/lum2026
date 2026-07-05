@@ -3,6 +3,7 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../views/**/*.blade.php';
+@source '../../lang/**/*.php';
 
 @theme {
     /* mobile ≤430, tablet 431–1023, desktop ≥1024 */
