@@ -961,7 +961,12 @@
 
     .lum-dining-card__photo {
         transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-        will-change: transform;
+    }
+
+    @media (hover: none) {
+        .lum-dining-card__photo {
+            transform: none !important;
+        }
     }
 
     .lum-dining-card__shade {
@@ -1023,11 +1028,23 @@
     }
 
     .lum-shop-size {
-        @apply border border-lum-espresso/16;
+        @apply border border-lum-espresso/16 bg-transparent;
+    }
+
+    [data-lum-shop-size][data-active] {
+        @apply border-lum-espresso bg-transparent text-lum-espresso;
+    }
+
+    [data-lum-shop-color] {
+        @apply rounded-full;
+    }
+
+    [data-lum-shop-color][data-active] {
+        box-shadow: 0 0 0 1px theme('colors.lum-espresso');
     }
 
     [data-lum-shop-variant='mobile'] [data-lum-shop-size][data-active] {
-        @apply border-lum-espresso bg-lum-espresso text-lum-ivory;
+        @apply border-lum-espresso bg-transparent text-lum-espresso;
     }
 
     [data-lum-shop-variant='tablet'] [data-lum-shop-size][data-active],

@@ -17,7 +17,6 @@ function setActiveButton(buttons, activeButton) {
 }
 
 function initShopProduct(card) {
-    const image = card.querySelector('[data-lum-shop-product-image]');
     const thumbs = [...card.querySelectorAll('[data-lum-shop-thumb]')];
     const colors = [...card.querySelectorAll('[data-lum-shop-color]')];
     const sizes = [...card.querySelectorAll('[data-lum-shop-size]')];
@@ -29,12 +28,6 @@ function initShopProduct(card) {
 
     thumbs.forEach((thumb) => {
         thumb.addEventListener('click', () => {
-            const thumbImage = thumb.querySelector('img');
-
-            if (image && thumbImage) {
-                image.src = thumbImage.src;
-            }
-
             setActiveButton(thumbs, thumb);
             syncThumbIndicator(card, thumb);
         });

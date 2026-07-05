@@ -17,10 +17,12 @@
     };
 
     $imageClass = match (true) {
-        $variant === 'tablet' && $isTee => 'absolute left-1/2 top-0 h-[313px] w-[350px] -translate-x-1/2 object-cover',
+        $variant === 'tablet' && $isTee => 'absolute left-1/2 top-0 h-[313px] w-[350px] -translate-x-1/2 object-contain object-top',
+        $isTee && $variant === 'mobile' => 'h-[300px] w-full object-contain object-top',
+        $isTee && $variant === 'tablet' => 'h-[313px] w-full object-contain object-top',
+        $isTee => 'mx-auto h-[313px] w-[350px] object-contain object-top',
         $variant === 'mobile' => 'h-[300px] w-full object-cover',
         $variant === 'tablet' => 'h-[313px] w-full object-cover',
-        $isTee => 'mx-auto h-[313px] w-[350px] object-cover',
         default => 'h-[313px] w-full object-cover',
     };
 
@@ -150,7 +152,7 @@
                     ])
                     data-lum-shop-size
                     data-index="{{ $index }}"
-                    @if ($index === 3) data-active @endif
+                    @if ($index === 0) data-active @endif
                 >{{ $size }}</button>
             @endforeach
         </div>

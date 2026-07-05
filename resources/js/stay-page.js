@@ -14,13 +14,25 @@ function isCenteredElement(element) {
     return element.classList.contains('-translate-x-1/2');
 }
 
+function isStaticCardImage(image) {
+    return Boolean(image.closest('[data-lum-dining-page], [data-lum-relax-page], [data-lum-discover-page]'));
+}
+
 function imageMotionFrom(image) {
+    if (isStaticCardImage(image)) {
+        return { opacity: 0 };
+    }
+
     return isCenteredElement(image)
         ? { marginTop: 36, opacity: 0 }
         : { y: 36, opacity: 0 };
 }
 
 function imageMotionTo(image) {
+    if (isStaticCardImage(image)) {
+        return { opacity: 1 };
+    }
+
     return isCenteredElement(image)
         ? { marginTop: 0, opacity: 1 }
         : { y: 0, opacity: 1 };
@@ -28,7 +40,9 @@ function imageMotionTo(image) {
 
 function clearImageMotion(image) {
     gsap.set(image, {
-        clearProps: isCenteredElement(image) ? 'marginTop,opacity' : 'transform,opacity',
+        clearProps: isStaticCardImage(image)
+            ? 'opacity'
+            : (isCenteredElement(image) ? 'marginTop,opacity' : 'transform,opacity'),
     });
 }
 
@@ -149,14 +163,15 @@ function initStayHeroIntro(root) {
 function revealPropertyPair(image, copy, index) {
     const direction = index % 2 === 0 ? -18 : 18;
     const centered = isCenteredElement(image);
+    const staticCard = isStaticCardImage(image);
 
     gsap.fromTo(
         image,
-        centered ? { marginTop: 32, opacity: 0 } : { y: 32, opacity: 0 },
+        staticCard ? { opacity: 0 } : (centered ? { marginTop: 32, opacity: 0 } : { y: 32, opacity: 0 }),
         {
-            ...(centered ? { marginTop: 0 } : { y: 0 }),
+            ...(staticCard ? {} : (centered ? { marginTop: 0 } : { y: 0 })),
             opacity: 1,
-            duration: 0.9,
+            duration: staticCard ? 0.75 : 0.9,
             ease: EASE_SOFT,
             scrollTrigger: {
                 trigger: image,

@@ -93,13 +93,12 @@ function initVillaPolaroid(node, index) {
 function initVillaCard(card, index) {
     gsap.fromTo(
         card,
-        { y: 44, opacity: 0, scale: 1.06 },
+        { y: 28, opacity: 0 },
         {
             y: 0,
             opacity: 1,
-            scale: 1,
-            duration: 1.05,
-            delay: index * 0.1,
+            duration: 0.95,
+            delay: index * 0.08,
             ease: INTRO_EASE,
             scrollTrigger: {
                 trigger: card,
@@ -108,7 +107,7 @@ function initVillaCard(card, index) {
                 invalidateOnRefresh: true,
             },
             onComplete: () => {
-                gsap.set(card, { clearProps: 'y,opacity,scale' });
+                gsap.set(card, { clearProps: 'y,opacity' });
             },
         },
     );

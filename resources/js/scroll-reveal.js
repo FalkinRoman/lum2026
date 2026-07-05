@@ -89,15 +89,17 @@ export function initScrollReveal() {
             return;
         }
 
+        const fadeOnly = group.hasAttribute('data-lum-scroll-stagger-fade');
+
         gsap.fromTo(
             items,
-            { y: 56, opacity: 0 },
+            fadeOnly ? { opacity: 0 } : { y: 56, opacity: 0 },
             {
-                y: 0,
+                ...(fadeOnly ? {} : { y: 0 }),
                 opacity: 1,
-                duration: REVEAL_DURATION,
+                duration: fadeOnly ? 0.7 : REVEAL_DURATION,
                 ease: REVEAL_EASE,
-                stagger: 0.14,
+                stagger: fadeOnly ? 0.08 : 0.14,
                 scrollTrigger: {
                     trigger: group,
                     start: 'top 85%',
@@ -105,7 +107,7 @@ export function initScrollReveal() {
                     invalidateOnRefresh: true,
                 },
                 onComplete: () => {
-                    gsap.set(items, { clearProps: 'transform' });
+                    gsap.set(items, { clearProps: fadeOnly ? 'opacity' : 'transform,opacity' });
                 },
             },
         );
