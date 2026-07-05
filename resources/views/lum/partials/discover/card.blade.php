@@ -1,7 +1,7 @@
 @php
     $overlays = $place['overlays'] ?? [
-        'bg-black/32',
-        'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
+        'bg-black/16',
+        'bg-gradient-to-b from-[rgba(36,14,4,0.30)] from-[48%] to-transparent',
     ];
     $titleTop = $titleTop ?? 44;
     $locationTop = $locationTop ?? 571;

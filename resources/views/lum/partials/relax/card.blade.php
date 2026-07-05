@@ -10,7 +10,7 @@
 <img src="{{ $img('relax/' . $activity['image']) }}" alt="" class="lum-dining-card__photo absolute inset-0 h-full w-full object-cover" width="{{ $width }}" height="{{ $height }}" loading="lazy">
 <span
     class="lum-dining-card__shade pointer-events-none absolute inset-0 z-[1]"
-    style="background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.32) 100%), linear-gradient(180.48deg, rgba(36, 14, 4, 0.54) 48.425%, rgba(255, 255, 255, 0) 99.688%)"
+    style="background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.16) 0%, rgba(0, 0, 0, 0.16) 100%), linear-gradient(180.48deg, rgba(36, 14, 4, 0.30) 48.425%, rgba(255, 255, 255, 0) 99.688%)"
     aria-hidden="true"
 ></span>
 

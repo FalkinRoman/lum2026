@@ -95,7 +95,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]', 'top-[744px]' => $showLogomark, 'top-[645px]' => ! $showLogomark]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]', 'top-[744px]' => $showLogomark, 'top-[697px]' => ! $showLogomark]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
         @endif
         @else
         {{-- MOBILE excursion — Figma 103:907 --}}
@@ -209,7 +209,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]', 'top-[1212px]' => $showLogomark && $showTabs, 'top-[1057px]' => ! $showTabs, 'top-[1069px]' => ! $showLogomark && $showTabs]) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]', 'top-[1212px]' => $showLogomark && $showTabs, 'top-[1057px]' => ! $showTabs, 'top-[1147px]' => ! $showLogomark && $showTabs]) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
         @endif
     </div>
 
@@ -282,7 +282,7 @@
             </p>
         </div>
         @if ($showCta)
-            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2', 'top-[1399px]' => $showLogomark && $showTabs, 'top-[1280px]' => ! $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs]) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] leading-[25px] tracking-[3.2px]', 'top-[1399px]' => $showLogomark && $showTabs, 'top-[1280px]' => ! $showTabs, 'top-[1351px]' => ! $showLogomark && $showTabs]) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
         @endif
     </div>
 </section>
