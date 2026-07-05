@@ -1,0 +1,25 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="1">
+<rect x="0.5" y="0.5" width="43" height="43" rx="21.5" stroke="var(--stroke-0, #2E2720)" stroke-dasharray="6 6"/>
+<circle id="Ellipse 992" cx="22" cy="22" r="18" fill="url(#paint0_linear_0_196)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_196" x1="4" y1="4" x2="4" y2="40" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C1B06B"/>
+<stop offset="0.08" stop-color="#C3B165"/>
+<stop offset="0.16" stop-color="#CAB364"/>
+<stop offset="0.24" stop-color="#DBBC62"/>
+<stop offset="0.32" stop-color="#E7BC5B"/>
+<stop offset="0.4" stop-color="#ECA944"/>
+<stop offset="0.48" stop-color="#FA9F31"/>
+<stop offset="0.56" stop-color="#EF8019"/>
+<stop offset="0.64" stop-color="#745137"/>
+<stop offset="0.72" stop-color="#434546"/>
+<stop offset="0.8" stop-color="#31535E"/>
+<stop offset="0.845" stop-color="#295664"/>
+<stop offset="0.88" stop-color="#245A6B"/>
+<stop offset="0.96" stop-color="#20586A"/>
+<stop offset="1" stop-color="#2F6577"/>
+</linearGradient>
+</defs>
+</svg>

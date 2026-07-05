@@ -3,6 +3,7 @@
     $headerActive = $headerActive ?? null;
     $hideDiscoverDot = $hideDiscoverDot ?? request()->routeIs('discover.show');
     $isEspresso = $headerTone === 'espresso';
+    $homeHero = $homeHero ?? false;
     $stayHref = route('stay');
 @endphp
 <header @class([
@@ -14,6 +15,7 @@
         'lum-burger-btn absolute left-0 top-1/2 flex -translate-y-1/2 items-center',
         'lum-burger-btn--ivory' => ! $isEspresso,
         'lum-burger-btn--espresso' => $isEspresso,
+        'lum-burger-btn--on-home-hero' => $homeHero && ! $isEspresso,
     ]) aria-label="{{ __('lum.aria.menu') }}" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
         <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
     </button>

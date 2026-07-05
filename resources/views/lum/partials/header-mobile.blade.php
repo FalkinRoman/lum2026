@@ -1,6 +1,7 @@
 @php
     $headerTone = $headerTone ?? 'ivory';
     $isEspresso = $headerTone === 'espresso';
+    $homeHero = $homeHero ?? false;
 @endphp
 <header @class([
     'absolute left-[20px] top-0 z-50 h-[80px] w-[335px] border-b',
@@ -12,8 +13,10 @@
     </a>
 
     <button type="button" @class([
-        'lum-burger-btn lum-burger-btn--espresso absolute right-0 top-1/2 flex -translate-y-1/2 items-center' => $isEspresso,
-        'lum-burger-btn lum-burger-btn--ivory absolute right-0 top-1/2 flex -translate-y-1/2 items-center' => ! $isEspresso,
+        'lum-burger-btn absolute right-0 top-1/2 flex -translate-y-1/2 items-center',
+        'lum-burger-btn--espresso' => $isEspresso,
+        'lum-burger-btn--ivory' => ! $isEspresso,
+        'lum-burger-btn--on-home-hero' => $homeHero && ! $isEspresso,
     ]) aria-label="{{ __('lum.aria.menu') }}" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
         <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
     </button>

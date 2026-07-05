@@ -8,7 +8,7 @@
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
-        @include('lum.partials.header-mobile')
+        @include('lum.partials.header-mobile', ['homeHero' => true])
 
         <div class="absolute bottom-[80px] left-[20px] flex w-[335px] flex-col items-center gap-[36px]">
             <div class="flex w-full flex-col items-center gap-[30px]">
@@ -43,7 +43,7 @@
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
-        @include('lum.partials.header-tablet')
+        @include('lum.partials.header-tablet', ['homeHero' => true])
 
         <div class="absolute bottom-[231px] left-1/2 flex w-[920px] -translate-x-1/2 flex-col items-center gap-[36px]">
             <div class="flex w-full flex-col items-center gap-[30px]">
@@ -78,7 +78,7 @@
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
-        @include('lum.partials.header')
+        @include('lum.partials.header', ['homeHero' => true])
 
         <div class="absolute left-[80px] top-[520px] flex w-[1760px] flex-col items-center gap-[44px]">
             <img src="{{ $img('hero/logomark.svg') }}" alt="" class="size-[64px]" width="64" height="64">

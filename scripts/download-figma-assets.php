@@ -95,15 +95,33 @@ $remoteAssets = [
     'discover/detail/galle-fort/gallery-03.webp' => 'https://www.figma.com/api/mcp/asset/392d0aad-42a1-479a-a0f2-ca9a6a5f3766',
     'discover/detail/galle-fort/package-01.webp' => 'https://www.figma.com/api/mcp/asset/9431a297-4e6e-4867-ad4f-dc5d506e99fe',
     'discover/detail/galle-fort/package-02.webp' => 'https://www.figma.com/api/mcp/asset/995aa515-556f-4376-8849-1a4b384c5d6a',
-    'blog/posts/sri-lanka-guide.webp' => 'https://www.figma.com/api/mcp/asset/71c78a94-ebf6-40d9-95c5-7bbb33768209',
-    'blog/posts/nervous-system-retreat.webp' => 'https://www.figma.com/api/mcp/asset/71c78a94-ebf6-40d9-95c5-7bbb33768209',
-    'blog/posts/lum-ocean-trip.webp' => 'https://www.figma.com/api/mcp/asset/cbfbd177-e13b-44a2-9275-e06f3eb28005',
+    'blog/posts/sri-lanka-guide.webp' => 'https://www.figma.com/api/mcp/asset/3b750f3c-2195-483a-9ebd-4150facca7aa',
+    'blog/posts/nervous-system-retreat.webp' => 'https://www.figma.com/api/mcp/asset/47218a4c-2586-46ba-a51d-25d5712bad07',
+    'blog/posts/lum-ocean-trip.webp' => 'https://www.figma.com/api/mcp/asset/8157b810-dcb0-4b63-a5b0-f4e14e0574a9',
     'blog/detail/nervous-system-retreat/hero.webp' => 'https://www.figma.com/api/mcp/asset/edb2b493-25a0-4774-88d5-de8dd3ed296b',
     'contact/map-mob.webp' => 'https://www.figma.com/api/mcp/asset/b5b8f797-78c5-4d83-b192-9fdb5db4ff00',
     'contact/map-desk.webp' => 'https://www.figma.com/api/mcp/asset/b5b8f797-78c5-4d83-b192-9fdb5db4ff00',
     'contact/hero.webp' => 'https://www.figma.com/api/mcp/asset/72416b02-6aef-48ba-9c64-9408d285d13a',
-    'shop/products/ocean-tee.webp' => 'https://www.figma.com/api/mcp/asset/d6624436-5a80-4bf3-81bd-9a16cfc7a31e',
-    'shop/products/lum-cup.webp' => 'https://www.figma.com/api/mcp/asset/128e6fe1-aac2-476f-8433-241f4b25f5e7',
+    'shop/products/ocean-tee.webp' => 'https://www.figma.com/api/mcp/asset/cdfd2d76-2da7-468b-af84-53c4aa16ce3e',
+    'shop/products/lum-cup.webp' => 'https://www.figma.com/api/mcp/asset/3514e2d5-a3e7-4023-a7bf-d7a4fd403e0e',
+    'shop/products/thumbs/tee-01.webp' => 'https://www.figma.com/api/mcp/asset/1c08b09b-f29d-4423-9d4a-d7ad1351e742',
+    'shop/products/thumbs/tee-02.webp' => 'https://www.figma.com/api/mcp/asset/629e2b69-63aa-4b27-80a8-e79321dda77e',
+    'shop/products/thumbs/tee-03.webp' => 'https://www.figma.com/api/mcp/asset/773f0fd2-56a7-4791-9fec-34d71851a77c',
+    'shop/products/thumbs/tee-04.webp' => 'https://www.figma.com/api/mcp/asset/bdfb3d9a-d130-4b7c-87f6-1ce2f24636c3',
+    'shop/products/thumbs/cup-01.webp' => 'https://www.figma.com/api/mcp/asset/871ae3a9-1e3e-42b0-ac03-5d37028271ce',
+    'shop/products/thumbs/cup-02.webp' => 'https://www.figma.com/api/mcp/asset/871ae3a9-1e3e-42b0-ac03-5d37028271ce',
+    'shop/products/thumbs/cup-03.webp' => 'https://www.figma.com/api/mcp/asset/871ae3a9-1e3e-42b0-ac03-5d37028271ce',
+    'shop/products/thumbs/cup-04.webp' => 'https://www.figma.com/api/mcp/asset/871ae3a9-1e3e-42b0-ac03-5d37028271ce',
+    'shop/products/colors/color-01.svg' => 'https://www.figma.com/api/mcp/asset/366a4426-c466-415d-8b11-a529e685a5dd',
+    'shop/products/colors/color-02.svg' => 'https://www.figma.com/api/mcp/asset/b1356e1a-4448-426c-b5ea-cb510e285b6a',
+    'shop/products/colors/color-03.svg' => 'https://www.figma.com/api/mcp/asset/dae81061-5569-4522-aa2f-458a9cf71f8f',
+    'shop/products/colors/color-04.svg' => 'https://www.figma.com/api/mcp/asset/e2b78eca-4d51-4eca-ad77-877ecc25be4d',
+];
+
+$refreshAssets = [
+    'blog/posts/sri-lanka-guide.webp',
+    'blog/posts/nervous-system-retreat.webp',
+    'blog/posts/lum-ocean-trip.webp',
 ];
 
 $ok = 0;
@@ -135,6 +153,24 @@ foreach ($manifest as $path => $status) {
 
 foreach ($legacyAliases as $target => $source) {
     ensureAlias($lumBase, $target, $source);
+}
+
+foreach ($refreshAssets as $path) {
+    if (! isset($remoteAssets[$path])) {
+        continue;
+    }
+
+    $full = $lumBase . '/' . $path;
+
+    if (! is_dir(dirname($full))) {
+        mkdir(dirname($full), 0777, true);
+    }
+
+    if (streamDownload($remoteAssets[$path], $full)) {
+        echo "REFRESHED {$path}\n";
+    } else {
+        echo "FAILED refresh {$path}\n";
+    }
 }
 
 echo "\nLocal assets: {$ok}/" . count($manifest) . "\n";

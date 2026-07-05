@@ -231,7 +231,7 @@ return [
         'read_more' => 'Читать далее',
         'page_title' => 'блог',
         'back' => 'назад',
-        'tabs' => ['все', 'еда', 'океан', 'лайфстайл'],
+        'tabs' => ['ВСЕ', 'ЕДА', 'ПЛЯЖ', 'КУХНЯ', 'ШРИ-ЛАНКА'],
         'posts' => [
             [
                 'slug' => 'sri-lanka-guide',
@@ -239,7 +239,8 @@ return [
                 'excerpt' => 'Just a few hours from the airport. Light years away from the crowds. Here you you find the true Sri Lanka. And a small resort with a big view, a great restaurant, and a special sense of calm. Welcome to The Lum.',
                 'image' => 'posts/sri-lanka-guide.webp',
                 'tags' => ['Food', 'Ocean'],
-                'categories' => ['food', 'ocean'],
+                'categories' => ['food', 'beach', 'sri-lanka'],
+                'theme' => 'cream',
             ],
             [
                 'slug' => 'nervous-system-retreat',
@@ -247,7 +248,8 @@ return [
                 'excerpt' => 'Just a journey away from the ordinary. Far from the noise, close to nature. Discover the hidden beauty of Sri Lanka, where ocean views, mindful moments, and effortless calm come together. Welcome to LUM Ocean.',
                 'image' => 'posts/nervous-system-retreat.webp',
                 'tags' => ['Food', 'Ocean'],
-                'categories' => ['food', 'lifestyle'],
+                'categories' => ['food', 'kitchen'],
+                'theme' => 'dark',
             ],
             [
                 'slug' => 'lum-ocean-trip',
@@ -255,7 +257,8 @@ return [
                 'excerpt' => 'A boutique hotel, restaurant, and lifestyle space for Relax, Surfing, and beautiful living by the ocean. European cuisine, grill parties, delicious cocktails, And the atmosphere of a tropical evening.',
                 'image' => 'posts/lum-ocean-trip.webp',
                 'tags' => ['Food', 'Ocean'],
-                'categories' => ['ocean', 'lifestyle'],
+                'categories' => ['beach', 'kitchen'],
+                'theme' => 'muted',
             ],
         ],
     ],
@@ -317,24 +320,41 @@ return [
         'title_normal' => 'Загляни в',
         'title_italic' => 'Lum Shop',
         'cta' => 'в магазин',
-        'page_title' => 'lum shop',
-        'buy' => 'купить',
-        'products' => [
-            [
-                'slug' => 'ocean-tee',
+        'page_title_normal' => 'lum',
+        'page_title_italic' => 'shop',
+        'cta_price' => '44$',
+        'cta_reservation' => 'make a reservation',
+        'items' => [
+            'ocean-tee' => [
+                'type' => 'tee',
                 'title' => 'LUM OCEAN TEE',
                 'subtitle' => 'Classic Sun 100% Cotton · Washed & worn',
                 'image' => 'products/ocean-tee.webp',
-                'colors' => ['#C4A574', '#C76B3C', '#8B9EA8', '#3D4A52'],
+                'thumbs' => [
+                    'products/thumbs/tee-01.webp',
+                    'products/thumbs/tee-02.webp',
+                    'products/thumbs/tee-03.webp',
+                    'products/thumbs/tee-04.webp',
+                ],
+                'colors' => [
+                    'products/colors/color-01.svg',
+                    'products/colors/color-02.svg',
+                    'products/colors/color-03.svg',
+                    'products/colors/color-04.svg',
+                ],
                 'sizes' => ['S', 'M', 'L', 'XL'],
             ],
-            [
-                'slug' => 'lum-cup',
+            'lum-cup' => [
+                'type' => 'cup',
                 'title' => 'LUM CUP',
                 'subtitle' => 'Organic Cotton · Vintage Wash',
                 'image' => 'products/lum-cup.webp',
-                'colors' => ['#E8DCC8', '#D4783C', '#2E4A52', '#1A1A1A'],
-                'sizes' => ['S', 'M', 'L', 'XL'],
+                'thumbs' => [
+                    'products/thumbs/cup-01.webp',
+                    'products/thumbs/cup-02.webp',
+                    'products/thumbs/cup-03.webp',
+                    'products/thumbs/cup-04.webp',
+                ],
             ],
         ],
     ],

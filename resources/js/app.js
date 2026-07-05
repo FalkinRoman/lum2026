@@ -426,7 +426,6 @@ initLanguageSwitcher();
 initBackToTop();
 initLocationCards();
 initBlogSlider();
-initBlogTabs();
 initBurgerMenu();
 initStickyHeader();
 initHeroTitle();
@@ -449,5 +448,6 @@ requestAnimationFrame(() => {
         applyLumLayout({ forceRefresh: true });
         refreshScrollTriggers();
         revealLumApp();
+        initBlogTabs();
     });
 });

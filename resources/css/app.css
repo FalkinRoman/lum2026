@@ -22,6 +22,7 @@
     --color-lum-espresso: #2e2720;
     --color-lum-espresso-40: rgb(46 39 32 / 0.4);
     --color-lum-cream: #fffbb2;
+    --color-lum-slate: #2d3638;
     --color-lum-ground: #39362e;
     --color-lum-green: #41606b;
     --color-lum-rose: #f56f31;
@@ -144,6 +145,10 @@
 
         .lum-btn-outline:hover {
             @apply bg-lum-espresso text-lum-ivory;
+        }
+
+        .lum-btn-outline--no-hover:hover {
+            @apply bg-transparent text-lum-espresso;
         }
 
         .lum-btn-green:hover {
@@ -275,9 +280,26 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-        .lum-burger-btn--ivory:hover {
-            @apply bg-transparent;
-            border-color: var(--color-lum-espresso);
+        .lum-burger-btn--ivory:hover,
+        .lum-burger-btn--ivory-compact:hover,
+        .lum-burger-btn--espresso:hover,
+        .lum-burger-btn--espresso-compact:hover {
+            @apply border-lum-espresso bg-lum-espresso;
+        }
+
+        .lum-burger-btn--ivory:hover img,
+        .lum-burger-btn--ivory-compact:hover img,
+        .lum-burger-btn--espresso:hover img,
+        .lum-burger-btn--espresso-compact:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover {
+            @apply border-lum-ivory bg-transparent;
+        }
+
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover img {
+            filter: brightness(0) invert(1);
         }
     }
 
@@ -286,33 +308,14 @@
         border: 1px solid var(--color-lum-ivory);
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .lum-burger-btn--ivory-compact:hover {
-            @apply bg-transparent;
-            border-color: var(--color-lum-espresso);
-        }
-    }
-
     .lum-burger-btn--espresso {
         @apply rounded-[50px] bg-lum-ivory;
         border: 1px solid var(--color-lum-espresso);
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .lum-burger-btn--espresso:hover {
-            @apply bg-transparent;
-        }
-    }
-
     .lum-burger-btn--espresso-compact {
         @apply rounded-[50px] bg-lum-ivory;
         border: 1px solid var(--color-lum-espresso);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .lum-burger-btn--espresso-compact:hover {
-            @apply bg-transparent;
-        }
     }
 
     .lum-nav-link,
@@ -999,6 +1002,37 @@
         .lum-stay-property-link:hover .lum-stay-property-link__shade {
             opacity: 0;
         }
+    }
+
+    .lum-shop-btn {
+        @apply inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[50px] border border-transparent bg-lum-espresso font-extrabold uppercase text-lum-ivory;
+    }
+
+    .lum-shop-btn--desk {
+        @apply px-[34px] pt-[6px] pb-[5px] text-[16px] leading-[25px] tracking-[3.2px];
+    }
+
+    .lum-shop-btn--compact {
+        @apply px-[24px] py-[5px] text-[14px] leading-[23px] tracking-[2.84px];
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-shop-btn:hover {
+            @apply border-lum-espresso bg-transparent text-lum-espresso;
+        }
+    }
+
+    .lum-shop-size {
+        @apply border border-lum-espresso/16;
+    }
+
+    [data-lum-shop-variant='mobile'] [data-lum-shop-size][data-active] {
+        @apply border-lum-espresso bg-lum-espresso text-lum-ivory;
+    }
+
+    [data-lum-shop-variant='tablet'] [data-lum-shop-size][data-active],
+    [data-lum-shop-variant='desktop'] [data-lum-shop-size][data-active] {
+        @apply border-lum-espresso;
     }
 
     .lum-shop__bg-img {

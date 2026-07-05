@@ -120,6 +120,10 @@ export function initVillaPage() {
     }
 
     document.querySelectorAll('[data-lum-villa-intro]').forEach((root) => {
+        if (root.closest('[data-lum-blog-section]')) {
+            return;
+        }
+
         if (isVisibleElement(root)) {
             initVillaIntro(root);
         }

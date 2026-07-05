@@ -1,35 +1,65 @@
-function setActiveButton(buttons, activeButton, activeClass = 'ring-1 ring-lum-espresso') {
+function syncThumbIndicator(card, activeThumb) {
+    const indicator = card.querySelector('[data-lum-shop-thumb-indicator]');
+    const wrap = activeThumb?.parentElement;
+
+    if (! indicator || ! activeThumb || ! wrap) {
+        return;
+    }
+
+    indicator.style.width = `${activeThumb.offsetWidth}px`;
+    indicator.style.left = `${wrap.offsetLeft + activeThumb.offsetLeft}px`;
+}
+
+function setActiveButton(buttons, activeButton) {
     buttons.forEach((button) => {
-        button.classList.toggle(activeClass, button === activeButton);
         button.toggleAttribute('data-active', button === activeButton);
     });
 }
 
+function initShopProduct(card) {
+    const image = card.querySelector('[data-lum-shop-product-image]');
+    const thumbs = [...card.querySelectorAll('[data-lum-shop-thumb]')];
+    const colors = [...card.querySelectorAll('[data-lum-shop-color]')];
+    const sizes = [...card.querySelectorAll('[data-lum-shop-size]')];
+    const initialThumb = thumbs.find((thumb) => thumb.hasAttribute('data-active')) ?? thumbs[0];
+
+    if (initialThumb) {
+        syncThumbIndicator(card, initialThumb);
+    }
+
+    thumbs.forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+            const thumbImage = thumb.querySelector('img');
+
+            if (image && thumbImage) {
+                image.src = thumbImage.src;
+            }
+
+            setActiveButton(thumbs, thumb);
+            syncThumbIndicator(card, thumb);
+        });
+    });
+
+    colors.forEach((color) => {
+        color.addEventListener('click', () => setActiveButton(colors, color));
+    });
+
+    sizes.forEach((size) => {
+        size.addEventListener('click', () => setActiveButton(sizes, size));
+    });
+}
+
 export function initShopPage() {
-    document.querySelectorAll('[data-lum-shop-product]').forEach((card) => {
-        const image = card.querySelector('[data-lum-shop-product-image]');
-        const thumbs = [...card.querySelectorAll('[data-lum-shop-thumb]')];
-        const colors = [...card.querySelectorAll('[data-lum-shop-color]')];
-        const sizes = [...card.querySelectorAll('[data-lum-shop-size]')];
+    document.querySelectorAll('[data-lum-shop-product]').forEach(initShopProduct);
 
-        thumbs.forEach((thumb) => {
-            thumb.addEventListener('click', () => {
-                const thumbImage = thumb.querySelector('img');
+    document.addEventListener('lum:layout-change', () => {
+        document.querySelectorAll('[data-lum-shop-product]').forEach((card) => {
+            const activeThumb = card.querySelector('[data-lum-shop-thumb][data-active]')
+                ?? card.querySelector('[data-lum-shop-thumb]');
 
-                if (image && thumbImage) {
-                    image.src = thumbImage.src;
-                }
-
-                setActiveButton(thumbs, thumb);
-            });
-        });
-
-        colors.forEach((color) => {
-            color.addEventListener('click', () => setActiveButton(colors, color));
-        });
-
-        sizes.forEach((size) => {
-            size.addEventListener('click', () => setActiveButton(sizes, size));
+            if (activeThumb) {
+                syncThumbIndicator(card, activeThumb);
+            }
         });
     });
 }
