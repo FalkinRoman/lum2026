@@ -81,6 +81,7 @@
                             'img' => $img,
                             'href' => route('blog.show', $post['slug']),
                             'lineWidth' => 79,
+                            'asSpan' => true,
                             'classes' => 'lum-text-2 mt-[24px] font-medium text-lum-green pointer-events-none',
                         ])
                     </div>

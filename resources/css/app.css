@@ -615,6 +615,48 @@
         }
     }
 
+    [data-lum-blog-card].lum-blog-card {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+    }
+
+    [data-lum-blog-card].lum-blog-card > a {
+        display: flex;
+        flex-direction: column;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    [data-lum-blog-card].lum-blog-card[data-lum-blog-variant='mobile'] {
+        width: 240px;
+    }
+
+    [data-lum-blog-card].lum-blog-card[data-lum-blog-variant='tablet'] {
+        width: 450px;
+    }
+
+    .lum-blog-card__media--mobile {
+        width: 240px;
+        height: 240px;
+    }
+
+    .lum-blog-card__media--tablet {
+        width: 450px;
+        height: 450px;
+    }
+
+    .lum-blog-card__body--mobile {
+        width: 240px;
+        height: 192px;
+    }
+
+    .lum-blog-card__body--tablet {
+        width: 450px;
+        height: 287px;
+    }
+
     .lum-blog-card__img {
         @apply transition-transform duration-700 ease-out;
     }
