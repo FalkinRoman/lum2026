@@ -4,20 +4,39 @@
     $classes = $classes ?? '';
     $target = $target ?? null;
     $rel = $rel ?? null;
+    $variant = $variant ?? 'flip';
 @endphp
 
-<a
-    href="{{ $href }}"
-    @class(['lum-link lum-link--footer', $classes])
-    data-text="{{ $label }}"
-    @if($target) target="{{ $target }}" @endif
-    @if($rel) rel="{{ $rel }}" @endif
->
-    <span class="lum-link__flip">
+@if ($variant === 'line')
+    <a
+        href="{{ $href }}"
+        @class(['lum-link lum-link--footer lum-link--footer-line', $classes])
+        @if($target) target="{{ $target }}" @endif
+        @if($rel) rel="{{ $rel }}" @endif
+    >
         <span class="lum-link__text">{{ $label }}</span>
-        <span class="lum-link__text lum-link__text--ghost" aria-hidden="true">{{ $label }}</span>
-    </span>
-    <span class="lum-link__line lum-link__line--footer">
-        <img src="{{ $img('footer/link-underline.svg') }}" alt="" class="lum-link__line-img" width="108" height="2">
-    </span>
-</a>
+        @include('lum.partials.link-underline', [
+            'tone' => 'ivory',
+            'fullWidth' => true,
+            'graphicClass' => 'mt-0',
+        ])
+    </a>
+@else
+    <a
+        href="{{ $href }}"
+        @class(['lum-link lum-link--footer', $classes])
+        data-text="{{ $label }}"
+        @if($target) target="{{ $target }}" @endif
+        @if($rel) rel="{{ $rel }}" @endif
+    >
+        <span class="lum-link__flip">
+            <span class="lum-link__text">{{ $label }}</span>
+            <span class="lum-link__text lum-link__text--ghost" aria-hidden="true">{{ $label }}</span>
+        </span>
+        @include('lum.partials.link-underline', [
+            'tone' => 'ivory',
+            'fullWidth' => true,
+            'graphicClass' => 'mt-0',
+        ])
+    </a>
+@endif

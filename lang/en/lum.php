@@ -260,6 +260,15 @@ return [
                 'categories' => ['beach', 'kitchen'],
                 'theme' => 'muted',
             ],
+            [
+                'slug' => 'restaurant-bar',
+                'title' => 'Our restaurant & bar is open daily from 9 am to 9 pm.',
+                'excerpt' => 'European cuisine, grill parties, delicious cocktails, and the atmosphere of a tropical evening by the ocean.',
+                'image' => 'surfing.webp',
+                'tags' => ['Surfing', 'Ocean'],
+                'categories' => ['food', 'beach'],
+                'theme' => 'cream',
+            ],
         ],
     ],
 
@@ -293,6 +302,16 @@ return [
             'hero' => 'posts/lum-ocean-trip.webp',
             'body' => [
                 'Surf at dawn, lunch under the palms, and sunset drinks as the tide turns — Lum Ocean is a rhythm, not a schedule.',
+            ],
+        ],
+        'restaurant-bar' => [
+            'meta_title' => 'Restaurant & Bar — Lum',
+            'title' => 'Our restaurant & bar is open daily from 9 am to 9 pm.',
+            'excerpt' => 'European cuisine, grill parties, delicious cocktails, and the atmosphere of a tropical evening by the ocean.',
+            'tags' => ['Surfing', 'Ocean'],
+            'hero' => 'surfing.webp',
+            'body' => [
+                'Start the morning with surfing and end the day with a beautiful ocean sunset — our restaurant and bar are open daily from 9 am to 9 pm.',
             ],
         ],
     ],

@@ -6,7 +6,7 @@
 
         <div class="px-[20px] pb-[80px] pt-[120px]" data-lum-villa-intro>
             <div data-lum-stay-intro-item data-lum-stay-intro-order="1">
-                @include('lum.partials.blog-page.back', ['href' => route('blog'), 'img' => $img])
+                @include('lum.partials.blog-page.back', ['href' => $backHref, 'img' => $img])
             </div>
 
             <div class="mx-auto mt-[44px] flex w-[335px] max-w-full flex-col items-center text-center">
@@ -39,7 +39,7 @@
 
         <div class="absolute inset-0" data-lum-villa-intro>
             <div class="absolute left-[20px] top-[120px]" data-lum-stay-intro-item data-lum-stay-intro-order="1">
-                @include('lum.partials.blog-page.back', ['href' => route('blog'), 'img' => $img])
+                @include('lum.partials.blog-page.back', ['href' => $backHref, 'img' => $img])
             </div>
 
             <div class="absolute left-[71px] top-[196px] flex w-[328px] flex-col">
@@ -66,7 +66,7 @@
 
         <div class="absolute inset-0" data-lum-villa-intro>
             <div class="absolute left-[72px] top-[204px]" data-lum-stay-intro-item data-lum-stay-intro-order="1">
-                @include('lum.partials.blog-page.back', ['href' => route('blog'), 'img' => $img, 'size' => 'l'])
+                @include('lum.partials.blog-page.back', ['href' => $backHref, 'img' => $img, 'size' => 'l'])
             </div>
 
             <div class="absolute left-[164px] top-[284px] flex w-[512px] flex-col">

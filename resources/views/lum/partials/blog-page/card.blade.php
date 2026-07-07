@@ -1,6 +1,6 @@
 @php
     $variant = $variant ?? 'mobile';
-    $href = route('blog.show', $post['slug']);
+    $href = route('blog.show', ['slug' => $post['slug'], 'from' => 'blog']);
     $theme = $post['theme'] ?? 'cream';
 
     $palette = match ($theme) {
@@ -34,12 +34,20 @@
     };
 
     $mobileTitleClass = ($theme === 'dark')
-        ? 'absolute left-[28px] top-[69px] w-[279px] font-serif text-[22px] leading-[24px] tracking-[0.19px]'
+        ? 'absolute left-[28px] top-[69px] w-[279px] line-clamp-2 overflow-hidden font-serif text-[22px] leading-[24px] tracking-[0.19px]'
         : 'absolute left-[28px] top-[69px] w-[279px] overflow-hidden text-ellipsis font-serif text-[22px] leading-[24px] tracking-[0.19px] whitespace-nowrap';
 
     $mobileBodyClass = ($theme === 'dark')
         ? 'absolute left-[28px] top-[124px] w-[279px] line-clamp-4 overflow-hidden text-[14px] leading-[22px] tracking-[0.1px]'
         : 'absolute left-[28px] top-[102px] w-[279px] line-clamp-4 overflow-hidden text-[14px] leading-[22px] tracking-[0.1px]';
+
+    $titleLimit = match ($variant) {
+        'mobile' => 52,
+        'tablet' => 44,
+        default => 44,
+    };
+
+    $cardTitle = \Illuminate\Support\Str::limit($post['title'], $titleLimit);
 @endphp
 
 @if ($variant === 'mobile')
@@ -49,7 +57,7 @@
             <span @class(['size-[3px] rounded-full', $palette['dot']])></span>
             <span>{{ $post['tags'][1] }}</span>
         </div>
-        <h2 @class([$mobileTitleClass, $palette['title']])>{{ $post['title'] }}</h2>
+        <h2 @class([$mobileTitleClass, $palette['title']])>{{ $cardTitle }}</h2>
         <p @class([$mobileBodyClass, $palette['body']])>{{ $post['excerpt'] }}</p>
         @include('lum.partials.link-read-more', [
             'img' => $img,
@@ -71,7 +79,7 @@
                 <img src="{{ $img('blog/' . $post['image']) }}" alt="" class="h-full w-full object-cover" width="446" height="377" loading="lazy">
             </div>
         </div>
-        <h2 @class(['absolute left-[24px] top-[27px] w-[328px] font-serif text-[28px] leading-[34px] tracking-[0.36px]', $palette['title']])>{{ $post['title'] }}</h2>
+        <h2 @class(['absolute left-[24px] top-[27px] w-[328px] line-clamp-2 overflow-hidden font-serif text-[28px] leading-[34px] tracking-[0.36px]', $palette['title']])>{{ $cardTitle }}</h2>
         <p @class(['absolute left-[470px] top-[32px] w-[426px] lum-text-2', $palette['body']])>{{ $post['excerpt'] }}</p>
         <div @class(['absolute left-[470px] top-[276px] flex items-center gap-[9px] text-[12px] font-medium uppercase leading-[12px] tracking-[0.6px]', $palette['tags']])>
             <span>{{ $post['tags'][0] }}</span>
@@ -93,7 +101,7 @@
                 <img src="{{ $img('blog/' . $post['image']) }}" alt="" class="h-full w-full object-cover" width="378" height="375" loading="lazy">
             </div>
         </div>
-        <h2 @class(['absolute left-[24px] top-[28px] w-[328px] font-serif text-[32px] leading-[36px]', $palette['title']])>{{ $post['title'] }}</h2>
+        <h2 @class(['absolute left-[24px] top-[28px] w-[328px] line-clamp-2 overflow-hidden font-serif text-[32px] leading-[36px]', $palette['title']])>{{ $cardTitle }}</h2>
         <p @class(['absolute left-[396px] top-[32px] w-[275px] lum-text-2', $palette['body']])>{{ $post['excerpt'] }}</p>
         <div @class(['absolute left-[396px] top-[324px] flex items-center gap-[9px] text-[12px] font-medium uppercase leading-[12px] tracking-[0.6px]', $palette['tags']])>
             <span>{{ $post['tags'][0] }}</span>

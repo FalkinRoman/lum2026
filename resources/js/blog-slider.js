@@ -10,53 +10,20 @@ export function initBlogSlider() {
 
         const cards = [...track.querySelectorAll('[data-lum-blog-card]')];
 
-        if (! cards.length) {
+        if (cards.length < 2) {
+            prev.disabled = true;
+            next.disabled = true;
+
             return;
         }
 
-        const getScrollLeftForIndex = (index) => {
-            if (index <= 0) {
-                return 0;
-            }
+        const getStep = () => cards[1].offsetLeft - cards[0].offsetLeft;
 
-            if (index >= cards.length - 1) {
-                return Math.max(0, track.scrollWidth - track.clientWidth);
-            }
-
-            return cards[index].offsetLeft;
-        };
-
-        const getActiveIndex = () => {
-            const scrollLeft = track.scrollLeft;
-            let closest = 0;
-            let minDist = Infinity;
-
-            cards.forEach((card, index) => {
-                const targetLeft = getScrollLeftForIndex(index);
-                const dist = Math.abs(targetLeft - scrollLeft);
-
-                if (dist < minDist) {
-                    minDist = dist;
-                    closest = index;
-                }
-            });
-
-            return closest;
-        };
-
-        const scrollToIndex = (index, behavior = 'smooth') => {
-            const clamped = Math.max(0, Math.min(cards.length - 1, index));
-
-            track.scrollTo({
-                left: getScrollLeftForIndex(clamped),
-                behavior,
-            });
-        };
+        const getMaxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
 
         const syncButtons = () => {
-            const index = getActiveIndex();
-            const atStart = index <= 0;
-            const atEnd = index >= cards.length - 1;
+            const atStart = track.scrollLeft <= 1;
+            const atEnd = track.scrollLeft >= getMaxScroll() - 1;
 
             prev.disabled = atStart;
             next.disabled = atEnd;
@@ -64,12 +31,20 @@ export function initBlogSlider() {
             next.classList.toggle('opacity-40', atEnd);
         };
 
+        const scrollByStep = (direction) => {
+            const step = getStep();
+            const maxScroll = getMaxScroll();
+            const target = Math.max(0, Math.min(maxScroll, track.scrollLeft + direction * step));
+
+            track.scrollTo({ left: target, behavior: 'smooth' });
+        };
+
         prev.addEventListener('click', () => {
-            scrollToIndex(getActiveIndex() - 1);
+            scrollByStep(-1);
         });
 
         next.addEventListener('click', () => {
-            scrollToIndex(getActiveIndex() + 1);
+            scrollByStep(1);
         });
 
         track.addEventListener('scroll', syncButtons, { passive: true });
@@ -79,10 +54,11 @@ export function initBlogSlider() {
         }
 
         window.addEventListener('resize', () => {
-            scrollToIndex(getActiveIndex(), 'auto');
+            track.scrollLeft = Math.min(track.scrollLeft, getMaxScroll());
             syncButtons();
         });
 
+        track.scrollLeft = 0;
         syncButtons();
     });
 }
