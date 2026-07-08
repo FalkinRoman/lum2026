@@ -673,15 +673,48 @@
     }
 
     .lum-villas-view-cursor {
-        transition: opacity 0.25s ease;
-        will-change: transform;
+        will-change: transform, opacity;
         cursor: default;
+        transform-origin: center center;
+        pointer-events: none;
+        visibility: hidden;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        [data-lum-villas-view-fixed] {
+            opacity: 0;
+            pointer-events: none;
+        }
     }
 
     [data-lum-villas-slider],
     [data-lum-villas-slider] [data-lum-villas-photo],
     [data-lum-villas-oval-hit] {
         cursor: default;
+    }
+
+    [data-lum-villas-photo-track],
+    [data-lum-villas-text-track],
+    [data-lum-villas-oval-hit] {
+        isolation: isolate;
+    }
+
+    .lum-villas-slide,
+    .lum-villas-slide__inner {
+        will-change: transform;
+    }
+
+    [data-lum-villas-text-track] {
+        pointer-events: none;
+    }
+
+    [data-lum-villas-text-track] .lum-villas-slide__inner > h2,
+    [data-lum-villas-text-track] .lum-villas-slide__inner > p,
+    [data-lum-villas-text-track] .lum-villas-slide__inner > div,
+    [data-lum-villas-text-track] .lum-villas-slide__lane > h2,
+    [data-lum-villas-text-track] .lum-villas-slide__lane > p,
+    [data-lum-villas-text-track] .lum-villas-slide__lane > div {
+        margin: 0;
     }
 
     .lum-script {
