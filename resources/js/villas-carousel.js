@@ -393,6 +393,9 @@ function animateMultilineTextSlide({ slide, inner, direction, slideData, fill, r
             defaults: { duration, ease: 'power3.out' },
             onComplete: () => {
                 fill(slideData, inner);
+                if (textWidth) {
+                    applyMultilineTextWidth([inner.firstElementChild ?? inner], textWidth);
+                }
                 inner.style.visibility = '';
                 slide.style.height = '';
                 slide.style.width = '';
