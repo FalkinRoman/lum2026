@@ -98,6 +98,9 @@ return [
                 'titleItalic' => 'Villas',
                 'titleMobileNormal' => 'Lum',
                 'titleMobileItalic' => ' Villas',
+                'subtitle' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms and 2 bathrooms',
+                'subtitleLine1' => 'Sleeps 4 adults — with 2 pools, 2 bedrooms',
+                'subtitleLine2' => 'and 2 bathrooms',
             ],
             [
                 'slug' => 'ocean',
@@ -107,6 +110,9 @@ return [
                 'titleItalic' => 'Ocean',
                 'titleMobileNormal' => 'Lum',
                 'titleMobileItalic' => ' Ocean',
+                'subtitle' => 'Sleeps 4 adults — with ocean views, 2 bedrooms and 2 bathrooms',
+                'subtitleLine1' => 'Sleeps 4 adults — with ocean views',
+                'subtitleLine2' => 'and 2 bedrooms and 2 bathrooms',
             ],
             [
                 'slug' => 'oculus',
@@ -116,6 +122,9 @@ return [
                 'titleItalic' => 'Oculus',
                 'titleMobileNormal' => '',
                 'titleMobileItalic' => 'Oculus',
+                'subtitle' => 'Sleeps 4 adults — one-story villa with garden and open-air shower',
+                'subtitleLine1' => 'Sleeps 4 adults — one-story villa',
+                'subtitleLine2' => 'with garden and open-air shower',
             ],
             [
                 'slug' => 'residence',
@@ -125,6 +134,9 @@ return [
                 'titleItalic' => 'Residence',
                 'titleMobileNormal' => 'Lum',
                 'titleMobileItalic' => ' Residence',
+                'subtitle' => 'Sleeps 4 adults — 68 sqm villa with veranda and open-air showers',
+                'subtitleLine1' => 'Sleeps 4 adults — 68 sqm villa',
+                'subtitleLine2' => 'with veranda and open-air showers',
             ],
         ],
     ],
@@ -138,7 +150,7 @@ return [
             [
                 'title' => 'Dining',
                 'route' => 'dining',
-                'photo' => 'location/card-dining.jpg',
+                'photo' => 'location/card-dining.webp',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
                 'photoLines' => [
                     ['text' => 'Flavors of Sri Lanka,', 'italic' => false],
@@ -163,7 +175,7 @@ return [
             [
                 'title' => 'Relax',
                 'route' => 'relax',
-                'photo' => 'location/card-yoga.jpg',
+                'photo' => 'location/card-yoga.webp',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
                 'photoLines' => [
                     ['text' => 'We offer private', 'italic' => false],
@@ -185,7 +197,7 @@ return [
             [
                 'title' => 'Discover',
                 'route' => 'discover',
-                'photo' => 'location/card-discover.jpg',
+                'photo' => 'location/card-discover.webp',
                 'photoGradient' => 'bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]',
                 'photoLines' => [
                     ['text' => 'Sri Lanka as it', 'italic' => false],

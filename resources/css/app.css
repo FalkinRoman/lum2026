@@ -717,6 +717,14 @@
         margin: 0;
     }
 
+    [data-lum-villas-text-track] .lum-villas-slide__lane > div {
+        box-sizing: border-box;
+    }
+
+    [data-lum-villas-text-track] [data-lum-villas-subtitle-line2] {
+        margin-top: 0;
+    }
+
     .lum-script {
         @apply font-script lowercase;
     }

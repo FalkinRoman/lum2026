@@ -5,11 +5,11 @@
     @if ($card['activeImgRotate'])
         <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
             <div class="-rotate-[15deg]">
-                <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $card['activeImgTab'] }} {{ $card['activeImgClass'] }}">
+                <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $layout['tabImg'] }} {{ $card['activeImgClass'] }}">
             </div>
         </div>
     @else
-        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $card['activeImgTab'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
+        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $layout['tabImg'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}">
     @endif
     <h3 class="absolute left-1/2 top-[44px] -translate-x-1/2 font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
     @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['tab'], 'tag' => $card['tag']])

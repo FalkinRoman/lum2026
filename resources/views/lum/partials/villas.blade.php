@@ -46,9 +46,9 @@
                     <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">04</span>
                 </div>
 
-                <div class="absolute left-1/2 top-[181px] w-[335px] max-w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 w-full text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88">
-                    <p data-lum-villas-subtitle>{{ __('lum.villas.subtitle_line1') }}</p>
-                    <p data-lum-villas-subtitle-line2>{{ __('lum.villas.subtitle_line2') }}</p>
+                <div class="absolute left-1/2 top-[181px] w-[335px] max-w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88" data-lum-villas-subtitle-wrap>
+                    <p data-lum-villas-subtitle>{{ $villasSlides[$villasStart]['subtitleLine1'] }}</p>
+                    <p data-lum-villas-subtitle-line2>{{ $villasSlides[$villasStart]['subtitleLine2'] }}</p>
                 </div>
 
                 <h2 class="absolute left-1/2 top-[275px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[56px] leading-[56px] text-lum-ivory">

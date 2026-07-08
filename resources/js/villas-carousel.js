@@ -8,9 +8,72 @@ function buildSrc(base, name, suffix = '') {
     return `${base}/${name}${suffix}.webp`;
 }
 
+const imageLoadCache = new Map();
+
 function preloadImage(src) {
-    const img = new Image();
-    img.src = src;
+    if (! src) {
+        return Promise.resolve();
+    }
+
+    if (imageLoadCache.has(src)) {
+        return imageLoadCache.get(src);
+    }
+
+    const promise = new Promise((resolve) => {
+        const img = new Image();
+
+        const finish = () => resolve();
+
+        img.onload = finish;
+        img.onerror = finish;
+        img.decoding = 'async';
+        img.src = src;
+
+        if (img.complete) {
+            finish();
+        }
+    });
+
+    imageLoadCache.set(src, promise);
+
+    return promise;
+}
+
+function preloadSlideAssets(slides, base, suffix = '') {
+    return Promise.all(slides.flatMap((slide) => [
+        preloadImage(buildSrc(base, slide.photo, suffix)),
+        preloadImage(buildSrc(base, slide.oval, suffix)),
+    ]));
+}
+
+function getMultilineTextWidth(track, inner) {
+    const datasetWidth = Number.parseInt(track?.dataset.lumVillasTextWidth || '', 10);
+
+    if (datasetWidth > 0) {
+        return datasetWidth;
+    }
+
+    const content = inner.firstElementChild ?? inner;
+    const measured = content.getBoundingClientRect().width;
+
+    if (measured > 0) {
+        return Math.round(measured);
+    }
+
+    return track?.getBoundingClientRect().width || inner.offsetWidth || 0;
+}
+
+function applyMultilineTextWidth(nodes, width) {
+    if (! width) {
+        return;
+    }
+
+    const widthPx = `${width}px`;
+
+    nodes.forEach((node) => {
+        node.style.width = widthPx;
+        node.style.maxWidth = widthPx;
+    });
 }
 
 const POSITION_CLASS_PREFIXES = ['absolute', 'left-', 'right-', 'top-', 'bottom-', '-translate', 'translate-', 'w-['];
@@ -51,6 +114,14 @@ function wrapTextTrack(element) {
 
     track.className = [...positionClasses, 'overflow-hidden'].join(' ');
     element.className = contentClasses.join(' ');
+
+    if (element.matches('[data-lum-villas-subtitle], [data-lum-villas-subtitle-line2]') || element.querySelector('[data-lum-villas-subtitle-line2]')) {
+        const widthMatch = [...element.classList].find((className) => /^w-\[\d+px\]$/.test(className));
+
+        if (widthMatch) {
+            track.dataset.lumVillasTextWidth = widthMatch.match(/\d+/)?.[0] ?? '';
+        }
+    }
 
     const slide = document.createElement('div');
     slide.className = TEXT_SLIDE;
@@ -202,7 +273,7 @@ function cloneTrackContent(inner) {
     return content.cloneNode(true);
 }
 
-function animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.95 }) {
+function animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.95, preload }) {
     const dir = direction === 'next' ? 1 : -1;
 
     if (reducedMotion) {
@@ -211,36 +282,44 @@ function animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMot
         return Promise.resolve();
     }
 
-    const outgoing = document.createElement('div');
-    outgoing.className = `${MEDIA_INNER} absolute inset-0 z-[2]`;
-    outgoing.appendChild(cloneTrackContent(inner));
+    const run = async () => {
+        if (preload) {
+            await preload(slideData);
+        }
 
-    const incoming = document.createElement('div');
-    incoming.className = `${MEDIA_INNER} absolute inset-0 z-[1]`;
-    fill(slideData, incoming);
+        const outgoing = document.createElement('div');
+        outgoing.className = `${MEDIA_INNER} absolute inset-0 z-[2]`;
+        outgoing.appendChild(cloneTrackContent(inner));
 
-    gsap.set(outgoing, { xPercent: 0 });
-    gsap.set(incoming, { xPercent: dir * 100 });
+        const incoming = document.createElement('div');
+        incoming.className = `${MEDIA_INNER} absolute inset-0 z-[1]`;
+        fill(slideData, incoming);
 
-    slide.appendChild(outgoing);
-    slide.appendChild(incoming);
-    inner.style.visibility = 'hidden';
+        gsap.set(outgoing, { xPercent: 0 });
+        gsap.set(incoming, { xPercent: dir * 100 });
 
-    return new Promise((resolve) => {
-        gsap.timeline({
-            defaults: { duration, ease: 'power4.out' },
-            onComplete: () => {
-                fill(slideData, inner);
-                inner.style.visibility = '';
-                outgoing.remove();
-                incoming.remove();
-                gsap.set([inner, outgoing, incoming], { clearProps: 'transform,x,xPercent,scale' });
-                resolve();
-            },
-        })
-            .to(outgoing, { xPercent: -dir * 100 }, 0)
-            .to(incoming, { xPercent: 0 }, 0);
-    });
+        slide.appendChild(outgoing);
+        slide.appendChild(incoming);
+        inner.style.visibility = 'hidden';
+
+        return new Promise((resolve) => {
+            gsap.timeline({
+                defaults: { duration, ease: 'power4.out' },
+                onComplete: () => {
+                    fill(slideData, inner);
+                    inner.style.visibility = '';
+                    outgoing.remove();
+                    incoming.remove();
+                    gsap.set([inner, outgoing, incoming], { clearProps: 'transform,x,xPercent,scale' });
+                    resolve();
+                },
+            })
+                .to(outgoing, { xPercent: -dir * 100 }, 0)
+                .to(incoming, { xPercent: 0 }, 0);
+        });
+    };
+
+    return run();
 }
 
 function createTextLayer(content, zIndex, { fullWidth = false } = {}) {
@@ -258,7 +337,80 @@ function createTextLayer(content, zIndex, { fullWidth = false } = {}) {
     return { layer, lane };
 }
 
-function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.72, fullWidth = false }) {
+function createMultilineTextBlock(inner, slideData, fill, track, { fillIncoming = false } = {}) {
+    const textWidth = getMultilineTextWidth(track, inner);
+    const content = cloneTrackContent(inner);
+
+    if (fillIncoming) {
+        fill(slideData, content);
+    }
+
+    applyMultilineTextWidth([content], textWidth);
+
+    return { content, textWidth };
+}
+
+function animateMultilineTextSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.72 }) {
+    const dir = direction === 'next' ? 1 : -1;
+
+    if (reducedMotion) {
+        fill(slideData, inner);
+
+        return Promise.resolve();
+    }
+
+    const track = slide.closest('[data-lum-villas-text-track]');
+    const { content: outgoingContent, textWidth } = createMultilineTextBlock(inner, slideData, fill, track);
+    const { content: incomingContent } = createMultilineTextBlock(inner, slideData, fill, track, { fillIncoming: true });
+
+    slide.style.height = `${slide.offsetHeight}px`;
+
+    if (textWidth) {
+        slide.style.width = `${textWidth}px`;
+        slide.style.marginLeft = 'auto';
+        slide.style.marginRight = 'auto';
+    }
+
+    slide.style.overflow = 'hidden';
+
+    const outgoing = document.createElement('div');
+    outgoing.className = 'absolute inset-0 z-[2] flex items-center justify-center';
+    outgoing.appendChild(outgoingContent);
+
+    const incoming = document.createElement('div');
+    incoming.className = 'absolute inset-0 z-[1] flex items-center justify-center';
+    incoming.appendChild(incomingContent);
+
+    gsap.set(outgoing, { xPercent: 0 });
+    gsap.set(incoming, { xPercent: dir * 100 });
+
+    slide.appendChild(outgoing);
+    slide.appendChild(incoming);
+    inner.style.visibility = 'hidden';
+
+    return new Promise((resolve) => {
+        gsap.timeline({
+            defaults: { duration, ease: 'power3.out' },
+            onComplete: () => {
+                fill(slideData, inner);
+                inner.style.visibility = '';
+                slide.style.height = '';
+                slide.style.width = '';
+                slide.style.marginLeft = '';
+                slide.style.marginRight = '';
+                slide.style.overflow = '';
+                outgoing.remove();
+                incoming.remove();
+                gsap.set([outgoing, incoming], { clearProps: 'transform,x,xPercent' });
+                resolve();
+            },
+        })
+            .to(outgoing, { xPercent: -dir * 100 }, 0)
+            .to(incoming, { xPercent: 0 }, 0);
+    });
+}
+
+function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.72 }) {
     const dir = direction === 'next' ? 1 : -1;
 
     if (reducedMotion) {
@@ -276,22 +428,8 @@ function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMot
     const incomingContent = cloneTrackContent(inner);
     fill(slideData, incomingContent);
 
-    if (fullWidth) {
-        outgoingContent.classList.add('w-full');
-        incomingContent.classList.add('w-full');
-    }
-
-    const outgoing = createTextLayer(outgoingContent, 2, { fullWidth });
-    const incoming = createTextLayer(incomingContent, 1, { fullWidth });
-
-    if (fullWidth) {
-        const trackWidth = track?.offsetWidth || slide.offsetWidth;
-
-        if (trackWidth) {
-            outgoing.lane.style.width = `${trackWidth}px`;
-            incoming.lane.style.width = `${trackWidth}px`;
-        }
-    }
+    const outgoing = createTextLayer(outgoingContent, 2);
+    const incoming = createTextLayer(incomingContent, 1);
 
     outgoing.layer.classList.add('overflow-hidden');
     incoming.layer.classList.add('overflow-hidden');
@@ -320,37 +458,45 @@ function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMot
             .to(incoming.lane, { x: 0 }, 0);
     });
 }
-function animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion, duration = 1.15 }) {
+function animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion, duration = 1.15, preload }) {
     if (reducedMotion) {
         fill(slideData, inner);
 
         return Promise.resolve();
     }
 
-    const incoming = document.createElement('div');
-    incoming.className = `${MEDIA_INNER} absolute inset-0 z-[2]`;
-    fill(slideData, incoming);
-    slide.appendChild(incoming);
+    const run = async () => {
+        if (preload) {
+            await preload(slideData);
+        }
 
-    const currentImg = inner.querySelector('img');
-    const nextImg = incoming.querySelector('img');
+        const incoming = document.createElement('div');
+        incoming.className = `${MEDIA_INNER} absolute inset-0 z-[2]`;
+        fill(slideData, incoming);
+        slide.appendChild(incoming);
 
-    gsap.set(nextImg, { opacity: 0, scale: 1.06 });
-    gsap.set(currentImg, { opacity: 1, scale: 1 });
+        const currentImg = inner.querySelector('img');
+        const nextImg = incoming.querySelector('img');
 
-    return new Promise((resolve) => {
-        gsap.timeline({
-            defaults: { ease: 'power2.out' },
-            onComplete: () => {
-                fill(slideData, inner);
-                incoming.remove();
-                gsap.set(currentImg, { clearProps: 'opacity,transform,scale' });
-                resolve();
-            },
-        })
-            .to(currentImg, { opacity: 0, duration: duration * 0.55, ease: 'power2.in' }, 0)
-            .to(nextImg, { opacity: 1, scale: 1, duration, ease: 'power2.out' }, 0);
-    });
+        gsap.set(nextImg, { opacity: 0, scale: 1.06 });
+        gsap.set(currentImg, { opacity: 1, scale: 1 });
+
+        return new Promise((resolve) => {
+            gsap.timeline({
+                defaults: { ease: 'power2.out' },
+                onComplete: () => {
+                    fill(slideData, inner);
+                    incoming.remove();
+                    gsap.set(currentImg, { clearProps: 'opacity,transform,scale' });
+                    resolve();
+                },
+            })
+                .to(currentImg, { opacity: 0, duration: duration * 0.55, ease: 'power2.in' }, 0)
+                .to(nextImg, { opacity: 1, scale: 1, duration, ease: 'power2.out' }, 0);
+        });
+    };
+
+    return run();
 }
 
 function isPanelVisible(panel) {
@@ -362,12 +508,23 @@ function animateTrack(track, direction, slideData, reducedMotion) {
 
     switch (type) {
         case 'photo':
-            return animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion });
+            return animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion, preload: track.preload });
         case 'oval':
-            return animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion });
+            return animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion, preload: track.preload });
         case 'title':
             return animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion });
         case 'subtitle':
+            if (multiline) {
+                return animateMultilineTextSlide({
+                    slide,
+                    inner,
+                    direction,
+                    slideData,
+                    fill,
+                    reducedMotion,
+                });
+            }
+
             return animateTextSlide({
                 slide,
                 inner,
@@ -375,7 +532,6 @@ function animateTrack(track, direction, slideData, reducedMotion) {
                 slideData,
                 fill,
                 reducedMotion,
-                fullWidth: Boolean(multiline),
             });
         default:
             return Promise.resolve();
@@ -392,6 +548,7 @@ function setupPanelTracks(panel, base) {
         tracks.push({
             ...photoTrack,
             fill: (slideData, inner) => fillPhoto(inner, slideData, base, suffix),
+            preload: (slideData) => preloadImage(buildSrc(base, slideData.photo, suffix)),
         });
     }
 
@@ -402,6 +559,7 @@ function setupPanelTracks(panel, base) {
         tracks.push({
             ...ovalTrack,
             fill: (slideData, inner) => fillOval(inner, slideData, base, suffix),
+            preload: (slideData) => preloadImage(buildSrc(base, slideData.oval, suffix)),
         });
     }
 
@@ -449,6 +607,9 @@ function syncCounter(panels, slides, index, base) {
         const suffix = panel.dataset.lumVillasSuffix || '';
         preloadImage(buildSrc(base, slides[(index + 1) % slides.length].photo, suffix));
         preloadImage(buildSrc(base, slides[(index - 1 + slides.length) % slides.length].photo, suffix));
+        preloadImage(buildSrc(base, slides[(index + 1) % slides.length].oval, suffix));
+        preloadImage(buildSrc(base, slides[(index - 1 + slides.length) % slides.length].oval, suffix));
+        preloadImage(buildSrc(base, slides[index].photo, suffix));
         preloadImage(buildSrc(base, slides[index].oval, suffix));
     });
 }
@@ -667,5 +828,13 @@ export function initVillasCarousel() {
         applyState(index);
         syncViewLinks(root, slides, index);
         initViewCursor(root);
+
+        panels.forEach((panel) => {
+            if (! isPanelVisible(panel)) {
+                return;
+            }
+
+            preloadSlideAssets(slides, base, panel.dataset.lumVillasSuffix || '');
+        });
     });
 }

@@ -98,6 +98,9 @@ return [
                 'titleItalic' => 'Villas',
                 'titleMobileNormal' => 'Lum',
                 'titleMobileItalic' => ' Villas',
+                'subtitle' => 'До 4 взрослых — 2 бассейна, 2 спальни и 2 ванные',
+                'subtitleLine1' => 'До 4 взрослых — 2 бассейна, 2 спальни',
+                'subtitleLine2' => 'и 2 ванные',
             ],
             [
                 'slug' => 'ocean',
@@ -107,6 +110,9 @@ return [
                 'titleItalic' => 'Ocean',
                 'titleMobileNormal' => 'Lum',
                 'titleMobileItalic' => ' Ocean',
+                'subtitle' => 'До 4 взрослых — вид на океан, 2 спальни и 2 ванные',
+                'subtitleLine1' => 'До 4 взрослых — вид на океан',
+                'subtitleLine2' => 'и 2 спальни и 2 ванные',
             ],
             [
                 'slug' => 'oculus',
@@ -116,6 +122,9 @@ return [
                 'titleItalic' => 'Oculus',
                 'titleMobileNormal' => '',
                 'titleMobileItalic' => 'Oculus',
+                'subtitle' => 'До 4 взрослых — одноэтажная вилла с садом и душем под открытым небом',
+                'subtitleLine1' => 'До 4 взрослых — одноэтажная вилла',
+                'subtitleLine2' => 'с садом и душем под открытым небом',
             ],
             [
                 'slug' => 'residence',
@@ -125,6 +134,9 @@ return [
                 'titleItalic' => 'Residence',
                 'titleMobileNormal' => 'Lum',
                 'titleMobileItalic' => ' Residence',
+                'subtitle' => 'До 4 взрослых — вилла 68 кв. м с верандой и душем под открытым небом',
+                'subtitleLine1' => 'До 4 взрослых — вилла 68 кв. м',
+                'subtitleLine2' => 'с верандой и душем под открытым небом',
             ],
         ],
     ],
@@ -138,7 +150,7 @@ return [
             [
                 'title' => 'Ресторан',
                 'route' => 'dining',
-                'photo' => 'location/card-dining.jpg',
+                'photo' => 'location/card-dining.webp',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
                 'photoLines' => [
                     ['text' => 'Вкусы Шри-Ланки,', 'italic' => false],
@@ -163,7 +175,7 @@ return [
             [
                 'title' => 'Отдых',
                 'route' => 'relax',
-                'photo' => 'location/card-yoga.jpg',
+                'photo' => 'location/card-yoga.webp',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
                 'photoLines' => [
                     ['text' => 'Предлагаем приватные', 'italic' => false],
@@ -185,7 +197,7 @@ return [
             [
                 'title' => 'Открыть',
                 'route' => 'discover',
-                'photo' => 'location/card-discover.jpg',
+                'photo' => 'location/card-discover.webp',
                 'photoGradient' => 'bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]',
                 'photoLines' => [
                     ['text' => 'Шри-Ланка такой,', 'italic' => false],
