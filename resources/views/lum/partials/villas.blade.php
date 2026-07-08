@@ -1,7 +1,8 @@
 @php
     $villasSlides = array_map(fn ($slide) => array_merge($slide, [
-        'subtitleLine1' => __('lum.villas.subtitle_line1'),
-        'subtitleLine2' => __('lum.villas.subtitle_line2'),
+        'subtitle' => $slide['subtitle'] ?? __('lum.villas.subtitle'),
+        'subtitleLine1' => $slide['subtitleLine1'] ?? __('lum.villas.subtitle_line1'),
+        'subtitleLine2' => $slide['subtitleLine2'] ?? __('lum.villas.subtitle_line2'),
         'href' => route('villa.show', $slide['slug']),
     ]), trans('lum.villas.slides'));
     $villasLifestyle = '<span class="lum-script text-[24px] text-lum-green">' . e(__('lum.villas.lifestyle')) . ' </span>';
@@ -45,7 +46,7 @@
                     <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">04</span>
                 </div>
 
-                <div class="absolute left-1/2 top-[181px] w-[335px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88">
+                <div class="absolute left-1/2 top-[181px] w-[335px] max-w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 w-full text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-ivory-88">
                     <p data-lum-villas-subtitle>{{ __('lum.villas.subtitle_line1') }}</p>
                     <p data-lum-villas-subtitle-line2>{{ __('lum.villas.subtitle_line2') }}</p>
                 </div>

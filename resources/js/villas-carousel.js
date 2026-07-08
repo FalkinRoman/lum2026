@@ -13,7 +13,7 @@ function preloadImage(src) {
     img.src = src;
 }
 
-const POSITION_CLASS_PREFIXES = ['absolute', 'left-', 'right-', 'top-', 'bottom-', '-translate', 'translate-', 'w-[', 'whitespace-nowrap'];
+const POSITION_CLASS_PREFIXES = ['absolute', 'left-', 'right-', 'top-', 'bottom-', '-translate', 'translate-', 'w-['];
 
 function isPositionClass(className) {
     return POSITION_CLASS_PREFIXES.some((prefix) => className.startsWith(prefix));
@@ -353,8 +353,12 @@ function animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion, dura
     });
 }
 
+function isPanelVisible(panel) {
+    return panel.getClientRects().length > 0;
+}
+
 function animateTrack(track, direction, slideData, reducedMotion) {
-    const { type, slide, inner, fill } = track;
+    const { type, slide, inner, fill, multiline } = track;
 
     switch (type) {
         case 'photo':
@@ -364,7 +368,15 @@ function animateTrack(track, direction, slideData, reducedMotion) {
         case 'title':
             return animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion });
         case 'subtitle':
-            return animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion, fullWidth: true });
+            return animateTextSlide({
+                slide,
+                inner,
+                direction,
+                slideData,
+                fill,
+                reducedMotion,
+                fullWidth: Boolean(multiline),
+            });
         default:
             return Promise.resolve();
     }
@@ -412,9 +424,11 @@ function setupPanelTracks(panel, base) {
             ? subtitleLine1.parentElement
             : subtitleLine1;
         const wrapped = wrapTextTrack(subtitleTarget);
+        const multiline = Boolean(subtitleTarget.querySelector('[data-lum-villas-subtitle-line2]'));
 
         tracks.push({
             type: 'subtitle',
+            multiline,
             slide: wrapped.slide,
             inner: wrapped.inner,
             fill: (slideData, inner) => fillSubtitle(inner.firstElementChild ?? inner, slideData),
@@ -614,9 +628,30 @@ export function initVillasCarousel() {
             syncCounter(panels, slides, index, base);
             syncViewLinks(root, slides, index);
 
-            await Promise.all(
-                panelTracks.flatMap((tracks) => tracks.map((track) => animateTrack(track, direction, slideData, reducedMotion))),
-            );
+            const animationTasks = [];
+            const staticUpdates = [];
+
+            panelTracks.forEach((tracks, panelIndex) => {
+                if (isPanelVisible(panels[panelIndex])) {
+                    tracks.forEach((track) => {
+                        animationTasks.push(animateTrack(track, direction, slideData, reducedMotion));
+                    });
+
+                    return;
+                }
+
+                tracks.forEach(({ slide, inner, fill }) => {
+                    staticUpdates.push(() => {
+                        fill(slideData, inner);
+                        slide.style.visibility = '';
+                        inner.style.visibility = '';
+                        slide.style.height = '';
+                    });
+                });
+            });
+
+            await Promise.all(animationTasks);
+            staticUpdates.forEach((update) => update());
 
             isAnimating = false;
         };
