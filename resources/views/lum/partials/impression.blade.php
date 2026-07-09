@@ -75,9 +75,9 @@
             </div>
         </div>
         <div @class(['absolute left-1/2 flex w-[280px] -translate-x-1/2 flex-col items-center gap-[16px]', 'top-[692px]' => $showLogomark, 'top-[645px]' => ! $showLogomark])>
-            <div class="flex w-full items-center justify-center gap-[8px]" data-lum-interior-progress data-line-class="h-px w-[33px] bg-lum-espresso opacity-40">
+            <div class="flex w-full items-start justify-center gap-[8px]" data-lum-interior-progress data-line-class="h-px w-[33px] bg-lum-espresso opacity-40">
                 @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] w-[33px] items-center justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
+                    <span class="inline-flex h-[19px] w-[33px] items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
                         <span data-lum-interior-progress-line @class(['h-px w-[33px] bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
                         <img
                             src="{{ $img('interior/slider-active.svg') }}"
@@ -121,9 +121,9 @@
             </button>
         </div>
         <div class="absolute left-[48px] top-[509px] flex w-[280px] flex-col items-center gap-[16px]">
-            <div class="flex w-full items-center justify-center gap-[8px]" data-lum-interior-progress data-line-class="h-px flex-1 bg-lum-espresso opacity-40">
+            <div class="flex w-full items-start justify-center gap-[8px]" data-lum-interior-progress data-line-class="h-px flex-1 bg-lum-espresso opacity-40">
                 @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] flex-1 items-center justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
+                    <span class="inline-flex h-[19px] flex-1 items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
                         <span data-lum-interior-progress-line @class(['h-px w-full bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
                         <img
                             src="{{ $img('interior/slider-active.svg') }}"
@@ -189,9 +189,9 @@
         </div>
         @endif
         <div @class(['absolute left-1/2 flex w-[378px] -translate-x-1/2 flex-col items-center gap-[24px]', 'top-[1134px]' => $showLogomark && $showTabs, 'top-[1069px]' => ! $showLogomark && $showTabs, 'top-[973px]' => ! $showTabs])>
-            <div class="flex w-full items-center justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">
+            <div class="flex w-full items-start justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">
                 @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] w-[42px] items-center justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
+                    <span class="inline-flex h-[19px] w-[42px] items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
                         <span data-lum-interior-progress-line @class(['h-px w-[42px] bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
                         <img
                             src="{{ $img('interior/slider-active.svg') }}"
@@ -262,9 +262,9 @@
             <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div @class(['absolute left-[771px] flex w-[378px] flex-col items-center gap-[24px]', 'top-[1300px]' => $showLogomark && $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs, 'top-[1189px]' => ! $showTabs])>
-            <div class="flex w-full items-center justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">
+            <div class="flex w-full items-start justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">
                 @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] w-[42px] items-center justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
+                    <span class="inline-flex h-[19px] w-[42px] items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
                         <span data-lum-interior-progress-line @class(['h-px w-[42px] bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
                         <img
                             src="{{ $img('interior/slider-active.svg') }}"

@@ -721,6 +721,19 @@
         box-sizing: border-box;
     }
 
+    [data-lum-villas-mobile-subtitle] {
+        isolation: isolate;
+    }
+
+    [data-lum-villas-mobile-subtitle-stage] {
+        position: relative;
+        width: 100%;
+    }
+
+    [data-lum-villas-mobile-subtitle-content] p {
+        margin: 0;
+    }
+
     [data-lum-villas-text-track] [data-lum-villas-subtitle-line2] {
         margin-top: 0;
     }
@@ -735,6 +748,19 @@
 
     .lum-divider {
         @apply h-px mx-auto bg-lum-espresso opacity-16 w-[calc(100%-40px)] desk:w-[1776px];
+    }
+
+    [data-lum-interior-progress] {
+        align-items: flex-start;
+    }
+
+    [data-lum-interior-progress-item] {
+        align-items: flex-start;
+    }
+
+    [data-lum-interior-progress-line],
+    [data-lum-interior-progress-active] {
+        display: block;
     }
 
     .lum-location-card__tag-wrap {

@@ -337,6 +337,99 @@ function createTextLayer(content, zIndex, { fullWidth = false } = {}) {
     return { layer, lane };
 }
 
+function fillMobileSubtitle(content, slideData) {
+    const lines = content.querySelectorAll('p');
+
+    if (lines[0]) {
+        lines[0].textContent = slideData.subtitleLine1 ?? slideData.subtitle ?? '';
+    }
+
+    if (lines[1]) {
+        lines[1].textContent = slideData.subtitleLine2 ?? '';
+    }
+}
+
+function cloneMobileSubtitleBlock(content) {
+    const block = document.createElement('div');
+    block.className = 'w-full text-center';
+    block.innerHTML = content.innerHTML;
+
+    return block;
+}
+
+function animateMobileSubtitle({ root, stage, content, direction, slideData, fill, reducedMotion, duration = 0.72 }) {
+    const dir = direction === 'next' ? 1 : -1;
+
+    if (reducedMotion) {
+        fill(slideData, content);
+
+        return Promise.resolve();
+    }
+
+    const travel = (root?.offsetWidth || stage.offsetWidth) * 1.05;
+
+    stage.style.height = `${stage.offsetHeight}px`;
+    stage.style.overflow = 'hidden';
+
+    const outgoingContent = cloneMobileSubtitleBlock(content);
+    const incomingContent = cloneMobileSubtitleBlock(content);
+    fill(slideData, incomingContent);
+
+    const outgoing = createTextLayer(outgoingContent, 2, { fullWidth: true });
+    const incoming = createTextLayer(incomingContent, 1, { fullWidth: true });
+
+    outgoing.layer.className = `${TEXT_OVERLAY} absolute inset-0 z-[2] overflow-hidden`;
+    incoming.layer.className = `${TEXT_OVERLAY} absolute inset-0 z-[1] overflow-hidden`;
+
+    gsap.set(outgoing.lane, { x: 0 });
+    gsap.set(incoming.lane, { x: dir * travel });
+
+    content.style.opacity = '0';
+    stage.appendChild(outgoing.layer);
+    stage.appendChild(incoming.layer);
+
+    return new Promise((resolve) => {
+        gsap.timeline({
+            defaults: { duration, ease: 'power3.out' },
+            onComplete: () => {
+                fill(slideData, content);
+                content.style.opacity = '';
+                stage.style.height = '';
+                stage.style.overflow = '';
+                outgoing.layer.remove();
+                incoming.layer.remove();
+                gsap.set([outgoing.lane, incoming.lane], { clearProps: 'transform,x,xPercent' });
+                resolve();
+            },
+        })
+            .to(outgoing.lane, { x: -dir * travel }, 0)
+            .to(incoming.lane, { x: 0 }, 0);
+    });
+}
+
+function setupMobileSubtitle(panel) {
+    const root = panel.querySelector('[data-lum-villas-mobile-subtitle]');
+
+    if (! root) {
+        return null;
+    }
+
+    const stage = root.querySelector('[data-lum-villas-mobile-subtitle-stage]');
+    const content = root.querySelector('[data-lum-villas-mobile-subtitle-content]');
+
+    if (! stage || ! content) {
+        return null;
+    }
+
+    return {
+        type: 'mobileSubtitle',
+        root,
+        stage,
+        content,
+        fill: (slideData, target = content) => fillMobileSubtitle(target, slideData),
+    };
+}
+
 function createMultilineTextBlock(inner, slideData, fill, track, { fillIncoming = false } = {}) {
     const textWidth = getMultilineTextWidth(track, inner);
     const content = cloneTrackContent(inner);
@@ -506,6 +599,23 @@ function isPanelVisible(panel) {
     return panel.getClientRects().length > 0;
 }
 
+function resetTrackState(track, slideData) {
+    if (track.type === 'mobileSubtitle') {
+        track.fill(slideData, track.content);
+        track.content.style.opacity = '';
+        track.stage.style.height = '';
+
+        return;
+    }
+
+    const { slide, inner, fill } = track;
+
+    fill(slideData, inner);
+    slide.style.visibility = '';
+    inner.style.visibility = '';
+    slide.style.height = '';
+}
+
 function animateTrack(track, direction, slideData, reducedMotion) {
     const { type, slide, inner, fill, multiline } = track;
 
@@ -516,6 +626,16 @@ function animateTrack(track, direction, slideData, reducedMotion) {
             return animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion, preload: track.preload });
         case 'title':
             return animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion });
+        case 'mobileSubtitle':
+            return animateMobileSubtitle({
+                root: track.root,
+                stage: track.stage,
+                content: track.content,
+                direction,
+                slideData,
+                fill: track.fill,
+                reducedMotion,
+            });
         case 'subtitle':
             if (multiline) {
                 return animateMultilineTextSlide({
@@ -578,22 +698,28 @@ function setupPanelTracks(panel, base) {
         });
     }
 
-    const subtitleLine1 = panel.querySelector('[data-lum-villas-subtitle]');
+    const mobileSubtitle = setupMobileSubtitle(panel);
 
-    if (subtitleLine1) {
-        const subtitleTarget = subtitleLine1.parentElement?.querySelector('[data-lum-villas-subtitle-line2]')
-            ? subtitleLine1.parentElement
-            : subtitleLine1;
-        const wrapped = wrapTextTrack(subtitleTarget);
-        const multiline = Boolean(subtitleTarget.querySelector('[data-lum-villas-subtitle-line2]'));
+    if (mobileSubtitle) {
+        tracks.push(mobileSubtitle);
+    } else {
+        const subtitleLine1 = panel.querySelector('[data-lum-villas-subtitle]');
 
-        tracks.push({
-            type: 'subtitle',
-            multiline,
-            slide: wrapped.slide,
-            inner: wrapped.inner,
-            fill: (slideData, inner) => fillSubtitle(inner.firstElementChild ?? inner, slideData),
-        });
+        if (subtitleLine1) {
+            const subtitleTarget = subtitleLine1.parentElement?.querySelector('[data-lum-villas-subtitle-line2]')
+                ? subtitleLine1.parentElement
+                : subtitleLine1;
+            const wrapped = wrapTextTrack(subtitleTarget);
+            const multiline = Boolean(subtitleTarget.querySelector('[data-lum-villas-subtitle-line2]'));
+
+            tracks.push({
+                type: 'subtitle',
+                multiline,
+                slide: wrapped.slide,
+                inner: wrapped.inner,
+                fill: (slideData, inner) => fillSubtitle(inner.firstElementChild ?? inner, slideData),
+            });
+        }
     }
 
     return tracks;
@@ -766,11 +892,7 @@ export function initVillasCarousel() {
             const slideData = slides[targetIndex];
 
             panelTracks.forEach((tracks) => {
-                tracks.forEach(({ slide, inner, fill }) => {
-                    fill(slideData, inner);
-                    slide.style.visibility = '';
-                    inner.style.visibility = '';
-                });
+                tracks.forEach((track) => resetTrackState(track, slideData));
             });
 
             syncCounter(panels, slides, targetIndex, base);
@@ -804,13 +926,8 @@ export function initVillasCarousel() {
                     return;
                 }
 
-                tracks.forEach(({ slide, inner, fill }) => {
-                    staticUpdates.push(() => {
-                        fill(slideData, inner);
-                        slide.style.visibility = '';
-                        inner.style.visibility = '';
-                        slide.style.height = '';
-                    });
+                tracks.forEach((track) => {
+                    staticUpdates.push(() => resetTrackState(track, slideData));
                 });
             });
 
