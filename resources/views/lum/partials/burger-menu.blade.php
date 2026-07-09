@@ -132,25 +132,16 @@
                         <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                     </button>
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
-                    <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible text-[16px] font-medium leading-[25px] tracking-[0.16px] text-lum-espresso">
-                        <a href="{{ route('stay') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('stay')])>
-                            <span>{{ __('lum.nav.stay') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                        </a>
-                        <a href="{{ route('dining') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('dining')])>
-                            <span>{{ __('lum.nav.dining') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                        </a>
-                        <a href="{{ route('relax') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('relax')])>
-                            <span>{{ __('lum.nav.relax') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                        </a>
-                        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => request()->routeIs('discover', 'discover.show')])>
-                            <span>{{ __('lum.nav.discover') }}</span>
-                            @unless (request()->routeIs('discover.show'))
-                                <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                            @endunless
-                        </a>
+                    <nav class="lum-nav absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible text-[16px] font-medium leading-[25px] tracking-[0.16px] text-lum-espresso">
+                        @include('lum.partials.nav-link', ['href' => route('stay'), 'label' => __('lum.nav.stay'), 'active' => request()->routeIs('stay')])
+                        @include('lum.partials.nav-link', ['href' => route('dining'), 'label' => __('lum.nav.dining'), 'active' => request()->routeIs('dining')])
+                        @include('lum.partials.nav-link', ['href' => route('relax'), 'label' => __('lum.nav.relax'), 'active' => request()->routeIs('relax')])
+                        @include('lum.partials.nav-link', [
+                            'href' => route('discover'),
+                            'label' => __('lum.nav.discover'),
+                            'active' => request()->routeIs('discover', 'discover.show'),
+                            'showDot' => ! request()->routeIs('discover.show'),
+                        ])
                     </nav>
                     <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-[40px] w-[105px]" width="105" height="40">

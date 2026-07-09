@@ -81,25 +81,16 @@
 
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
 
-                    <nav class="absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible lum-text-2 font-medium text-lum-espresso">
-                        <a href="{{ route('stay') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'stay'])>
-                            <span>{{ __('lum.nav.stay') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                        </a>
-                        <a href="{{ route('dining') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'dining'])>
-                            <span>{{ __('lum.nav.dining') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                        </a>
-                        <a href="{{ route('relax') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'relax'])>
-                            <span>{{ __('lum.nav.relax') }}</span>
-                            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                        </a>
-                        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => $activeNav === 'discover'])>
-                            <span>{{ __('lum.nav.discover') }}</span>
-                            @unless ($hideDiscoverDot && $activeNav === 'discover')
-                                <span class="lum-nav-link__dot" aria-hidden="true"></span>
-                            @endunless
-                        </a>
+                    <nav class="lum-nav absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible lum-text-2 font-medium text-lum-espresso">
+                        @include('lum.partials.nav-link', ['href' => route('stay'), 'label' => __('lum.nav.stay'), 'active' => $activeNav === 'stay'])
+                        @include('lum.partials.nav-link', ['href' => route('dining'), 'label' => __('lum.nav.dining'), 'active' => $activeNav === 'dining'])
+                        @include('lum.partials.nav-link', ['href' => route('relax'), 'label' => __('lum.nav.relax'), 'active' => $activeNav === 'relax'])
+                        @include('lum.partials.nav-link', [
+                            'href' => route('discover'),
+                            'label' => __('lum.nav.discover'),
+                            'active' => $activeNav === 'discover',
+                            'showDot' => ! ($hideDiscoverDot && $activeNav === 'discover'),
+                        ])
                     </nav>
 
                     <a href="{{ route('home') }}" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">

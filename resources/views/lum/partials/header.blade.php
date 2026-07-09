@@ -27,28 +27,19 @@
     ])></div>
 
     <nav @class([
-        'absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible lum-text-2 font-medium',
+        'lum-nav absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible lum-text-2 font-medium',
         'text-lum-ivory' => ! $isEspresso,
         'text-lum-espresso' => $isEspresso,
     ])>
-        <a href="{{ $stayHref }}" @class(['lum-nav-link--inline', 'is-active' => $headerActive === 'stay'])>
-            <span>{{ __('lum.nav.stay') }}</span>
-            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-        </a>
-        <a href="{{ route('dining') }}" @class(['lum-nav-link--inline', 'is-active' => $headerActive === 'dining'])>
-            <span>{{ __('lum.nav.dining') }}</span>
-            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-        </a>
-        <a href="{{ route('relax') }}" @class(['lum-nav-link--inline', 'is-active' => $headerActive === 'relax'])>
-            <span>{{ __('lum.nav.relax') }}</span>
-            <span class="lum-nav-link__dot" aria-hidden="true"></span>
-        </a>
-        <a href="{{ route('discover') }}" @class(['lum-nav-link--inline', 'is-active' => $headerActive === 'discover'])>
-            <span>{{ __('lum.nav.discover') }}</span>
-            @unless ($hideDiscoverDot && $headerActive === 'discover')
-                <span class="lum-nav-link__dot" aria-hidden="true"></span>
-            @endunless
-        </a>
+        @include('lum.partials.nav-link', ['href' => $stayHref, 'label' => __('lum.nav.stay'), 'active' => $headerActive === 'stay'])
+        @include('lum.partials.nav-link', ['href' => route('dining'), 'label' => __('lum.nav.dining'), 'active' => $headerActive === 'dining'])
+        @include('lum.partials.nav-link', ['href' => route('relax'), 'label' => __('lum.nav.relax'), 'active' => $headerActive === 'relax'])
+        @include('lum.partials.nav-link', [
+            'href' => route('discover'),
+            'label' => __('lum.nav.discover'),
+            'active' => $headerActive === 'discover',
+            'showDot' => ! ($hideDiscoverDot && $headerActive === 'discover'),
+        ])
     </nav>
 
     <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
