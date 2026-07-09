@@ -1,18 +1,3 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="arrow">
-<g id="Subtract" filter="url(#filter0_g_0_48)">
-<path d="M16.8994 8.25V19.9912L17.2959 19.7021C17.5985 19.4818 17.8928 19.2913 18.1787 19.1309C18.3692 19.0385 18.5601 18.9565 18.75 18.8818V20.7549C17.7748 21.6426 17.0128 22.641 16.4639 23.75H15.5176C14.9929 22.6534 14.2363 21.6558 13.25 20.7559V18.8604C13.4363 18.935 13.6207 19.0173 13.8018 19.1094L13.8027 19.1084C14.102 19.2686 14.4022 19.4598 14.7041 19.6797L15.1006 19.9688V8.25H16.8994Z" fill="var(--fill-0, #2E2720)"/>
-</g>
-</g>
-<defs>
-<filter id="filter0_g_0_48" x="12.25" y="7.25" width="7.5" height="17.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feTurbulence type="fractalNoise" baseFrequency="0.05000000074505806 0.05000000074505806" numOctaves="3" seed="7176" />
-<feDisplacementMap in="shape" scale="2" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
-<feMerge result="effect1_texture_0_48">
-<feMergeNode in="displacedImage"/>
-</feMerge>
-</filter>
-</defs>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.8994 8.25V19.9912L17.2959 19.7021C17.5985 19.4818 17.8928 19.2913 18.1787 19.1309C18.3692 19.0385 18.5601 18.9565 18.75 18.8818V20.7549C17.7748 21.6426 17.0128 22.641 16.4639 23.75H15.5176C14.9929 22.6534 14.2363 21.6558 13.25 20.7559V18.8604C13.4363 18.935 13.6207 19.0173 13.8018 19.1094L13.8027 19.1084C14.102 19.2686 14.4022 19.4598 14.7041 19.6797L15.1006 19.9688V8.25H16.8994Z" fill="#2E2720"/>
 </svg>

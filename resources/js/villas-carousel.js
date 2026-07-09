@@ -743,7 +743,28 @@ function syncCounter(panels, slides, index, base) {
     });
 }
 
-function initViewCursor(root) {
+function getViewSafeInsets(slider) {
+    return {
+        left: Number.parseInt(slider.dataset.lumVillasViewSafeLeft || '104', 10),
+        right: Number.parseInt(slider.dataset.lumVillasViewSafeRight || '72', 10),
+        top: Number.parseInt(slider.dataset.lumVillasViewSafeTop || '48', 10),
+        bottom: Number.parseInt(slider.dataset.lumVillasViewSafeBottom || '48', 10),
+    };
+}
+
+function isInActiveViewZone(slider, event) {
+    const rect = slider.getBoundingClientRect();
+    const { left, right, top, bottom } = getViewSafeInsets(slider);
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    return x >= left
+        && x <= rect.width - right
+        && y >= top
+        && y <= rect.height - bottom;
+}
+
+function initViewCursor(root, { getHref, isBusy }) {
     const sliders = root.querySelectorAll('[data-lum-villas-slider-view]');
     const cursor = root.querySelector('[data-lum-villas-view-cursor]');
     const fixedView = root.querySelector('[data-lum-villas-view-fixed]');
@@ -758,15 +779,10 @@ function initViewCursor(root) {
 
     cursor.classList.remove('opacity-0');
 
-    const offsetX = 4;
-    const offsetY = -40;
     let activeSlider = null;
-    let rafId = null;
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
     let isVisible = false;
+    let isPointerInActiveZone = false;
+    let hideTween = null;
 
     gsap.set(cursor, {
         xPercent: -50,
@@ -776,41 +792,32 @@ function initViewCursor(root) {
         scale: 0.12,
     });
 
-    const renderCursor = () => {
-        currentX += (targetX - currentX) * 0.22;
-        currentY += (targetY - currentY) * 0.22;
-
-        gsap.set(cursor, { x: currentX, y: currentY });
-
-        if (isVisible && (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5)) {
-            rafId = requestAnimationFrame(renderCursor);
-        } else {
-            rafId = null;
-        }
-    };
-
-    const setTarget = (slider, event) => {
+    const positionCursor = (slider, event) => {
         const rect = slider.getBoundingClientRect();
 
-        targetX = event.clientX - rect.left + offsetX;
-        targetY = event.clientY - rect.top + offsetY;
-
-        if (! rafId) {
-            rafId = requestAnimationFrame(renderCursor);
-        }
+        gsap.set(cursor, {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top,
+        });
     };
 
     const showCursor = (slider, event) => {
+        if (! isInActiveViewZone(slider, event)) {
+            hideCursor(slider);
+
+            return;
+        }
+
         activeSlider = slider;
+        isPointerInActiveZone = true;
+        positionCursor(slider, event);
+
+        if (isVisible) {
+            return;
+        }
+
         isVisible = true;
-
-        const rect = slider.getBoundingClientRect();
-        targetX = event.clientX - rect.left + offsetX;
-        targetY = event.clientY - rect.top + offsetY;
-        currentX = targetX;
-        currentY = targetY;
-
-        gsap.set(cursor, { x: currentX, y: currentY });
+        hideTween?.kill();
 
         gsap.killTweensOf(cursor);
         gsap.fromTo(cursor, {
@@ -823,10 +830,6 @@ function initViewCursor(root) {
             ease: 'power3.out',
             overwrite: true,
         });
-
-        if (! rafId) {
-            rafId = requestAnimationFrame(renderCursor);
-        }
     };
 
     const hideCursor = (slider) => {
@@ -835,15 +838,16 @@ function initViewCursor(root) {
         }
 
         activeSlider = null;
-        isVisible = false;
+        isPointerInActiveZone = false;
 
-        if (rafId) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
+        if (! isVisible) {
+            return;
         }
 
+        isVisible = false;
+
         gsap.killTweensOf(cursor);
-        gsap.to(cursor, {
+        hideTween = gsap.to(cursor, {
             autoAlpha: 0,
             scale: 0.12,
             duration: 0.25,
@@ -855,11 +859,42 @@ function initViewCursor(root) {
         slider.addEventListener('mouseenter', (event) => showCursor(slider, event));
         slider.addEventListener('mouseleave', () => hideCursor(slider));
         slider.addEventListener('mousemove', (event) => {
-            if (activeSlider !== slider) {
+            if (! isInActiveViewZone(slider, event)) {
+                isPointerInActiveZone = false;
+
+                if (activeSlider === slider) {
+                    hideCursor(slider);
+                }
+
                 return;
             }
 
-            setTarget(slider, event);
+            if (activeSlider !== slider || ! isVisible) {
+                showCursor(slider, event);
+
+                return;
+            }
+
+            isPointerInActiveZone = true;
+            positionCursor(slider, event);
+        });
+
+        slider.addEventListener('click', (event) => {
+            if (isBusy?.()) {
+                return;
+            }
+
+            if (! isInActiveViewZone(slider, event)) {
+                return;
+            }
+
+            const href = getHref?.();
+
+            if (! href || href === '#') {
+                return;
+            }
+
+            window.location.assign(href);
         });
     });
 }
@@ -947,7 +982,10 @@ export function initVillasCarousel() {
 
         applyState(index);
         syncViewLinks(root, slides, index);
-        initViewCursor(root);
+        initViewCursor(root, {
+            getHref: () => slides[index]?.href || '#',
+            isBusy: () => isAnimating,
+        });
 
         panels.forEach((panel) => {
             if (! isPanelVisible(panel)) {

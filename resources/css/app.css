@@ -120,52 +120,232 @@
         @apply text-lum-ivory;
     }
 
-    .lum-btn-outline-ivory,
-    .lum-btn-outline,
     .lum-btn-green,
     .lum-btn,
     .lum-btn-ivory,
     .lum-btn-dark,
     .lum-btn-espresso,
-    .lum-icon-btn,
     .lum-burger-btn,
-    .lum-nav-link,
-    .lum-nav-link--inline,
     .lum-tab {
         transition:
-            background-color 0.28s ease,
-            color 0.28s ease,
-            border-color 0.28s ease,
-            opacity 0.28s ease;
+            background-color 0.3s cubic-bezier(0.7, 0, 0.2, 1),
+            color 0.3s cubic-bezier(0.7, 0, 0.2, 1),
+            border-color 0.3s cubic-bezier(0.7, 0, 0.2, 1),
+            opacity 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-btn-outline-ivory,
+    .lum-btn-outline,
+    .lum-icon-btn,
+    .lum-nav-link,
+    .lum-nav-link--inline {
+        transition:
+            color 0.3s cubic-bezier(0.7, 0, 0.2, 1),
+            border-color 0.3s cubic-bezier(0.7, 0, 0.2, 1),
+            opacity 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    /* Codrops #1 — button--pan: fill slides up on hover */
+    .lum-btn-outline,
+    .lum-btn-outline-ivory,
+    .lum-icon-btn--ivory-outline,
+    .lum-icon-btn--espresso-outline,
+    .lum-btn-pan,
+    .lum-tab--inactive {
+        @apply relative overflow-hidden;
+        isolation: isolate;
+        background-color: transparent;
+    }
+
+    .lum-btn-outline::before,
+    .lum-btn-outline-ivory::before,
+    .lum-icon-btn--ivory-outline::before,
+    .lum-icon-btn--espresso-outline::before,
+    .lum-btn-pan::before,
+    .lum-tab--inactive::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        transform: translate3d(0, 100%, 0);
+        transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-btn-outline::before,
+    .lum-btn-pan--espresso::before {
+        background-color: var(--color-lum-espresso);
+    }
+
+    .lum-btn-outline-ivory::before,
+    .lum-btn-pan--ivory::before {
+        background-color: var(--color-lum-ivory);
+    }
+
+    .lum-tab--inactive::before {
+        background-color: var(--color-lum-ground);
+    }
+
+    .lum-icon-btn--ivory-outline::before {
+        background-color: var(--color-lum-ivory);
+    }
+
+    .lum-icon-btn--espresso-outline::before {
+        background-color: var(--color-lum-espresso);
+    }
+
+    .lum-btn-outline--no-hover::before {
+        display: none;
+    }
+
+    /* Codrops #1 — filled buttons */
+    .lum-btn-dark,
+    .lum-btn-green,
+    .lum-btn-ivory,
+    .lum-btn-espresso,
+    .lum-btn.lum-btn-info,
+    .lum-shop-btn {
+        @apply relative overflow-hidden;
+        isolation: isolate;
+    }
+
+    .lum-btn-dark::before,
+    .lum-btn-green::before,
+    .lum-btn-ivory::before,
+    .lum-btn-espresso::before,
+    .lum-btn.lum-btn-info::before,
+    .lum-shop-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-btn-dark::before {
+        background-color: var(--color-lum-ground);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-btn-green::before {
+        background-color: var(--color-lum-green);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-shop-btn::before {
+        background-color: var(--color-lum-espresso);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-btn-ivory::before {
+        background-color: var(--color-lum-ivory);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-btn-espresso::before {
+        background-color: var(--color-lum-espresso);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-btn.lum-btn-info::before {
+        background-color: var(--color-lum-espresso);
+        transform: translate3d(0, 100%, 0);
+    }
+
+    .lum-icon-btn--ivory-outline img,
+    .lum-icon-btn--espresso-outline img,
+    .lum-btn-pan img {
+        position: relative;
+        z-index: 1;
     }
 
     @media (hover: hover) and (pointer: fine) {
-        .lum-btn-outline-ivory:hover {
-            @apply bg-lum-ivory text-lum-espresso;
+        .lum-btn-outline:hover::before,
+        .lum-btn-outline-ivory:hover::before,
+        .lum-icon-btn--ivory-outline:hover::before,
+        .lum-icon-btn--espresso-outline:hover::before,
+        .lum-btn-pan:hover::before,
+        .lum-tab--inactive:hover::before {
+            transform: translate3d(0, 0, 0);
         }
 
         .lum-btn-outline:hover {
-            @apply bg-lum-espresso text-lum-ivory;
+            @apply bg-transparent;
+            color: var(--color-lum-ivory);
+        }
+
+        .lum-btn-outline-ivory:hover {
+            @apply bg-transparent;
+            color: var(--color-lum-espresso);
         }
 
         .lum-btn-outline--no-hover:hover {
             @apply bg-transparent text-lum-espresso;
         }
 
-        .lum-btn-green:hover {
-            @apply border border-lum-green bg-transparent text-lum-green;
+        .lum-tab--inactive:hover {
+            @apply border-lum-ground bg-transparent text-lum-ivory;
         }
 
-        .lum-btn:hover {
-            @apply border border-lum-green bg-transparent text-lum-green;
+        .lum-icon-btn--ivory-outline:hover {
+            @apply bg-transparent;
         }
 
-        .lum-btn-ivory:hover {
-            @apply border border-lum-ivory bg-transparent text-lum-ivory;
+        .lum-icon-btn--ivory-outline:hover img {
+            filter: brightness(0);
+        }
+
+        .lum-icon-btn--espresso-outline:hover {
+            @apply bg-transparent;
+        }
+
+        .lum-icon-btn--espresso-outline:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        .lum-btn-pan--ivory:hover img {
+            filter: brightness(0);
+        }
+
+        .lum-btn-pan--espresso:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        .lum-btn-dark:hover::before,
+        .lum-btn-green:hover::before,
+        .lum-btn-ivory:hover::before,
+        .lum-btn-espresso:hover::before,
+        .lum-shop-btn:hover::before {
+            transform: translate3d(0, -100%, 0);
+        }
+
+        .lum-btn.lum-btn-info:hover::before {
+            transform: translate3d(0, 0, 0);
         }
 
         .lum-btn-dark:hover {
-            @apply border border-lum-ground bg-transparent text-lum-ground;
+            @apply border-lum-ground bg-transparent;
+            color: var(--color-lum-ground);
+        }
+
+        .lum-btn-green:hover,
+        .lum-btn:not(.lum-btn-info):hover {
+            @apply border-lum-green bg-transparent text-lum-green;
+        }
+
+        .lum-btn-ivory:hover {
+            @apply border-lum-ivory bg-transparent text-lum-ivory;
+        }
+
+        .lum-btn-espresso:hover {
+            @apply border-lum-espresso bg-transparent text-lum-espresso;
+        }
+
+        .lum-btn.lum-btn-info:hover {
+            @apply border-transparent bg-lum-green text-lum-ivory;
+        }
+
+        .lum-shop-btn:hover {
+            @apply border-lum-espresso bg-transparent text-lum-espresso;
         }
     }
 
@@ -189,16 +369,6 @@
 
     .lum-icon-btn--ivory-outline {
         @apply rounded-[50px] border border-lum-ivory p-[2px];
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .lum-icon-btn--ivory-outline:hover {
-            @apply bg-lum-ivory;
-        }
-
-        .lum-icon-btn--ivory-outline:hover img {
-            filter: brightness(0);
-        }
     }
 
     .lum-icon-btn--ivory-filled {
@@ -233,16 +403,6 @@
         @apply rounded-[50px] border border-lum-espresso p-[2px];
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .lum-icon-btn--espresso-outline:hover {
-            @apply bg-lum-espresso;
-        }
-
-        .lum-icon-btn--espresso-outline:hover img {
-            filter: brightness(0) invert(1);
-        }
-    }
-
     .lum-icon-btn--espresso-filled img {
         filter: brightness(0) invert(1);
     }
@@ -262,30 +422,90 @@
     }
 
     .lum-burger-btn {
-        @apply inline-flex items-center justify-center;
+        @apply relative inline-flex items-center justify-center overflow-hidden;
+        isolation: isolate;
         box-sizing: border-box;
         min-width: 72px;
         height: 36px;
         padding-inline: 20px;
+        padding-block: 2px;
+        background-color: transparent;
+    }
+
+    .lum-burger-btn--ivory-compact,
+    .lum-burger-btn--espresso-compact {
+        width: 56px;
+        min-width: 56px;
+        height: 32px;
+        padding-inline: 0;
+        padding-block: 0;
+    }
+
+    .lum-burger-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        transform: translate3d(0, 100%, 0);
+        transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
     .lum-burger-btn img {
-        @apply size-[32px] shrink-0;
+        @apply relative z-[1] size-[32px] shrink-0;
         transform: none;
-        transition: filter 0.28s ease;
+        transition: filter 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
-    .lum-burger-btn--ivory {
-        @apply rounded-[50px] bg-lum-ivory;
+    .lum-burger-btn--ivory,
+    .lum-burger-btn--ivory-compact {
+        @apply rounded-[50px];
         border: 1px solid var(--color-lum-ivory);
+        background-color: var(--color-lum-ivory);
+    }
+
+    .lum-burger-btn--ivory::before,
+    .lum-burger-btn--ivory-compact::before {
+        background-color: var(--color-lum-espresso);
+    }
+
+    .lum-burger-btn--espresso,
+    .lum-burger-btn--espresso-compact {
+        @apply rounded-[50px];
+        border: 1px solid var(--color-lum-espresso);
+        background-color: var(--color-lum-ivory);
+    }
+
+    .lum-burger-btn--espresso::before,
+    .lum-burger-btn--espresso-compact::before {
+        background-color: var(--color-lum-espresso);
+    }
+
+    .lum-burger-btn--on-home-hero.lum-burger-btn--ivory::before,
+    .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact::before {
+        background-color: var(--color-lum-ivory);
+        transform: translate3d(0, 0, 0);
     }
 
     @media (hover: hover) and (pointer: fine) {
+        .lum-burger-btn--ivory:hover::before,
+        .lum-burger-btn--ivory-compact:hover::before,
+        .lum-burger-btn--espresso:hover::before,
+        .lum-burger-btn--espresso-compact:hover::before {
+            transform: translate3d(0, 0, 0);
+        }
+
         .lum-burger-btn--ivory:hover,
         .lum-burger-btn--ivory-compact:hover,
         .lum-burger-btn--espresso:hover,
         .lum-burger-btn--espresso-compact:hover {
-            @apply border-lum-espresso bg-lum-espresso;
+            @apply bg-transparent;
+        }
+
+        .lum-burger-btn--ivory:hover,
+        .lum-burger-btn--ivory-compact:hover,
+        .lum-burger-btn--espresso:hover,
+        .lum-burger-btn--espresso-compact:hover {
+            @apply border-lum-espresso;
         }
 
         .lum-burger-btn--ivory:hover img,
@@ -295,28 +515,20 @@
             filter: brightness(0) invert(1);
         }
 
-        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover {
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover::before,
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover::before {
+            transform: translate3d(0, -100%, 0);
+        }
+
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover,
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover {
             @apply border-lum-ivory bg-transparent;
         }
 
-        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover img {
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover img,
+        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover img {
             filter: brightness(0) invert(1);
         }
-    }
-
-    .lum-burger-btn--ivory-compact {
-        @apply rounded-[50px] bg-lum-ivory;
-        border: 1px solid var(--color-lum-ivory);
-    }
-
-    .lum-burger-btn--espresso {
-        @apply rounded-[50px] bg-lum-ivory;
-        border: 1px solid var(--color-lum-espresso);
-    }
-
-    .lum-burger-btn--espresso-compact {
-        @apply rounded-[50px] bg-lum-ivory;
-        border: 1px solid var(--color-lum-espresso);
     }
 
     .lum-nav-link,
@@ -361,12 +573,6 @@
         @apply border border-lum-ground bg-transparent text-lum-ground;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .lum-tab--inactive:hover {
-            @apply bg-lum-ground text-lum-ivory;
-        }
-    }
-
     .lum-section-inner {
         @apply relative mx-auto w-[1776px];
     }
@@ -376,35 +582,23 @@
     }
 
     .lum-btn-ivory {
-        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-ivory text-lum-espresso;
+        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-transparent text-lum-espresso;
     }
 
     .lum-btn-dark {
-        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-ground text-lum-ivory;
+        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-transparent text-lum-ivory;
     }
 
     .lum-btn-espresso {
-        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent bg-lum-espresso text-lum-ivory;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .lum-btn-espresso:hover {
-            @apply border-lum-espresso bg-transparent text-lum-espresso;
-        }
+        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent bg-transparent text-lum-ivory;
     }
 
     .lum-btn-green {
-        @apply inline-flex items-center justify-center rounded-[50px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-lum-green text-lum-ivory;
+        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-transparent text-lum-ivory;
     }
 
     .lum-btn-info {
-        @apply bg-lum-green text-lum-ivory;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .lum-btn.lum-btn-info:hover {
-            @apply border-transparent bg-lum-espresso text-lum-ivory;
-        }
+        @apply border border-transparent bg-lum-green text-lum-ivory;
     }
 
     .lum-btn-outline-ivory {
@@ -674,13 +868,15 @@
 
     .lum-villas-view-cursor {
         will-change: transform, opacity;
-        cursor: default;
-        transform-origin: center center;
         pointer-events: none;
-        visibility: hidden;
+        transform-origin: center center;
     }
 
     @media (hover: hover) and (pointer: fine) {
+        [data-lum-villas-slider-view] {
+            cursor: default;
+        }
+
         [data-lum-villas-view-fixed] {
             opacity: 0;
             pointer-events: none;
@@ -1124,7 +1320,8 @@
     }
 
     .lum-shop-btn {
-        @apply inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[50px] border border-transparent bg-lum-espresso font-extrabold uppercase text-lum-ivory;
+        @apply relative inline-flex shrink-0 items-center justify-center overflow-hidden whitespace-nowrap rounded-[50px] border border-transparent bg-transparent font-extrabold uppercase text-lum-ivory;
+        isolation: isolate;
     }
 
     .lum-shop-btn--desk {
@@ -1133,12 +1330,6 @@
 
     .lum-shop-btn--compact {
         @apply px-[24px] py-[5px] text-[14px] leading-[23px] tracking-[2.84px];
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .lum-shop-btn:hover {
-            @apply border-lum-espresso bg-transparent text-lum-espresso;
-        }
     }
 
     .lum-shop-size {

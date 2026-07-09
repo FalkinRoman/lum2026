@@ -8,9 +8,9 @@
 <a
     href="{{ $href }}"
     @class([
-        'flex size-[32px] shrink-0 items-center justify-center rounded-full border',
-        'border-lum-ivory' => $tone === 'dark',
-        'border-lum-espresso' => $tone === 'light',
+        'lum-btn-pan flex size-[36px] shrink-0 items-center justify-center rounded-full border p-[2px]',
+        'lum-btn-pan--ivory border-lum-ivory' => $tone === 'dark',
+        'lum-btn-pan--espresso border-lum-espresso' => $tone === 'light',
     ])
     aria-label="{{ $label }}"
 >
@@ -18,10 +18,10 @@
         src="{{ $img("footer/{$network}.svg") }}"
         alt=""
         @class([
-            'size-[18px]',
+            'size-[32px]',
             'brightness-0' => $tone === 'light',
         ])
-        width="18"
-        height="18"
+        width="32"
+        height="32"
     >
 </a>

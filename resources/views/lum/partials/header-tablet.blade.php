@@ -49,8 +49,8 @@
 
         <button type="button" @class([
             'lum-burger-btn flex items-center',
-            'lum-burger-btn--ivory' => ! $isEspresso,
-            'lum-burger-btn--espresso' => $isEspresso,
+            'lum-burger-btn--ivory-compact' => ! $isEspresso,
+            'lum-burger-btn--espresso-compact' => $isEspresso,
             'lum-burger-btn--on-home-hero' => $homeHero && ! $isEspresso,
         ]) aria-label="{{ __('lum.aria.menu') }}" data-lum-menu-toggle aria-controls="lum-burger-menu" aria-expanded="false">
             <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">

@@ -134,29 +134,41 @@
             </div>
         </div>
 
-        <div class="absolute left-0 top-[333px] h-[1080px] w-full cursor-default overflow-hidden" data-lum-villas-slider data-lum-villas-slider-view>
+        <div
+            class="absolute left-0 top-[333px] h-[1080px] w-full cursor-default overflow-hidden"
+            data-lum-villas-slider
+            data-lum-villas-slider-view
+            data-lum-villas-view-safe-left="104"
+            data-lum-villas-view-safe-right="72"
+            data-lum-villas-view-safe-top="48"
+            data-lum-villas-view-safe-bottom="48"
+        >
             <img src="{{ $img('villas/slide-01.webp') }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="1920" height="1080">
-            <div class="absolute inset-0 bg-black/32"></div>
-            <div class="absolute inset-y-0 left-0 w-[32px] overflow-hidden">
+            <div class="pointer-events-none absolute inset-0 bg-black/32"></div>
+            <div class="absolute inset-y-0 left-0 w-[32px] overflow-hidden pointer-events-none">
                 <img src="{{ $img('villas/side-gradient.webp') }}" alt="" class="pointer-events-none absolute top-0 left-[-123px] h-full w-[617px] max-w-none object-cover" width="617" height="1080">
             </div>
-            <div class="absolute inset-y-0 left-[32px] w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
-            <div class="absolute inset-y-0 right-0 w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
+            <div class="pointer-events-none absolute inset-y-0 left-[32px] w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
+            <div class="pointer-events-none absolute inset-y-0 right-0 w-[72px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
 
-            <button type="button" data-lum-villas-view-cursor class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] cursor-default items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0" aria-label="{{ __('lum.aria.view_villa') }}">{{ __('lum.villas.view') }}</button>
+            <div
+                data-lum-villas-view-cursor
+                class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0"
+                aria-hidden="true"
+            >{{ __('lum.villas.view') }}</div>
         </div>
 
-        <div class="absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
+        <div class="pointer-events-none absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
             <span data-lum-villas-current class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px]">01</span>
             <span class="h-px w-[86px] bg-lum-ivory-64"></span>
             <span class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-ivory-64">04</span>
         </div>
 
-        <p data-lum-villas-subtitle class="absolute left-1/2 top-[698px] -translate-x-1/2 whitespace-nowrap lum-body text-lum-ivory-88">
+        <p data-lum-villas-subtitle class="pointer-events-none absolute left-1/2 top-[698px] -translate-x-1/2 whitespace-nowrap lum-body text-lum-ivory-88">
             {{ __('lum.villas.subtitle') }}
         </p>
 
-        <h2 class="absolute left-1/2 top-[873px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[164px] leading-[170px] text-lum-ivory">
+        <h2 class="pointer-events-none absolute left-1/2 top-[873px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[164px] leading-[170px] text-lum-ivory">
             <span data-lum-villas-title-normal class="font-normal">Lum </span><span data-lum-villas-title-italic class="font-medium italic">Villas</span>
         </h2>
 
