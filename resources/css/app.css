@@ -32,6 +32,12 @@
     --color-lum-orange-2: #f58931;
 }
 
+@property --lum-radial-hole {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 100%;
+}
+
 @layer base {
     html {
         @apply antialiased w-full;
@@ -145,13 +151,19 @@
             opacity 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
-    /* Codrops #1 — button--pan: fill slides up on hover */
+    /* Codrops #1 — button--pan: fill slides up on hover (rectangular controls) */
     .lum-btn-outline,
     .lum-btn-outline-ivory,
+    .lum-tab--inactive {
+        @apply relative overflow-hidden;
+        isolation: isolate;
+        background-color: transparent;
+    }
+
+    /* Radial pan — circular icon controls */
     .lum-icon-btn--ivory-outline,
     .lum-icon-btn--espresso-outline,
-    .lum-btn-pan,
-    .lum-tab--inactive {
+    .lum-btn-pan {
         @apply relative overflow-hidden;
         isolation: isolate;
         background-color: transparent;
@@ -159,9 +171,6 @@
 
     .lum-btn-outline::before,
     .lum-btn-outline-ivory::before,
-    .lum-icon-btn--ivory-outline::before,
-    .lum-icon-btn--espresso-outline::before,
-    .lum-btn-pan::before,
     .lum-tab--inactive::before {
         content: '';
         position: absolute;
@@ -169,6 +178,22 @@
         z-index: -1;
         transform: translate3d(0, 100%, 0);
         transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-icon-btn--ivory-outline::before,
+    .lum-icon-btn--espresso-outline::before,
+    .lum-btn-pan::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: inherit;
+        --lum-radial-hole: 100%;
+        -webkit-mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        transition: --lum-radial-hole 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
     .lum-btn-outline::before,
@@ -256,16 +281,24 @@
     .lum-btn-pan img {
         position: relative;
         z-index: 1;
+        transition: filter 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-btn-pan--espresso img {
+        filter: brightness(0);
     }
 
     @media (hover: hover) and (pointer: fine) {
         .lum-btn-outline:hover::before,
         .lum-btn-outline-ivory:hover::before,
-        .lum-icon-btn--ivory-outline:hover::before,
-        .lum-icon-btn--espresso-outline:hover::before,
-        .lum-btn-pan:hover::before,
         .lum-tab--inactive:hover::before {
             transform: translate3d(0, 0, 0);
+        }
+
+        .lum-icon-btn--ivory-outline:hover::before,
+        .lum-icon-btn--espresso-outline:hover::before,
+        .lum-btn-pan:hover::before {
+            --lum-radial-hole: 0%;
         }
 
         .lum-btn-outline:hover {
@@ -358,11 +391,11 @@
     }
 
     .lum-icon-btn {
-        @apply flex items-center;
+        @apply flex items-center justify-center;
     }
 
     .lum-icon-btn img {
-        @apply size-[32px] shrink-0;
+        @apply relative z-[1] size-[32px] shrink-0;
         transform: none;
         transition: filter 0.28s ease;
     }
@@ -371,54 +404,120 @@
         @apply rounded-[50px] border border-lum-ivory p-[2px];
     }
 
-    .lum-icon-btn--ivory-filled {
-        @apply rounded-[50px] border border-transparent bg-lum-ivory p-[2px];
+    .lum-icon-btn--ivory-filled,
+    .lum-icon-btn--ivory-filled-s,
+    .lum-icon-btn--espresso-filled,
+    .lum-icon-btn--green-filled {
+        @apply relative overflow-hidden border border-transparent bg-transparent;
+        isolation: isolate;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .lum-icon-btn--ivory-filled:hover {
-            @apply border-lum-ivory bg-transparent;
-        }
+    .lum-icon-btn--ivory-filled::before,
+    .lum-icon-btn--ivory-filled-s::before {
+        background-color: var(--color-lum-ivory);
+    }
 
-        .lum-icon-btn--ivory-filled:hover img {
-            filter: brightness(0) invert(1);
-        }
+    .lum-icon-btn--espresso-filled::before {
+        background-color: var(--color-lum-espresso);
+    }
+
+    .lum-icon-btn--green-filled::before {
+        background-color: var(--color-lum-green);
+    }
+
+    .lum-icon-btn--ivory-filled::before,
+    .lum-icon-btn--ivory-filled-s::before,
+    .lum-icon-btn--espresso-filled::before,
+    .lum-icon-btn--green-filled::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: inherit;
+        --lum-radial-hole: 0%;
+        -webkit-mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        transition: --lum-radial-hole 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-icon-btn--ivory-filled {
+        @apply rounded-[50px] p-[2px];
     }
 
     .lum-icon-btn--ivory-filled-s {
-        @apply rounded-[44px] border border-transparent bg-lum-ivory p-[2px];
+        @apply rounded-[44px] p-[2px];
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        .lum-icon-btn--ivory-filled-s:hover {
-            @apply border-lum-ivory bg-transparent;
-        }
-
-        .lum-icon-btn--ivory-filled-s:hover img {
-            filter: brightness(0);
-        }
-    }
-
-    .lum-icon-btn--espresso-outline {
-        @apply rounded-[50px] border border-lum-espresso p-[2px];
+    .lum-icon-btn--espresso-filled {
+        @apply rounded-[50px] p-[2px];
     }
 
     .lum-icon-btn--espresso-filled img {
         filter: brightness(0) invert(1);
     }
 
-    .lum-icon-btn--espresso-filled {
-        @apply rounded-[50px] border border-transparent bg-lum-espresso p-[2px];
+    .lum-icon-btn--green-filled img {
+        filter: brightness(0) invert(1);
+    }
+
+    .lum-icon-btn--espresso-outline {
+        @apply rounded-[50px] border border-lum-espresso p-[2px];
     }
 
     @media (hover: hover) and (pointer: fine) {
+        .lum-icon-btn--ivory-filled:hover::before,
+        .lum-icon-btn--ivory-filled-s:hover::before,
+        .lum-icon-btn--espresso-filled:hover::before,
+        .lum-icon-btn--green-filled:hover::before {
+            --lum-radial-hole: 100%;
+        }
+
+        .lum-icon-btn--ivory-filled:hover,
+        .lum-icon-btn--ivory-filled-s:hover {
+            @apply border-lum-ivory;
+        }
+
+        .lum-icon-btn--ivory-filled:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        .lum-icon-btn--ivory-filled-s:hover img {
+            filter: brightness(0);
+        }
+
         .lum-icon-btn--espresso-filled:hover {
-            @apply border-lum-espresso bg-transparent;
+            @apply border-lum-espresso;
         }
 
         .lum-icon-btn--espresso-filled:hover img {
             filter: none;
         }
+
+        .lum-icon-btn--green-filled:hover {
+            @apply border-lum-green;
+        }
+
+        .lum-icon-btn--green-filled:hover img {
+            filter: none;
+        }
+    }
+
+    .lum-icon-btn--carousel-40 {
+        @apply size-[40px] rounded-[28px] p-[4px];
+    }
+
+    .lum-icon-btn--carousel-56 {
+        @apply size-[56px] rounded-[28px] p-[12px];
+    }
+
+    .lum-icon-btn--carousel-64 {
+        @apply size-[64px] rounded-[50px] p-[16px];
+    }
+
+    .lum-icon-btn--round {
+        @apply rounded-full;
     }
 
     .lum-burger-btn {

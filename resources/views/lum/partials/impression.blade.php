@@ -66,11 +66,11 @@
                 height="260"
             >
             <div class="absolute left-1/2 top-[260px] z-10 flex -translate-x-1/2 -translate-y-1/2 gap-[10px]">
-                <button type="button" data-lum-interior-prev class="flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.previous') }}">
-                    <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+                <button type="button" data-lum-interior-prev class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
+                    <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                 </button>
-                <button type="button" data-lum-interior-next class="flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.next') }}">
-                    <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+                <button type="button" data-lum-interior-next class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.next') }}">
+                    <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                 </button>
             </div>
         </div>
@@ -113,11 +113,11 @@
             height="260"
         >
         <div class="absolute left-[143px] top-[445px] z-10 flex gap-[10px]">
-            <button type="button" data-lum-interior-prev class="flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.previous') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" data-lum-interior-prev class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
+                <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <button type="button" data-lum-interior-next class="flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" aria-label="{{ __('lum.aria.next') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" data-lum-interior-next class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.next') }}">
+                <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
         <div class="absolute left-[48px] top-[509px] flex w-[280px] flex-col items-center gap-[16px]">
@@ -172,19 +172,19 @@
             height="641"
         >
         @if ($showTabs)
-        <button type="button" data-lum-interior-prev @class(['absolute flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]', 'left-[414px] top-[1034px]' => $showLogomark, 'left-[414px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.previous') }}">
-            <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+        <button type="button" data-lum-interior-prev @class(['absolute lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56', 'left-[414px] top-[1034px]' => $showLogomark, 'left-[414px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.previous') }}">
+            <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-interior-next @class(['absolute flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]', 'left-[490px] top-[1034px]' => $showLogomark, 'left-[490px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.next') }}">
-            <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+        <button type="button" data-lum-interior-next @class(['absolute lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56', 'left-[490px] top-[1034px]' => $showLogomark, 'left-[490px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.next') }}">
+            <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         @else
         <div class="absolute left-1/2 top-[873px] flex -translate-x-1/2 gap-[20px]">
-            <button type="button" data-lum-interior-prev class="flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="{{ __('lum.aria.previous') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" data-lum-interior-prev class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" aria-label="{{ __('lum.aria.previous') }}">
+                <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <button type="button" data-lum-interior-next class="flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" aria-label="{{ __('lum.aria.next') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" data-lum-interior-next class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" aria-label="{{ __('lum.aria.next') }}">
+                <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
         @endif
@@ -255,11 +255,11 @@
             >
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]"></div>
         </div>
-        <button type="button" data-lum-interior-prev @class(['absolute flex size-[64px] rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]', 'left-[72px] top-[884px]' => $showLogomark && $showTabs, 'left-[136px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[72px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.previous') }}">
-            <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        <button type="button" data-lum-interior-prev @class(['absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[72px] top-[884px]' => $showLogomark && $showTabs, 'left-[136px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[72px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.previous') }}">
+            <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-interior-next @class(['absolute flex size-[64px] -scale-y-100 rotate-90 items-center justify-center rounded-[50px] bg-lum-ivory p-[16px]', 'left-[1784px] top-[884px]' => $showLogomark && $showTabs, 'left-[1784px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[1784px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.next') }}">
-            <img src="{{ $img('interior/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+        <button type="button" data-lum-interior-next @class(['absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[1784px] top-[884px]' => $showLogomark && $showTabs, 'left-[1784px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[1784px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.next') }}">
+            <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div @class(['absolute left-[771px] flex w-[378px] flex-col items-center gap-[24px]', 'top-[1300px]' => $showLogomark && $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs, 'top-[1189px]' => ! $showTabs])>
             <div class="flex w-full items-start justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">

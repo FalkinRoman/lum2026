@@ -78,7 +78,7 @@
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal'])
         </div>
 
-        <button type="button" data-lum-back-to-top class="absolute left-[315px] top-[708px] flex items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
+        <button type="button" data-lum-back-to-top class="absolute left-[315px] top-[708px] lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--round p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
@@ -166,7 +166,7 @@
             'wrapperClass' => 'absolute left-[785px] top-[1036.5px] -translate-x-full -translate-y-1/2 text-right lum-text-2 font-normal text-lum-ivory',
         ])
 
-        <button type="button" data-lum-back-to-top class="absolute left-[884px] top-[993px] flex items-center justify-center rounded-full bg-lum-ivory p-[12px]" aria-label="{{ __('lum.aria.back_to_top') }}">
+        <button type="button" data-lum-back-to-top class="absolute left-[884px] top-[993px] lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--round p-[12px]" aria-label="{{ __('lum.aria.back_to_top') }}">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
     </div>
@@ -227,7 +227,7 @@
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.nav.lum_villas'), 'href' => $villaUrl('villas'), 'variant' => 'line'])
         </nav>
 
-        <button type="button" data-lum-back-to-top class="absolute right-[72px] top-[667px] flex size-[40px] items-center justify-center rounded-full bg-lum-ivory p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
+        <button type="button" data-lum-back-to-top class="absolute right-[72px] top-[667px] lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--round size-[40px] p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 

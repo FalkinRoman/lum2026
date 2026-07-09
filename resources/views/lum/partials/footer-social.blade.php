@@ -17,10 +17,7 @@
     <img
         src="{{ $img("footer/{$network}.svg") }}"
         alt=""
-        @class([
-            'size-[32px]',
-            'brightness-0' => $tone === 'light',
-        ])
+        class="size-[32px]"
         width="32"
         height="32"
     >

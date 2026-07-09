@@ -17,11 +17,11 @@
             </div>
         </div>
         <div class="absolute left-1/2 top-[657px] flex -translate-x-1/2 gap-[10px]">
-            <button type="button" class="flex size-[40px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" data-lum-blog-prev aria-label="{{ __('lum.aria.previous') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" data-lum-blog-prev aria-label="{{ __('lum.aria.previous') }}">
+                <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <button type="button" class="flex size-[40px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[4px]" data-lum-blog-next aria-label="{{ __('lum.aria.next') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" data-lum-blog-next aria-label="{{ __('lum.aria.next') }}">
+                <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
     </div>
@@ -45,11 +45,11 @@
             </div>
         </div>
         <div class="absolute left-1/2 top-[1068px] flex -translate-x-1/2 gap-[20px]">
-            <button type="button" class="flex size-[56px] rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" data-lum-blog-prev aria-label="{{ __('lum.aria.previous') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" data-lum-blog-prev aria-label="{{ __('lum.aria.previous') }}">
+                <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <button type="button" class="flex size-[56px] -scale-y-100 rotate-90 items-center justify-center rounded-[28px] bg-lum-green p-[12px]" data-lum-blog-next aria-label="{{ __('lum.aria.next') }}">
-                <img src="{{ $img('villas/arrow.svg') }}" alt="" class="size-[32px] brightness-0 invert" width="32" height="32">
+            <button type="button" class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" data-lum-blog-next aria-label="{{ __('lum.aria.next') }}">
+                <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
     </div>

@@ -17,10 +17,10 @@
 <div class="lum-blog-back flex cursor-default items-center gap-[10px]">
     <a
         href="{{ $href }}"
-        class="lum-icon-btn lum-icon-btn--espresso-outline {{ $iconClass }} rotate-90 cursor-default items-center justify-center p-[4px]"
+        class="lum-icon-btn lum-icon-btn--espresso-outline {{ $iconClass }} cursor-default items-center justify-center p-[4px]"
         aria-label="{{ $label }}"
     >
-        <img src="{{ $img('villas/arrow.svg') }}" alt="" class="{{ $arrowClass }}" width="{{ $arrowSize }}" height="{{ $arrowSize }}">
+        <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="{{ $arrowClass }}" width="{{ $arrowSize }}" height="{{ $arrowSize }}">
     </a>
     <a href="{{ $href }}" class="{{ $btnClass }} cursor-default">{{ $label }}</a>
 </div>
