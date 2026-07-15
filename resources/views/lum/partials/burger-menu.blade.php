@@ -20,56 +20,10 @@
             <div class="lum-burger-menu__scaled flex flex-col origin-top-left">
                 <div class="lum-burger-menu__panel relative bg-lum-ivory">
             {{-- MOBILE --}}
-            <div class="relative h-[582px] w-full tab:hidden">
-                <header class="absolute left-[20px] top-0 z-50 h-[80px] w-[335px] border-b border-lum-espresso/16">
-                    <a href="/" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
-                        <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
-                    </a>
-                    <button type="button" class="lum-burger-btn lum-burger-btn--espresso-compact absolute right-0 top-1/2 flex -translate-y-1/2 items-center" data-lum-menu-close aria-label="{{ __('lum.aria.close_menu') }}">
-                        <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
-                    </button>
-                    <a href="#" class="lum-btn-outline absolute right-[82px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.break') }}</a>
-                </header>
-
-                <p class="absolute left-[20px] top-[104px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso-40" data-lum-menu-reveal="1">{{ __('lum.lang.select') }}</p>
-                <div class="absolute right-[20px] top-[98px] z-50 flex gap-[10px]" data-lum-menu-reveal="1">
-                    <a href="{{ route('locale.switch', 'ru') }}" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $locale === 'ru', 'lum-tab--inactive' => $locale !== 'ru'])>@if ($locale === 'ru')✓@endif{{ __('lum.lang.ru_short') }}</a>
-                    <a href="{{ route('locale.switch', 'en') }}" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $locale === 'en', 'lum-tab--inactive' => $locale !== 'en'])>@if ($locale === 'en')✓@endif{{ __('lum.lang.en_short') }}</a>
-                </div>
-
-                <nav class="absolute left-[20px] top-[146px] z-10 flex w-[160px] flex-col gap-[6px]" data-lum-menu-reveal="2">
-                    <a href="/" class="flex items-center gap-[6px] font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">
-                        {{ __('lum.nav.home') }}
-                        <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
-                    </a>
-                    <a href="{{ route('shop') }}" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
-                    <a href="{{ route('contacts') }}" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
-                    <a href="{{ route('blog') }}" class="font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
-                </nav>
-
-                <div class="absolute left-[20px] top-[300px] h-px w-[335px] bg-lum-espresso/16" data-lum-menu-reveal="3"></div>
-
-                <div class="absolute left-[20px] top-[325px] grid w-[335px] grid-cols-2 gap-x-[76px] gap-y-[12px] text-[14px] font-medium leading-[14px] tracking-[0.6px] text-lum-espresso" data-lum-menu-reveal="3">
-                    <a href="{{ $villaUrl('residence') }}">{{ __('lum.nav.lum_residence') }}</a>
-                    <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.lum_villas') }}</a>
-                    <a href="{{ $villaUrl('oculus') }}">{{ __('lum.nav.oculus') }}</a>
-                    <a href="{{ $villaUrl('ocean') }}">{{ __('lum.nav.lum_ocean') }}</a>
-                </div>
-
-                <div class="absolute left-[20px] top-[387px] z-10 h-[175px] w-[335px] overflow-hidden" data-lum-menu-reveal="4">
-                    <img src="{{ asset('images/lum/menu/map.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-black/32"></div>
-                    <div class="absolute left-1/2 top-1/2 flex w-[197px] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-[16px] text-center">
-                        <p class="font-serif text-[22px] font-medium leading-[24px] tracking-[0.19px] text-lum-ivory">
-                            {!! __('lum.footer.address_menu') !!}
-                        </p>
-                        <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
-                    </div>
-                </div>
-            </div>
+            @include('lum.partials.burger-menu-mobile')
 
             {{-- TABLET --}}
-            <div class="relative hidden h-[868px] w-full tab:block desk:hidden">
+            <div class="relative hidden h-[979px] w-full tab:block desk:hidden">
                 <header class="absolute left-[20px] top-0 z-50 h-[80px] w-[920px] border-b border-lum-espresso/16">
                     <a href="/" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
@@ -99,23 +53,32 @@
                 </header>
 
                 <nav class="absolute left-[20px] top-[144px] z-10 flex w-[920px] flex-col gap-[6px]" data-lum-menu-reveal="2">
-                    <a href="/" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.home') }}</a>
+                    <a href="{{ route('stay') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.stay') }}</a>
+                    <a href="{{ route('dining') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.dining') }}</a>
+                    <a href="{{ route('relax') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.relax') }}</a>
+                    <a href="{{ route('discover') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.discover') }}</a>
                     <div class="flex flex-wrap items-center gap-[12px] font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">
-                        <a href="{{ $villaUrl('residence') }}">{{ __('lum.nav.residence', [], 'en') }}</a>
+                        <a href="{{ route('shop') }}">{{ __('lum.nav.shop') }}</a>
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ $villaUrl('oculus') }}">{{ __('lum.nav.oculus', [], 'en') }}</a>
+                        <a href="{{ route('contacts') }}">{{ __('lum.nav.contacts') }}</a>
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ $villaUrl('ocean') }}">{{ __('lum.nav.ocean', [], 'en') }}</a>
+                        <a href="{{ route('blog') }}">{{ __('lum.nav.blog') }}</a>
                         <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
-                        <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.villas', [], 'en') }}</a>
                     </div>
-                    <a href="{{ route('shop') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
-                    <a href="{{ route('contacts') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
-                    <a href="{{ route('blog') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
                 </nav>
 
-                <div class="absolute left-[20px] top-[368px] z-10 h-[480px] w-[920px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
+                <div class="absolute left-[20px] top-[372px] h-px w-[920px] bg-lum-espresso/16" data-lum-menu-reveal="3"></div>
+
+                <p class="absolute left-[20px] top-[403px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso-40" data-lum-menu-reveal="3">{{ __('lum.nav.projects') }}</p>
+
+                <div class="absolute left-[20px] top-[436px] grid w-[920px] grid-cols-2 gap-y-[12px] text-[14px] font-medium leading-[14px] tracking-[0.6px] text-lum-espresso" data-lum-menu-reveal="3">
+                    <a href="{{ $villaUrl('residence') }}">{{ __('lum.nav.lum_residence') }}</a>
+                    <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.lum_villas') }}</a>
+                    <a href="{{ $villaUrl('oculus') }}">{{ __('lum.nav.oculus') }}</a>
+                    <a href="{{ $villaUrl('ocean') }}">{{ __('lum.nav.lum_ocean') }}</a>
+                </div>
+
+                <div class="absolute left-[20px] top-[499px] z-10 h-[480px] w-[920px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
                     <img src="{{ asset('images/lum/menu/map.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover">
                     <div class="absolute inset-0 bg-black/32"></div>
                     <div class="absolute bottom-[31px] left-[36px] font-serif text-[28px] font-medium leading-[34px] tracking-[0.36px] text-lum-ivory">

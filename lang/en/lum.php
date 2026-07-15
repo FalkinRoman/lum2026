@@ -50,6 +50,7 @@ return [
         'lum_residence' => 'Lum Residence',
         'lum_villas' => 'Lum Villas',
         'lum_ocean' => 'Lum Ocean',
+        'projects' => 'PROJECTS',
     ],
 
     'hero' => [

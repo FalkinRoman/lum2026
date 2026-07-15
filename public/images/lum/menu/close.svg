@@ -1,4 +1,3 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 10L22 22" stroke="#2E2720" stroke-width="2" stroke-linecap="round"/>
-<path d="M22 10L10 22" stroke="#2E2720" stroke-width="2" stroke-linecap="round"/>
+<path d="M22.5303 10.5303L17.0605 16L22.5303 21.4697L21.4697 22.5303L16 17.0605L10.5303 22.5303L9.46973 21.4697L14.9395 16L9.46973 10.5303L10.5303 9.46973L16 14.9395L21.4697 9.46973L22.5303 10.5303Z" fill="#2E2720"/>
 </svg>

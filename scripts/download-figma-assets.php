@@ -115,9 +115,9 @@ $remoteAssets = [
     'shop/products/colors/color-01.svg' => 'https://www.figma.com/api/mcp/asset/366a4426-c466-415d-8b11-a529e685a5dd',
     'shop/products/colors/color-02.svg' => 'https://www.figma.com/api/mcp/asset/b1356e1a-4448-426c-b5ea-cb510e285b6a',
     'shop/products/colors/color-03.svg' => 'https://www.figma.com/api/mcp/asset/dae81061-5569-4522-aa2f-458a9cf71f8f',
+    'menu/close.svg' => 'https://www.figma.com/api/mcp/asset/cca00b46-31c1-44e5-91d1-f8170f7c575f',
     'shop/products/colors/color-04.svg' => 'https://www.figma.com/api/mcp/asset/e2b78eca-4d51-4eca-ad77-877ecc25be4d',
 ];
-
 $refreshAssets = [
     'blog/posts/sri-lanka-guide.webp',
     'blog/posts/nervous-system-retreat.webp',
