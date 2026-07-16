@@ -273,8 +273,12 @@ function cloneTrackContent(inner) {
     return content.cloneNode(true);
 }
 
-/** Codrops Slideshow Animations demo 6 — slide xPercent + inner scaleX stretch */
-function animateCodrops6Media({ slide, inner, direction, slideData, fill, reducedMotion, duration = 1.6, preload }) {
+/** Damai dining — slide xPercent + inner parallax 12.5%, speed 1200 */
+const MEDIA_DURATION = 1.2;
+const MEDIA_EASE = 'power2.inOut';
+const MEDIA_PARALLAX = 12.5;
+
+function animateDamaiMedia({ slide, inner, direction, slideData, fill, reducedMotion, duration = MEDIA_DURATION, preload }) {
     const dir = direction === 'next' ? 1 : -1;
 
     if (reducedMotion) {
@@ -291,29 +295,21 @@ function animateCodrops6Media({ slide, inner, direction, slideData, fill, reduce
         const outgoingSlide = document.createElement('div');
         outgoingSlide.className = 'lum-villas-slide absolute inset-0 z-[2] overflow-hidden';
         const outgoingInner = document.createElement('div');
-        outgoingInner.className = `${MEDIA_INNER}`;
+        outgoingInner.className = `${MEDIA_INNER} will-change-transform`;
         outgoingInner.appendChild(cloneTrackContent(inner));
         outgoingSlide.appendChild(outgoingInner);
 
         const incomingSlide = document.createElement('div');
         incomingSlide.className = 'lum-villas-slide absolute inset-0 z-[1] overflow-hidden';
         const incomingInner = document.createElement('div');
-        incomingInner.className = `${MEDIA_INNER}`;
+        incomingInner.className = `${MEDIA_INNER} will-change-transform`;
         fill(slideData, incomingInner);
         incomingSlide.appendChild(incomingInner);
 
         gsap.set(outgoingSlide, { xPercent: 0 });
-        gsap.set(outgoingInner, {
-            transformOrigin: dir === 1 ? '100% 50%' : '0% 50%',
-            scaleX: 1,
-            xPercent: 0,
-        });
+        gsap.set(outgoingInner, { xPercent: 0 });
         gsap.set(incomingSlide, { xPercent: dir * 100 });
-        gsap.set(incomingInner, {
-            transformOrigin: dir === 1 ? '0% 50%' : '100% 50%',
-            xPercent: -dir * 100,
-            scaleX: 4,
-        });
+        gsap.set(incomingInner, { xPercent: -dir * MEDIA_PARALLAX });
 
         slide.appendChild(outgoingSlide);
         slide.appendChild(incomingSlide);
@@ -321,22 +317,22 @@ function animateCodrops6Media({ slide, inner, direction, slideData, fill, reduce
 
         return new Promise((resolve) => {
             gsap.timeline({
-                defaults: { duration, ease: 'power3.inOut' },
+                defaults: { duration, ease: MEDIA_EASE },
                 onComplete: () => {
                     fill(slideData, inner);
                     inner.style.visibility = '';
                     outgoingSlide.remove();
                     incomingSlide.remove();
                     gsap.set([outgoingSlide, outgoingInner, incomingSlide, incomingInner], {
-                        clearProps: 'transform,x,xPercent,scale,scaleX,transformOrigin',
+                        clearProps: 'transform,x,xPercent',
                     });
                     resolve();
                 },
             })
                 .to(outgoingSlide, { xPercent: -dir * 100 }, 0)
-                .to(outgoingInner, { scaleX: 4 }, 0)
+                .to(outgoingInner, { xPercent: dir * MEDIA_PARALLAX }, 0)
                 .to(incomingSlide, { xPercent: 0 }, 0)
-                .to(incomingInner, { xPercent: 0, scaleX: 1 }, 0);
+                .to(incomingInner, { xPercent: 0 }, 0);
         });
     };
 
@@ -378,8 +374,8 @@ function cloneMobileSubtitleBlock(content) {
     return block;
 }
 
-const TEXT_EASE = 'power3.inOut';
-const TEXT_DURATION = 1.35;
+const TEXT_EASE = 'power2.inOut';
+const TEXT_DURATION = 1.2;
 const TEXT_TRAVEL_RATIO = 0.5;
 const SUBTITLE_STAGGER = 0.1;
 
@@ -640,7 +636,7 @@ function animateTrack(track, direction, slideData, reducedMotion) {
     switch (type) {
         case 'photo':
         case 'oval':
-            return animateCodrops6Media({ slide, inner, direction, slideData, fill, reducedMotion, preload: track.preload });
+            return animateDamaiMedia({ slide, inner, direction, slideData, fill, reducedMotion, preload: track.preload });
         case 'title':
             return animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion });
         case 'mobileSubtitle':
@@ -787,6 +783,7 @@ function isInActiveViewZone(slider, event) {
 function initViewCursor(root, { getHref, isBusy }) {
     const sliders = root.querySelectorAll('[data-lum-villas-slider-view]');
     const cursor = root.querySelector('[data-lum-villas-view-cursor]');
+    const cursorText = cursor?.querySelector('.lum-villas-view-cursor__text');
     const fixedView = root.querySelector('[data-lum-villas-view-fixed]');
 
     if (! cursor || ! sliders.length || ! window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -801,24 +798,49 @@ function initViewCursor(root, { getHref, isBusy }) {
 
     let activeSlider = null;
     let isVisible = false;
-    let isPointerInActiveZone = false;
     let hideTween = null;
+    let mouseX = 0;
+    let mouseY = 0;
+    let posX = 0;
+    let posY = 0;
+    let hasPos = false;
 
     gsap.set(cursor, {
         xPercent: -50,
         yPercent: -50,
         transformOrigin: '50% 50%',
         autoAlpha: 0,
-        scale: 0.12,
+        scale: 0,
+        rotation: -10,
     });
 
-    const positionCursor = (slider, event) => {
+    if (cursorText) {
+        gsap.set(cursorText, { opacity: 0 });
+    }
+
+    // Damai sticky follow: pos += (mouse - pos) / 5
+    gsap.ticker.add(() => {
+        if (! activeSlider || ! isVisible) {
+            return;
+        }
+
+        posX += (mouseX - posX) / 5;
+        posY += (mouseY - posY) / 5;
+        gsap.set(cursor, { x: posX, y: posY });
+    });
+
+    const setMouseFromEvent = (slider, event) => {
         const rect = slider.getBoundingClientRect();
 
-        gsap.set(cursor, {
-            x: event.clientX - rect.left,
-            y: event.clientY - rect.top,
-        });
+        mouseX = event.clientX - rect.left;
+        mouseY = event.clientY - rect.top;
+
+        if (! hasPos) {
+            posX = mouseX;
+            posY = mouseY;
+            hasPos = true;
+            gsap.set(cursor, { x: posX, y: posY });
+        }
     };
 
     const showCursor = (slider, event) => {
@@ -829,8 +851,7 @@ function initViewCursor(root, { getHref, isBusy }) {
         }
 
         activeSlider = slider;
-        isPointerInActiveZone = true;
-        positionCursor(slider, event);
+        setMouseFromEvent(slider, event);
 
         if (isVisible) {
             return;
@@ -838,18 +859,34 @@ function initViewCursor(root, { getHref, isBusy }) {
 
         isVisible = true;
         hideTween?.kill();
-
         gsap.killTweensOf(cursor);
+
+        if (cursorText) {
+            gsap.killTweensOf(cursorText);
+        }
+
         gsap.fromTo(cursor, {
             autoAlpha: 0,
-            scale: 0.12,
+            scale: 0,
+            rotation: -10,
         }, {
             autoAlpha: 1,
             scale: 1,
-            duration: 0.5,
+            rotation: 0.001,
+            duration: 0.45,
             ease: 'power3.out',
             overwrite: true,
         });
+
+        if (cursorText) {
+            gsap.to(cursorText, {
+                opacity: 1,
+                duration: 0.28,
+                delay: 0.08,
+                ease: 'power2.out',
+                overwrite: true,
+            });
+        }
     };
 
     const hideCursor = (slider) => {
@@ -858,19 +895,25 @@ function initViewCursor(root, { getHref, isBusy }) {
         }
 
         activeSlider = null;
-        isPointerInActiveZone = false;
+        hasPos = false;
 
         if (! isVisible) {
             return;
         }
 
         isVisible = false;
-
         gsap.killTweensOf(cursor);
+
+        if (cursorText) {
+            gsap.killTweensOf(cursorText);
+            gsap.set(cursorText, { opacity: 0 });
+        }
+
         hideTween = gsap.to(cursor, {
             autoAlpha: 0,
-            scale: 0.12,
-            duration: 0.25,
+            scale: 0,
+            rotation: -10,
+            duration: 0.28,
             ease: 'power2.in',
         });
     };
@@ -880,8 +923,6 @@ function initViewCursor(root, { getHref, isBusy }) {
         slider.addEventListener('mouseleave', () => hideCursor(slider));
         slider.addEventListener('mousemove', (event) => {
             if (! isInActiveViewZone(slider, event)) {
-                isPointerInActiveZone = false;
-
                 if (activeSlider === slider) {
                     hideCursor(slider);
                 }
@@ -895,8 +936,7 @@ function initViewCursor(root, { getHref, isBusy }) {
                 return;
             }
 
-            isPointerInActiveZone = true;
-            positionCursor(slider, event);
+            setMouseFromEvent(slider, event);
         });
 
         slider.addEventListener('click', (event) => {

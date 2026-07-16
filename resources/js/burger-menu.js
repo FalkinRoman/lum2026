@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { prepareFlipLinks } from './menu-flip';
+import { getLenis } from './smooth-scroll';
 
 export function syncBurgerMenuDrawer() {
     const menuScaled = document.querySelector('.lum-burger-menu__scaled');
@@ -9,15 +10,16 @@ export function syncBurgerMenuDrawer() {
         return;
     }
 
-    const rect = menuScaled.getBoundingClientRect();
+    // Layout height (pre-transform) — getBoundingClientRect shrinks under scale<1 and kills overflow scroll
+    const layoutHeight = menuScaled.offsetHeight;
 
-    if (rect.height <= 0) {
+    if (layoutHeight <= 0) {
         drawer.style.removeProperty('height');
 
         return;
     }
 
-    drawer.style.height = `${rect.height}px`;
+    drawer.style.height = `${layoutHeight}px`;
 }
 
 function prefersReducedMotion() {
@@ -78,6 +80,7 @@ export function initBurgerMenu() {
         menu.removeAttribute('hidden');
         menu.setAttribute('aria-hidden', 'false');
         document.body.classList.add('overflow-hidden');
+        getLenis()?.stop();
 
         if (scroll) {
             scroll.scrollTop = 0;
@@ -89,6 +92,7 @@ export function initBurgerMenu() {
         menu.setAttribute('hidden', '');
         menu.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('overflow-hidden');
+        getLenis()?.start();
 
         if (scroll) {
             scroll.scrollTop = 0;

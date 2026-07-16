@@ -1,10 +1,6 @@
 const HOVER_MEDIA = '(hover: hover) and (pointer: fine)';
 
-function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-}
-
-function animateDisplacementScale(displacement, to, duration = 700) {
+function animateDisplacementScale(displacement, to, duration = 800) {
     const from = parseFloat(displacement.getAttribute('scale') || '0');
     const start = performance.now();
     let frame = null;
@@ -12,7 +8,9 @@ function animateDisplacementScale(displacement, to, duration = 700) {
     return new Promise((resolve) => {
         const step = (now) => {
             const progress = Math.min((now - start) / duration, 1);
-            const value = from + (to - from) * easeOutCubic(progress);
+            // Damai smooth ≈ cubic-bezier(.3, 1, .3, 1) — soft ease-out
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = from + (to - from) * eased;
 
             displacement.setAttribute('scale', String(value));
 

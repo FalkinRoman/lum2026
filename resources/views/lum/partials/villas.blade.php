@@ -153,9 +153,9 @@
 
             <div
                 data-lum-villas-view-cursor
-                class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase opacity-0"
+                class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] items-center justify-center rounded-full bg-lum-ivory px-[10px] text-center text-[16px] font-extrabold leading-none tracking-[3.2px] text-lum-espresso uppercase opacity-0"
                 aria-hidden="true"
-            >{{ __('lum.villas.view') }}</div>
+            ><span class="lum-villas-view-cursor__text">{{ __('lum.villas.view') }}</span></div>
         </div>
 
         <div class="pointer-events-none absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
@@ -183,6 +183,6 @@
             <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <a href="{{ route('villa.show', 'villas') }}" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-[50px] bg-lum-ivory text-[16px] font-extrabold tracking-[3.2px] text-lum-espresso uppercase">{{ __('lum.villas.view') }}</a>
+        <a href="{{ route('villa.show', 'villas') }}" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-full bg-lum-ivory px-[10px] text-center text-[16px] font-extrabold leading-none tracking-[3.2px] text-lum-espresso uppercase"><span class="lum-villas-view-cursor__text">{{ __('lum.villas.view') }}</span></a>
     </div>
 </section>

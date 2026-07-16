@@ -6,6 +6,7 @@ import { initBlogTabs } from './blog-tabs';
 import { initHeroTitle } from './hero-title';
 import { initHeroVideo } from './hero-video';
 import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
+import { initSmoothScroll, getLenis } from './smooth-scroll';
 import { initShopPage } from './shop-page';
 import { initScrollReveal } from './scroll-reveal';
 import { initStayPage } from './stay-page';
@@ -432,6 +433,7 @@ function scrollToPageTop() {
 
     const target = getTarget();
     const start = window.scrollY;
+    const lenis = getLenis();
 
     if (backToTopAnimation) {
         cancelAnimationFrame(backToTopAnimation);
@@ -439,7 +441,17 @@ function scrollToPageTop() {
     }
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || Math.abs(target - start) < 1) {
-        applyScrollTop(target);
+        if (lenis) {
+            lenis.scrollTo(target, { immediate: true });
+        } else {
+            applyScrollTop(target);
+        }
+
+        return;
+    }
+
+    if (lenis) {
+        lenis.scrollTo(target, { duration: 1.2 });
 
         return;
     }
@@ -478,6 +490,7 @@ function initBackToTop() {
 }
 
 applyLumLayout({ forceRefresh: true });
+initSmoothScroll();
 initMobileZoomGuard();
 initLanguageSwitcher();
 initBackToTop();

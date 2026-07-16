@@ -10,7 +10,7 @@
             <p>{{ __('lum.blog.title_line2') }}</p>
         </div>
         <div class="absolute left-[20px] top-[201px] w-[355px] overflow-hidden">
-            <div class="flex w-full gap-[10px] overflow-x-auto scroll-smooth pr-[20px] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory" data-lum-blog-track>
+            <div class="flex w-full gap-[10px] overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lum-blog-track>
                 @foreach ($blogPosts as $post)
                     @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'mobile', 'post' => $post, 'from' => 'home'])
                 @endforeach
@@ -38,7 +38,7 @@
             <span class="text-[18px] font-medium uppercase leading-[18px] tracking-[1.8px] text-lum-ivory">{{ __('lum.blog.label') }}</span>
         </div>
         <div class="absolute left-[20px] top-[287px] w-[920px] overflow-hidden">
-            <div class="flex w-full gap-[20px] overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory" data-lum-blog-track>
+            <div class="flex w-full gap-[20px] overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lum-blog-track>
                 @foreach ($blogPosts as $post)
                     @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'tablet', 'post' => $post, 'from' => 'home'])
                 @endforeach

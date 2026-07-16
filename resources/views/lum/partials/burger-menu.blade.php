@@ -30,7 +30,11 @@
         class="lum-burger-menu__backdrop pointer-events-none fixed inset-0 z-[1] bg-black/32 backdrop-blur-[8px]"
         aria-hidden="true"
     ></div>
-    <div class="lum-burger-menu__scroll pointer-events-auto fixed inset-0 z-[2] flex min-h-full flex-col overflow-y-auto overscroll-contain">
+    <div
+        class="lum-burger-menu__scroll pointer-events-auto fixed inset-0 z-[2] flex min-h-full flex-col overflow-y-auto overscroll-contain"
+        data-lenis-prevent
+        data-lenis-prevent-touch
+    >
         <div class="lum-burger-menu__drawer relative w-full shrink-0 overflow-hidden">
             <div class="lum-burger-menu__scaled flex flex-col origin-top-left">
                 <div class="lum-burger-menu__panel relative bg-lum-ivory">

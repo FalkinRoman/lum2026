@@ -11,7 +11,7 @@
 @endphp
 
 <article
-    @class(['lum-blog-card shrink-0 snap-start', 'w-[240px]' => $variant === 'mobile', 'w-[450px]' => $variant === 'tablet'])
+    @class(['lum-blog-card shrink-0', 'w-[240px]' => $variant === 'mobile', 'w-[450px]' => $variant === 'tablet'])
     data-lum-blog-card
     data-lum-blog-variant="{{ $variant }}"
 >

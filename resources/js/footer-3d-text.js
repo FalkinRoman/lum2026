@@ -1,5 +1,4 @@
-import { initTextFlipLinks } from './menu-flip';
-
+/** Footer phone/email use CSS mask-slide (`.lum-text-slide`) — no JS. */
 export function initFooter3dText() {
-    initTextFlipLinks(document);
+    // no-op: kept so app.js import stays stable
 }

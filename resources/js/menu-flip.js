@@ -54,8 +54,8 @@ function bindFlipHover(link, stacks, index) {
         tween?.kill();
         tween = gsap.to(stacks, {
             yPercent: -50,
-            duration: 0.55,
-            ease: 'power3.out',
+            duration: 0.8,
+            ease: 'power2.out',
             stagger: { each: 0.02, from: staggerFrom },
             overwrite: true,
         });
@@ -65,8 +65,8 @@ function bindFlipHover(link, stacks, index) {
         tween?.kill();
         tween = gsap.to(stacks, {
             yPercent: 0,
-            duration: 0.55,
-            ease: 'power3.out',
+            duration: 0.8,
+            ease: 'power2.out',
             stagger: { each: 0.02, from: staggerFrom },
             overwrite: true,
         });
