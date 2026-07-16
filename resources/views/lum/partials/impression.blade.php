@@ -34,7 +34,6 @@
     data-img-base="{{ asset('images/lum/' . $imgBase) }}"
     data-total="{{ $total }}"
     data-start="{{ $startIndex }}"
-    data-progress-active="{{ $img('interior/slider-active.svg') }}"
 >
     {{-- MOBILE --}}
     <div class="relative h-full tab:hidden" data-lum-interior-panel data-lum-interior-suffix="-sm">
@@ -57,41 +56,31 @@
             @endforeach
         </div>
         <div @class(['absolute left-0 z-0 w-full', 'top-[388px]' => $showLogomark, 'top-[341px]' => ! $showLogomark])>
-            <img
-                src="{{ $img($imgBase . '/slide-01-sm.webp') }}"
-                alt=""
+            <div
                 data-lum-interior-single
-                class="relative z-0 h-[260px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
-                width="375"
-                height="260"
+                class="relative z-0 h-[260px] w-full overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
             >
-            <div class="absolute left-1/2 top-[260px] z-10 flex -translate-x-1/2 -translate-y-1/2 gap-[10px]">
-                <button type="button" data-lum-interior-prev class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
+                <img
+                    src="{{ $img($imgBase . '/slide-01-sm.webp') }}"
+                    alt=""
+                    class="h-full w-full object-cover"
+                    width="375"
+                    height="260"
+                >
+            </div>
+            <div class="absolute left-1/2 top-[260px] z-30 flex -translate-x-1/2 -translate-y-1/2 gap-[10px]">
+                <button type="button" data-lum-interior-prev class="z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
                     <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                 </button>
-                <button type="button" data-lum-interior-next class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.next') }}">
+                <button type="button" data-lum-interior-next class="z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.next') }}">
                     <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                 </button>
             </div>
         </div>
         <div @class(['absolute left-1/2 flex w-[280px] -translate-x-1/2 flex-col items-center gap-[16px]', 'top-[692px]' => $showLogomark, 'top-[645px]' => ! $showLogomark])>
-            <div class="flex w-full items-start justify-center gap-[8px]" data-lum-interior-progress data-line-class="h-px w-[33px] bg-lum-espresso opacity-40">
-                @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] w-[33px] items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
-                        <span data-lum-interior-progress-line @class(['h-px w-[33px] bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
-                        <img
-                            src="{{ $img('interior/slider-active.svg') }}"
-                            alt=""
-                            data-lum-interior-progress-active
-                            @class(['h-[19px] w-[33px]', 'hidden' => $i !== $startIndex])
-                            width="33"
-                            height="19"
-                        >
-                    </span>
-                @endfor
-            </div>
+            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[33px]', 'gapClass' => 'gap-[8px]'])
             <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
-                <span data-lum-interior-current>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
             </p>
         </div>
         @if ($showCta)
@@ -104,40 +93,30 @@
             <p class="font-serif text-[42px] leading-[45px] tracking-[-0.84px]">{{ __($titleKey . '.title_caps') }}</p>
         </div>
         <div class="absolute left-1/2 top-[119px] h-[36px] w-[260px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[1.33px_1.33px_0_rgba(0,0,0,0.25)]"></div>
-        <img
-            src="{{ $img($imgBase . '/slide-01-sm.webp') }}"
-            alt=""
+        <div
             data-lum-interior-single
-            class="absolute left-0 top-[205px] z-0 h-[260px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
-            width="375"
-            height="260"
+            class="absolute left-0 top-[205px] z-0 h-[260px] w-full overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
         >
-        <div class="absolute left-[143px] top-[445px] z-10 flex gap-[10px]">
-            <button type="button" data-lum-interior-prev class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
+            <img
+                src="{{ $img($imgBase . '/slide-01-sm.webp') }}"
+                alt=""
+                class="h-full w-full object-cover"
+                width="375"
+                height="260"
+            >
+        </div>
+        <div class="absolute left-[143px] top-[445px] z-30 flex gap-[10px]">
+            <button type="button" data-lum-interior-prev class="z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
                 <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <button type="button" data-lum-interior-next class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.next') }}">
+            <button type="button" data-lum-interior-next class="z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.next') }}">
                 <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
         <div class="absolute left-[48px] top-[509px] flex w-[280px] flex-col items-center gap-[16px]">
-            <div class="flex w-full items-start justify-center gap-[8px]" data-lum-interior-progress data-line-class="h-px flex-1 bg-lum-espresso opacity-40">
-                @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] flex-1 items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
-                        <span data-lum-interior-progress-line @class(['h-px w-full bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
-                        <img
-                            src="{{ $img('interior/slider-active.svg') }}"
-                            alt=""
-                            data-lum-interior-progress-active
-                            @class(['h-[19px] w-[33px]', 'hidden' => $i !== $startIndex])
-                            width="33"
-                            height="19"
-                        >
-                    </span>
-                @endfor
-            </div>
+            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'flex-1', 'gapClass' => 'gap-[8px]'])
             <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
-                <span data-lum-interior-current>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
             </p>
         </div>
         @if ($showCta)
@@ -163,49 +142,39 @@
             @endforeach
         </div>
         @endif
-        <img
-            src="{{ $img($imgBase . '/slide-01.webp') }}"
-            alt=""
+        <div
             data-lum-interior-single
-            @class(['absolute left-0 h-[641px] w-full object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]', 'top-[421px]' => $showLogomark && $showTabs, 'top-[356px]' => ! $showLogomark && $showTabs, 'top-[260px]' => ! $showTabs])
-            width="960"
-            height="641"
+            @class(['absolute left-0 h-[641px] w-full overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]', 'top-[421px]' => $showLogomark && $showTabs, 'top-[356px]' => ! $showLogomark && $showTabs, 'top-[260px]' => ! $showTabs])
         >
+            <img
+                src="{{ $img($imgBase . '/slide-01.webp') }}"
+                alt=""
+                class="h-full w-full object-cover"
+                width="960"
+                height="641"
+            >
+        </div>
         @if ($showTabs)
-        <button type="button" data-lum-interior-prev @class(['absolute lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56', 'left-[414px] top-[1034px]' => $showLogomark, 'left-[414px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.previous') }}">
+        <button type="button" data-lum-interior-prev @class(['z-20 absolute lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56', 'left-[414px] top-[1034px]' => $showLogomark, 'left-[414px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.previous') }}">
             <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-interior-next @class(['absolute lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56', 'left-[490px] top-[1034px]' => $showLogomark, 'left-[490px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.next') }}">
+        <button type="button" data-lum-interior-next @class(['z-20 absolute lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56', 'left-[490px] top-[1034px]' => $showLogomark, 'left-[490px] top-[969px]' => ! $showLogomark]) aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         @else
         <div class="absolute left-1/2 top-[873px] flex -translate-x-1/2 gap-[20px]">
-            <button type="button" data-lum-interior-prev class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" aria-label="{{ __('lum.aria.previous') }}">
+            <button type="button" data-lum-interior-prev class="z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" aria-label="{{ __('lum.aria.previous') }}">
                 <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <button type="button" data-lum-interior-next class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" aria-label="{{ __('lum.aria.next') }}">
+            <button type="button" data-lum-interior-next class="z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-56" aria-label="{{ __('lum.aria.next') }}">
                 <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
         @endif
         <div @class(['absolute left-1/2 flex w-[378px] -translate-x-1/2 flex-col items-center gap-[24px]', 'top-[1134px]' => $showLogomark && $showTabs, 'top-[1069px]' => ! $showLogomark && $showTabs, 'top-[973px]' => ! $showTabs])>
-            <div class="flex w-full items-start justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">
-                @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] w-[42px] items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
-                        <span data-lum-interior-progress-line @class(['h-px w-[42px] bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
-                        <img
-                            src="{{ $img('interior/slider-active.svg') }}"
-                            alt=""
-                            data-lum-interior-progress-active
-                            @class(['h-[19px] w-[42px]', 'hidden' => $i !== $startIndex])
-                            width="42"
-                            height="19"
-                        >
-                    </span>
-                @endfor
-            </div>
+            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
             <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
-                <span data-lum-interior-current>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
             </p>
         </div>
         @if ($showCta)
@@ -255,30 +224,16 @@
             >
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]"></div>
         </div>
-        <button type="button" data-lum-interior-prev @class(['absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[72px] top-[884px]' => $showLogomark && $showTabs, 'left-[136px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[72px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.previous') }}">
+        <button type="button" data-lum-interior-prev @class(['z-20 absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[72px] top-[884px]' => $showLogomark && $showTabs, 'left-[136px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[72px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.previous') }}">
             <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <button type="button" data-lum-interior-next @class(['absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[1784px] top-[884px]' => $showLogomark && $showTabs, 'left-[1784px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[1784px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.next') }}">
+        <button type="button" data-lum-interior-next @class(['z-20 absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[1784px] top-[884px]' => $showLogomark && $showTabs, 'left-[1784px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[1784px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
         <div @class(['absolute left-[771px] flex w-[378px] flex-col items-center gap-[24px]', 'top-[1300px]' => $showLogomark && $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs, 'top-[1189px]' => ! $showTabs])>
-            <div class="flex w-full items-start justify-center gap-[14px]" data-lum-interior-progress data-line-class="h-px w-[42px] bg-lum-espresso opacity-40">
-                @for ($i = 0; $i < $total; $i++)
-                    <span class="inline-flex h-[19px] w-[42px] items-start justify-center" data-lum-interior-progress-item data-index="{{ $i }}">
-                        <span data-lum-interior-progress-line @class(['h-px w-[42px] bg-lum-espresso opacity-40', 'hidden' => $i === $startIndex])></span>
-                        <img
-                            src="{{ $img('interior/slider-active.svg') }}"
-                            alt=""
-                            data-lum-interior-progress-active
-                            @class(['h-[19px] w-[42px]', 'hidden' => $i !== $startIndex])
-                            width="42"
-                            height="19"
-                        >
-                    </span>
-                @endfor
-            </div>
+            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
             <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
-                <span data-lum-interior-current>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
             </p>
         </div>
         @if ($showCta)

@@ -985,7 +985,8 @@
     }
 
     .lum-link--footer-line .lum-link__text {
-        transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1);
+        /* underline only — no lift */
+        transform: none;
     }
 
     .lum-link--footer-legal {
@@ -1017,12 +1018,6 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-        .lum-link--read-more:hover .lum-link__text,
-        .lum-link--footer-line:hover .lum-link__text {
-            transform: translate3d(0, -2px, 0);
-            transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1);
-        }
-
         .lum-link:hover .lum-link__line-svg,
         .lum-link:focus-visible .lum-link__line-svg {
             clip-path: inset(0 0 0 0);
@@ -1250,13 +1245,61 @@
         align-items: flex-start;
     }
 
-    [data-lum-interior-progress-item] {
-        align-items: flex-start;
+    .lum-interior-progress__item {
+        position: relative;
     }
 
-    [data-lum-interior-progress-line],
-    [data-lum-interior-progress-active] {
+    .lum-interior-progress__track {
         display: block;
+    }
+
+    .lum-interior-progress__fill {
+        display: block;
+        transform: scaleX(0);
+        transform-origin: left center;
+        opacity: 0;
+        will-change: transform;
+        background-color: var(--color-lum-orange-2);
+    }
+
+    .lum-interior-progress__dot {
+        will-change: transform, opacity;
+        background-color: var(--color-lum-orange-2);
+    }
+
+    .lum-interior-counter {
+        display: inline-block;
+        vertical-align: bottom;
+    }
+
+    .lum-interior-counter__viewport {
+        display: block;
+        overflow: hidden;
+        height: 1em;
+        line-height: 1;
+    }
+
+    .lum-interior-counter__text {
+        display: block;
+        will-change: transform;
+    }
+
+    .lum-interior-slide__host,
+    .lum-interior-slide,
+    .lum-interior-slide__inner {
+        backface-visibility: hidden;
+    }
+
+    [data-lum-interior-left],
+    [data-lum-interior-right],
+    [data-lum-interior-single] {
+        z-index: 0;
+        isolation: isolate;
+    }
+
+    [data-lum-interior-prev],
+    [data-lum-interior-next] {
+        z-index: 30;
     }
 
     .lum-location-card__tag-wrap {

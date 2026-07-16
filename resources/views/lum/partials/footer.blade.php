@@ -74,8 +74,8 @@
         <p class="absolute left-[20px] top-[655px] -translate-y-1/2 text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
 
         <div class="lum-footer-legal absolute left-[calc(50%-68px)] top-[678px] -translate-x-1/2 gap-[40px] text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal'])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
         <button type="button" data-lum-back-to-top class="absolute left-[315px] top-[708px] lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--round p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
@@ -156,8 +156,8 @@
         <p class="absolute left-[22px] top-[991.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
 
         <div class="lum-footer-legal absolute left-[20px] top-[1024px] gap-[40px] lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal'])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
         @include('lum.partials.footer-credits', [
@@ -236,8 +236,8 @@
         <p class="absolute left-[72px] top-[768.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
 
         <div class="lum-footer-legal absolute left-1/2 top-[756px] -translate-x-1/2 gap-[40px] lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal'])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
         @include('lum.partials.footer-credits', [

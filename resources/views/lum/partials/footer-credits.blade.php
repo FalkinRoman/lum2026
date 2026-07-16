@@ -10,6 +10,7 @@
         'href' => 'https://t.me/ivantaskayev',
         'label' => __('lum.footer.ivan'),
         'classes' => 'lum-link--footer-credits',
+        'variant' => 'line',
         'target' => '_blank',
         'rel' => 'noopener noreferrer',
     ])
@@ -19,6 +20,7 @@
         'href' => 'https://t.me/falroman',
         'label' => __('lum.footer.roman'),
         'classes' => 'lum-link--footer-credits',
+        'variant' => 'line',
         'target' => '_blank',
         'rel' => 'noopener noreferrer',
     ])
