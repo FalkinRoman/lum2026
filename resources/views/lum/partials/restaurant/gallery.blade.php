@@ -38,9 +38,9 @@
         @foreach ($galleryPolaroids['mob'] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                 <div class="relative" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px;">
-                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="pointer-events-none absolute inset-0 z-[2] h-full w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
+                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.23px;">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="absolute z-[1] object-cover" style="left: {{ $polaroid['px'] }}px; top: {{ $polaroid['py'] }}px; width: {{ $polaroid['pw'] }}px; height: {{ $polaroid['ph'] }}px;">
+                    <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
                     <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[4px] text-center leading-[1]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 0.2px;">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -66,9 +66,9 @@
         @foreach ($galleryPolaroids['tab'] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                 <div class="relative" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px;">
-                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="pointer-events-none absolute inset-0 z-[2] h-full w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
+                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.4px;">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="absolute z-[1] object-cover" style="left: {{ $polaroid['px'] }}px; top: {{ $polaroid['py'] }}px; width: {{ $polaroid['pw'] }}px; height: {{ $polaroid['ph'] }}px;">
+                    <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
                     <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[10px] text-center leading-[1.05]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 0.5px;">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -94,9 +94,9 @@
         @foreach ($galleryPolaroids['desk'] as $polaroid)
             <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                 <div class="relative" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px;">
-                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="pointer-events-none absolute inset-0 z-[2] h-full w-full drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
+                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                     <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.79px;">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="absolute z-[1] object-cover" style="left: {{ $polaroid['px'] }}px; top: {{ $polaroid['py'] }}px; width: {{ $polaroid['pw'] }}px; height: {{ $polaroid['ph'] }}px;">
+                    <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
                     <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[12px] text-center leading-[1.05]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 1.14px;">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>

@@ -1571,6 +1571,22 @@
         }
     }
 
+    /* Photo window from polaroids/frame.svg viewBox hole (22.4,37.9 → 248.5,304.7) */
+    .lum-polaroid__frame {
+        @apply pointer-events-none absolute inset-0 z-[2] h-full w-full;
+    }
+
+    .lum-polaroid__photo {
+        position: absolute;
+        z-index: 1;
+        left: 8.238%;
+        top: 9.331%;
+        width: 83.134%;
+        height: 65.701%;
+        object-fit: cover;
+        object-position: center;
+    }
+
     .lum-villa-polaroid__script {
         color: #2d62e8;
         font-family: var(--font-villa-hand);
