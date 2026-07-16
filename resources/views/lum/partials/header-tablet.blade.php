@@ -20,7 +20,7 @@
                 type="button"
                 @class([
                     'lum-icon-btn',
-                    'lum-icon-btn--ivory-filled-s' => ! $isEspresso,
+                    'lum-icon-btn--ivory-outline' => ! $isEspresso,
                     'lum-icon-btn--espresso-outline' => $isEspresso,
                 ])
                 data-lum-lang-toggle
@@ -28,7 +28,7 @@
                 aria-expanded="false"
                 aria-controls="lum-lang-panel"
             >
-                <img src="{{ asset('images/lum/hero/language.svg') }}" alt="" class="size-[32px]" width="32" height="32">
+                <img src="{{ asset($isEspresso ? 'images/lum/hero/language.svg' : 'images/lum/hero/language-cream.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
             @include('lum.partials.language-switcher')
         </div>

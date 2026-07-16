@@ -273,7 +273,8 @@ function cloneTrackContent(inner) {
     return content.cloneNode(true);
 }
 
-function animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.95, preload }) {
+/** Codrops Slideshow Animations demo 6 — slide xPercent + inner scaleX stretch */
+function animateCodrops6Media({ slide, inner, direction, slideData, fill, reducedMotion, duration = 1.6, preload }) {
     const dir = direction === 'next' ? 1 : -1;
 
     if (reducedMotion) {
@@ -287,35 +288,55 @@ function animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMot
             await preload(slideData);
         }
 
-        const outgoing = document.createElement('div');
-        outgoing.className = `${MEDIA_INNER} absolute inset-0 z-[2]`;
-        outgoing.appendChild(cloneTrackContent(inner));
+        const outgoingSlide = document.createElement('div');
+        outgoingSlide.className = 'lum-villas-slide absolute inset-0 z-[2] overflow-hidden';
+        const outgoingInner = document.createElement('div');
+        outgoingInner.className = `${MEDIA_INNER}`;
+        outgoingInner.appendChild(cloneTrackContent(inner));
+        outgoingSlide.appendChild(outgoingInner);
 
-        const incoming = document.createElement('div');
-        incoming.className = `${MEDIA_INNER} absolute inset-0 z-[1]`;
-        fill(slideData, incoming);
+        const incomingSlide = document.createElement('div');
+        incomingSlide.className = 'lum-villas-slide absolute inset-0 z-[1] overflow-hidden';
+        const incomingInner = document.createElement('div');
+        incomingInner.className = `${MEDIA_INNER}`;
+        fill(slideData, incomingInner);
+        incomingSlide.appendChild(incomingInner);
 
-        gsap.set(outgoing, { xPercent: 0 });
-        gsap.set(incoming, { xPercent: dir * 100 });
+        gsap.set(outgoingSlide, { xPercent: 0 });
+        gsap.set(outgoingInner, {
+            transformOrigin: dir === 1 ? '100% 50%' : '0% 50%',
+            scaleX: 1,
+            xPercent: 0,
+        });
+        gsap.set(incomingSlide, { xPercent: dir * 100 });
+        gsap.set(incomingInner, {
+            transformOrigin: dir === 1 ? '0% 50%' : '100% 50%',
+            xPercent: -dir * 100,
+            scaleX: 4,
+        });
 
-        slide.appendChild(outgoing);
-        slide.appendChild(incoming);
+        slide.appendChild(outgoingSlide);
+        slide.appendChild(incomingSlide);
         inner.style.visibility = 'hidden';
 
         return new Promise((resolve) => {
             gsap.timeline({
-                defaults: { duration, ease: 'power4.out' },
+                defaults: { duration, ease: 'power3.inOut' },
                 onComplete: () => {
                     fill(slideData, inner);
                     inner.style.visibility = '';
-                    outgoing.remove();
-                    incoming.remove();
-                    gsap.set([inner, outgoing, incoming], { clearProps: 'transform,x,xPercent,scale' });
+                    outgoingSlide.remove();
+                    incomingSlide.remove();
+                    gsap.set([outgoingSlide, outgoingInner, incomingSlide, incomingInner], {
+                        clearProps: 'transform,x,xPercent,scale,scaleX,transformOrigin',
+                    });
                     resolve();
                 },
             })
-                .to(outgoing, { xPercent: -dir * 100 }, 0)
-                .to(incoming, { xPercent: 0 }, 0);
+                .to(outgoingSlide, { xPercent: -dir * 100 }, 0)
+                .to(outgoingInner, { scaleX: 4 }, 0)
+                .to(incomingSlide, { xPercent: 0 }, 0)
+                .to(incomingInner, { xPercent: 0, scaleX: 1 }, 0);
         });
     };
 
@@ -357,7 +378,22 @@ function cloneMobileSubtitleBlock(content) {
     return block;
 }
 
-function animateMobileSubtitle({ root, stage, content, direction, slideData, fill, reducedMotion, duration = 0.72 }) {
+const TEXT_EASE = 'power3.inOut';
+const TEXT_DURATION = 1.35;
+const TEXT_TRAVEL_RATIO = 0.5;
+const SUBTITLE_STAGGER = 0.1;
+
+function animateMobileSubtitle({
+    root,
+    stage,
+    content,
+    direction,
+    slideData,
+    fill,
+    reducedMotion,
+    duration = TEXT_DURATION,
+    delay = 0,
+}) {
     const dir = direction === 'next' ? 1 : -1;
 
     if (reducedMotion) {
@@ -366,7 +402,7 @@ function animateMobileSubtitle({ root, stage, content, direction, slideData, fil
         return Promise.resolve();
     }
 
-    const travel = (root?.offsetWidth || stage.offsetWidth) * 1.05;
+    const travel = (root?.offsetWidth || stage.offsetWidth) * TEXT_TRAVEL_RATIO;
 
     stage.style.height = `${stage.offsetHeight}px`;
     stage.style.overflow = 'hidden';
@@ -381,8 +417,8 @@ function animateMobileSubtitle({ root, stage, content, direction, slideData, fil
     outgoing.layer.className = `${TEXT_OVERLAY} absolute inset-0 z-[2] overflow-hidden`;
     incoming.layer.className = `${TEXT_OVERLAY} absolute inset-0 z-[1] overflow-hidden`;
 
-    gsap.set(outgoing.lane, { x: 0 });
-    gsap.set(incoming.lane, { x: dir * travel });
+    gsap.set(outgoing.lane, { x: 0, opacity: 1 });
+    gsap.set(incoming.lane, { x: dir * travel, opacity: 0 });
 
     content.style.opacity = '0';
     stage.appendChild(outgoing.layer);
@@ -390,7 +426,8 @@ function animateMobileSubtitle({ root, stage, content, direction, slideData, fil
 
     return new Promise((resolve) => {
         gsap.timeline({
-            defaults: { duration, ease: 'power3.out' },
+            delay,
+            defaults: { duration, ease: TEXT_EASE },
             onComplete: () => {
                 fill(slideData, content);
                 content.style.opacity = '';
@@ -398,12 +435,12 @@ function animateMobileSubtitle({ root, stage, content, direction, slideData, fil
                 stage.style.overflow = '';
                 outgoing.layer.remove();
                 incoming.layer.remove();
-                gsap.set([outgoing.lane, incoming.lane], { clearProps: 'transform,x,xPercent' });
+                gsap.set([outgoing.lane, incoming.lane], { clearProps: 'transform,x,xPercent,opacity' });
                 resolve();
             },
         })
-            .to(outgoing.lane, { x: -dir * travel }, 0)
-            .to(incoming.lane, { x: 0 }, 0);
+            .to(outgoing.lane, { x: -dir * travel, opacity: 0 }, 0)
+            .to(incoming.lane, { x: 0, opacity: 1 }, 0);
     });
 }
 
@@ -443,8 +480,18 @@ function createMultilineTextBlock(inner, slideData, fill, track, { fillIncoming 
     return { content, textWidth };
 }
 
-function animateMultilineTextSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.72 }) {
+function animateMultilineTextSlide({
+    slide,
+    inner,
+    direction,
+    slideData,
+    fill,
+    reducedMotion,
+    duration = TEXT_DURATION,
+    delay = 0,
+}) {
     const dir = direction === 'next' ? 1 : -1;
+    const travelPercent = TEXT_TRAVEL_RATIO * 100;
 
     if (reducedMotion) {
         fill(slideData, inner);
@@ -474,8 +521,8 @@ function animateMultilineTextSlide({ slide, inner, direction, slideData, fill, r
     incoming.className = 'absolute inset-0 z-[1] flex items-center justify-center';
     incoming.appendChild(incomingContent);
 
-    gsap.set(outgoing, { xPercent: 0 });
-    gsap.set(incoming, { xPercent: dir * 100 });
+    gsap.set(outgoing, { xPercent: 0, opacity: 1 });
+    gsap.set(incoming, { xPercent: dir * travelPercent, opacity: 0 });
 
     slide.appendChild(outgoing);
     slide.appendChild(incoming);
@@ -483,7 +530,8 @@ function animateMultilineTextSlide({ slide, inner, direction, slideData, fill, r
 
     return new Promise((resolve) => {
         gsap.timeline({
-            defaults: { duration, ease: 'power3.out' },
+            delay,
+            defaults: { duration, ease: TEXT_EASE },
             onComplete: () => {
                 fill(slideData, inner);
                 if (textWidth) {
@@ -497,16 +545,25 @@ function animateMultilineTextSlide({ slide, inner, direction, slideData, fill, r
                 slide.style.overflow = '';
                 outgoing.remove();
                 incoming.remove();
-                gsap.set([outgoing, incoming], { clearProps: 'transform,x,xPercent' });
+                gsap.set([outgoing, incoming], { clearProps: 'transform,x,xPercent,opacity' });
                 resolve();
             },
         })
-            .to(outgoing, { xPercent: -dir * 100 }, 0)
-            .to(incoming, { xPercent: 0 }, 0);
+            .to(outgoing, { xPercent: -dir * travelPercent, opacity: 0 }, 0)
+            .to(incoming, { xPercent: 0, opacity: 1 }, 0);
     });
 }
 
-function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion, duration = 0.72 }) {
+function animateTextSlide({
+    slide,
+    inner,
+    direction,
+    slideData,
+    fill,
+    reducedMotion,
+    duration = TEXT_DURATION,
+    delay = 0,
+}) {
     const dir = direction === 'next' ? 1 : -1;
 
     if (reducedMotion) {
@@ -516,7 +573,7 @@ function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMot
     }
 
     const track = slide.closest('[data-lum-villas-text-track]');
-    const travel = (track?.offsetWidth ?? slide.offsetWidth) * 1.05;
+    const travel = (track?.offsetWidth ?? slide.offsetWidth) * TEXT_TRAVEL_RATIO;
 
     slide.style.height = `${slide.offsetHeight}px`;
 
@@ -530,8 +587,8 @@ function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMot
     outgoing.layer.classList.add('overflow-hidden');
     incoming.layer.classList.add('overflow-hidden');
 
-    gsap.set(outgoing.lane, { x: 0 });
-    gsap.set(incoming.lane, { x: dir * travel });
+    gsap.set(outgoing.lane, { x: 0, opacity: 1 });
+    gsap.set(incoming.lane, { x: dir * travel, opacity: 0 });
 
     slide.appendChild(outgoing.layer);
     slide.appendChild(incoming.layer);
@@ -539,60 +596,21 @@ function animateTextSlide({ slide, inner, direction, slideData, fill, reducedMot
 
     return new Promise((resolve) => {
         gsap.timeline({
-            defaults: { duration, ease: 'power3.out' },
+            delay,
+            defaults: { duration, ease: TEXT_EASE },
             onComplete: () => {
                 fill(slideData, inner);
                 inner.style.visibility = '';
                 slide.style.height = '';
                 outgoing.layer.remove();
                 incoming.layer.remove();
-                gsap.set([outgoing.lane, incoming.lane], { clearProps: 'transform,x,xPercent' });
+                gsap.set([outgoing.lane, incoming.lane], { clearProps: 'transform,x,xPercent,opacity' });
                 resolve();
             },
         })
-            .to(outgoing.lane, { x: -dir * travel }, 0)
-            .to(incoming.lane, { x: 0 }, 0);
+            .to(outgoing.lane, { x: -dir * travel, opacity: 0 }, 0)
+            .to(incoming.lane, { x: 0, opacity: 1 }, 0);
     });
-}
-function animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion, duration = 1.15, preload }) {
-    if (reducedMotion) {
-        fill(slideData, inner);
-
-        return Promise.resolve();
-    }
-
-    const run = async () => {
-        if (preload) {
-            await preload(slideData);
-        }
-
-        const incoming = document.createElement('div');
-        incoming.className = `${MEDIA_INNER} absolute inset-0 z-[2]`;
-        fill(slideData, incoming);
-        slide.appendChild(incoming);
-
-        const currentImg = inner.querySelector('img');
-        const nextImg = incoming.querySelector('img');
-
-        gsap.set(nextImg, { opacity: 0, scale: 1.06 });
-        gsap.set(currentImg, { opacity: 1, scale: 1 });
-
-        return new Promise((resolve) => {
-            gsap.timeline({
-                defaults: { ease: 'power2.out' },
-                onComplete: () => {
-                    fill(slideData, inner);
-                    incoming.remove();
-                    gsap.set(currentImg, { clearProps: 'opacity,transform,scale' });
-                    resolve();
-                },
-            })
-                .to(currentImg, { opacity: 0, duration: duration * 0.55, ease: 'power2.in' }, 0)
-                .to(nextImg, { opacity: 1, scale: 1, duration, ease: 'power2.out' }, 0);
-        });
-    };
-
-    return run();
 }
 
 function isPanelVisible(panel) {
@@ -621,9 +639,8 @@ function animateTrack(track, direction, slideData, reducedMotion) {
 
     switch (type) {
         case 'photo':
-            return animatePhotoBreath({ slide, inner, slideData, fill, reducedMotion, preload: track.preload });
         case 'oval':
-            return animateOvalSlide({ slide, inner, direction, slideData, fill, reducedMotion, preload: track.preload });
+            return animateCodrops6Media({ slide, inner, direction, slideData, fill, reducedMotion, preload: track.preload });
         case 'title':
             return animateTextSlide({ slide, inner, direction, slideData, fill, reducedMotion });
         case 'mobileSubtitle':
@@ -635,6 +652,7 @@ function animateTrack(track, direction, slideData, reducedMotion) {
                 slideData,
                 fill: track.fill,
                 reducedMotion,
+                delay: SUBTITLE_STAGGER,
             });
         case 'subtitle':
             if (multiline) {
@@ -645,6 +663,7 @@ function animateTrack(track, direction, slideData, reducedMotion) {
                     slideData,
                     fill,
                     reducedMotion,
+                    delay: SUBTITLE_STAGGER,
                 });
             }
 
@@ -655,6 +674,7 @@ function animateTrack(track, direction, slideData, reducedMotion) {
                 slideData,
                 fill,
                 reducedMotion,
+                delay: SUBTITLE_STAGGER,
             });
         default:
             return Promise.resolve();

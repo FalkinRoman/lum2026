@@ -408,7 +408,8 @@
             @apply bg-transparent;
         }
 
-        .lum-icon-btn--ivory-outline:hover img {
+        .lum-icon-btn--ivory-outline:hover img,
+        .lum-icon-btn--ivory-outline:hover .lum-icon-btn__ivory-glyph {
             filter: brightness(0);
         }
 
@@ -497,6 +498,11 @@
         box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
     }
 
+    /* dark SVG → ivory (tablet arrow on outline) */
+    .lum-icon-btn__ivory-glyph {
+        filter: brightness(0) invert(1);
+    }
+
     .lum-icon-btn--ivory-filled,
     .lum-icon-btn--ivory-filled-s,
     .lum-icon-btn--espresso-filled,
@@ -539,10 +545,12 @@
 
     .lum-icon-btn--ivory-filled {
         @apply rounded-[50px] p-[2px];
+        background-color: var(--color-lum-ivory);
     }
 
     .lum-icon-btn--ivory-filled-s {
         @apply rounded-[44px] p-[2px];
+        background-color: var(--color-lum-ivory);
     }
 
     .lum-icon-btn--espresso-filled {
@@ -573,15 +581,14 @@
         .lum-icon-btn--ivory-filled:hover,
         .lum-icon-btn--ivory-filled-s:hover {
             @apply border-transparent;
+            background-color: transparent;
             box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
         }
 
-        .lum-icon-btn--ivory-filled:hover img {
-            filter: brightness(0) invert(1);
-        }
-
+        /* cream/white icon = outline color on dark hero */
+        .lum-icon-btn--ivory-filled:hover img,
         .lum-icon-btn--ivory-filled-s:hover img {
-            filter: brightness(0);
+            filter: brightness(0) invert(1);
         }
 
         .lum-icon-btn--espresso-filled:hover {
@@ -620,10 +627,12 @@
     }
 
     .lum-burger-btn {
-        @apply relative inline-flex items-center justify-center overflow-hidden;
+        @apply relative inline-flex shrink-0 items-center justify-center overflow-hidden;
         isolation: isolate;
         box-sizing: border-box;
+        width: 72px;
         min-width: 72px;
+        max-width: 72px;
         height: 36px;
         padding-inline: 20px;
         padding-block: 2px;
@@ -634,6 +643,7 @@
     .lum-burger-btn--espresso-compact {
         width: 56px;
         min-width: 56px;
+        max-width: 56px;
         height: 32px;
         padding-inline: 0;
         padding-block: 0;
@@ -642,7 +652,8 @@
     .lum-burger-btn::before {
         content: '';
         position: absolute;
-        inset: -1px;
+        /* inset 0 — never grow past fixed width/height on hover */
+        inset: 0;
         z-index: -1;
         border-radius: inherit;
         transform: translate3d(0, 100%, 0);
@@ -657,8 +668,8 @@
 
     .lum-burger-btn--ivory,
     .lum-burger-btn--ivory-compact {
-        @apply rounded-[50px];
-        border: 1px solid var(--color-lum-ivory);
+        @apply rounded-[50px] border-0;
+        box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
         background-color: var(--color-lum-ivory);
     }
 
@@ -669,8 +680,8 @@
 
     .lum-burger-btn--espresso,
     .lum-burger-btn--espresso-compact {
-        @apply rounded-[50px];
-        border: 1px solid var(--color-lum-espresso);
+        @apply rounded-[50px] border-0;
+        box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
         background-color: var(--color-lum-ivory);
     }
 
@@ -698,7 +709,19 @@
         .lum-burger-btn--espresso:hover,
         .lum-burger-btn--espresso-compact:hover {
             background-color: transparent;
-            /* keep border-color — changing it to espresso flashes a dark ring (= looks bigger) */
+            width: 72px;
+            min-width: 72px;
+            max-width: 72px;
+            height: 36px;
+            transform: none;
+        }
+
+        .lum-burger-btn--ivory-compact:hover,
+        .lum-burger-btn--espresso-compact:hover {
+            width: 56px;
+            min-width: 56px;
+            max-width: 56px;
+            height: 32px;
         }
 
         .lum-burger-btn--ivory:hover img,
@@ -706,6 +729,9 @@
         .lum-burger-btn--espresso:hover img,
         .lum-burger-btn--espresso-compact:hover img {
             filter: brightness(0) invert(1);
+            transform: none;
+            width: 32px;
+            height: 32px;
         }
 
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover::before,
@@ -716,7 +742,7 @@
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover,
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover {
             background-color: transparent;
-            border-color: var(--color-lum-ivory);
+            box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
         }
 
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover img,
@@ -1396,31 +1422,21 @@
 @layer components {
     .lum-burger-menu__backdrop {
         opacity: 0;
-        transition: opacity 0.55s ease;
-    }
-
-    .lum-burger-menu.is-open .lum-burger-menu__backdrop {
-        opacity: 1;
+        will-change: opacity;
     }
 
     .lum-burger-menu__scroll {
-        opacity: 0;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
-        transition: opacity 0.55s ease;
-    }
-
-    .lum-burger-menu.is-open .lum-burger-menu__scroll {
-        opacity: 1;
     }
 
     .lum-burger-menu__drawer {
-        transform: translate3d(0, -100%, 0);
-        transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+        clip-path: inset(0 0 100% 0);
+        will-change: clip-path;
+        overflow: hidden;
     }
 
     .lum-burger-menu.is-open .lum-burger-menu__drawer {
-        transform: translate3d(0, 0, 0);
         overflow: visible;
     }
 
@@ -1428,40 +1444,86 @@
         cursor: default;
     }
 
+    .lum-menu-item {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .lum-menu-dot {
+        display: block;
+        flex-shrink: 0;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--color-lum-green);
+    }
+
+    .lum-menu-flip {
+        display: inline-flex;
+        align-items: center;
+        max-width: 100%;
+        vertical-align: top;
+    }
+
+    .lum-menu-flip__mask {
+        display: block;
+        overflow: hidden;
+        max-width: 100%;
+    }
+
+    .lum-menu-flip__text,
+    .lum-menu-flip__line {
+        display: block;
+        will-change: transform;
+    }
+
+    .lum-menu-flip__line {
+        line-height: inherit;
+        white-space: nowrap;
+    }
+
+    .lum-menu-flip__char {
+        display: inline-block;
+        overflow: hidden;
+        height: 1lh;
+        line-height: 1lh;
+        vertical-align: bottom;
+    }
+
+    .lum-menu-flip__char--dot {
+        margin-left: 0.22em;
+        width: 6px;
+        vertical-align: middle;
+    }
+
+    .lum-menu-flip__char--dot .lum-menu-flip__glyph {
+        justify-content: center;
+    }
+
+    .lum-menu-flip__dot {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0.22em;
+        height: 1lh;
+        vertical-align: bottom;
+    }
+
+    .lum-menu-flip__char-stack {
+        display: block;
+        will-change: transform;
+    }
+
+    .lum-menu-flip__glyph {
+        display: flex;
+        align-items: center;
+        height: 1lh;
+        line-height: 1lh;
+    }
+
     .lum-burger-menu [data-lum-menu-reveal] {
-        opacity: 0;
-        transform: translate3d(0, 28px, 0);
-        transition:
-            opacity 0.45s ease,
-            transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-
-    .lum-burger-menu:not(.is-open) [data-lum-menu-reveal] {
-        transition-delay: 0s;
-    }
-
-    .lum-burger-menu.is-open [data-lum-menu-reveal='1'] {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-        transition-delay: 0.18s;
-    }
-
-    .lum-burger-menu.is-open [data-lum-menu-reveal='2'] {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-        transition-delay: 0.26s;
-    }
-
-    .lum-burger-menu.is-open [data-lum-menu-reveal='3'] {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-        transition-delay: 0.34s;
-    }
-
-    .lum-burger-menu.is-open [data-lum-menu-reveal='4'] {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-        transition-delay: 0.42s;
+        will-change: transform, opacity;
     }
 
     .lum-sticky-header {

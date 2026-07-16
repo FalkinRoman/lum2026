@@ -1,6 +1,21 @@
 @php
     $locale = app()->getLocale();
     $villaUrl = fn (string $slug) => route('villa.show', $slug);
+    $villaSlug = request()->routeIs('villa.show') ? (string) request()->route('slug') : null;
+    $menuActive = [
+        'home' => request()->routeIs('home'),
+        'stay' => request()->routeIs('stay'),
+        'dining' => request()->routeIs('dining', 'restaurant.show'),
+        'relax' => request()->routeIs('relax'),
+        'discover' => request()->routeIs('discover', 'discover.show'),
+        'shop' => request()->routeIs('shop'),
+        'contacts' => request()->routeIs('contacts'),
+        'blog' => request()->routeIs('blog', 'blog.show'),
+        'residence' => $villaSlug === 'residence',
+        'oculus' => $villaSlug === 'oculus',
+        'ocean' => $villaSlug === 'ocean',
+        'villas' => $villaSlug === 'villas',
+    ];
 @endphp
 <div
     id="lum-burger-menu"
@@ -52,18 +67,17 @@
                     </div>
                 </header>
 
-                <nav class="absolute left-[20px] top-[144px] z-10 flex w-[920px] flex-col gap-[6px]" data-lum-menu-reveal="2">
-                    <a href="{{ route('stay') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.stay') }}</a>
-                    <a href="{{ route('dining') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.dining') }}</a>
-                    <a href="{{ route('relax') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.relax') }}</a>
-                    <a href="{{ route('discover') }}" class="font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.discover') }}</a>
-                    <div class="flex flex-wrap items-center gap-[12px] font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso">
-                        <a href="{{ route('shop') }}">{{ __('lum.nav.shop') }}</a>
+                <nav class="absolute left-[20px] top-[144px] z-10 flex w-[920px] flex-col gap-[6px] font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso" data-lum-menu-nav>
+                    @include('lum.partials.burger-menu-link', ['href' => route('stay'), 'label' => __('lum.nav.stay'), 'active' => $menuActive['stay']])
+                    @include('lum.partials.burger-menu-link', ['href' => route('dining'), 'label' => __('lum.nav.dining'), 'active' => $menuActive['dining']])
+                    @include('lum.partials.burger-menu-link', ['href' => route('relax'), 'label' => __('lum.nav.relax'), 'active' => $menuActive['relax']])
+                    @include('lum.partials.burger-menu-link', ['href' => route('discover'), 'label' => __('lum.nav.discover'), 'active' => $menuActive['discover']])
+                    <div class="flex flex-wrap items-center gap-[12px]">
+                        @include('lum.partials.burger-menu-link', ['href' => route('shop'), 'label' => __('lum.nav.shop'), 'active' => $menuActive['shop']])
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ route('contacts') }}">{{ __('lum.nav.contacts') }}</a>
+                        @include('lum.partials.burger-menu-link', ['href' => route('contacts'), 'label' => __('lum.nav.contacts'), 'active' => $menuActive['contacts']])
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ route('blog') }}">{{ __('lum.nav.blog') }}</a>
-                        <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
+                        @include('lum.partials.burger-menu-link', ['href' => route('blog'), 'label' => __('lum.nav.blog'), 'active' => $menuActive['blog']])
                     </div>
                 </nav>
 
@@ -72,10 +86,22 @@
                 <p class="absolute left-[20px] top-[403px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso-40" data-lum-menu-reveal="3">{{ __('lum.nav.projects') }}</p>
 
                 <div class="absolute left-[20px] top-[436px] grid w-[920px] grid-cols-2 gap-y-[12px] text-[14px] font-medium leading-[14px] tracking-[0.6px] text-lum-espresso" data-lum-menu-reveal="3">
-                    <a href="{{ $villaUrl('residence') }}">{{ __('lum.nav.lum_residence') }}</a>
-                    <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.lum_villas') }}</a>
-                    <a href="{{ $villaUrl('oculus') }}">{{ __('lum.nav.oculus') }}</a>
-                    <a href="{{ $villaUrl('ocean') }}">{{ __('lum.nav.lum_ocean') }}</a>
+                    <a href="{{ $villaUrl('residence') }}" @class(['inline-flex items-center gap-[6px]', 'is-active' => $menuActive['residence']])>
+                        {{ __('lum.nav.lum_residence') }}
+                        @if ($menuActive['residence'])<span class="lum-menu-dot" data-lum-menu-dot aria-hidden="true"></span>@endif
+                    </a>
+                    <a href="{{ $villaUrl('villas') }}" @class(['inline-flex items-center gap-[6px]', 'is-active' => $menuActive['villas']])>
+                        {{ __('lum.nav.lum_villas') }}
+                        @if ($menuActive['villas'])<span class="lum-menu-dot" data-lum-menu-dot aria-hidden="true"></span>@endif
+                    </a>
+                    <a href="{{ $villaUrl('oculus') }}" @class(['inline-flex items-center gap-[6px]', 'is-active' => $menuActive['oculus']])>
+                        {{ __('lum.nav.oculus') }}
+                        @if ($menuActive['oculus'])<span class="lum-menu-dot" data-lum-menu-dot aria-hidden="true"></span>@endif
+                    </a>
+                    <a href="{{ $villaUrl('ocean') }}" @class(['inline-flex items-center gap-[6px]', 'is-active' => $menuActive['ocean']])>
+                        {{ __('lum.nav.lum_ocean') }}
+                        @if ($menuActive['ocean'])<span class="lum-menu-dot" data-lum-menu-dot aria-hidden="true"></span>@endif
+                    </a>
                 </div>
 
                 <div class="absolute left-[20px] top-[499px] z-10 h-[480px] w-[920px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
@@ -96,14 +122,13 @@
                     </button>
                     <div class="absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2 bg-lum-espresso/16"></div>
                     <nav class="lum-nav absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible text-[16px] font-medium leading-[25px] tracking-[0.16px] text-lum-espresso">
-                        @include('lum.partials.nav-link', ['href' => route('stay'), 'label' => __('lum.nav.stay'), 'active' => request()->routeIs('stay')])
-                        @include('lum.partials.nav-link', ['href' => route('dining'), 'label' => __('lum.nav.dining'), 'active' => request()->routeIs('dining')])
-                        @include('lum.partials.nav-link', ['href' => route('relax'), 'label' => __('lum.nav.relax'), 'active' => request()->routeIs('relax')])
+                        @include('lum.partials.nav-link', ['href' => route('stay'), 'label' => __('lum.nav.stay'), 'active' => $menuActive['stay'] || $villaSlug !== null])
+                        @include('lum.partials.nav-link', ['href' => route('dining'), 'label' => __('lum.nav.dining'), 'active' => $menuActive['dining']])
+                        @include('lum.partials.nav-link', ['href' => route('relax'), 'label' => __('lum.nav.relax'), 'active' => $menuActive['relax']])
                         @include('lum.partials.nav-link', [
                             'href' => route('discover'),
                             'label' => __('lum.nav.discover'),
-                            'active' => request()->routeIs('discover', 'discover.show'),
-                            'showDot' => ! request()->routeIs('discover.show'),
+                            'active' => $menuActive['discover'],
                         ])
                     </nav>
                     <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
@@ -130,21 +155,20 @@
                     </div>
                 </header>
 
-                <nav class="absolute left-[72px] top-[320px] z-10 flex flex-col" data-lum-menu-reveal="2">
-                    <a href="/" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.home') }}</a>
-                    <div class="flex flex-wrap items-center gap-[16px] font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">
-                        <a href="{{ $villaUrl('residence') }}">{{ __('lum.nav.residence', [], 'en') }}</a>
+                <nav class="absolute left-[72px] top-[320px] z-10 flex flex-col font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso" data-lum-menu-nav>
+                    @include('lum.partials.burger-menu-link', ['href' => route('home'), 'label' => __('lum.nav.home'), 'active' => $menuActive['home']])
+                    <div class="flex flex-wrap items-center gap-[16px]">
+                        @include('lum.partials.burger-menu-link', ['href' => $villaUrl('residence'), 'label' => __('lum.nav.residence', [], 'en'), 'active' => $menuActive['residence']])
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ $villaUrl('oculus') }}">{{ __('lum.nav.oculus', [], 'en') }}</a>
+                        @include('lum.partials.burger-menu-link', ['href' => $villaUrl('oculus'), 'label' => __('lum.nav.oculus', [], 'en'), 'active' => $menuActive['oculus']])
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ $villaUrl('ocean') }}">{{ __('lum.nav.ocean', [], 'en') }}</a>
-                        <img src="{{ asset('images/lum/ui/point-active.svg') }}" alt="" class="size-[6px]" width="6" height="6">
+                        @include('lum.partials.burger-menu-link', ['href' => $villaUrl('ocean'), 'label' => __('lum.nav.ocean', [], 'en'), 'active' => $menuActive['ocean']])
                         <span class="text-lum-espresso/16">/</span>
-                        <a href="{{ $villaUrl('villas') }}">{{ __('lum.nav.villas', [], 'en') }}</a>
+                        @include('lum.partials.burger-menu-link', ['href' => $villaUrl('villas'), 'label' => __('lum.nav.villas', [], 'en'), 'active' => $menuActive['villas']])
                     </div>
-                    <a href="{{ route('shop') }}" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.shop') }}</a>
-                    <a href="{{ route('contacts') }}" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.contacts') }}</a>
-                    <a href="{{ route('blog') }}" class="font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso">{{ __('lum.nav.blog') }}</a>
+                    @include('lum.partials.burger-menu-link', ['href' => route('shop'), 'label' => __('lum.nav.shop'), 'active' => $menuActive['shop']])
+                    @include('lum.partials.burger-menu-link', ['href' => route('contacts'), 'label' => __('lum.nav.contacts'), 'active' => $menuActive['contacts']])
+                    @include('lum.partials.burger-menu-link', ['href' => route('blog'), 'label' => __('lum.nav.blog'), 'active' => $menuActive['blog']])
                 </nav>
 
                 <div class="absolute right-[72px] top-[168px] z-10 h-[528px] w-[703px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
