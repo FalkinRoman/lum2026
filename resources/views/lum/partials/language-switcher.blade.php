@@ -3,19 +3,24 @@
 @endphp
 <div
     id="{{ $panelId ?? 'lum-lang-panel' }}"
-    class="lum-lang-panel pointer-events-none absolute right-0 top-[calc(100%+8px)] z-[5100] hidden w-[320px] opacity-0 transition-opacity duration-200"
+    class="lum-lang-panel pointer-events-none absolute right-0 top-[calc(100%+8px)] z-[5100] w-[320px]"
     hidden
     role="dialog"
     aria-label="{{ __('lum.lang.select') }}"
     aria-hidden="true"
 >
-    <div class="pointer-events-auto relative h-[154px] w-[320px] bg-lum-green desk:h-[160px]">
+    <div class="lum-lang-panel__card pointer-events-auto relative h-[154px] w-[320px] bg-lum-green desk:h-[160px]">
         <p class="absolute left-[20px] top-[15px] font-normal lum-text-2 text-lum-ivory desk:left-[24px]">{{ __('lum.lang.select') }}</p>
 
-        <button type="button" class="lum-lang-panel__close absolute top-[16px] flex items-center rounded-[50px] bg-lum-orange-2 tab:left-[268px] desk:left-[280px]" data-lum-lang-close aria-label="{{ __('lum.lang.close') }}">
-            <span class="flex size-[24px] shrink-0 items-center justify-center">
-                <img src="{{ asset('images/lum/ui/close.svg') }}" alt="" class="size-[13.060546875px]" width="13" height="13">
-            </span>
+        <button
+            type="button"
+            class="lum-lang-panel__close absolute top-[16px] tab:left-[268px] desk:left-[280px]"
+            data-lum-lang-close
+            aria-label="{{ __('lum.lang.close') }}"
+        >
+            <svg class="lum-lang-panel__close-icon relative z-[1] block size-[12px]" viewBox="0.75 0.75 9.7954 9.7954" fill="none" aria-hidden="true">
+                <path d="M10.5454 1.54541L6.44312 5.64771L10.5454 9.75L9.75 10.5454L5.64771 6.44312L1.54541 10.5454L0.75 9.75L4.85229 5.64771L0.75 1.54541L1.54541 0.75L5.64771 4.85229L9.75 0.75L10.5454 1.54541Z" fill="currentColor"/>
+            </svg>
         </button>
 
         <a

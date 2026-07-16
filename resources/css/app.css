@@ -101,8 +101,26 @@
         @apply relative w-full;
     }
 
-    .lum-lang-panel:not(.hidden) {
-        @apply opacity-100;
+    .lum-lang-panel {
+        visibility: hidden;
+    }
+
+    .lum-lang-panel.is-open {
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .lum-lang-panel__card {
+        opacity: 0;
+        transform: translate3d(0, -10px, 0);
+        transition:
+            opacity 0.28s cubic-bezier(0.7, 0, 0.2, 1),
+            transform 0.32s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .lum-lang-panel.is-open .lum-lang-panel__card {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
     }
 
     .lum-lang-panel--fixed {
@@ -111,11 +129,52 @@
         z-index: 5200 !important;
     }
 
+    .lum-lang-panel__close {
+        @apply relative inline-flex size-[24px] items-center justify-center overflow-hidden rounded-full;
+        isolation: isolate;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--color-lum-orange-2);
+        box-shadow: inset 0 0 0 1px var(--color-lum-orange-2);
+        transition: color 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-lang-panel__close::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        z-index: 0;
+        border-radius: inherit;
+        background-color: var(--color-lum-orange-2);
+        --lum-radial-hole: 100%;
+        -webkit-mask-image: radial-gradient(circle at center, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        mask-image: radial-gradient(circle at center, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        transition: --lum-radial-hole 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
+
+    .lum-lang-panel__close-icon {
+        display: block;
+        flex-shrink: 0;
+    }
+
     .lum-lang-option {
         @apply transition-colors duration-300 ease-out;
     }
 
     @media (hover: hover) and (pointer: fine) {
+        .lum-lang-panel__close:hover {
+            color: var(--color-lum-ivory);
+        }
+
+        .lum-lang-panel__close:hover::before {
+            --lum-radial-hole: 0%;
+        }
+
         .lum-lang-option:hover,
         .lum-lang-option.is-active {
             @apply text-lum-ivory;
@@ -727,6 +786,7 @@
 
     .lum-nav-link__dot {
         @apply size-[6px] shrink-0 rounded-full opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.7,0,0.2,1)];
+        background-color: currentColor;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -737,26 +797,26 @@
         .lum-nav:hover:not(:has(.lum-nav-link--inline:hover)) .lum-nav-link.is-active .lum-nav-link__dot,
         .lum-nav:hover:not(:has(.lum-nav-link--inline:hover)) .lum-nav-link--inline.is-active .lum-nav-link__dot {
             @apply opacity-100;
-            background-color: var(--color-lum-green);
+            background-color: currentColor;
         }
 
         .lum-nav:hover .lum-nav-link:hover .lum-nav-link__dot,
         .lum-nav:hover .lum-nav-link--inline:hover .lum-nav-link__dot {
             @apply translate-y-[2px] opacity-100;
-            background-color: var(--color-lum-green);
+            background-color: currentColor;
         }
     }
 
     .lum-nav-link.is-active .lum-nav-link__dot,
     .lum-nav-link--inline.is-active .lum-nav-link__dot {
         @apply opacity-100;
-        background-color: var(--color-lum-green);
+        background-color: currentColor;
     }
 
     .lum-nav:not(:hover) .lum-nav-link.is-active .lum-nav-link__dot,
     .lum-nav:not(:hover) .lum-nav-link--inline.is-active .lum-nav-link__dot {
         @apply opacity-100;
-        background-color: var(--color-lum-green);
+        background-color: currentColor;
     }
 
     .lum-tab {

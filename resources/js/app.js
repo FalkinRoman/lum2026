@@ -192,6 +192,9 @@ function initLanguageSwitcher() {
     }
 
     const pairs = [];
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const closeDelayMs = 140;
+    const animMs = 320;
 
     toggles.forEach((toggle) => {
         const panelId = toggle.getAttribute('aria-controls');
@@ -201,6 +204,7 @@ function initLanguageSwitcher() {
             return;
         }
 
+        const host = toggle.parentElement ?? toggle;
         const anchor = {
             parent: panel.parentElement,
             next: panel.nextSibling,
@@ -209,13 +213,15 @@ function initLanguageSwitcher() {
         const isStickyPanel = Boolean(toggle.closest('.lum-sticky-header'));
         const useFixedPanel = isBurgerPanel || isStickyPanel;
         const designWidth = 320;
+        let closeTimer = null;
+        let closeAnimTimer = null;
+        let isOpen = false;
 
         const positionFixedPanel = () => {
             if (! useFixedPanel || ! panel.classList.contains('lum-lang-panel--fixed')) {
                 return;
             }
 
-            const host = toggle.parentElement ?? toggle;
             const rect = host.getBoundingClientRect();
             const scale = getLumScale();
             const visualWidth = designWidth * scale;
@@ -257,45 +263,95 @@ function initLanguageSwitcher() {
             anchor.parent.appendChild(panel);
         };
 
-        const closePanel = () => {
-            panel.classList.add('hidden');
-            panel.classList.add('opacity-0');
-            panel.classList.remove('pointer-events-auto');
+        const finishClose = () => {
+            panel.classList.remove('is-open');
+            panel.classList.add('pointer-events-none');
             panel.setAttribute('hidden', '');
             panel.setAttribute('aria-hidden', 'true');
             toggle.setAttribute('aria-expanded', 'false');
             restorePanelMount();
+            isOpen = false;
+        };
+
+        const closePanel = ({ immediate = false } = {}) => {
+            clearTimeout(closeTimer);
+            clearTimeout(closeAnimTimer);
+
+            if (! isOpen && panel.hasAttribute('hidden')) {
+                return;
+            }
+
+            panel.classList.remove('is-open');
+            panel.classList.add('pointer-events-none');
+            toggle.setAttribute('aria-expanded', 'false');
+
+            if (immediate) {
+                finishClose();
+                return;
+            }
+
+            closeAnimTimer = window.setTimeout(finishClose, animMs);
         };
 
         const openPanel = () => {
-            pairs.forEach(({ panel: otherPanel, toggle: otherToggle, close }) => {
+            clearTimeout(closeTimer);
+            clearTimeout(closeAnimTimer);
+
+            pairs.forEach(({ panel: otherPanel, close }) => {
                 if (otherPanel !== panel) {
-                    close();
+                    close({ immediate: true });
                 }
             });
 
             mountFixedPanel();
-            panel.classList.remove('hidden');
-            panel.classList.remove('opacity-0');
-            panel.classList.add('pointer-events-auto');
             panel.removeAttribute('hidden');
             panel.setAttribute('aria-hidden', 'false');
             toggle.setAttribute('aria-expanded', 'true');
             positionFixedPanel();
+
+            requestAnimationFrame(() => {
+                panel.classList.add('is-open');
+                panel.classList.remove('pointer-events-none');
+            });
+
+            isOpen = true;
         };
 
-        pairs.push({ panel, toggle, close: closePanel, position: positionFixedPanel });
+        const scheduleClose = () => {
+            clearTimeout(closeTimer);
+            closeTimer = window.setTimeout(() => closePanel(), closeDelayMs);
+        };
+
+        const cancelClose = () => {
+            clearTimeout(closeTimer);
+        };
+
+        pairs.push({ panel, toggle, host, close: closePanel, position: positionFixedPanel, isOpen: () => isOpen });
+
+        if (canHover) {
+            host.addEventListener('mouseenter', () => {
+                cancelClose();
+                openPanel();
+            });
+            host.addEventListener('mouseleave', scheduleClose);
+            panel.addEventListener('mouseenter', cancelClose);
+            panel.addEventListener('mouseleave', scheduleClose);
+        }
 
         toggle.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
 
-            if (panel.classList.contains('hidden')) {
-                openPanel();
+            if (canHover) {
                 return;
             }
 
-            closePanel();
+            if (isOpen) {
+                closePanel();
+                return;
+            }
+
+            openPanel();
         });
 
         panel.querySelectorAll('[data-lum-lang-close]').forEach((button) => {
@@ -308,7 +364,7 @@ function initLanguageSwitcher() {
 
     const repositionOpenPanels = () => {
         pairs.forEach(({ panel, position }) => {
-            if (! panel.classList.contains('hidden') && typeof position === 'function') {
+            if (panel.classList.contains('is-open') && typeof position === 'function') {
                 position();
             }
         });
@@ -319,12 +375,12 @@ function initLanguageSwitcher() {
     document.addEventListener('lum:layout-change', repositionOpenPanels);
 
     document.addEventListener('click', (event) => {
-        pairs.forEach(({ panel, toggle, close }) => {
-            if (panel.classList.contains('hidden')) {
+        pairs.forEach(({ panel, toggle, host, close }) => {
+            if (! panel.classList.contains('is-open')) {
                 return;
             }
 
-            if (panel.contains(event.target) || toggle.contains(event.target)) {
+            if (panel.contains(event.target) || toggle.contains(event.target) || host.contains(event.target)) {
                 return;
             }
 
@@ -338,14 +394,14 @@ function initLanguageSwitcher() {
         }
 
         pairs.forEach(({ panel, close }) => {
-            if (! panel.classList.contains('hidden')) {
+            if (panel.classList.contains('is-open')) {
                 close();
             }
         });
     });
 
     document.addEventListener('lum:close-lang-panels', () => {
-        pairs.forEach(({ close }) => close());
+        pairs.forEach(({ close }) => close({ immediate: true }));
     });
 }
 
