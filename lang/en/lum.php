@@ -58,7 +58,7 @@ return [
         'eyebrow_lower' => 'The lum – sri lanka',
         'title_normal' => 'Find the spirit of',
         'title_italic' => 'Sri Lanka',
-        'cta' => 'explore our villas',
+        'cta' => 'explore our project',
     ],
 
     'polaroids' => [

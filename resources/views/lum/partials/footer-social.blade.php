@@ -8,9 +8,9 @@
 <a
     href="{{ $href }}"
     @class([
-        'lum-btn-pan flex size-[36px] shrink-0 items-center justify-center rounded-full border p-[2px]',
-        'lum-btn-pan--ivory border-lum-ivory' => $tone === 'dark',
-        'lum-btn-pan--espresso border-lum-espresso' => $tone === 'light',
+        'lum-btn-pan flex size-[36px] shrink-0 items-center justify-center rounded-full p-[2px]',
+        'lum-btn-pan--ivory' => $tone === 'dark',
+        'lum-btn-pan--espresso' => $tone === 'light',
     ])
     aria-label="{{ $label }}"
 >

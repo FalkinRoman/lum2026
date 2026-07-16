@@ -34,9 +34,9 @@ return [
 
     'nav' => [
         'stay' => 'Проживание',
-        'dining' => 'Ресторан',
+        'dining' => 'Гастрономия',
         'relax' => 'Отдых',
-        'discover' => 'Открыть',
+        'discover' => 'Путешествия',
         'break' => 'пауза',
         'take_a_break' => 'сделать паузу',
         'home' => 'Главная',
@@ -58,7 +58,7 @@ return [
         'eyebrow_lower' => 'The lum – шри-ланка',
         'title_normal' => 'Почувствуй дух',
         'title_italic' => 'Шри-Ланки',
-        'cta' => 'смотреть виллы',
+        'cta' => 'Смотреть проекты',
     ],
 
     'polaroids' => [

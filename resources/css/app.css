@@ -185,14 +185,17 @@
     .lum-btn-pan::before {
         content: '';
         position: absolute;
-        inset: 0;
+        /* -1px: cover subpixel gap under 1px border (overflow + radius clips the ring otherwise) */
+        inset: -1px;
         z-index: 0;
         border-radius: inherit;
         --lum-radial-hole: 100%;
-        -webkit-mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
-        mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        -webkit-mask-image: radial-gradient(circle at center, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        mask-image: radial-gradient(circle at center, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
         -webkit-mask-repeat: no-repeat;
         mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
         transition: --lum-radial-hole 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
@@ -204,6 +207,16 @@
     .lum-btn-outline-ivory::before,
     .lum-btn-pan--ivory::before {
         background-color: var(--color-lum-ivory);
+    }
+
+    .lum-btn-pan--ivory {
+        border: 0;
+        box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
+    }
+
+    .lum-btn-pan--espresso {
+        border: 0;
+        box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
     }
 
     .lum-tab--inactive::before {
@@ -243,7 +256,9 @@
         position: absolute;
         inset: 0;
         z-index: -1;
-        transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+        transition:
+            transform 0.3s cubic-bezier(0.7, 0, 0.2, 1),
+            background-color 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
     .lum-btn-dark::before {
@@ -254,6 +269,17 @@
     .lum-btn-green::before {
         background-color: var(--color-lum-green);
         transform: translate3d(0, 0, 0);
+    }
+
+    /* Ivory hover fill slides up over green */
+    .lum-btn-green::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-color: var(--color-lum-ivory);
+        transform: translate3d(0, 100%, 0);
+        transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
     .lum-shop-btn::before {
@@ -344,11 +370,14 @@
         }
 
         .lum-btn-dark:hover::before,
-        .lum-btn-green:hover::before,
         .lum-btn-ivory:hover::before,
         .lum-btn-espresso:hover::before,
         .lum-shop-btn:hover::before {
             transform: translate3d(0, -100%, 0);
+        }
+
+        .lum-btn-green:hover::after {
+            transform: translate3d(0, 0, 0);
         }
 
         .lum-btn.lum-btn-info:hover::before {
@@ -360,8 +389,12 @@
             color: var(--color-lum-ground);
         }
 
-        .lum-btn-green:hover,
-        .lum-btn:not(.lum-btn-info):hover {
+        .lum-btn-green:hover {
+            @apply border-transparent bg-transparent;
+            color: var(--color-lum-espresso);
+        }
+
+        .lum-btn:not(.lum-btn-info):not(.lum-btn-green):hover {
             @apply border-lum-green bg-transparent text-lum-green;
         }
 
@@ -401,7 +434,8 @@
     }
 
     .lum-icon-btn--ivory-outline {
-        @apply rounded-[50px] border border-lum-ivory p-[2px];
+        @apply rounded-[50px] border-0 p-[2px];
+        box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
     }
 
     .lum-icon-btn--ivory-filled,
@@ -431,14 +465,16 @@
     .lum-icon-btn--green-filled::before {
         content: '';
         position: absolute;
-        inset: 0;
+        inset: -1px;
         z-index: 0;
         border-radius: inherit;
         --lum-radial-hole: 0%;
-        -webkit-mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
-        mask-image: radial-gradient(circle, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        -webkit-mask-image: radial-gradient(circle at center, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
+        mask-image: radial-gradient(circle at center, transparent var(--lum-radial-hole), #000 var(--lum-radial-hole));
         -webkit-mask-repeat: no-repeat;
         mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
         transition: --lum-radial-hole 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
 
@@ -463,7 +499,8 @@
     }
 
     .lum-icon-btn--espresso-outline {
-        @apply rounded-[50px] border border-lum-espresso p-[2px];
+        @apply rounded-[50px] border-0 p-[2px];
+        box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -476,7 +513,8 @@
 
         .lum-icon-btn--ivory-filled:hover,
         .lum-icon-btn--ivory-filled-s:hover {
-            @apply border-lum-ivory;
+            @apply border-transparent;
+            box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
         }
 
         .lum-icon-btn--ivory-filled:hover img {
@@ -488,7 +526,8 @@
         }
 
         .lum-icon-btn--espresso-filled:hover {
-            @apply border-lum-espresso;
+            @apply border-transparent;
+            box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
         }
 
         .lum-icon-btn--espresso-filled:hover img {
@@ -496,7 +535,8 @@
         }
 
         .lum-icon-btn--green-filled:hover {
-            @apply border-lum-green;
+            @apply border-transparent;
+            box-shadow: inset 0 0 0 1px var(--color-lum-green);
         }
 
         .lum-icon-btn--green-filled:hover img {
@@ -543,8 +583,9 @@
     .lum-burger-btn::before {
         content: '';
         position: absolute;
-        inset: 0;
+        inset: -1px;
         z-index: -1;
+        border-radius: inherit;
         transform: translate3d(0, 100%, 0);
         transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
     }
@@ -597,14 +638,8 @@
         .lum-burger-btn--ivory-compact:hover,
         .lum-burger-btn--espresso:hover,
         .lum-burger-btn--espresso-compact:hover {
-            @apply bg-transparent;
-        }
-
-        .lum-burger-btn--ivory:hover,
-        .lum-burger-btn--ivory-compact:hover,
-        .lum-burger-btn--espresso:hover,
-        .lum-burger-btn--espresso-compact:hover {
-            @apply border-lum-espresso;
+            background-color: transparent;
+            /* keep border-color — changing it to espresso flashes a dark ring (= looks bigger) */
         }
 
         .lum-burger-btn--ivory:hover img,
@@ -621,7 +656,8 @@
 
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover,
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover {
-            @apply border-lum-ivory bg-transparent;
+            background-color: transparent;
+            border-color: var(--color-lum-ivory);
         }
 
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover img,
