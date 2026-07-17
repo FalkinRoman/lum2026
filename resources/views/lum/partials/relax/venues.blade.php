@@ -43,7 +43,7 @@
         @foreach ($activities as $index => $activity)
             @php $layout = $mobileLayout[$index]; @endphp
 
-            <div class="lum-dining-card absolute left-1/2 h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute left-1/2 h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.relax.card', [
                     'img' => $img,
                     'activity' => $activity,
@@ -57,7 +57,7 @@
                     'lineClass' => 'w-[30px]',
                     'nameClass' => 'text-[14px] leading-[14px] tracking-[0.6px]',
                 ])
-            </div>
+            </a>
         @endforeach
 
         <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" class="absolute left-[20px] top-[1870px] h-[31px] w-[335px]" width="335" height="31">
@@ -85,7 +85,7 @@
         @foreach ($activities as $index => $activity)
             @php $layout = $tabletLayout[$index]; @endphp
 
-            <div class="lum-dining-card absolute h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.relax.card', [
                     'img' => $img,
                     'activity' => $activity,
@@ -98,7 +98,7 @@
                     'nameTop' => 481,
                     'nameClass' => 'text-[16px] leading-[16px] tracking-[1.6px]',
                 ])
-            </div>
+            </a>
         @endforeach
 
         <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" class="absolute left-[20px] top-[1798px] h-[39px] w-[920px]" width="920" height="39">
@@ -129,7 +129,7 @@
         @foreach ($activities as $index => $activity)
             @php $layout = $desktopLayout[$index]; @endphp
 
-            <div class="lum-dining-card absolute h-[740px] w-[549px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute h-[740px] w-[549px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.relax.card', [
                     'img' => $img,
                     'activity' => $activity,
@@ -138,7 +138,7 @@
                     'labelTop' => 44,
                     'nameTop' => 687,
                 ])
-            </div>
+            </a>
         @endforeach
     </div>
 </section>

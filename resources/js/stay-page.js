@@ -265,7 +265,7 @@ function initStayWellness(section) {
 export function initStayPage() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (! document.querySelector('[data-lum-stay-page], [data-lum-dining-page], [data-lum-restaurant-page], [data-lum-relax-page], [data-lum-discover-page], [data-lum-excursion-page], [data-lum-blog-page], [data-lum-shop-page], [data-lum-contact-page]')) {
+    if (! document.querySelector('[data-lum-stay-page], [data-lum-dining-page], [data-lum-restaurant-page], [data-lum-relax-page], [data-lum-activity-page], [data-lum-discover-page], [data-lum-excursion-page], [data-lum-blog-page], [data-lum-shop-page], [data-lum-contact-page]')) {
         return;
     }
 

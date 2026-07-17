@@ -6,7 +6,7 @@
         'home' => request()->routeIs('home'),
         'stay' => request()->routeIs('stay'),
         'dining' => request()->routeIs('dining', 'restaurant.show'),
-        'relax' => request()->routeIs('relax'),
+        'relax' => request()->routeIs('relax', 'relax.show'),
         'discover' => request()->routeIs('discover', 'discover.show'),
         'shop' => request()->routeIs('shop'),
         'contacts' => request()->routeIs('contacts'),

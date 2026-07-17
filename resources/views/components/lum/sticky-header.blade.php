@@ -4,7 +4,7 @@
 
 @php
     $activeNav = $activeNav ?? match (true) {
-        request()->routeIs('restaurant.show') => null,
+        request()->routeIs('restaurant.show', 'relax.show') => null,
         request()->routeIs('stay', 'villa.show') => 'stay',
         request()->routeIs('dining') => 'dining',
         request()->routeIs('relax') => 'relax',

@@ -19,6 +19,22 @@ Route::get('/relax', function () {
     return view('relax');
 })->name('relax');
 
+Route::get('/relax/{slug}', function (string $slug) {
+    $slugs = collect(trans('lum.relax.activities'))->pluck('slug')->filter();
+
+    if (! $slugs->contains($slug)) {
+        abort(404);
+    }
+
+    $activity = trans("lum.activity.{$slug}");
+
+    if (! is_array($activity)) {
+        abort(404);
+    }
+
+    return view('activity', compact('slug', 'activity'));
+})->name('relax.show');
+
 Route::get('/discover', function () {
     return view('discover');
 })->name('discover');

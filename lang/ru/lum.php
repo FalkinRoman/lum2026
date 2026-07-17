@@ -521,6 +521,7 @@ return [
         'eyebrow_line2' => 'заканчивай день красивым закатом у океана',
         'activities' => [
             [
+                'slug' => 'yoga',
                 'image' => 'yoga.webp',
                 'label_before' => 'полный ',
                 'label_italic' => 'перезагруз',
@@ -528,15 +529,185 @@ return [
                 'name' => 'ЙОГА',
             ],
             [
+                'slug' => 'surfing',
                 'image' => 'surfing.webp',
                 'label_all_italic' => 'красивый закат у океана',
                 'name' => 'СЁРФИНГ',
             ],
             [
+                'slug' => 'padel',
                 'image' => 'padel.webp',
                 'label_italic' => 'падел',
                 'label_after' => ' на острове',
                 'name' => 'ПАДЕЛ',
+            ],
+        ],
+    ],
+
+    'activity' => [
+        'make_reservation' => 'забронировать',
+        'impression' => [
+            'title_normal' => 'получи',
+            'title_caps' => 'ВПЕЧАТЛЕНИЕ',
+            'tabs' => ['УТРО', 'ПОТОК', 'ДЫХАНИЕ', 'ГРУППА', 'ПРИВАТ', 'ЗАКАТ'],
+        ],
+        'yoga' => [
+            'meta_title' => 'The Lum Yoga — Lum',
+            'hero' => [
+                'eyebrow' => 'Be pampered in Paradise',
+                'title_normal' => 'The Lum ',
+                'title_italic' => 'Yoga',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'просто и ',
+                'title_italic' => 'изящно',
+                'body' => 'Утренний поток под пальмами, дыхательные практики на закате и тихая практика в саду. Йога в Lum — без спешки: для гостей любого уровня, с пространством двигаться в своём ритме.',
+                'body_bottom' => 'Индивидуальные сессии, небольшие группы и практики на рассвете у океана. Бери только себя — коврики, полотенца и спокойствие уже здесь.',
+            ],
+            'pricing' => [
+                'eyebrow' => 'тропическое, местное и вкусное',
+                'title_normal' => 'стоимость ',
+                'title_italic' => 'обучения',
+                'cta' => 'make a reservation',
+                'items' => [
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                ],
+            ],
+            'quote' => [
+                'line1' => 'А что, ',
+                'line2' => 'если не нужно выбирать?',
+                'note_line1' => 'Или замедлиться: йога, медитация,',
+                'note_line2' => 'массаж или сибирская баня',
+            ],
+        ],
+        'surfing' => [
+            'meta_title' => 'The Lum Surfing — Lum',
+            'hero' => [
+                'eyebrow' => 'Be pampered in Paradise',
+                'title_normal' => 'The Lum ',
+                'title_italic' => 'Surfing',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'просто и ',
+                'title_italic' => 'изящно',
+                'body' => 'Рассветные выезды, мягкие рифовые брейки и лонгборд, когда свилл добрый. Сёрфинг в Lum — про чтение океана, а не гонку: с коучами, которые знают каждый местный пик.',
+                'body_bottom' => 'Аренда досок, уроки для новичков и гид-сессии для тех, кто уже в линейапе. Пляж в минутах — остальной день остаётся твоим.',
+            ],
+            'pricing' => [
+                'eyebrow' => 'тропическое, местное и вкусное',
+                'title_normal' => 'стоимость ',
+                'title_italic' => 'обучения',
+                'cta' => 'make a reservation',
+                'items' => [
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                ],
+            ],
+            'quote' => [
+                'line1' => 'А что, ',
+                'line2' => 'если не нужно выбирать?',
+                'note_line1' => 'Или замедлиться: йога, медитация,',
+                'note_line2' => 'массаж или сибирская баня',
+            ],
+        ],
+        'padel' => [
+            'meta_title' => 'The Lum Padel — Lum',
+            'hero' => [
+                'eyebrow' => 'Be pampered in Paradise',
+                'title_normal' => 'The Lum ',
+                'title_italic' => 'Padel',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'просто и ',
+                'title_italic' => 'изящно',
+                'body' => 'Быстрые розыгрыши под тропическим небом, корты в минутах от вилл и игры, которые ощущаются как отпуск, а не тренировка. Падел в Lum — социальный, острый и лёгкий для старта.',
+                'body_bottom' => 'Забронируй корт, присоединись к дружескому матчу или возьми урок — потом охладись чем-нибудь холодным из бара. Без членства: просто приходи играть.',
+            ],
+            'pricing' => [
+                'eyebrow' => 'тропическое, местное и вкусное',
+                'title_normal' => 'стоимость ',
+                'title_italic' => 'обучения',
+                'cta' => 'make a reservation',
+                'items' => [
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Индивидуальные уроки',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                ],
+            ],
+            'quote' => [
+                'line1' => 'А что, ',
+                'line2' => 'если не нужно выбирать?',
+                'note_line1' => 'Или замедлиться: йога, медитация,',
+                'note_line2' => 'массаж или сибирская баня',
             ],
         ],
     ],

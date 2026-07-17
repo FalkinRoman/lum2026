@@ -521,6 +521,7 @@ return [
         'eyebrow_line2' => 'end your day with a beautiful ocean sunset',
         'activities' => [
             [
+                'slug' => 'yoga',
                 'image' => 'yoga.webp',
                 'label_before' => 'a full ',
                 'label_italic' => 'reset',
@@ -528,15 +529,185 @@ return [
                 'name' => 'YOGA',
             ],
             [
+                'slug' => 'surfing',
                 'image' => 'surfing.webp',
                 'label_all_italic' => 'a beautiful ocean sunset',
                 'name' => 'SURFING',
             ],
             [
+                'slug' => 'padel',
                 'image' => 'padel.webp',
                 'label_italic' => 'like padel',
                 'label_after' => ' on the island',
                 'name' => 'PADEL',
+            ],
+        ],
+    ],
+
+    'activity' => [
+        'make_reservation' => 'make a reservation',
+        'impression' => [
+            'title_normal' => 'get an',
+            'title_caps' => 'IMPRESSION',
+            'tabs' => ['MORNING', 'FLOW', 'BREATH', 'GROUP', 'PRIVATE', 'SUNSET'],
+        ],
+        'yoga' => [
+            'meta_title' => 'The Lum Yoga — Lum',
+            'hero' => [
+                'eyebrow' => 'Be pampered in Paradise',
+                'title_normal' => 'The Lum ',
+                'title_italic' => 'Yoga',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'simple and ',
+                'title_italic' => 'elegant',
+                'body' => 'Morning flow under the palms, breathwork at golden hour, and quiet practice in the gardens. Yoga at Lum is unhurried — open to guests of every level, with space to move at your own pace.',
+                'body_bottom' => 'Private sessions, small group classes, and sunrise practices by the ocean. Bring nothing but yourself — mats, towels, and calm are already here.',
+            ],
+            'pricing' => [
+                'eyebrow' => 'tropical, local and good',
+                'title_normal' => 'cost of ',
+                'title_italic' => 'training',
+                'cta' => 'make a reservation',
+                'items' => [
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                ],
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
+            ],
+        ],
+        'surfing' => [
+            'meta_title' => 'The Lum Surfing — Lum',
+            'hero' => [
+                'eyebrow' => 'Be pampered in Paradise',
+                'title_normal' => 'The Lum ',
+                'title_italic' => 'Surfing',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'simple and ',
+                'title_italic' => 'elegant',
+                'body' => 'Dawn paddles, soft reef breaks, and longboard cruising when the swell is kind. Surf at Lum is about reading the ocean — not racing it — with coaches who know every local peak.',
+                'body_bottom' => 'Board hire, lessons for beginners, and guided sessions for those who already know the lineup. The beach is minutes away; the rest of the day stays yours.',
+            ],
+            'pricing' => [
+                'eyebrow' => 'tropical, local and good',
+                'title_normal' => 'cost of ',
+                'title_italic' => 'training',
+                'cta' => 'make a reservation',
+                'items' => [
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                ],
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
+            ],
+        ],
+        'padel' => [
+            'meta_title' => 'The Lum Padel — Lum',
+            'hero' => [
+                'eyebrow' => 'Be pampered in Paradise',
+                'title_normal' => 'The Lum ',
+                'title_italic' => 'Padel',
+            ],
+            'gallery' => [
+                'eyebrow' => 'lum Residence',
+                'title_normal' => 'simple and ',
+                'title_italic' => 'elegant',
+                'body' => 'Fast rallies under tropical sky, courts minutes from the villas, and games that feel like holiday rather than training. Padel at Lum is social, sharp, and easy to pick up.',
+                'body_bottom' => 'Book a court, join a friendly match, or take a lesson — then cool down with something cold from the bar. No membership required; just show up ready to play.',
+            ],
+            'pricing' => [
+                'eyebrow' => 'tropical, local and good',
+                'title_normal' => 'cost of ',
+                'title_italic' => 'training',
+                'cta' => 'make a reservation',
+                'items' => [
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                    [
+                        'title' => 'Private lessons',
+                        'description' => 'A soft and relaxing massage with oil in true balinese tradition',
+                        'price' => '100$',
+                        'duration' => '60 min',
+                    ],
+                ],
+            ],
+            'quote' => [
+                'line1' => 'But what ',
+                'line2' => 'if you didn’t have to choose?',
+                'note_line1' => 'Or slow down yoga, meditation,',
+                'note_line2' => 'massage or a siberian banya',
             ],
         ],
     ],
