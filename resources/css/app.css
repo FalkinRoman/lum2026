@@ -588,14 +588,14 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-        .lum-icon-btn--ivory-filled:hover::before,
+        .lum-icon-btn--ivory-filled:not([class*='lum-icon-btn--carousel']):hover::before,
         .lum-icon-btn--ivory-filled-s:hover::before,
-        .lum-icon-btn--espresso-filled:hover::before,
-        .lum-icon-btn--green-filled:hover::before {
+        .lum-icon-btn--espresso-filled:not([class*='lum-icon-btn--carousel']):hover::before,
+        .lum-icon-btn--green-filled:not([class*='lum-icon-btn--carousel']):hover::before {
             --lum-radial-hole: 100%;
         }
 
-        .lum-icon-btn--ivory-filled:hover,
+        .lum-icon-btn--ivory-filled:not([class*='lum-icon-btn--carousel']):hover,
         .lum-icon-btn--ivory-filled-s:hover {
             @apply border-transparent;
             background-color: transparent;
@@ -603,27 +603,64 @@
         }
 
         /* cream/white icon = outline color on dark hero */
-        .lum-icon-btn--ivory-filled:hover img,
+        .lum-icon-btn--ivory-filled:not([class*='lum-icon-btn--carousel']):hover img,
         .lum-icon-btn--ivory-filled-s:hover img {
             filter: brightness(0) invert(1);
         }
 
-        .lum-icon-btn--espresso-filled:hover {
+        .lum-icon-btn--espresso-filled:not([class*='lum-icon-btn--carousel']):hover {
             @apply border-transparent;
             box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
         }
 
-        .lum-icon-btn--espresso-filled:hover img {
+        .lum-icon-btn--espresso-filled:not([class*='lum-icon-btn--carousel']):hover img {
             filter: none;
         }
 
-        .lum-icon-btn--green-filled:hover {
+        .lum-icon-btn--green-filled:not([class*='lum-icon-btn--carousel']):hover {
             @apply border-transparent;
             box-shadow: inset 0 0 0 1px var(--color-lum-green);
         }
 
-        .lum-icon-btn--green-filled:hover img {
+        .lum-icon-btn--green-filled:not([class*='lum-icon-btn--carousel']):hover img {
             filter: none;
+        }
+
+        /* Slider arrows: hover only on desktop (≥1024) */
+        @media (width >= 1024px) {
+            .lum-icon-btn--ivory-filled[class*='lum-icon-btn--carousel']:hover::before,
+            .lum-icon-btn--espresso-filled[class*='lum-icon-btn--carousel']:hover::before,
+            .lum-icon-btn--green-filled[class*='lum-icon-btn--carousel']:hover::before {
+                --lum-radial-hole: 100%;
+            }
+
+            .lum-icon-btn--ivory-filled[class*='lum-icon-btn--carousel']:hover {
+                @apply border-transparent;
+                background-color: transparent;
+                box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
+            }
+
+            .lum-icon-btn--ivory-filled[class*='lum-icon-btn--carousel']:hover img {
+                filter: brightness(0) invert(1);
+            }
+
+            .lum-icon-btn--espresso-filled[class*='lum-icon-btn--carousel']:hover {
+                @apply border-transparent;
+                box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
+            }
+
+            .lum-icon-btn--espresso-filled[class*='lum-icon-btn--carousel']:hover img {
+                filter: none;
+            }
+
+            .lum-icon-btn--green-filled[class*='lum-icon-btn--carousel']:hover {
+                @apply border-transparent;
+                box-shadow: inset 0 0 0 1px var(--color-lum-green);
+            }
+
+            .lum-icon-btn--green-filled[class*='lum-icon-btn--carousel']:hover img {
+                filter: none;
+            }
         }
     }
 
@@ -1271,6 +1308,19 @@
 
     .lum-divider {
         @apply h-px mx-auto bg-lum-espresso opacity-16 w-[calc(100%-40px)] desk:w-[1776px];
+    }
+
+    /* CTA under slider counter: gap from digits → button */
+    .lum-impression-cta--sm {
+        margin-top: 44px;
+    }
+
+    .lum-impression-cta--tab {
+        margin-top: 85px;
+    }
+
+    .lum-impression-cta--desk {
+        margin-top: 86px;
     }
 
     [data-lum-interior-progress] {

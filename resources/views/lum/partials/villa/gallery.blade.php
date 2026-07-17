@@ -44,7 +44,7 @@
 
         <div class="absolute bottom-[31px] left-[20px] flex w-[335px] items-center gap-[22px]">
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
-            <img src="{{ $img('villa/divider-sun.svg') }}" alt="" class="size-[32px]" width="32" height="32" data-lum-villa-divider>
+            <img src="{{ $img('villa/divider-sun-mob.svg') }}" alt="" class="size-[32px]" width="32" height="32" data-lum-villa-divider>
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
         </div>
     </div>
@@ -76,7 +76,7 @@
 
         <div class="absolute bottom-[39px] left-[20px] flex w-[920px] items-center gap-[22px]">
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
-            <img src="{{ $img('villa/divider-sun.svg') }}" alt="" class="size-[40px]" width="40" height="40" data-lum-villa-divider>
+            <img src="{{ $img('villa/divider-sun-tab.svg') }}" alt="" class="size-[40px]" width="40" height="40" data-lum-villa-divider>
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
         </div>
     </div>
@@ -108,7 +108,7 @@
 
         <div class="absolute bottom-[62px] left-[72px] flex w-[1776px] items-center gap-[22px]">
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
-            <img src="{{ $img('villa/divider-sun.svg') }}" alt="" class="size-[64px]" width="64" height="64" data-lum-villa-divider>
+            <img src="{{ $img('villa/divider-sun-desk.svg') }}" alt="" class="size-[64px]" width="64" height="64" data-lum-villa-divider>
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
         </div>
     </div>

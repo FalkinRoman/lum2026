@@ -2,14 +2,18 @@
     $variant = $variant ?? 'home';
     $titleKey = $titleKey ?? 'lum.interior';
     $imgBase = $imgBase ?? 'interior';
-    $showLogomark = $showLogomark ?? ($variant === 'home');
+    // Home layout (logomark + orange tops); opt out via showLogomark => false
+    $showLogomark = $showLogomark ?? true;
     $showCta = $showCta ?? false;
     $showTabs = $showTabs ?? true;
     $startIndex = $startIndex ?? 0;
+    // MORE INFO–style hover (espresso fill); default stays green→ivory
+    $ctaClass = $ctaClass ?? 'lum-btn-green';
 
     $sectionHeights = match (true) {
         ! $showTabs && $variant === 'villa' => 'h-[700px] tab:h-[1080px] desk:h-[1336px]',
-        $variant === 'villa' => 'h-[856px] tab:h-[1324px] desk:h-[1555px]',
+        // CTA bottom + padding: sm 80 / tab 84 / desk 125
+        $variant === 'villa' => 'h-[905px] tab:h-[1404px] desk:h-[1616px]',
         default => 'h-[827px] tab:h-[1317px] desk:h-[1527px]',
     };
 
@@ -77,15 +81,17 @@
                 </button>
             </div>
         </div>
-        <div @class(['absolute left-1/2 flex w-[280px] -translate-x-1/2 flex-col items-center gap-[16px]', 'top-[692px]' => $showLogomark, 'top-[645px]' => ! $showLogomark])>
-            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[33px]', 'gapClass' => 'gap-[8px]'])
-            <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
-                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
-            </p>
+        <div @class(['absolute left-1/2 flex w-[280px] -translate-x-1/2 flex-col items-center', 'top-[692px]' => $showLogomark, 'top-[645px]' => ! $showLogomark])>
+            <div class="flex w-full flex-col items-center gap-[16px]">
+                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[33px]', 'gapClass' => 'gap-[8px]'])
+                <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                </p>
+            </div>
+            @if ($showCta)
+                <a href="#" @class([$ctaClass, 'lum-impression-cta--sm whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            @endif
         </div>
-        @if ($showCta)
-            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]', 'top-[744px]' => $showLogomark, 'top-[697px]' => ! $showLogomark]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
-        @endif
         @else
         {{-- MOBILE excursion — Figma 103:907 --}}
         <div class="absolute left-1/2 top-[60px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
@@ -113,15 +119,17 @@
                 <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
         </div>
-        <div class="absolute left-[48px] top-[509px] flex w-[280px] flex-col items-center gap-[16px]">
-            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'flex-1', 'gapClass' => 'gap-[8px]'])
-            <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
-                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
-            </p>
+        <div class="absolute left-[48px] top-[509px] flex w-[280px] flex-col items-center">
+            <div class="flex w-full flex-col items-center gap-[16px]">
+                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'flex-1', 'gapClass' => 'gap-[8px]'])
+                <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                </p>
+            </div>
+            @if ($showCta)
+                <a href="#" @class([$ctaClass, 'lum-impression-cta--sm whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]'])>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            @endif
         </div>
-        @if ($showCta)
-            <a href="#" class="lum-btn-green absolute left-1/2 top-[585px] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
-        @endif
         @endif
     </div>
 
@@ -171,15 +179,17 @@
             </button>
         </div>
         @endif
-        <div @class(['absolute left-1/2 flex w-[378px] -translate-x-1/2 flex-col items-center gap-[24px]', 'top-[1134px]' => $showLogomark && $showTabs, 'top-[1069px]' => ! $showLogomark && $showTabs, 'top-[973px]' => ! $showTabs])>
-            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
-            <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
-                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
-            </p>
+        <div @class(['absolute left-1/2 flex w-[378px] -translate-x-1/2 flex-col items-center', 'top-[1134px]' => $showLogomark && $showTabs, 'top-[1069px]' => ! $showLogomark && $showTabs, 'top-[973px]' => ! $showTabs])>
+            <div class="flex w-full flex-col items-center gap-[24px]">
+                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
+                <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                </p>
+            </div>
+            @if ($showCta)
+                <a href="#" @class([$ctaClass, 'lum-impression-cta--tab whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            @endif
         </div>
-        @if ($showCta)
-            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]', 'top-[1212px]' => $showLogomark && $showTabs, 'top-[1057px]' => ! $showTabs, 'top-[1147px]' => ! $showLogomark && $showTabs]) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
-        @endif
     </div>
 
     {{-- DESKTOP --}}
@@ -230,14 +240,16 @@
         <button type="button" data-lum-interior-next @class(['z-20 absolute lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64', 'left-[1784px] top-[884px]' => $showLogomark && $showTabs, 'left-[1784px] top-[836px]' => ! $showLogomark && $showTabs, 'left-[1784px] top-[773px]' => ! $showTabs]) aria-label="{{ __('lum.aria.next') }}">
             <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
-        <div @class(['absolute left-[771px] flex w-[378px] flex-col items-center gap-[24px]', 'top-[1300px]' => $showLogomark && $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs, 'top-[1189px]' => ! $showTabs])>
-            @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
-            <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
-                <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
-            </p>
+        <div @class(['absolute left-[771px] flex w-[378px] flex-col items-center', 'top-[1300px]' => $showLogomark && $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs, 'top-[1189px]' => ! $showTabs])>
+            <div class="flex w-full flex-col items-center gap-[24px]">
+                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
+                <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                </p>
+            </div>
+            @if ($showCta)
+                <a href="#" @class([$ctaClass, 'lum-impression-cta--desk whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] leading-[25px] tracking-[3.2px]']) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+            @endif
         </div>
-        @if ($showCta)
-            <a href="#" @class(['lum-btn-green absolute left-1/2 -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] leading-[25px] tracking-[3.2px]', 'top-[1399px]' => $showLogomark && $showTabs, 'top-[1280px]' => ! $showTabs, 'top-[1351px]' => ! $showLogomark && $showTabs]) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
-        @endif
     </div>
 </section>

@@ -27,7 +27,7 @@
     aria-label="{{ __('lum.aria.menu') }}"
 >
     <div
-        class="lum-burger-menu__backdrop pointer-events-none fixed inset-0 z-[1] bg-black/32 backdrop-blur-[8px]"
+        class="lum-burger-menu__backdrop pointer-events-none fixed inset-0 z-[1] bg-black/32"
         aria-hidden="true"
     ></div>
     <div
