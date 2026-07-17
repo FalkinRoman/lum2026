@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <a href="#" class="lum-btn-espresso absolute left-[109px] top-[642px] px-[24px] py-[5px] text-[14px] font-extrabold uppercase leading-[23px] tracking-[2.84px] whitespace-nowrap" data-lum-scroll-reveal>{{ strtoupper($contact['see_on_map']) }}</a>
+        <a href="#" class="lum-btn-green absolute left-[109px] top-[642px] px-[24px] py-[5px] text-[14px] font-extrabold uppercase leading-[23px] tracking-[2.84px] whitespace-nowrap" data-lum-scroll-reveal>{{ strtoupper($contact['see_on_map']) }}</a>
 
         <div class="absolute left-1/2 top-[750px] flex w-[100px] -translate-x-1/2 flex-col gap-[16px] text-center" data-lum-scroll-reveal>
             @foreach ($contact['hours'] as $index => $slot)
@@ -104,7 +104,7 @@
             <img src="{{ $img('contact/map-desk.webp') }}" alt="" class="h-full w-full object-cover" width="440" height="508" loading="lazy">
         </div>
 
-        <a href="#" class="lum-btn-espresso absolute left-[638px] top-[564px] px-[24px] py-[5px] text-[14px] font-extrabold uppercase leading-[23px] tracking-[2.84px] whitespace-nowrap" data-lum-scroll-reveal>{{ strtoupper($contact['see_on_map']) }}</a>
+        <a href="#" class="lum-btn-green absolute left-[638px] top-[564px] px-[24px] py-[5px] text-[14px] font-extrabold uppercase leading-[23px] tracking-[2.84px] whitespace-nowrap" data-lum-scroll-reveal>{{ strtoupper($contact['see_on_map']) }}</a>
 
         <div class="absolute left-1/2 top-[668px] h-px w-[920px] -translate-x-1/2 bg-lum-espresso/16"></div>
 
@@ -217,7 +217,7 @@
             <img src="{{ $img('contact/map-desk.webp') }}" alt="" class="h-full w-full object-cover" width="396" height="756" loading="eager">
         </div>
 
-        <a href="#" class="lum-btn-espresso absolute left-[1550px] top-[844px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold uppercase leading-[25px] tracking-[3.2px] whitespace-nowrap" data-lum-stay-intro-item data-lum-stay-intro-order="16">{{ strtoupper($contact['see_on_map']) }}</a>
+        <a href="#" class="lum-btn-green absolute left-[1550px] top-[844px] px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold uppercase leading-[25px] tracking-[3.2px] whitespace-nowrap" data-lum-stay-intro-item data-lum-stay-intro-order="16">{{ strtoupper($contact['see_on_map']) }}</a>
 
         <div class="absolute left-1/2 top-[996px] -translate-x-1/2">
             <div class="h-px w-[1776px] bg-lum-espresso/16" data-lum-stay-intro-item data-lum-stay-intro-order="17"></div>

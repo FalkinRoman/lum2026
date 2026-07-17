@@ -5,6 +5,7 @@
     $target = $target ?? null;
     $rel = $rel ?? null;
     $variant = $variant ?? 'flip';
+    $underlineTone = $underlineTone ?? 'ivory';
 @endphp
 
 @if ($variant === 'line')
@@ -16,7 +17,7 @@
     >
         <span class="lum-link__text">{{ $label }}</span>
         @include('lum.partials.link-underline', [
-            'tone' => 'ivory',
+            'tone' => $underlineTone,
             'fullWidth' => true,
             'graphicClass' => 'mt-0',
         ])
@@ -34,7 +35,7 @@
             <span class="lum-link__text lum-link__text--ghost" aria-hidden="true">{{ $label }}</span>
         </span>
         @include('lum.partials.link-underline', [
-            'tone' => 'ivory',
+            'tone' => $underlineTone,
             'fullWidth' => true,
             'graphicClass' => 'mt-0',
         ])

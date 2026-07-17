@@ -7,6 +7,7 @@
     [$file, $viewBox, $fill] = match ($tone) {
         'rose' => ['images/lum/blog/underline-rose.svg', '0 0 79 2', '#f56f31'],
         'ivory' => ['images/lum/footer/link-underline.svg', '0 0 108 2', '#FFFDDF'],
+        'espresso' => ['images/lum/blog/underline.svg', '0 0 79 2', '#2E2720'],
         default => ['images/lum/blog/underline.svg', '0 0 79 2', '#41606B'],
     };
 

@@ -1,7 +1,8 @@
 @php
+    // Figma 192:1753 — flat black/32 + brown gradient 0.54; grain as separate layer
     $overlays = $place['overlays'] ?? [
-        'bg-black/16',
-        'bg-gradient-to-b from-[rgba(36,14,4,0.30)] from-[48%] to-transparent',
+        'bg-black/32',
+        'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
     ];
     $titleTop = $titleTop ?? 44;
     $locationTop = $locationTop ?? 571;
@@ -15,12 +16,13 @@
 @foreach ($overlays as $overlay)
     <span @class(['lum-dining-card__shade pointer-events-none absolute inset-0 z-[1]', $overlay]) aria-hidden="true"></span>
 @endforeach
+<span class="lum-dining-card__shade lum-discover-card__grain pointer-events-none absolute inset-0 z-[1]" aria-hidden="true"></span>
 
 <p @class(['pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 text-center font-serif font-medium text-lum-ivory', $titleClass]) style="top: {{ $titleTop }}px">{{ $place['title'] }}</p>
 
 <div class="pointer-events-none absolute left-1/2 z-[2] flex -translate-x-1/2 flex-col items-center gap-[16px]" style="top: {{ $locationTop }}px">
-    <span class="flex items-center justify-center rounded-full border-2 border-lum-ivory bg-lum-ivory/16" style="width: {{ $pinSize }}px; height: {{ $pinSize }}px">
-        <img src="{{ $img('discover/pin.svg') }}" alt="" style="width: {{ $pinIconSize }}px; height: {{ $pinIconSize }}px" width="{{ $pinIconSize }}" height="{{ $pinIconSize }}">
+    <span class="flex shrink-0 items-center justify-center rounded-full border-2 border-lum-ivory bg-lum-ivory/16" style="width: {{ $pinSize }}px; height: {{ $pinSize }}px">
+        <img src="{{ $img('discover/pin.svg') }}" alt="" class="block" style="width: {{ $pinIconSize }}px; height: {{ $pinIconSize }}px" width="{{ $pinIconSize }}" height="{{ $pinIconSize }}">
     </span>
     <p @class(['text-center text-lum-ivory', $regionClass])>{{ $place['region'] }}</p>
 </div>

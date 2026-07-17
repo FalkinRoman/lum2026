@@ -2,30 +2,30 @@
     $items = trans('lum.shop.items');
 
     $mobileCards = [
-        ['slug' => 'ocean-tee', 'top' => 235, 'cta' => __('lum.shop.cta_price')],
-        ['slug' => 'lum-cup', 'top' => 930],
-        ['slug' => 'ocean-tee', 'top' => 1528, 'cta' => __('lum.shop.cta_price')],
-        ['slug' => 'lum-cup', 'top' => 2223],
+        ['slug' => 'ocean-tee', 'top' => 296, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'lum-cup', 'top' => 991],
+        ['slug' => 'ocean-tee', 'top' => 1589, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'lum-cup', 'top' => 2284],
     ];
 
     $tabletCards = [
-        ['slug' => 'ocean-tee', 'left' => 20, 'top' => 312, 'cta' => __('lum.shop.cta_price')],
-        ['slug' => 'lum-cup', 'left' => 490, 'top' => 312],
-        ['slug' => 'ocean-tee', 'left' => 490, 'top' => 992, 'cta' => __('lum.shop.cta_reservation')],
-        ['slug' => 'lum-cup', 'left' => 20, 'top' => 1092],
+        ['slug' => 'ocean-tee', 'left' => 20, 'top' => 349, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'lum-cup', 'left' => 490, 'top' => 349],
+        ['slug' => 'ocean-tee', 'left' => 490, 'top' => 1029, 'cta' => __('lum.shop.cta_reservation')],
+        ['slug' => 'lum-cup', 'left' => 20, 'top' => 1129],
     ];
 
     $desktopCards = [
-        ['slug' => 'ocean-tee', 'left' => 72, 'top' => 542, 'cta' => __('lum.shop.cta_price')],
-        ['slug' => 'lum-cup', 'left' => 532, 'top' => 542],
-        ['slug' => 'ocean-tee', 'left' => 992, 'top' => 542, 'cta' => __('lum.shop.cta_reservation')],
-        ['slug' => 'lum-cup', 'left' => 1452, 'top' => 542],
+        ['slug' => 'ocean-tee', 'left' => 72, 'top' => 651, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'lum-cup', 'left' => 532, 'top' => 651],
+        ['slug' => 'ocean-tee', 'left' => 992, 'top' => 651, 'cta' => __('lum.shop.cta_reservation')],
+        ['slug' => 'lum-cup', 'left' => 1452, 'top' => 591],
     ];
 @endphp
 
 <section class="lum-container relative bg-lum-ivory">
-    {{-- MOBILE — Figma 108:754 --}}
-    <div class="relative h-[2841px] tab:hidden">
+    {{-- MOBILE — Figma 192:1362 --}}
+    <div class="relative h-[2902px] tab:hidden">
         @include('lum.partials.header-mobile', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -34,6 +34,7 @@
             <h1 class="text-center font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="2">
                 <span>{{ __('lum.shop.page_title_normal') }} </span><span class="font-medium italic">{{ __('lum.shop.page_title_italic') }}</span>
             </h1>
+            @include('lum.partials.shop-page.social')
         </div>
 
         @foreach ($mobileCards as $card)
@@ -52,8 +53,8 @@
         @endforeach
     </div>
 
-    {{-- TABLET — Figma 108:576 --}}
-    <div class="relative hidden h-[1812px] tab:block desk:hidden">
+    {{-- TABLET — Figma 192:1267 --}}
+    <div class="relative hidden h-[1849px] tab:block desk:hidden">
         @include('lum.partials.header-tablet', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -62,6 +63,7 @@
             <h1 class="whitespace-nowrap text-center font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="2">
                 <span>{{ __('lum.shop.page_title_normal') }} </span><span class="font-medium italic">{{ __('lum.shop.page_title_italic') }}</span>
             </h1>
+            @include('lum.partials.shop-page.social')
         </div>
 
         @foreach ($tabletCards as $card)
@@ -80,8 +82,8 @@
         @endforeach
     </div>
 
-    {{-- DESKTOP — Figma 108:441 --}}
-    <div class="relative hidden h-[1402px] desk:block">
+    {{-- DESKTOP — Figma 192:1168 --}}
+    <div class="relative hidden h-[1471px] desk:block">
         @include('lum.partials.header', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
 
@@ -90,6 +92,7 @@
             <h1 class="w-full text-center font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="2">
                 <span>{{ __('lum.shop.page_title_normal') }} </span><span class="font-medium italic">{{ __('lum.shop.page_title_italic') }}</span>
             </h1>
+            @include('lum.partials.shop-page.social')
         </div>
 
         @foreach ($desktopCards as $card)

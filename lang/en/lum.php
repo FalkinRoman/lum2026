@@ -356,6 +356,10 @@ return [
         'page_title_italic' => 'shop',
         'cta_price' => '44$',
         'cta_reservation' => 'make a reservation',
+        'social_instagram' => '@lum_shop_sl',
+        'social_whatsapp' => 'WhatsApp',
+        'social_instagram_url' => 'https://www.instagram.com/lum_shop_sl/',
+        'social_whatsapp_url' => 'https://wa.me/94779296087',
         'items' => [
             'ocean-tee' => [
                 'type' => 'tee',

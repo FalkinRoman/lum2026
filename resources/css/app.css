@@ -14,7 +14,7 @@
     --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
     --font-serif: 'Vollkorn', ui-serif, Georgia, serif;
     --font-script: 'Marck Script', cursive;
-    --font-villa-hand: 'Kalam', cursive;
+    --font-villa-hand: 'Caveat', cursive;
 
     --color-lum-ivory: #fffddf;
     --color-lum-ivory-88: rgb(255 253 223 / 0.88);
@@ -1745,6 +1745,14 @@
 
     [data-lum-discover-page] .lum-dining-card {
         @apply cursor-pointer;
+    }
+
+    /* Figma NOISE/GRAIN on discover venue cards */
+    .lum-discover-card__grain {
+        background-image: url('/images/lum/discover/grain.svg');
+        background-size: 180px 180px;
+        opacity: 0.28;
+        mix-blend-mode: overlay;
     }
 
     @media (hover: hover) and (pointer: fine) {
