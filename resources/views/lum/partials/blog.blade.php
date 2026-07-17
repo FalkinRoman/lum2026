@@ -9,8 +9,10 @@
             <p class="whitespace-nowrap">{{ __('lum.blog.title_line1') }}</p>
             <p>{{ __('lum.blog.title_line2') }}</p>
         </div>
-        <div class="absolute left-[20px] top-[201px] w-[355px] overflow-hidden">
-            <div class="flex w-full gap-[10px] overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lum-blog-track>
+        {{-- Full-bleed left: cards slide into the left edge; ivory mask hides previous peek in the 20px gutter --}}
+        <div class="absolute inset-x-0 top-[201px] overflow-hidden" data-lum-blog-viewport>
+            <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-[20px] bg-lum-ivory" aria-hidden="true"></div>
+            <div class="flex w-max gap-[10px] pl-[20px] pr-[20px] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lum-blog-track>
                 @foreach ($blogPosts as $post)
                     @include('lum.partials.blog-card', ['img' => $img, 'variant' => 'mobile', 'post' => $post, 'from' => 'home'])
                 @endforeach

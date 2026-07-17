@@ -34,36 +34,58 @@ export function initBlogSlider() {
         let index = 0;
         let tween = null;
 
-        const getStep = () => {
-            const delta = cards[1].offsetLeft - cards[0].offsetLeft;
+        const getViewport = () => {
+            const viewport = track.parentElement;
 
-            return delta > 1
-                ? delta
-                : cards[0].offsetWidth + (Number(root.dataset.gap) || 0);
+            return viewport?.clientWidth || track.clientWidth;
         };
 
-        const getViewport = () => track.parentElement?.clientWidth || track.clientWidth;
+        const getStartPad = () => Number.parseFloat(getComputedStyle(track).paddingLeft) || 0;
 
-        /** Max translate so the last card sits flush with the viewport right edge */
+        const getEndPad = () => Number.parseFloat(getComputedStyle(track).paddingRight) || 0;
+
+        /** Max translate so last card keeps trailing pad from the screen edge */
         const getMaxX = () => {
             const last = cards[cards.length - 1];
-            const total = last.offsetLeft + last.offsetWidth;
+            const total = last.offsetLeft + last.offsetWidth + getEndPad();
 
             return Math.max(0, total - getViewport());
         };
 
+        /**
+         * Align each card to the leading pad (same inset as the first).
+         * Left ivory mask covers the gutter so the previous card never peeks;
+         * cards still animate into the full left edge under that mask.
+         */
+        const xForIndex = (i) => {
+            const startPad = getStartPad();
+            const desired = Math.max(0, cards[i].offsetLeft - startPad);
+
+            return Math.min(desired, getMaxX());
+        };
+
         const getMaxIndex = () => {
-            const step = getStep();
             const maxX = getMaxX();
 
-            if (step < 1 || maxX < 1) {
+            if (maxX < 1) {
                 return 0;
             }
 
-            return Math.max(0, Math.ceil(maxX / step - 0.01));
-        };
+            const startPad = getStartPad();
+            let maxIndex = 0;
 
-        const xForIndex = (i) => Math.min(i * getStep(), getMaxX());
+            for (let i = 0; i < cards.length; i += 1) {
+                const desired = Math.max(0, cards[i].offsetLeft - startPad);
+
+                maxIndex = i;
+
+                if (desired >= maxX - 0.5) {
+                    break;
+                }
+            }
+
+            return maxIndex;
+        };
 
         const syncButtons = () => {
             const maxIndex = getMaxIndex();
@@ -78,10 +100,6 @@ export function initBlogSlider() {
             const maxIndex = getMaxIndex();
             const clamped = Math.max(0, Math.min(maxIndex, nextIndex));
             const x = xForIndex(clamped);
-
-            if (getStep() < 1) {
-                return;
-            }
 
             index = clamped;
             tween?.kill();

@@ -10,7 +10,7 @@ export function syncBurgerMenuDrawer() {
         return;
     }
 
-    // Layout height (pre-transform) — getBoundingClientRect shrinks under scale<1 and kills overflow scroll
+    // Visual height after scale — keeps clip/backdrop aligned and avoids clipping the contact footer
     const layoutHeight = menuScaled.offsetHeight;
 
     if (layoutHeight <= 0) {
@@ -19,7 +19,11 @@ export function syncBurgerMenuDrawer() {
         return;
     }
 
-    drawer.style.height = `${layoutHeight}px`;
+    const scaleMatch = /scale\(([^)]+)\)/.exec(menuScaled.style.transform || '');
+    const scale = scaleMatch ? Number.parseFloat(scaleMatch[1]) : 1;
+    const visualHeight = layoutHeight * (Number.isFinite(scale) && scale > 0 ? scale : 1);
+
+    drawer.style.height = `${visualHeight}px`;
 }
 
 function prefersReducedMotion() {

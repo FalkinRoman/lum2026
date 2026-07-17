@@ -35,7 +35,7 @@
         data-lenis-prevent
         data-lenis-prevent-touch
     >
-        <div class="lum-burger-menu__drawer relative w-full shrink-0 overflow-hidden">
+        <div class="lum-burger-menu__drawer relative w-full shrink-0">
             <div class="lum-burger-menu__scaled flex flex-col origin-top-left">
                 <div class="lum-burger-menu__panel relative bg-lum-ivory">
             {{-- MOBILE --}}

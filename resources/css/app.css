@@ -1507,12 +1507,10 @@
     }
 
     .lum-burger-menu__drawer {
+        /* clip-path handles open/close — do not use overflow:hidden here:
+           it fights transform:scale on __scaled and clips the green contact footer */
         clip-path: inset(0 0 100% 0);
         will-change: clip-path;
-        overflow: hidden;
-    }
-
-    .lum-burger-menu.is-open .lum-burger-menu__drawer {
         overflow: visible;
     }
 

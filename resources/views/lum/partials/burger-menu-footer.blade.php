@@ -46,9 +46,9 @@
         </div>
     </div>
 
-    {{-- TABLET + DESKTOP --}}
-    <div class="relative hidden h-[90px] px-[20px] py-[20px] tab:block desk:h-[104px] desk:px-[72px] desk:py-[27px]">
-        <div class="absolute left-[20px] top-[20px] flex flex-col gap-[6px] tab:gap-0 desk:left-[72px] desk:top-[27px] desk:gap-0">
+    {{-- TABLET + DESKTOP — flex so phone/email never clip under fixed height --}}
+    <div class="hidden w-full items-start justify-between gap-[24px] px-[20px] py-[20px] tab:flex desk:px-[72px] desk:py-[27px]">
+        <div class="flex shrink-0 flex-col gap-[6px] tab:gap-0">
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.reception') }}</span>
             @include('lum.partials.link-footer-nav', [
                 'label' => '+94 (779) 296-087',
@@ -57,7 +57,7 @@
                 'classes' => 'text-lum-ivory tab:leading-[25px] desk:leading-[25px]',
             ])
         </div>
-        <div class="absolute left-1/2 top-[20px] flex -translate-x-1/2 flex-col gap-[6px] tab:top-[20px] desk:left-[293px] desk:top-[27px] desk:translate-x-0">
+        <div class="flex shrink-0 flex-col gap-[6px] tab:gap-0">
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.email') }}</span>
             @include('lum.partials.link-footer-nav', [
                 'label' => 'dimacake@gmail.com',
@@ -66,9 +66,9 @@
                 'classes' => 'text-lum-ivory tab:leading-[25px] desk:leading-[25px]',
             ])
         </div>
-        <div class="absolute right-[20px] top-[20px] flex flex-col gap-[6px] tab:left-[596px] tab:right-auto tab:top-[20px] desk:left-[992px] desk:top-[27px]">
+        <div class="flex min-w-0 flex-col gap-[6px] tab:gap-0">
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.social') }}</span>
-            <div class="flex items-baseline gap-[16px] text-lum-ivory tab:leading-[25px] desk:leading-[25px]">
+            <div class="flex flex-wrap items-baseline gap-[16px] text-lum-ivory tab:leading-[25px] desk:leading-[25px]">
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.instagram'),
                     'href' => '#',
