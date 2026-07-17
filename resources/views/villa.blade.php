@@ -19,7 +19,6 @@
             'imgBase' => 'villa/impression',
             'showLogomark' => true,
             'showCta' => true,
-            'ctaClass' => 'lum-btn lum-btn-info',
         ])
         @include('lum.partials.shop', ['img' => $img])
         @include('lum.partials.footer', ['img' => $img])

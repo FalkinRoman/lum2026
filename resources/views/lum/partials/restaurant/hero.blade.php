@@ -1,6 +1,6 @@
-<section class="lum-container relative h-[680px] tab:h-[1080px] desk:h-[1080px]">
-    {{-- MOBILE --}}
-    <div class="relative h-full tab:hidden" data-lum-villa-panel>
+<section class="lum-container relative z-[1] overflow-visible h-[680px] tab:h-[1080px] desk:h-[1080px]">
+    {{-- MOBILE — Figma 186:675; oval 186:741 at gallery y=-144 → hero top 536 --}}
+    <div class="relative h-full overflow-visible tab:hidden" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
             <img src="{{ $img($assetBase . '/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="375" height="680" loading="eager">
             <div class="absolute inset-0 bg-black/48"></div>
@@ -26,11 +26,15 @@
             </div>
         </div>
 
-        <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="pointer-events-none absolute bottom-[-28px] left-0 w-full rotate-180 scale-x-[-1]" width="375" height="54">
+        <div class="pointer-events-none absolute z-[20] h-[188px] w-[140px] overflow-hidden rounded-[50%]" style="top: 536px; left: 118px">
+            <img src="{{ $img($assetBase . '/oval.webp') }}" alt="" class="h-full w-full object-cover" width="140" height="188">
+        </div>
+
+        <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="pointer-events-none absolute bottom-[-28px] left-0 z-10 w-full rotate-180 scale-x-[-1]" width="375" height="54">
     </div>
 
-    {{-- TABLET --}}
-    <div class="relative hidden h-full tab:block desk:hidden" data-lum-villa-panel>
+    {{-- TABLET — Figma 186:529; oval dropped lower per visual (was 796) --}}
+    <div class="relative hidden h-full overflow-visible tab:block desk:hidden" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
             <img src="{{ $img($assetBase . '/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="960" height="1080" loading="eager">
             <div class="absolute inset-0 bg-black/48"></div>
@@ -55,15 +59,15 @@
             </div>
         </div>
 
-        <div class="pointer-events-none absolute left-1/2 z-[3] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 796px">
+        <div class="pointer-events-none absolute z-[20] h-[240px] w-[180px] overflow-hidden rounded-[50%]" style="top: 840px; left: 390px">
             <img src="{{ $img($assetBase . '/oval.webp') }}" alt="" class="h-full w-full object-cover" width="180" height="240">
         </div>
 
         <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-0 z-10 h-[135px] w-[960px] max-w-none rotate-180 scale-x-[-1]" width="960" height="135">
     </div>
 
-    {{-- DESKTOP --}}
-    <div class="relative hidden h-full desk:block" data-lum-villa-panel>
+    {{-- DESKTOP — Figma 186:367; oval 770; torn-edge overlaps photo (not below clip) --}}
+    <div class="relative hidden h-full overflow-visible desk:block" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
             <img src="{{ $img($assetBase . '/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="1920" height="1080" loading="eager">
             <div class="absolute inset-0 bg-black/48"></div>
@@ -93,6 +97,10 @@
             </div>
         </div>
 
-        <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-1/2 z-10 h-[135px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 scale-x-[-1]" width="960" height="135">
+        <div class="pointer-events-none absolute z-[20] h-[430px] w-[320px] overflow-hidden rounded-[50%]" style="top: 770px; left: 800px">
+            <img src="{{ $img($assetBase . '/oval.webp') }}" alt="" class="h-full w-full object-cover" width="320" height="430">
+        </div>
+
+        <img src="{{ $img('hero/torn-edge.svg') }}" alt="" class="pointer-events-none absolute bottom-[-109px] left-1/2 z-10 h-[269px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 scale-x-[-1]" width="1920" height="269">
     </div>
 </section>

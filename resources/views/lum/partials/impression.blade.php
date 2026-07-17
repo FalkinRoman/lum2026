@@ -7,13 +7,15 @@
     $showCta = $showCta ?? false;
     $showTabs = $showTabs ?? true;
     $startIndex = $startIndex ?? 0;
-    // MORE INFO–style hover (espresso fill); default stays green→ivory
-    $ctaClass = $ctaClass ?? 'lum-btn-green';
+    // MORE INFO–style hover when CTA is on; green→ivory otherwise
+    $ctaClass = $ctaClass ?? ($showCta ? 'lum-btn lum-btn-info' : 'lum-btn-green');
 
+    // With CTA: counter→btn 44/85/86, btn→bottom 80/84/125 (logomark shifts absolute tops)
     $sectionHeights = match (true) {
         ! $showTabs && $variant === 'villa' => 'h-[700px] tab:h-[1080px] desk:h-[1336px]',
-        // CTA bottom + padding: sm 80 / tab 84 / desk 125
-        $variant === 'villa' => 'h-[905px] tab:h-[1404px] desk:h-[1616px]',
+        $variant === 'villa' && $showCta && $showLogomark => 'h-[905px] tab:h-[1404px] desk:h-[1616px]',
+        $variant === 'villa' && $showCta => 'h-[858px] tab:h-[1339px] desk:h-[1568px]',
+        $variant === 'villa' => 'h-[856px] tab:h-[1324px] desk:h-[1555px]',
         default => 'h-[827px] tab:h-[1317px] desk:h-[1527px]',
     };
 
@@ -197,7 +199,7 @@
         @if ($showLogomark)
             <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[80px] size-[64px] -translate-x-1/2" width="64" height="64">
         @endif
-        <div @class(['absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso', 'top-[208px]' => $showLogomark && $showTabs, 'top-[160px]' => ! $showLogomark && $showTabs, 'top-[160px]' => ! $showTabs]) data-lum-scroll-reveal>
+        <div @class(['absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso', 'top-[208px]' => $showLogomark && $showTabs, 'top-[160px]' => ! $showLogomark || ! $showTabs]) data-lum-scroll-reveal>
             <p class="lum-heading-1 font-medium italic tracking-[-1.76px]">{{ __($titleKey . '.title_normal') }}</p>
             <p class="lum-heading-1 font-normal tracking-[-1.76px]">{{ __($titleKey . '.title_caps') }}</p>
         </div>
