@@ -4,8 +4,8 @@
 
     $galleryPolaroids = [
         'mob' => [
-            ['left' => '20px', 'top' => '430px', 'rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 12, 'shareBottom' => 22, 'photo' => 'gallery-01.webp', 'date' => $polaroidDates[0]],
-            ['left' => '195px', 'top' => '430px', 'rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 12, 'shareBottom' => 22, 'photo' => 'gallery-02.webp', 'date' => $polaroidDates[1]],
+            ['left' => '20px', 'top' => '430px', 'rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'photo' => 'gallery-01.webp', 'date' => $polaroidDates[0]],
+            ['left' => '195px', 'top' => '430px', 'rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'photo' => 'gallery-02.webp', 'date' => $polaroidDates[1]],
         ],
         'tab' => [
             ['left' => '20px', 'top' => '385px', 'rotate' => '6deg', 'fw' => 450, 'fh' => 635, 'px' => 37, 'py' => 59, 'pw' => 374, 'ph' => 418, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'photo' => 'gallery-01.webp', 'date' => $polaroidDates[0]],

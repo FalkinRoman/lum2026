@@ -1,8 +1,8 @@
 @php
     $galleryPolaroids = [
         'mob' => [
-            ['left' => '20px', 'top' => '458px', 'rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 12, 'shareBottom' => 22, 'photo' => 'gallery-01.webp', 'date' => '06.05.2026'],
-            ['left' => '195px', 'top' => '458px', 'rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 12, 'shareBottom' => 22, 'photo' => 'gallery-02.webp', 'date' => '06.05.2026'],
+            ['left' => '20px', 'top' => '458px', 'rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'photo' => 'gallery-01.webp', 'date' => '06.05.2026'],
+            ['left' => '195px', 'top' => '458px', 'rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'photo' => 'gallery-02.webp', 'date' => '06.05.2026'],
         ],
         'tab' => [
             ['left' => '20px', 'top' => '430px', 'rotate' => '6deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'photo' => 'gallery-01.webp', 'date' => '06.05.2026'],
