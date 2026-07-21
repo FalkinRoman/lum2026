@@ -1223,6 +1223,10 @@
     }
 
     .lum-villas-view-cursor {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 6000;
         will-change: transform, opacity;
         pointer-events: none;
         transform-origin: center center;
@@ -1237,8 +1241,9 @@
     }
 
     @media (hover: hover) and (pointer: fine) {
-        [data-lum-villas-slider-view] {
-            cursor: none;
+        [data-lum-villas-slider-view].is-villas-view-hover,
+        [data-lum-villas-slider-view].is-villas-view-hover * {
+            cursor: none !important;
         }
 
         [data-lum-villas-view-fixed] {

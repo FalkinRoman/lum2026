@@ -135,7 +135,7 @@
         </div>
 
         <div
-            class="absolute left-0 top-[333px] h-[1080px] w-full cursor-default overflow-hidden"
+            class="absolute left-0 top-[333px] h-[1080px] w-full overflow-hidden"
             data-lum-villas-slider
             data-lum-villas-slider-view
             data-lum-villas-view-safe-left="104"

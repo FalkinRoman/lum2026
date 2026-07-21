@@ -768,16 +768,52 @@ function getViewSafeInsets(slider) {
     };
 }
 
-function isInActiveViewZone(slider, event) {
+function getPageScale() {
+    const page = document.querySelector('.lum-page');
+
+    if (! page) {
+        return 1;
+    }
+
+    const match = /scale\(([^)]+)\)/.exec(page.style.transform || '');
+    const scale = match ? Number.parseFloat(match[1]) : 1;
+
+    return Number.isFinite(scale) && scale > 0 ? scale : 1;
+}
+
+function getSliderPoint(slider, event) {
     const rect = slider.getBoundingClientRect();
+    const scale = getPageScale();
+
+    return {
+        x: (event.clientX - rect.left) / scale,
+        y: (event.clientY - rect.top) / scale,
+        layoutWidth: rect.width / scale,
+        layoutHeight: rect.height / scale,
+    };
+}
+
+function isInActiveViewZone(slider, event) {
     const { left, right, top, bottom } = getViewSafeInsets(slider);
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const { x, y, layoutWidth, layoutHeight } = getSliderPoint(slider, event);
 
     return x >= left
-        && x <= rect.width - right
+        && x <= layoutWidth - right
         && y >= top
-        && y <= rect.height - bottom;
+        && y <= layoutHeight - bottom;
+}
+
+function isInViewSlider(slider, event) {
+    const { x, y, layoutWidth, layoutHeight } = getSliderPoint(slider, event);
+
+    return x >= 0
+        && x <= layoutWidth
+        && y >= 0
+        && y <= layoutHeight;
+}
+
+function setViewHoverState(slider, active) {
+    slider.classList.toggle('is-villas-view-hover', active);
 }
 
 function initViewCursor(root, { getHref, isBusy }) {
@@ -794,18 +830,18 @@ function initViewCursor(root, { getHref, isBusy }) {
         fixedView.classList.add('pointer-events-none', 'opacity-0');
     }
 
+    // Fixed on body: ancestors with transform (lum-page scale) break position:fixed inside them.
+    document.body.appendChild(cursor);
     cursor.classList.remove('opacity-0');
 
     let activeSlider = null;
     let isVisible = false;
     let hideTween = null;
-    let mouseX = 0;
-    let mouseY = 0;
-    let posX = 0;
-    let posY = 0;
-    let hasPos = false;
 
     gsap.set(cursor, {
+        position: 'fixed',
+        left: 0,
+        top: 0,
         xPercent: -50,
         yPercent: -50,
         transformOrigin: '50% 50%',
@@ -818,39 +854,19 @@ function initViewCursor(root, { getHref, isBusy }) {
         gsap.set(cursorText, { opacity: 0 });
     }
 
-    // Damai sticky follow: pos += (mouse - pos) / 5
-    gsap.ticker.add(() => {
-        if (! activeSlider || ! isVisible) {
-            return;
-        }
-
-        posX += (mouseX - posX) / 5;
-        posY += (mouseY - posY) / 5;
-        gsap.set(cursor, { x: posX, y: posY });
-    });
-
-    const setMouseFromEvent = (slider, event) => {
-        const rect = slider.getBoundingClientRect();
-
-        mouseX = event.clientX - rect.left;
-        mouseY = event.clientY - rect.top;
-
-        if (! hasPos) {
-            posX = mouseX;
-            posY = mouseY;
-            hasPos = true;
-            gsap.set(cursor, { x: posX, y: posY });
-        }
+    const setMouseFromEvent = (_slider, event) => {
+        gsap.set(cursor, { x: event.clientX, y: event.clientY });
     };
 
     const showCursor = (slider, event) => {
-        if (! isInActiveViewZone(slider, event)) {
+        if (! isInViewSlider(slider, event)) {
             hideCursor(slider);
 
             return;
         }
 
         activeSlider = slider;
+        setViewHoverState(slider, true);
         setMouseFromEvent(slider, event);
 
         if (isVisible) {
@@ -895,8 +911,7 @@ function initViewCursor(root, { getHref, isBusy }) {
         }
 
         activeSlider = null;
-        hasPos = false;
-
+        setViewHoverState(slider, false);
         if (! isVisible) {
             return;
         }
@@ -922,7 +937,7 @@ function initViewCursor(root, { getHref, isBusy }) {
         slider.addEventListener('mouseenter', (event) => showCursor(slider, event));
         slider.addEventListener('mouseleave', () => hideCursor(slider));
         slider.addEventListener('mousemove', (event) => {
-            if (! isInActiveViewZone(slider, event)) {
+            if (! isInViewSlider(slider, event)) {
                 if (activeSlider === slider) {
                     hideCursor(slider);
                 }
