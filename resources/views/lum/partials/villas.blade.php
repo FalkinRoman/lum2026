@@ -9,6 +9,7 @@
     $villasLifestyleTab = '<span class="lum-script text-[26px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
     $villasLifestyleDesk = '<span class="lum-script text-[28px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
     $villasStart = 0;
+    $villasTotal = str_pad(count($villasSlides), 2, '0', STR_PAD_LEFT);
 @endphp
 
 <section
@@ -42,8 +43,10 @@
 
                 <div class="absolute left-[111.5px] top-[28px] flex items-center gap-[16px] text-lum-ivory">
                     <span data-lum-villas-current class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px]">01</span>
-                    <span class="h-px w-[86px] bg-lum-ivory-64"></span>
-                    <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">04</span>
+                    <span class="relative block h-px w-[86px] overflow-hidden bg-lum-ivory-64">
+                        <span class="lum-villas-progress__fill absolute inset-y-0 left-0 w-full origin-left bg-lum-ivory" data-lum-villas-progress-fill aria-hidden="true"></span>
+                    </span>
+                    <span data-lum-villas-total class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">{{ $villasTotal }}</span>
                 </div>
 
                 <div
@@ -97,8 +100,10 @@
 
         <div class="absolute left-1/2 top-[295px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
             <span data-lum-villas-current class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px]">01</span>
-            <span class="h-px w-[64px] bg-lum-ivory-64"></span>
-            <span class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">04</span>
+            <span class="relative block h-px w-[64px] overflow-hidden bg-lum-ivory-64">
+                <span class="lum-villas-progress__fill absolute inset-y-0 left-0 w-full origin-left bg-lum-ivory" data-lum-villas-progress-fill aria-hidden="true"></span>
+            </span>
+            <span data-lum-villas-total class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-ivory-64">{{ $villasTotal }}</span>
         </div>
 
         <p data-lum-villas-subtitle class="absolute left-1/2 top-[523px] -translate-x-1/2 whitespace-nowrap lum-text-2 text-lum-ivory-88">
@@ -160,8 +165,10 @@
 
         <div class="pointer-events-none absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
             <span data-lum-villas-current class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px]">01</span>
-            <span class="h-px w-[86px] bg-lum-ivory-64"></span>
-            <span class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-ivory-64">04</span>
+            <span class="relative block h-px w-[86px] overflow-hidden bg-lum-ivory-64">
+                <span class="lum-villas-progress__fill absolute inset-y-0 left-0 w-full origin-left bg-lum-ivory" data-lum-villas-progress-fill aria-hidden="true"></span>
+            </span>
+            <span data-lum-villas-total class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-ivory-64">{{ $villasTotal }}</span>
         </div>
 
         <p data-lum-villas-subtitle class="pointer-events-none absolute left-1/2 top-[698px] -translate-x-1/2 whitespace-nowrap lum-body text-lum-ivory-88">

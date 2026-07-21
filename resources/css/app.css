@@ -1240,6 +1240,14 @@
         opacity: 0;
     }
 
+    .lum-villas-progress__fill {
+        display: block;
+        transform: scaleX(0);
+        transform-origin: left center;
+        opacity: 0;
+        will-change: transform;
+    }
+
     @media (hover: hover) and (pointer: fine) {
         [data-lum-villas-slider-view].is-villas-view-hover,
         [data-lum-villas-slider-view].is-villas-view-hover * {

@@ -1,5 +1,7 @@
 import gsap from 'gsap';
 
+const AUTOPLAY_DURATION = 5;
+
 function padSlideNumber(value) {
     return String(value).padStart(2, '0');
 }
@@ -987,16 +989,64 @@ export function initVillasCarousel() {
         let index = Number.parseInt(root.dataset.start || '0', 10);
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isAnimating = false;
+        let progressTween = null;
+        let autoplayEnabled = ! reducedMotion;
 
         const panels = [...root.querySelectorAll('[data-lum-villas-panel]')];
         const prevButtons = root.querySelectorAll('[data-lum-villas-prev]');
         const nextButtons = root.querySelectorAll('[data-lum-villas-next]');
+        const progressFills = root.querySelectorAll('[data-lum-villas-progress-fill]');
 
         if (! slides.length || ! panels.length) {
             return;
         }
 
         const panelTracks = panels.map((panel) => setupPanelTracks(panel, base));
+
+        const killProgress = () => {
+            if (progressTween) {
+                progressTween.kill();
+                progressTween = null;
+            }
+        };
+
+        const resetProgressUi = () => {
+            progressFills.forEach((fill) => {
+                gsap.killTweensOf(fill);
+                gsap.set(fill, { scaleX: 0, opacity: 0, transformOrigin: 'left center' });
+            });
+        };
+
+        const startProgress = () => {
+            killProgress();
+
+            if (! autoplayEnabled || isAnimating) {
+                return;
+            }
+
+            const fills = [...progressFills].filter((fill) => {
+                const panel = fill.closest('[data-lum-villas-panel]');
+
+                return ! panel || isPanelVisible(panel);
+            });
+
+            if (! fills.length) {
+                return;
+            }
+
+            gsap.set(fills, { scaleX: 0, opacity: 1, transformOrigin: 'left center' });
+
+            progressTween = gsap.to(fills, {
+                scaleX: 1,
+                duration: AUTOPLAY_DURATION,
+                ease: 'power1.inOut',
+                overwrite: true,
+                onComplete: () => {
+                    progressTween = null;
+                    go('next');
+                },
+            });
+        };
 
         const applyState = (targetIndex) => {
             const slideData = slides[targetIndex];
@@ -1014,37 +1064,41 @@ export function initVillasCarousel() {
             }
 
             isAnimating = true;
+            killProgress();
 
-            const nextIndex = direction === 'next'
-                ? (index + 1) % total
-                : (index - 1 + total) % total;
-            const slideData = slides[nextIndex];
+            try {
+                const nextIndex = direction === 'next'
+                    ? (index + 1) % total
+                    : (index - 1 + total) % total;
+                const slideData = slides[nextIndex];
 
-            index = nextIndex;
-            syncCounter(panels, slides, index, base);
-            syncViewLinks(root, slides, index);
+                index = nextIndex;
+                syncCounter(panels, slides, index, base);
+                syncViewLinks(root, slides, index);
 
-            const animationTasks = [];
-            const staticUpdates = [];
+                const animationTasks = [];
+                const staticUpdates = [];
 
-            panelTracks.forEach((tracks, panelIndex) => {
-                if (isPanelVisible(panels[panelIndex])) {
+                panelTracks.forEach((tracks, panelIndex) => {
+                    if (isPanelVisible(panels[panelIndex])) {
+                        tracks.forEach((track) => {
+                            animationTasks.push(animateTrack(track, direction, slideData, reducedMotion));
+                        });
+
+                        return;
+                    }
+
                     tracks.forEach((track) => {
-                        animationTasks.push(animateTrack(track, direction, slideData, reducedMotion));
+                        staticUpdates.push(() => resetTrackState(track, slideData));
                     });
-
-                    return;
-                }
-
-                tracks.forEach((track) => {
-                    staticUpdates.push(() => resetTrackState(track, slideData));
                 });
-            });
 
-            await Promise.all(animationTasks);
-            staticUpdates.forEach((update) => update());
-
-            isAnimating = false;
+                await Promise.all(animationTasks);
+                staticUpdates.forEach((update) => update());
+            } finally {
+                isAnimating = false;
+                startProgress();
+            }
         };
 
         prevButtons.forEach((button) => {
@@ -1055,8 +1109,21 @@ export function initVillasCarousel() {
             button.addEventListener('click', () => go('next'));
         });
 
+        [...prevButtons, ...nextButtons].forEach((button) => {
+            button.addEventListener('mouseenter', () => {
+                progressTween?.pause();
+            });
+            button.addEventListener('mouseleave', () => {
+                if (autoplayEnabled && progressTween) {
+                    progressTween.resume();
+                }
+            });
+        });
+
         applyState(index);
         syncViewLinks(root, slides, index);
+        resetProgressUi();
+        startProgress();
         initViewCursor(root, {
             getHref: () => slides[index]?.href || '#',
             isBusy: () => isAnimating,
@@ -1069,5 +1136,22 @@ export function initVillasCarousel() {
 
             preloadSlideAssets(slides, base, panel.dataset.lumVillasSuffix || '');
         });
+
+        if (typeof IntersectionObserver === 'function') {
+            const observer = new IntersectionObserver((entries) => {
+                const visible = entries.some((entry) => entry.isIntersecting);
+
+                autoplayEnabled = visible && ! reducedMotion;
+
+                if (! autoplayEnabled) {
+                    killProgress();
+                    resetProgressUi();
+                } else if (! isAnimating && ! progressTween) {
+                    startProgress();
+                }
+            }, { threshold: 0.25 });
+
+            observer.observe(root);
+        }
     });
 }
