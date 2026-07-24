@@ -9,7 +9,6 @@
     $titleClass = $titleClass ?? 'text-[20px] leading-[24px] tracking-[-0.4px]';
     $regionClass = $regionClass ?? 'text-[16px] leading-[25px] tracking-[0.16px]';
     $pinSize = $pinSize ?? 64;
-    $pinIconSize = $pinIconSize ?? 22;
 @endphp
 
 <img src="{{ $img('discover/' . $place['image']) }}" alt="" class="lum-dining-card__photo absolute inset-0 h-full w-full object-cover" width="{{ $width }}" height="{{ $height }}" loading="lazy">
@@ -21,8 +20,13 @@
 <p @class(['pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 text-center font-serif font-medium text-lum-ivory', $titleClass]) style="top: {{ $titleTop }}px">{{ $place['title'] }}</p>
 
 <div class="pointer-events-none absolute left-1/2 z-[2] flex -translate-x-1/2 flex-col items-center gap-[16px]" style="top: {{ $locationTop }}px">
-    <span class="flex shrink-0 items-center justify-center rounded-full border-2 border-lum-ivory bg-lum-ivory/16" style="width: {{ $pinSize }}px; height: {{ $pinSize }}px">
-        <img src="{{ $img('discover/pin.svg') }}" alt="" class="block" style="width: {{ $pinIconSize }}px; height: {{ $pinIconSize }}px" width="{{ $pinIconSize }}" height="{{ $pinIconSize }}">
-    </span>
+    <img
+        src="{{ $img('discover/pin.png') }}"
+        alt=""
+        class="block shrink-0"
+        style="width: {{ $pinSize }}px; height: {{ $pinSize }}px"
+        width="{{ $pinSize }}"
+        height="{{ $pinSize }}"
+    >
     <p @class(['text-center text-lum-ivory', $regionClass])>{{ $place['region'] }}</p>
 </div>

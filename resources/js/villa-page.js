@@ -36,6 +36,7 @@ function initVillaEyebrow(node) {
 function initVillaIntro(root) {
     const items = [...root.querySelectorAll('[data-lum-stay-intro-item]')]
         .filter((item) => ! item.closest('[data-lum-hero-title]'))
+        .filter(isVisibleElement)
         .sort((left, right) => (
             Number(left.dataset.lumStayIntroOrder || 0) - Number(right.dataset.lumStayIntroOrder || 0)
         ));
@@ -44,21 +45,35 @@ function initVillaIntro(root) {
         return;
     }
 
-    gsap.fromTo(
-        items,
-        { y: 56, opacity: 0 },
-        {
-            y: 0,
-            opacity: 1,
-            duration: INTRO_DURATION,
-            ease: INTRO_EASE,
-            stagger: INTRO_STAGGER,
-            delay: 0.22,
-            onComplete: () => {
-                gsap.set(items, { clearProps: 'y,opacity' });
+    // Avoid GSAP `y` on nodes with Tailwind translate-* (overwrites CSS transform → layout jump).
+    const hasCssTranslate = (el) => /(?:^|\s)-?translate-/.test(el.className);
+    const marginItems = items.filter(hasCssTranslate);
+    const transformItems = items.filter((el) => ! hasCssTranslate(el));
+
+    const play = (targets, useMargin) => {
+        if (! targets.length) {
+            return;
+        }
+
+        gsap.fromTo(
+            targets,
+            useMargin ? { marginTop: 56, opacity: 0 } : { y: 56, opacity: 0 },
+            {
+                ...(useMargin ? { marginTop: 0 } : { y: 0 }),
+                opacity: 1,
+                duration: INTRO_DURATION,
+                ease: INTRO_EASE,
+                stagger: INTRO_STAGGER,
+                delay: 0.22,
+                onComplete: () => {
+                    gsap.set(targets, { clearProps: useMargin ? 'marginTop,opacity' : 'y,opacity' });
+                },
             },
-        },
-    );
+        );
+    };
+
+    play(transformItems, false);
+    play(marginItems, true);
 }
 
 function initVillaPolaroid(node, index) {

@@ -57,7 +57,6 @@
                     'locationTop' => 300,
                     'regionClass' => 'text-[14px] leading-[22px] tracking-[0.1px]',
                     'pinSize' => 48,
-                    'pinIconSize' => 16,
                 ])
             </a>
         @endforeach
@@ -95,7 +94,6 @@
                     'titleClass' => 'text-[18px] leading-[22px] tracking-[-0.36px]',
                     'locationTop' => 405,
                     'pinSize' => 56,
-                    'pinIconSize' => 20,
                 ])
             </a>
         @endforeach

@@ -1580,8 +1580,26 @@
     .lum-menu-item {
         display: inline-flex;
         align-items: center;
+        gap: 0.22em;
         width: fit-content;
         max-width: 100%;
+    }
+
+    /* Open reveal clip — hover slide lives inside `.lum-text-slide` */
+    .lum-menu-link__clip {
+        display: block;
+        overflow: hidden;
+        max-width: 100%;
+        height: 1lh;
+        line-height: inherit;
+    }
+
+    .lum-menu-link__enter {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.22em;
+        max-width: 100%;
+        will-change: transform;
     }
 
     .lum-menu-dot {

@@ -1,5 +1,4 @@
 import gsap from 'gsap';
-import { prepareFlipLinks } from './menu-flip';
 import { getLenis } from './smooth-scroll';
 
 export function syncBurgerMenuDrawer() {
@@ -30,7 +29,7 @@ function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-function visibleFlipTexts(texts) {
+function visibleMenuLinkTexts(texts) {
     return texts.filter((node) => {
         const nav = node.closest('[data-lum-menu-nav]');
 
@@ -54,7 +53,8 @@ export function initBurgerMenu() {
     const drawer = menu.querySelector('.lum-burger-menu__drawer');
     const backdrop = menu.querySelector('.lum-burger-menu__backdrop');
     const revealNodes = [...menu.querySelectorAll('[data-lum-menu-reveal]')];
-    const { texts: flipTexts, stacks: flipStacks } = prepareFlipLinks(menu);
+    // Hover = CSS `.lum-text-slide` (same as header). GSAP only for open/close enter.
+    const linkTexts = [...menu.querySelectorAll('[data-lum-menu-link-text]')];
     let lastTrigger = null;
     let isAnimating = false;
     let isOpen = false;
@@ -62,8 +62,7 @@ export function initBurgerMenu() {
 
     gsap.set(drawer, { clipPath: 'inset(0 0 100% 0)' });
     gsap.set(backdrop, { opacity: 0 });
-    gsap.set(flipTexts, { yPercent: 100 });
-    gsap.set(flipStacks, { yPercent: 0 });
+    gsap.set(linkTexts, { yPercent: 100 });
     gsap.set(revealNodes, { opacity: 0, y: 20 });
 
     const killActive = () => {
@@ -117,22 +116,20 @@ export function initBurgerMenu() {
         syncBurgerMenuDrawer();
         killActive();
 
-        const flips = visibleFlipTexts(flipTexts);
+        const links = visibleMenuLinkTexts(linkTexts);
         const reveals = revealNodes.filter((node) => node.getClientRects().length > 0);
 
         if (prefersReducedMotion()) {
             gsap.set(drawer, { clipPath: 'inset(0 0 0% 0)' });
             gsap.set(backdrop, { opacity: 1 });
-            gsap.set(flips, { yPercent: 0 });
-            gsap.set(flipStacks, { yPercent: 0 });
+            gsap.set(links, { yPercent: 0 });
             gsap.set(reveals, { opacity: 1, y: 0 });
             isAnimating = false;
 
             return;
         }
 
-        gsap.set(flips, { yPercent: 100 });
-        gsap.set(flipStacks, { yPercent: 0 });
+        gsap.set(links, { yPercent: 100 });
         gsap.set(reveals, { opacity: 0, y: 20 });
 
         activeTween = gsap.timeline({
@@ -150,7 +147,7 @@ export function initBurgerMenu() {
                 0,
             )
             .fromTo(
-                flips,
+                links,
                 { yPercent: 100 },
                 {
                     yPercent: 0,
@@ -191,15 +188,14 @@ export function initBurgerMenu() {
         menu.classList.remove('is-open');
         killActive();
 
-        const flips = visibleFlipTexts(flipTexts);
+        const links = visibleMenuLinkTexts(linkTexts);
         const reveals = revealNodes.filter((node) => node.getClientRects().length > 0);
 
         const finish = () => {
             hideShell();
             gsap.set(drawer, { clipPath: 'inset(0 0 100% 0)' });
             gsap.set(backdrop, { opacity: 0 });
-            gsap.set(flips, { yPercent: 100 });
-            gsap.set(flipStacks, { yPercent: 0 });
+            gsap.set(links, { yPercent: 100 });
             gsap.set(reveals, { opacity: 0, y: 20 });
             isAnimating = false;
             activeTween = null;
@@ -219,7 +215,7 @@ export function initBurgerMenu() {
             defaults: { ease: 'power3.inOut' },
             onComplete: finish,
         })
-            .to(flips, {
+            .to(links, {
                 yPercent: 100,
                 duration: 0.85,
                 stagger: { each: 0.04, from: 'end' },

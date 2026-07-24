@@ -39,8 +39,22 @@
 
         <div class="absolute left-1/2 top-[895px] h-px w-[335px] -translate-x-1/2 bg-lum-espresso/16"></div>
 
-        <a href="tel:+94779296087" class="absolute left-[calc(50%+162.5px)] top-[962.5px] -translate-x-full -translate-y-1/2 whitespace-nowrap text-right font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-scroll-reveal>{{ $contact['phone'] }}</a>
-        <a href="mailto:{{ $contact['email'] }}" class="absolute left-[calc(50%+102.5px)] top-[1016px] -translate-x-full -translate-y-1/2 whitespace-nowrap text-right font-serif text-[22px] font-medium leading-[24px] tracking-[0.19px] text-lum-espresso" data-lum-scroll-reveal>{{ $contact['email'] }}</a>
+        <div class="absolute left-[calc(50%+162.5px)] top-[962.5px] -translate-x-full -translate-y-1/2">
+            <div class="whitespace-nowrap text-right font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-scroll-reveal>
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'tel:+94779296087',
+                    'text' => $contact['phone'],
+                ])
+            </div>
+        </div>
+        <div class="absolute left-[calc(50%+102.5px)] top-[1016px] -translate-x-full -translate-y-1/2">
+            <div class="whitespace-nowrap text-right font-serif text-[22px] font-medium leading-[24px] tracking-[0.19px] text-lum-espresso" data-lum-scroll-reveal>
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'mailto:'.$contact['email'],
+                    'text' => $contact['email'],
+                ])
+            </div>
+        </div>
 
         <div class="absolute left-1/2 top-[1067px] h-px w-[335px] -translate-x-1/2 bg-lum-espresso/16"></div>
 
@@ -108,8 +122,22 @@
 
         <div class="absolute left-1/2 top-[668px] h-px w-[920px] -translate-x-1/2 bg-lum-espresso/16"></div>
 
-        <a href="tel:+94779296087" class="absolute left-[calc(50%+202px)] top-[755px] -translate-x-full -translate-y-1/2 whitespace-nowrap text-right font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-scroll-reveal>{{ $contact['phone'] }}</a>
-        <a href="mailto:{{ $contact['email'] }}" class="absolute left-[calc(50%+144px)] top-[822px] -translate-x-full -translate-y-1/2 whitespace-nowrap text-right font-serif text-[28px] font-medium leading-[34px] tracking-[0.36px] text-lum-espresso" data-lum-scroll-reveal>{{ $contact['email'] }}</a>
+        <div class="absolute left-[calc(50%+202px)] top-[755px] -translate-x-full -translate-y-1/2">
+            <div class="whitespace-nowrap text-right font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-scroll-reveal>
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'tel:+94779296087',
+                    'text' => $contact['phone'],
+                ])
+            </div>
+        </div>
+        <div class="absolute left-[calc(50%+144px)] top-[822px] -translate-x-full -translate-y-1/2">
+            <div class="whitespace-nowrap text-right font-serif text-[28px] font-medium leading-[34px] tracking-[0.36px] text-lum-espresso" data-lum-scroll-reveal>
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'mailto:'.$contact['email'],
+                    'text' => $contact['email'],
+                ])
+            </div>
+        </div>
 
         <div class="absolute left-1/2 top-[904px] flex -translate-x-1/2 gap-[10px]" data-lum-scroll-reveal>
             @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram', 'tone' => 'light'])
@@ -201,11 +229,21 @@
         <div class="absolute left-[605px] top-[392px] h-px w-[783px] bg-lum-espresso/16" data-lum-stay-intro-item data-lum-stay-intro-order="11"></div>
 
         <div class="absolute left-[1337px] top-[484px] -translate-x-full -translate-y-1/2">
-            <a href="tel:+94779296087" class="block whitespace-nowrap text-right font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="12">{{ $contact['phone'] }}</a>
+            <div class="whitespace-nowrap text-right font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="12">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'tel:+94779296087',
+                    'text' => $contact['phone'],
+                ])
+            </div>
         </div>
 
         <div class="absolute left-[1160px] top-[574px] -translate-x-full -translate-y-1/2">
-            <a href="mailto:{{ $contact['email'] }}" class="block whitespace-nowrap text-right font-serif text-[32px] font-medium leading-[36px] tracking-[0.32px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="13">{{ $contact['email'] }}</a>
+            <div class="whitespace-nowrap text-right font-serif text-[32px] font-medium leading-[36px] tracking-[0.32px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="13">
+                @include('lum.partials.link-3d-text', [
+                    'href' => 'mailto:'.$contact['email'],
+                    'text' => $contact['email'],
+                ])
+            </div>
         </div>
 
         <div class="absolute left-[956px] top-[852px] flex gap-[10px]" data-lum-stay-intro-item data-lum-stay-intro-order="14">

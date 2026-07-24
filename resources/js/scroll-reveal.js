@@ -15,7 +15,7 @@ function parseStart(element) {
 }
 
 function isCenteredElement(element) {
-    return element.classList.contains('-translate-x-1/2');
+    return /(?:^|\s)-?translate-x-/.test(element.className);
 }
 
 function revealMotionProps(element, travel, fadeOnly) {
