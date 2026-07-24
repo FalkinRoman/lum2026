@@ -681,7 +681,7 @@
     }
 
     .lum-burger-btn {
-        @apply relative inline-flex shrink-0 items-center justify-center overflow-hidden;
+        @apply relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full;
         isolation: isolate;
         box-sizing: border-box;
         width: 72px;
@@ -703,13 +703,13 @@
         padding-block: 0;
     }
 
+    /* Like lum-btn-outline-ivory: fill slides up from bottom; no border/glow on fill */
     .lum-burger-btn::before {
         content: '';
         position: absolute;
-        /* inset 0 — never grow past fixed width/height on hover */
         inset: 0;
-        z-index: -1;
-        border-radius: inherit;
+        z-index: 0;
+        /* no border-radius — parent overflow clips; leading edge stays a straight line */
         transform: translate3d(0, 100%, 0);
         transition: transform var(--lum-animation-smooth);
     }
@@ -722,9 +722,10 @@
 
     .lum-burger-btn--ivory,
     .lum-burger-btn--ivory-compact {
-        @apply rounded-[50px] border-0;
-        box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
+        @apply rounded-full border-0;
         background-color: var(--color-lum-ivory);
+        /* outset ring — inset sat on top of the sliding fill and looked like a glow */
+        box-shadow: 0 0 0 1px var(--color-lum-ivory);
     }
 
     .lum-burger-btn--ivory::before,
@@ -734,14 +735,20 @@
 
     .lum-burger-btn--espresso,
     .lum-burger-btn--espresso-compact {
-        @apply rounded-[50px] border-0;
-        box-shadow: inset 0 0 0 1px var(--color-lum-espresso);
+        @apply rounded-full border-0;
         background-color: var(--color-lum-ivory);
+        box-shadow: 0 0 0 1px var(--color-lum-espresso);
     }
 
     .lum-burger-btn--espresso::before,
     .lum-burger-btn--espresso-compact::before {
         background-color: var(--color-lum-espresso);
+    }
+
+    /* Home hero: ivory fill at rest (via ::before), slides up away → outline */
+    .lum-burger-btn--on-home-hero.lum-burger-btn--ivory,
+    .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact {
+        background-color: transparent;
     }
 
     .lum-burger-btn--on-home-hero.lum-burger-btn--ivory::before,
@@ -762,7 +769,7 @@
         .lum-burger-btn--ivory-compact:hover,
         .lum-burger-btn--espresso:hover,
         .lum-burger-btn--espresso-compact:hover {
-            background-color: transparent;
+            /* keep resting bg — no fade/glow; espresso ::before covers it */
             width: 72px;
             min-width: 72px;
             max-width: 72px;
@@ -791,17 +798,6 @@
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover::before,
         .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover::before {
             transform: translate3d(0, -100%, 0);
-        }
-
-        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover,
-        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover {
-            background-color: transparent;
-            box-shadow: inset 0 0 0 1px var(--color-lum-ivory);
-        }
-
-        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory:hover img,
-        .lum-burger-btn--on-home-hero.lum-burger-btn--ivory-compact:hover img {
-            filter: brightness(0) invert(1);
         }
     }
 
