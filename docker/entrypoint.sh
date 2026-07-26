@@ -9,9 +9,10 @@ if [ ! -f .env ]; then
     fi
 fi
 
-if [ ! -f database/database.sqlite ]; then
-    mkdir -p database
-    touch database/database.sqlite
+DB_FILE="${DB_DATABASE:-database/database.sqlite}"
+mkdir -p "$(dirname "$DB_FILE")"
+if [ ! -f "$DB_FILE" ]; then
+    touch "$DB_FILE"
 fi
 
 if [ ! -f vendor/autoload.php ]; then
