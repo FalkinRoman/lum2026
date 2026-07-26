@@ -75,7 +75,11 @@
                         <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }} {{ empty($layout['mobSize']) ? $layout['mobImg'] : '' }}" @if(!empty($layout['mobSize'])) style="width: {{ $layout['mobSize'] }}px; height: {{ $layout['mobSize'] }}px" @endif>
                     @endif
                     <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
-                    @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['mob'], 'tag' => $card['tag'], 'padding' => 'px-[24px] py-[4px]'])
+                    @include('lum.partials.location-card-tag', [
+                        'top' => $card['tagTop']['mob'],
+                        'tag' => $card['tag'],
+                        'padding' => app()->getLocale() === 'ru' ? 'px-[16px] py-[4px]' : 'px-[24px] py-[4px]',
+                    ])
                     @include('lum.partials.location-card-list', ['top' => $card['listTop']['mob'], 'lines' => $card['listLines'], 'class' => 'text-[14px] leading-[22px] tracking-[0.1px]'])
                     <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.more_info') }}</a>
                 </article>
