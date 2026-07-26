@@ -408,9 +408,9 @@ return [
         'copyright' => '©Lum — 2026 все права защищены',
         'privacy' => 'Политика конфиденциальности',
         'terms' => 'Условия использования',
-        'credits_prefix' => 'Дизайн и разработка /',
-        'ivan' => 'Иван Таскаев',
-        'roman' => 'Роман Фалькин',
+        'credits_prefix' => 'Des & Dev /',
+        'ivan' => 'Ivan Taskayev',
+        'roman' => 'Roman Falkin',
     ],
 
     'burger_footer' => [

@@ -1,6 +1,11 @@
-<footer class="lum-container relative h-[780px] bg-lum-espresso mix-blend-multiply tab:h-[1089px] desk:h-[800px]">
+<footer @class([
+    'lum-container relative bg-lum-espresso mix-blend-multiply tab:h-[1089px] desk:h-[800px]',
+    'h-[820px]' => app()->getLocale() === 'ru',
+    'h-[780px]' => app()->getLocale() !== 'ru',
+])>
 @php
     $villaUrl = fn (string $slug) => route('villa.show', $slug);
+    $isRu = app()->getLocale() === 'ru';
 @endphp
     <img src="{{ $img('footer/bg.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover" width="1920" height="800">
 
@@ -73,19 +78,36 @@
 
         <p class="absolute left-[20px] top-[655px] -translate-y-1/2 text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
 
-        <div class="lum-footer-legal absolute left-[calc(50%-68px)] top-[678px] -translate-x-1/2 gap-[40px] text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">
+        <div
+            @class([
+                'lum-footer-legal absolute text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40',
+                'left-[20px] top-[678px] w-[280px] flex-col items-start gap-[6px]' => $isRu,
+                'left-[calc(50%-68px)] top-[678px] -translate-x-1/2 gap-[40px] whitespace-nowrap' => ! $isRu,
+            ])
+        >
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
             @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
-        <button type="button" data-lum-back-to-top class="absolute left-[315px] top-[708px] lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--round p-[4px]" aria-label="{{ __('lum.aria.back_to_top') }}">
+        <button
+            type="button"
+            data-lum-back-to-top
+            @class([
+                'absolute left-[315px] lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--round p-[4px]',
+                'top-[748px]' => $isRu,
+                'top-[708px]' => ! $isRu,
+            ])
+            aria-label="{{ __('lum.aria.back_to_top') }}"
+        >
             <img src="{{ $img('footer/arrow-up.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
         @include('lum.partials.footer-credits', [
             'img' => $img,
             'creditsClass' => 'lum-footer-credits--mobile',
-            'wrapperClass' => 'absolute left-[276px] top-[737px] -translate-x-full -translate-y-1/2 text-right text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory',
+            'wrapperClass' => $isRu
+                ? 'absolute left-[276px] top-[777px] -translate-x-full -translate-y-1/2 text-right text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory'
+                : 'absolute left-[276px] top-[737px] -translate-x-full -translate-y-1/2 text-right text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory',
         ])
     </div>
 
