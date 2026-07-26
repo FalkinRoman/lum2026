@@ -4,6 +4,9 @@
 // Run: php scripts/sync-asset-manifest.php
 
 $assets = [
+    'divider-sun-desk.svg' => 'local',
+    'divider-sun-mob.svg' => 'local',
+    'divider-sun-tab.svg' => 'local',
     'divider-sun.svg' => 'local',
     'facilities-left.jpg' => 'local',
     'facilities-left.webp' => 'local',
@@ -29,6 +32,10 @@ $assets = [
     'impression/slide-04-sm.webp' => 'local',
     'impression/slide-04.jpg' => 'local',
     'impression/slide-04.webp' => 'local',
+    'logomark.svg' => 'local',
+    'torn-edge-desk.svg' => 'local',
+    'torn-edge-mob.svg' => 'local',
+    'torn-edge-tab.svg' => 'local',
 ];
 
 return $assets;

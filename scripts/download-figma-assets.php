@@ -117,11 +117,11 @@ $remoteAssets = [
     'shop/products/colors/color-03.svg' => 'https://www.figma.com/api/mcp/asset/dae81061-5569-4522-aa2f-458a9cf71f8f',
     'menu/close.svg' => 'https://www.figma.com/api/mcp/asset/cca00b46-31c1-44e5-91d1-f8170f7c575f',
     'shop/products/colors/color-04.svg' => 'https://www.figma.com/api/mcp/asset/e2b78eca-4d51-4eca-ad77-877ecc25be4d',
+    // Discover package list dividers (espresso/16) — already vendored locally
+    'discover/package-line.svg' => 'https://www.figma.com/api/mcp/asset/5d2fb1e5-e17d-4c0a-862a-06b0eea842e1',
 ];
 $refreshAssets = [
-    'blog/posts/sri-lanka-guide.webp',
-    'blog/posts/nervous-system-retreat.webp',
-    'blog/posts/lum-ocean-trip.webp',
+    // Keep empty: Figma MCP URLs expire (~7d). Local files in public/images/lum are the source of truth.
 ];
 
 $ok = 0;
@@ -181,3 +181,4 @@ if ($missing > 0) {
 
 echo "\nOptimizing images...\n";
 passthru('php ' . escapeshellarg($projectRoot . '/scripts/optimize-images.php'));
+
