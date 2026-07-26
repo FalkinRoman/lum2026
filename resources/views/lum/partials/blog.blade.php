@@ -1,16 +1,35 @@
 @php
     $blogPosts = trans('lum.blog.posts');
+    $isRu = app()->getLocale() === 'ru';
 @endphp
-<section class="lum-container relative h-[777px] bg-lum-ivory tab:h-[1244px] desk:h-[1274px]">
+<section @class([
+    'lum-container relative bg-lum-ivory tab:h-[1244px] desk:h-[1274px]',
+    'h-[822px]' => $isRu,
+    'h-[777px]' => ! $isRu,
+])>
     {{-- MOBILE — Figma 16:1579 --}}
     <div class="relative h-full tab:hidden" data-lum-blog-slider data-gap="10">
         <img src="{{ $img('blog/top-wave.svg') }}" alt="" class="absolute left-[20px] top-0 w-[335px]" width="335" height="23">
-        <div class="absolute left-[58.5px] top-[67px] w-[258px] text-center font-serif text-[42px] font-medium italic leading-[45px] text-lum-espresso" data-lum-scroll-reveal>
-            <p class="whitespace-nowrap">{{ __('lum.blog.title_line1') }}</p>
+        <div
+            @class([
+                'absolute top-[67px] text-center font-serif text-[42px] font-medium italic leading-[45px] text-lum-espresso',
+                'left-1/2 w-[335px] -translate-x-1/2 px-[8px]' => $isRu,
+                'left-[58.5px] w-[258px]' => ! $isRu,
+            ])
+            data-lum-scroll-reveal
+        >
+            <p @class(['whitespace-nowrap' => ! $isRu])>{{ __('lum.blog.title_line1') }}</p>
             <p>{{ __('lum.blog.title_line2') }}</p>
         </div>
         {{-- Full-bleed left: cards slide into the left edge; ivory mask hides previous peek in the 20px gutter --}}
-        <div class="absolute inset-x-0 top-[201px] overflow-hidden" data-lum-blog-viewport>
+        <div
+            @class([
+                'absolute inset-x-0 overflow-hidden',
+                'top-[246px]' => $isRu,
+                'top-[201px]' => ! $isRu,
+            ])
+            data-lum-blog-viewport
+        >
             <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-[20px] bg-lum-ivory" aria-hidden="true"></div>
             <div class="flex w-max gap-[10px] pl-[20px] pr-[20px] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-lum-blog-track>
                 @foreach ($blogPosts as $post)
@@ -18,7 +37,13 @@
                 @endforeach
             </div>
         </div>
-        <div class="absolute left-1/2 top-[657px] flex -translate-x-1/2 gap-[10px]">
+        <div
+            @class([
+                'absolute left-1/2 flex -translate-x-1/2 gap-[10px]',
+                'top-[702px]' => $isRu,
+                'top-[657px]' => ! $isRu,
+            ])
+        >
             <button type="button" class="lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" data-lum-blog-prev aria-label="{{ __('lum.aria.previous') }}">
                 <img src="{{ $img('ui/carousel-arrow-left.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
@@ -31,10 +56,23 @@
     {{-- TABLET — Figma 16:1042 --}}
     <div class="relative hidden h-full tab:block desk:hidden" data-lum-blog-slider data-gap="20">
         <img src="{{ $img('blog/top-wave.svg') }}" alt="" class="absolute left-[20px] top-0 w-[920px]" width="920" height="28">
-        <div class="absolute left-[166px] top-[108px] flex w-[628px] items-center justify-center gap-[12px]" data-lum-scroll-reveal>
-            <img src="{{ $img('blog/deco-left.svg') }}" alt="" class="w-[72px] rotate-180 scale-y-[-1]" width="72" height="2">
-            <h2 class="font-serif text-[52px] font-medium italic leading-[52px] whitespace-nowrap text-lum-espresso">{{ __('lum.blog.title_single') }}</h2>
-            <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[72px]" width="72" height="2">
+        <div
+            @class([
+                'absolute top-[108px] flex items-center justify-center gap-[12px]',
+                'inset-x-[20px]' => $isRu,
+                'left-[166px] w-[628px]' => ! $isRu,
+            ])
+            data-lum-scroll-reveal
+        >
+            <img src="{{ $img('blog/deco-left.svg') }}" alt="" class="w-[72px] shrink-0 rotate-180 scale-y-[-1]" width="72" height="2">
+            <h2
+                @class([
+                    'shrink-0 font-serif font-medium italic whitespace-nowrap text-lum-espresso',
+                    'text-[44px] leading-[48px]' => $isRu,
+                    'text-[52px] leading-[52px]' => ! $isRu,
+                ])
+            >{{ __('lum.blog.title_single') }}</h2>
+            <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[72px] shrink-0" width="72" height="2">
         </div>
         <div class="absolute left-1/2 top-[180px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-espresso px-[24px] py-[10px]">
             <span class="text-[18px] font-medium uppercase leading-[18px] tracking-[1.8px] text-lum-ivory">{{ __('lum.blog.label') }}</span>
@@ -56,13 +94,26 @@
         </div>
     </div>
 
-    {{-- DESKTOP (не трогаем) --}}
+    {{-- DESKTOP --}}
     <div class="relative hidden h-full desk:block">
         <img src="{{ $img('blog/top-wave.svg') }}" alt="" class="absolute left-[72px] top-0 w-[1776px]" width="1776" height="45">
-        <div class="absolute left-1/2 top-[160px] flex -translate-x-1/2 items-center gap-[12px]" data-lum-scroll-reveal>
-            <img src="{{ $img('blog/deco-left.svg') }}" alt="" class="w-[108px] rotate-180 scale-y-[-1]" width="108" height="2">
-            <h2 class="lum-heading-1 font-medium italic whitespace-nowrap text-lum-espresso">{{ __('lum.blog.title_single') }}</h2>
-            <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[108px]" width="108" height="2">
+        <div
+            @class([
+                'absolute top-[160px] flex items-center justify-center gap-[12px]',
+                'inset-x-[72px]' => $isRu,
+                'left-1/2 -translate-x-1/2' => ! $isRu,
+            ])
+            data-lum-scroll-reveal
+        >
+            <img src="{{ $img('blog/deco-left.svg') }}" alt="" class="w-[108px] shrink-0 rotate-180 scale-y-[-1]" width="108" height="2">
+            <h2
+                @class([
+                    'shrink-0 font-medium italic whitespace-nowrap text-lum-espresso',
+                    'font-serif text-[72px] leading-[78px]' => $isRu,
+                    'lum-heading-1' => ! $isRu,
+                ])
+            >{{ __('lum.blog.title_single') }}</h2>
+            <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[108px] shrink-0" width="108" height="2">
         </div>
         <div class="absolute left-1/2 top-[276px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-espresso px-[32px] py-[12px]">
             <span class="lum-headline uppercase text-lum-ivory">{{ __('lum.blog.label') }}</span>

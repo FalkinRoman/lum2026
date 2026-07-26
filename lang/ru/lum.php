@@ -4,9 +4,9 @@ return [
     'meta' => [
         'title' => 'Lum — Шри-Ланка',
         'stay_title' => 'Lum — Проживание',
-        'dining_title' => 'Lum — Ресторан',
+        'dining_title' => 'Lum — Гастрономия',
         'relax_title' => 'Lum — Отдых',
-        'discover_title' => 'Lum — Открыть',
+        'discover_title' => 'Lum — Путешествия',
         'blog_title' => 'Lum — Блог',
         'contact_title' => 'Lum — Контакты',
         'shop_title' => 'Lum — Магазин',
@@ -149,7 +149,7 @@ return [
         'more_info' => 'подробнее',
         'cards' => [
             [
-                'title' => 'Ресторан',
+                'title' => 'Гастрономия',
                 'route' => 'dining',
                 'photo' => 'location/card-dining.webp',
                 'photoGradient' => 'bg-gradient-to-b from-[rgba(36,14,4,0.54)] from-[48%] to-transparent',
@@ -157,7 +157,7 @@ return [
                     ['text' => 'Вкусы Шри-Ланки,', 'italic' => false],
                     ['text' => 'с любовью приготовленные', 'italic' => true],
                 ],
-                'photoLabel' => 'Ресторан',
+                'photoLabel' => 'Гастрономия',
                 'tag' => 'рестораны, <span class="font-medium italic" style="white-space: nowrap;">ради которых</span> стоит ехать',
                 'tagTop' => ['mob' => 56, 'tab' => 80, 'desk' => 128],
                 'activeImg' => 'location/dining.webp',
@@ -196,15 +196,15 @@ return [
                 'width' => 'w-[549px]',
             ],
             [
-                'title' => 'Открыть',
+                'title' => 'Путешествия',
                 'route' => 'discover',
                 'photo' => 'location/card-discover.webp',
                 'photoGradient' => 'bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]',
                 'photoLines' => [
-                    ['text' => 'Шри-Ланка такой,', 'italic' => false],
+                    ['text' => 'Шри-Ланка такая,', 'italic' => false],
                     ['text' => 'какой она была', 'italic' => true],
                 ],
-                'photoLabel' => 'открыть',
+                'photoLabel' => 'Путешествия',
                 'tag' => 'добро пожаловать в <span class="font-medium italic" style="white-space: nowrap;">настоящую Шри-Ланку</span>',
                 'tagTop' => ['mob' => 56, 'tab' => 79, 'desk' => 128],
                 'activeImg' => 'location/discover-map.webp',

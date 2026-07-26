@@ -22,19 +22,19 @@
     ];
 @endphp
 
-<section class="lum-container relative h-[1865px] bg-lum-ivory tab:h-[2102px] desk:h-[1939px]">
+<section class="lum-container relative bg-lum-ivory">
     {{-- MOBILE --}}
-    <div class="relative h-full tab:hidden">
-        <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-0 h-[54px] w-[32px] -translate-x-1/2" width="32" height="54">
-        <div class="absolute left-1/2 top-[78px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[32px] text-center" data-lum-scroll-reveal>
-            <h2 class="font-serif text-[36px] leading-[45px] text-lum-espresso">
+    <div class="relative tab:hidden">
+        <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-0 z-[1] h-[54px] w-[32px] -translate-x-1/2" width="32" height="54">
+        <div class="relative z-0 flex flex-col items-center px-[20px] pb-[40px] pt-[78px] text-center" data-lum-scroll-reveal>
+            <h2 class="w-[335px] font-serif text-[36px] leading-[45px] text-lum-espresso">
                 {!! __('lum.location.heading') !!}
             </h2>
-            <img src="{{ $img('location/divider.svg') }}" alt="" class="h-px w-full" width="335" height="1">
+            <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[32px] h-px w-[335px]" width="335" height="1">
+            <a href="#" class="lum-btn-dark relative z-[1] mt-[90px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
         </div>
-        <a href="#" class="lum-btn-dark absolute left-1/2 top-[380px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
 
-        <div class="absolute left-[20px] top-[476px] flex w-[335px] flex-col gap-[24px]">
+        <div class="relative z-0 mx-auto flex w-[335px] flex-col gap-[24px] pb-[40px]">
             @foreach ($cards as $index => $card)
                 @php
                     $layout = $cardLayout[$index];
@@ -81,21 +81,21 @@
                 </article>
             @endforeach
         </div>
-        <div class="lum-divider absolute bottom-0 left-[20px]"></div>
+        <div class="lum-divider mx-auto mb-0"></div>
     </div>
 
     {{-- TABLET --}}
-    <div class="relative hidden h-full tab:block desk:hidden">
-        <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[60px] h-[67px] w-[40px] -translate-x-1/2" width="40" height="67">
-        <div class="absolute left-1/2 top-[172px] flex w-[680px] -translate-x-1/2 flex-col items-center gap-[44px] text-center" data-lum-scroll-reveal>
-            <h2 class="font-serif text-[52px] leading-[52px] text-lum-espresso">
+    <div class="relative hidden tab:block desk:hidden">
+        <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[60px] z-[1] h-[67px] w-[40px] -translate-x-1/2" width="40" height="67">
+        <div class="relative z-0 flex flex-col items-center px-[20px] pb-[64px] pt-[172px] text-center" data-lum-scroll-reveal>
+            <h2 class="w-[680px] font-serif text-[52px] leading-[52px] text-lum-espresso">
                 {!! __('lum.location.heading') !!}
             </h2>
-            <img src="{{ $img('location/divider.svg') }}" alt="" class="h-[2px] w-[580px]" width="580" height="2">
+            <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[580px]" width="580" height="2">
+            <a href="#" class="lum-btn-dark relative z-[1] mt-[118px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
         </div>
-        <a href="#" class="lum-btn-dark absolute left-1/2 top-[490px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
 
-        <div class="absolute left-[20px] top-[642px] w-[920px]">
+        <div class="relative z-0 mx-auto w-[920px] pb-[40px]">
             <div class="flex gap-[20px]">
                 @foreach (array_slice($cards, 0, 2) as $index => $card)
                     @include('lum.partials.location-card-tablet', ['card' => $card, 'layout' => $cardLayout[$index]])
@@ -103,11 +103,11 @@
             </div>
             @include('lum.partials.location-card-tablet', ['card' => $cards[2], 'layout' => $cardLayout[2], 'stacked' => true])
         </div>
-        <div class="lum-divider absolute bottom-0 left-[20px]"></div>
+        <div class="lum-divider mx-auto mb-0"></div>
     </div>
 
     {{-- DESKTOP --}}
-    <div class="relative hidden h-full desk:block">
+    <div class="relative hidden desk:block">
         <svg class="pointer-events-none absolute size-0" aria-hidden="true">
             @foreach ($cards as $index => $card)
                 <filter id="lum-location-filter-{{ $index }}">
@@ -116,16 +116,16 @@
                 </filter>
             @endforeach
         </svg>
-        <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
-        <div class="absolute left-[532px] top-[357px] flex w-[856px] flex-col items-center gap-[44px] text-center" data-lum-scroll-reveal>
-            <h2 class="lum-heading-1 text-lum-espresso">
+        <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] z-[1] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
+        <div class="relative z-0 flex flex-col items-center pb-[80px] pt-[357px] text-center" data-lum-scroll-reveal>
+            <h2 class="w-[856px] lum-heading-1 text-lum-espresso">
                 {!! __('lum.location.heading') !!}
             </h2>
-            <img src="{{ $img('location/divider.svg') }}" alt="" class="h-[2px] w-full" width="856" height="2">
+            <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[856px]" width="856" height="2">
+            <a href="#" class="lum-btn-dark relative z-[1] mt-[160px]">{{ __('lum.location.see_on_map') }}</a>
         </div>
-        <a href="#" class="lum-btn-dark absolute left-1/2 top-[843px] -translate-x-1/2">{{ __('lum.location.see_on_map') }}</a>
 
-        <div class="absolute left-[72px] top-[1039px] flex gap-[64px]">
+        <div class="relative z-0 mx-auto flex w-[1776px] gap-[64px] pb-[60px]">
             @foreach ($cards as $index => $card)
                 @php($layout = $cardLayout[$index])
                 <article @class(['lum-location-card group relative h-[740px]', $layout['width']]) data-lum-location-card data-filter-id="lum-location-filter-{{ $index }}">
@@ -166,6 +166,6 @@
                 </article>
             @endforeach
         </div>
-        <div class="lum-divider absolute bottom-0 left-[72px]"></div>
+        <div class="lum-divider mx-auto mb-0"></div>
     </div>
 </section>
