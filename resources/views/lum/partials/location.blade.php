@@ -1,5 +1,6 @@
 @php
-    $cards = trans('lum.location.cards');
+    $location = \App\Support\Content::homeLocale('location') ?? [];
+    $cards = $location['cards'] ?? trans('lum.location.cards');
     $cardLayout = [
         [
             'width' => 'w-[550px]',
@@ -28,10 +29,10 @@
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-0 z-[1] h-[54px] w-[32px] -translate-x-1/2" width="32" height="54">
         <div class="relative z-0 flex flex-col items-center px-[20px] pb-[40px] pt-[78px] text-center" data-lum-scroll-reveal>
             <h2 class="w-[335px] font-serif text-[36px] leading-[45px] text-lum-espresso">
-                {!! __('lum.location.heading') !!}
+                {!! $location['heading'] ?? __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[32px] h-px w-[335px]" width="335" height="1">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[90px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[90px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
         </div>
 
         <div class="relative z-0 mx-auto flex w-[335px] flex-col gap-[24px] pb-[40px]">
@@ -81,7 +82,7 @@
                         'padding' => app()->getLocale() === 'ru' ? 'px-[16px] py-[4px]' : 'px-[24px] py-[4px]',
                     ])
                     @include('lum.partials.location-card-list', ['top' => $card['listTop']['mob'], 'lines' => $card['listLines'], 'class' => 'text-[14px] leading-[22px] tracking-[0.1px]'])
-                    <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.more_info') }}</a>
+                    <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['more_info'] ?? __('lum.location.more_info') }}</a>
                 </article>
             @endforeach
         </div>
@@ -93,10 +94,10 @@
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[60px] z-[1] h-[67px] w-[40px] -translate-x-1/2" width="40" height="67">
         <div class="relative z-0 flex flex-col items-center px-[20px] pb-[64px] pt-[172px] text-center" data-lum-scroll-reveal>
             <h2 class="w-[680px] font-serif text-[52px] leading-[52px] text-lum-espresso">
-                {!! __('lum.location.heading') !!}
+                {!! $location['heading'] ?? __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[580px]" width="580" height="2">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[118px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[118px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
         </div>
 
         <div class="relative z-0 mx-auto w-[920px] pb-[40px]">
@@ -123,10 +124,10 @@
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] z-[1] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
         <div class="relative z-0 flex flex-col items-center pb-[80px] pt-[357px] text-center" data-lum-scroll-reveal>
             <h2 class="w-[856px] lum-heading-1 text-lum-espresso">
-                {!! __('lum.location.heading') !!}
+                {!! $location['heading'] ?? __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[856px]" width="856" height="2">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[160px]">{{ __('lum.location.see_on_map') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[160px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
         </div>
 
         <div class="relative z-0 mx-auto flex w-[1776px] gap-[64px] pb-[60px]">
@@ -165,7 +166,7 @@
                         <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso" data-lum-reveal="2">{{ $card['title'] }}</h3>
                         @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag'], 'reveal' => 3])
                         @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines'], 'reveal' => 4])
-                        <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">{{ __('lum.location.more_info') }}</a>
+                        <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">{{ $location['more_info'] ?? __('lum.location.more_info') }}</a>
                     </div>
                 </article>
             @endforeach

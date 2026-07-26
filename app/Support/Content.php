@@ -163,6 +163,7 @@ class Content
                 'title_normal' => $r->gallery_title_normal,
                 'title_italic' => $r->gallery_title_italic,
                 'body' => $r->gallery_body,
+                'body_bottom' => $r->gallery_body_bottom ?? '',
                 'images' => $r->gallery_images ?? [],
             ],
             'quote' => [
@@ -226,6 +227,7 @@ class Content
                 'title_normal' => $a->gallery_title_normal,
                 'title_italic' => $a->gallery_title_italic,
                 'body' => $a->gallery_body,
+                'body_bottom' => $a->gallery_body_bottom ?? '',
                 'images' => $a->gallery_images ?? [],
             ],
             'quote' => [
@@ -274,6 +276,8 @@ class Content
                 'eyebrow' => $e->gallery_eyebrow,
                 'title_normal' => $e->gallery_title_normal,
                 'title_italic' => $e->gallery_title_italic,
+                'body' => $e->gallery_body ?? '',
+                'body_bottom' => $e->gallery_body_bottom ?? '',
                 'images' => $e->gallery_images ?? [],
                 'polaroid_dates' => $e->polaroid_dates ?? [],
             ],

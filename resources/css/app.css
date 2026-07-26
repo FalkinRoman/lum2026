@@ -1823,17 +1823,49 @@
         }
     }
 
-    /* Booking page — без scale: fluid ширина, иначе Exely рисует левый gutter */
+    /*
+     * Booking page — data-lum-no-scale (Exely ломается под transform:scale).
+     * Mobile: full fluid width (не 335px из scaled-сетки).
+     * overflow-x только на html/body — на .lum-page/.lum-viewport нельзя:
+     * иначе overflow-y становится auto и Lenis/window-scroll мрут.
+     *
+     * Header: !important обязателен — Tailwind w-[335/920/1776] в @layer utilities
+     * иначе побеждает и хедер остаётся узкой полоской слева, а sticky — на всю ширину.
+     */
+    html:has([data-lum-no-scale]) {
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
+    }
+
+    /* body без overflow-x — иначе overflow-y схлопывается в auto и появляется 2-й скроллер */
+
+    .lum-page[data-lum-no-scale] {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    [data-lum-booking-page] {
+        width: 100%;
+        max-width: 100%;
+    }
+
     [data-lum-booking-page] header {
-        left: 20px;
-        right: 20px;
-        width: auto;
-        max-width: none;
+        left: 20px !important;
+        right: 20px !important;
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    @media (min-width: 1024px) {
+        [data-lum-booking-page] header {
+            left: 72px !important;
+            right: 72px !important;
+        }
     }
 
     .lum-booking-page__intro {
         width: 100%;
-        max-width: 335px;
+        max-width: none;
         margin: 0 auto;
         padding: 124px 20px 0;
         box-sizing: border-box;
@@ -1842,21 +1874,20 @@
 
     .lum-booking-page__engine {
         width: 100%;
-        max-width: 335px;
+        max-width: none;
         margin: 28px auto 48px;
-        padding: 0 20px;
+        padding: 0 16px;
         box-sizing: border-box;
-        overflow-x: clip;
     }
 
     @media (min-width: 431px) {
         .lum-booking-page__intro {
             max-width: 720px;
-            padding-top: 160px;
+            padding: 160px 24px 0;
         }
 
         .lum-booking-page__engine {
-            max-width: 880px;
+            max-width: 920px;
             margin: 36px auto 64px;
             padding: 0 24px;
         }
@@ -1865,14 +1896,31 @@
     @media (min-width: 1024px) {
         .lum-booking-page__intro {
             max-width: 900px;
-            padding-top: 180px;
+            padding: 180px 32px 0;
         }
 
         .lum-booking-page__engine {
-            max-width: 1120px;
+            max-width: 1470px;
             margin: 40px auto 80px;
             padding: 0 32px;
         }
+    }
+
+    /*
+     * Exely cross-origin iframe глотает wheel/touch.
+     * Bridge (см. exely-scroll-bridge.js) форвардит скролл на window.
+     */
+    .lum-exely-scroll-bridge {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: transparent;
+        cursor: default;
+        touch-action: none;
+    }
+
+    .lum-exely-scroll-bridge.is-disarmed {
+        pointer-events: none;
     }
 
     .lum-stay-property-link__photo {

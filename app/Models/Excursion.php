@@ -14,7 +14,8 @@ class Excursion extends Model
         'slug', 'sort_order', 'is_published',
         'listing_image', 'oval_image', 'wellness_hero', 'gallery_images', 'package_images',
         'title', 'region', 'meta_title', 'intro_title', 'intro_body',
-        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'polaroid_dates',
+        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic',
+        'gallery_body', 'gallery_body_bottom', 'polaroid_dates',
         'package_eyebrow', 'package_title_normal', 'package_title_italic',
         'package_items', 'package_cost', 'book_url',
     ];
@@ -22,6 +23,7 @@ class Excursion extends Model
     public array $translatable = [
         'title', 'region', 'meta_title', 'intro_title', 'intro_body',
         'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic',
+        'gallery_body', 'gallery_body_bottom',
         'package_eyebrow', 'package_title_normal', 'package_title_italic',
         'package_items', 'package_cost', 'polaroid_dates',
     ];

@@ -15,7 +15,7 @@ class Activity extends Model
         'listing_image', 'hero_image', 'oval_image', 'gallery_images',
         'label_before', 'label_italic', 'label_after', 'name', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
-        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body',
+        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body', 'gallery_body_bottom',
         'quote_line1', 'quote_line2', 'quote_note',
         'pricing_eyebrow', 'pricing_title_normal', 'pricing_title_italic',
         'pricing_cta', 'pricing_cta_url', 'pricing_items',
@@ -24,7 +24,7 @@ class Activity extends Model
     public array $translatable = [
         'label_before', 'label_italic', 'label_after', 'name', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
-        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body',
+        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body', 'gallery_body_bottom',
         'quote_line1', 'quote_line2', 'quote_note',
         'pricing_eyebrow', 'pricing_title_normal', 'pricing_title_italic', 'pricing_cta',
         'pricing_items',

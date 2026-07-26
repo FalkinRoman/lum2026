@@ -1,5 +1,5 @@
 @php
-    $blogPosts = trans('lum.blog.posts');
+    $blogPosts = collect($blogPosts ?? \App\Support\Content::blogPosts());
     $isRu = app()->getLocale() === 'ru';
 @endphp
 <section @class([

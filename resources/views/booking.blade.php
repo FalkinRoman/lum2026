@@ -4,6 +4,15 @@
 
 @push('head')
     @include('lum.exely.head')
+    <style>
+        /*
+         * overflow-x только на html. На body overflow-x:hidden форсит overflow-y:auto
+         * → два скролл-контейнера (html+body) и дёрганый/мёртвый скролл.
+         * НЕ .lum-page — та же ловушка overflow-x≠visible → overflow-y:auto.
+         */
+        html { overflow-x: hidden; overflow-y: scroll; }
+        body { overflow: visible; }
+    </style>
 @endpush
 
 @section('content')

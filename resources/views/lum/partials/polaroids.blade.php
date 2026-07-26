@@ -1,3 +1,4 @@
+@php $polaroids = \App\Support\Content::homeLocale('polaroids') ?? []; @endphp
 <section class="lum-container relative isolate h-[1173px] overflow-visible bg-lum-ivory tab:h-[1134px] desk:h-[1299px]">
     {{--
       Torn edge lives HERE (not in hero) so it shares a stacking context with polaroids:
@@ -24,19 +25,19 @@
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="271" height="405">
                     <p class="absolute left-0 right-0 top-[10px] z-[3] text-center text-[10px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
-                    <p class="lum-script absolute bottom-[16px] left-0 right-0 z-[3] px-[8px] text-center leading-[1.1] tracking-[1.1px] text-lum-azure" style="font-size: {{ $polaroid['script'] }};">{{ __('lum.polaroids.share') }}</p>
+                    <p class="lum-script absolute bottom-[16px] left-0 right-0 z-[3] px-[8px] text-center leading-[1.1] tracking-[1.1px] text-lum-azure" style="font-size: {{ $polaroid['script'] }};">{{ $polaroids['share'] ?? __('lum.polaroids.share') }}</p>
                 </div>
             </div>
         @endforeach
 
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: 51.69px; top: 89.67px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.shine') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">{{ $polaroids['shine'] ?? __('lum.polaroids.shine') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: {{ app()->getLocale() === 'ru' ? '318px' : '281.09px' }}; top: 58.34px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.impressions') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(-9.6deg);">{{ $polaroids['impressions'] ?? __('lum.polaroids.impressions') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: 275px; top: 1052px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(9.07deg);">{{ __('lum.polaroids.relax') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 32px; letter-spacing: 1.6px; transform: rotate(9.07deg);">{{ $polaroids['relax'] ?? __('lum.polaroids.relax') }}</p>
         </div>
 
         <div class="absolute left-[20px] top-[450px] flex w-[335px] flex-col items-center gap-[44px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
@@ -44,10 +45,10 @@
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
                 <div class="text-center">
                     <h2 class="font-serif text-[42px] leading-[45px] text-lum-espresso">
-                        {{ __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ __('lum.polaroids.title_italic') }}</span>
+                        {{ $polaroids['title_normal'] ?? __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ $polaroids['title_italic'] ?? __('lum.polaroids.title_italic') }}</span>
                     </h2>
                     <p class="mx-auto mt-[24px] max-w-[335px] text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">
-                        {{ __('lum.polaroids.body') }}
+                        {{ $polaroids['body'] ?? __('lum.polaroids.body') }}
                     </p>
                 </div>
             </div>
@@ -68,19 +69,19 @@
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="271" height="405">
                     <p class="absolute left-0 right-0 top-[14px] z-[3] text-center text-[12px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
-                    <p class="lum-script absolute bottom-[20px] left-0 right-0 z-[3] px-[10px] text-center leading-[1.1] tracking-[1.1px] text-lum-azure" style="font-size: {{ $polaroid['script'] }};">{{ __('lum.polaroids.share') }}</p>
+                    <p class="lum-script absolute bottom-[20px] left-0 right-0 z-[3] px-[10px] text-center leading-[1.1] tracking-[1.1px] text-lum-azure" style="font-size: {{ $polaroid['script'] }};">{{ $polaroids['share'] ?? __('lum.polaroids.share') }}</p>
                 </div>
             </div>
         @endforeach
 
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: 120.97px; top: 33px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.shine') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">{{ $polaroids['shine'] ?? __('lum.polaroids.shine') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: {{ app()->getLocale() === 'ru' ? '760px' : '705.41px' }}; top: -24.57px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.impressions') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(-9.6deg);">{{ $polaroids['impressions'] ?? __('lum.polaroids.impressions') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: 606.3px; top: 536px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(9.07deg);">{{ __('lum.polaroids.relax') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 58.473px; letter-spacing: 2.9237px; transform: rotate(9.07deg);">{{ $polaroids['relax'] ?? __('lum.polaroids.relax') }}</p>
         </div>
 
         <div class="absolute left-[80px] top-[695px] flex w-[800px] flex-col items-center gap-[56px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
@@ -88,10 +89,10 @@
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[8px]" width="8" height="8">
                 <div class="text-center">
                     <h2 class="font-serif text-[52px] leading-[52px] text-lum-espresso">
-                        {{ __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ __('lum.polaroids.title_italic') }}</span>
+                        {{ $polaroids['title_normal'] ?? __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ $polaroids['title_italic'] ?? __('lum.polaroids.title_italic') }}</span>
                     </h2>
                     <p class="mx-auto mt-[32px] max-w-[800px] text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">
-                        {{ __('lum.polaroids.body') }}
+                        {{ $polaroids['body'] ?? __('lum.polaroids.body') }}
                     </p>
                 </div>
             </div>
@@ -112,19 +113,19 @@
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="271" height="405">
                     <p class="absolute left-0 right-0 top-[18px] z-[3] text-center font-sans text-[14px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
                     <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
-                    <p class="lum-script absolute bottom-[28px] left-0 right-0 z-[3] px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-azure">{{ __('lum.polaroids.share') }}</p>
+                    <p class="lum-script absolute bottom-[28px] left-0 right-0 z-[3] px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-azure">{{ $polaroids['share'] ?? __('lum.polaroids.share') }}</p>
                 </div>
             </div>
         @endforeach
 
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: 274.97px; top: 175px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.shine') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">{{ $polaroids['shine'] ?? __('lum.polaroids.shine') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: {{ app()->getLocale() === 'ru' ? '1560px' : '1468.64px' }}; top: -20px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">{{ __('lum.polaroids.impressions') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(-9.6deg);">{{ $polaroids['impressions'] ?? __('lum.polaroids.impressions') }}</p>
         </div>
         <div class="pointer-events-none absolute z-20 flex -translate-x-1/2 items-center justify-center" style="left: 1125px; top: 455px;">
-            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(9.07deg);">{{ __('lum.polaroids.relax') }}</p>
+            <p class="lum-script whitespace-nowrap text-center leading-none text-lum-mist" style="font-size: 73.092px; letter-spacing: 3.6546px; transform: rotate(9.07deg);">{{ $polaroids['relax'] ?? __('lum.polaroids.relax') }}</p>
         </div>
 
         <div class="absolute left-[532px] top-[693px] flex w-[856px] flex-col items-center gap-[64px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.2">
@@ -132,10 +133,10 @@
                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">
                 <div class="text-center">
                     <h2 class="lum-heading-1 text-lum-espresso">
-                        {{ __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ __('lum.polaroids.title_italic') }}</span>
+                        {{ $polaroids['title_normal'] ?? __('lum.polaroids.title_normal') }}<br><span class="font-medium italic">{{ $polaroids['title_italic'] ?? __('lum.polaroids.title_italic') }}</span>
                     </h2>
                     <p class="lum-body mx-auto mt-[44px] max-w-[760px] text-lum-espresso">
-                        {{ __('lum.polaroids.body') }}
+                        {{ $polaroids['body'] ?? __('lum.polaroids.body') }}
                     </p>
                 </div>
             </div>

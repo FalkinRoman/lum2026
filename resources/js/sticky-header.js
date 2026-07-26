@@ -1,3 +1,5 @@
+import { getLenis } from './smooth-scroll';
+
 export function syncStickyHeader() {
     const stickyScaled = document.querySelector('.lum-sticky-header__scaled');
     const stickyHeader = document.getElementById('lum-sticky-header');
@@ -72,6 +74,26 @@ export function initStickyHeader() {
 
     window.addEventListener('scroll', update, { passive: true });
     document.addEventListener('lum:layout-change', update);
+
+    // Lenis не всегда шлёт native scroll — на no-scale booking sticky иначе «залипает»
+    const bindLenis = () => {
+        const lenis = getLenis();
+
+        if (! lenis || lenis.__lumStickyBound) {
+            return Boolean(lenis);
+        }
+
+        lenis.__lumStickyBound = true;
+        lenis.on('scroll', update);
+
+        return true;
+    };
+
+    if (! bindLenis()) {
+        document.addEventListener('DOMContentLoaded', bindLenis, { once: true });
+        window.addEventListener('load', bindLenis, { once: true });
+        [50, 200, 500].forEach((ms) => window.setTimeout(bindLenis, ms));
+    }
 
     let lastWidth = window.innerWidth;
 

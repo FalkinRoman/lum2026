@@ -9,9 +9,22 @@ let lenis = null;
 /**
  * Damai scroll feel: Lenis + ScrollTrigger
  * https://thedamai.com/assets/js/index.js — initLenis()
+ *
+ * Lenis + iframe = мёртвый скролл: iframe не форвардит wheel/touch родителю
+ * (официально в README). Exely booking на весь экран → «иногда не скроллится».
  */
 export function initSmoothScroll() {
     if (lenis || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    const hasExelyBooking = Boolean(
+        document.querySelector('[data-lum-no-scale], [data-lum-booking-page], #be-booking-form'),
+    );
+
+    if (hasExelyBooking) {
+        document.documentElement.classList.add('lum-native-scroll');
+
         return;
     }
 

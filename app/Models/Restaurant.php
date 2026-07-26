@@ -15,14 +15,14 @@ class Restaurant extends Model
         'listing_image', 'hero_image', 'oval_image', 'gallery_images',
         'eyebrow', 'subtitle', 'title_normal', 'title_italic', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
-        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body',
+        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body', 'gallery_body_bottom',
         'quote_line1', 'quote_line2', 'quote_note_line1', 'quote_note_line2', 'book_url',
     ];
 
     public array $translatable = [
         'eyebrow', 'subtitle', 'title_normal', 'title_italic', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
-        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body',
+        'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body', 'gallery_body_bottom',
         'quote_line1', 'quote_line2', 'quote_note_line1', 'quote_note_line2',
     ];
 

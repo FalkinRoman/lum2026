@@ -1,14 +1,16 @@
 @php
-    $villasSlides = array_map(fn ($slide) => array_merge($slide, [
-        'subtitle' => $slide['subtitle'] ?? __('lum.villas.subtitle'),
-        'subtitleLine1' => $slide['subtitleLine1'] ?? __('lum.villas.subtitle_line1'),
-        'subtitleLine2' => $slide['subtitleLine2'] ?? __('lum.villas.subtitle_line2'),
+    $villasIntro = \App\Support\Content::homeLocale('villas_intro') ?? [];
+    $villasSlides = collect(\App\Support\Content::villas())->map(fn ($slide) => array_merge($slide, [
+        'subtitle' => $slide['subtitle'] ?? ($villasIntro['subtitle'] ?? __('lum.villas.subtitle')),
+        'subtitleLine1' => $slide['subtitleLine1'] ?? ($villasIntro['subtitle_line1'] ?? __('lum.villas.subtitle_line1')),
+        'subtitleLine2' => $slide['subtitleLine2'] ?? ($villasIntro['subtitle_line2'] ?? __('lum.villas.subtitle_line2')),
         'href' => route('villa.show', $slide['slug']),
-    ]), trans('lum.villas.slides'));
+    ]))->values()->all();
     $isRu = app()->getLocale() === 'ru';
-    $villasLifestyle = '<span class="lum-script text-[24px] text-lum-green">' . e(__('lum.villas.lifestyle')) . ' </span>';
-    $villasLifestyleTab = '<span class="lum-script text-[26px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
-    $villasLifestyleDesk = '<span class="lum-script text-[28px] text-lum-green">' . e(__('lum.villas.lifestyle')) . '</span>';
+    $lifestyle = $villasIntro['lifestyle'] ?? __('lum.villas.lifestyle');
+    $villasLifestyle = '<span class="lum-script text-[24px] text-lum-green">' . e($lifestyle) . ' </span>';
+    $villasLifestyleTab = '<span class="lum-script text-[26px] text-lum-green">' . e($lifestyle) . '</span>';
+    $villasLifestyleDesk = '<span class="lum-script text-[28px] text-lum-green">' . e($lifestyle) . '</span>';
     $villasStart = 0;
     $villasTotal = str_pad(count($villasSlides), 2, '0', STR_PAD_LEFT);
 @endphp
@@ -24,7 +26,7 @@
     {{-- MOBILE — Figma 16:1479 + 16:1488 --}}
     <div class="relative h-full overflow-visible tab:hidden" data-lum-villas-panel data-lum-villas-suffix="-sm">
         <div class="absolute left-1/2 top-[44px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[16px] text-center">
-            <p class="lum-text-3 font-medium uppercase text-lum-espresso">{{ __('lum.villas.eyebrow') }}</p>
+            <p class="lum-text-3 font-medium uppercase text-lum-espresso">{{ $villasIntro['eyebrow'] ?? __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="335" height="1">
             <div @class(['text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso', '[&_p]:whitespace-nowrap' => $isRu])>
                 <p>{{ __('lum.villas.intro_mobile_1') }}</p>
@@ -89,7 +91,7 @@
                 'w-[640px]' => ! $isRu,
             ])
         >
-            <p class="lum-text-2 font-medium uppercase text-lum-espresso">{{ __('lum.villas.eyebrow') }}</p>
+            <p class="lum-text-2 font-medium uppercase text-lum-espresso">{{ $villasIntro['eyebrow'] ?? __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="640" height="1">
             <div @class(['lum-text-2 text-lum-espresso', '[&_p]:whitespace-nowrap' => $isRu])>
                 <p>{!! __('lum.villas.intro_tablet', ['lifestyle' => $villasLifestyleTab]) !!}</p>
@@ -142,7 +144,7 @@
                 'w-[530px]' => ! $isRu,
             ])
         >
-            <p class="lum-eyebrow text-lum-espresso">{{ __('lum.villas.eyebrow') }}</p>
+            <p class="lum-eyebrow text-lum-espresso">{{ $villasIntro['eyebrow'] ?? __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-[2px] w-full" width="530" height="2">
             <div @class(['lum-body text-lum-espresso', '[&_p]:whitespace-nowrap' => $isRu])>
                 <p>{!! __('lum.villas.intro_desk_1', ['lifestyle' => $villasLifestyleDesk]) !!}</p>

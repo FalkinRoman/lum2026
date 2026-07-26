@@ -16,6 +16,7 @@ import { initNavLinks } from './nav-links';
 import { initRestaurantMenu } from './restaurant-menu';
 import { initInteriorCarousel } from './interior-carousel';
 import { initVillasCarousel } from './villas-carousel';
+import { initExelyScrollBridge } from './exely-scroll-bridge';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -73,12 +74,16 @@ function scaleLumPage() {
         || Boolean(document.querySelector('[data-lum-no-scale]'));
 
     if (noScale) {
-        page.style.width = '';
+        page.style.width = '100%';
+        page.style.maxWidth = '100%';
         page.style.zoom = '';
-        page.style.transform = '';
+        page.style.transform = 'none';
         page.style.transformOrigin = '';
         page.style.marginBottom = '';
         viewport.style.height = '';
+        viewport.style.width = '100%';
+        viewport.style.maxWidth = '100%';
+        viewport.style.overflowX = '';
     } else {
         page.style.width = `${width}px`;
         page.style.zoom = 'normal';
@@ -506,6 +511,7 @@ function initBackToTop() {
 
 applyLumLayout({ forceRefresh: true });
 initSmoothScroll();
+initExelyScrollBridge();
 initMobileZoomGuard();
 initLanguageSwitcher();
 initBackToTop();
