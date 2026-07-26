@@ -66,22 +66,37 @@ function scaleLumPage() {
 
     syncLumBreakpointAttribute(breakpoint);
     page.dataset.lumBreakpoint = breakpoint;
-    page.style.width = `${width}px`;
-    page.style.zoom = 'normal';
-    page.style.transform = `scale(${scale})`;
-    page.style.transformOrigin = 'top left';
-    page.style.marginBottom = '0';
 
-    const syncViewportHeight = () => {
-        const visualHeight = Math.ceil(page.getBoundingClientRect().height);
+    // Exely iframe ломает layout под CSS transform:scale — на booking
+    // оставляем нативный viewport, иначе форма рисует «пустышку» слева.
+    const noScale = page.hasAttribute('data-lum-no-scale')
+        || Boolean(document.querySelector('[data-lum-no-scale]'));
 
-        if (visualHeight > 0) {
-            viewport.style.height = `${visualHeight}px`;
-        }
-    };
+    if (noScale) {
+        page.style.width = '';
+        page.style.zoom = '';
+        page.style.transform = '';
+        page.style.transformOrigin = '';
+        page.style.marginBottom = '';
+        viewport.style.height = '';
+    } else {
+        page.style.width = `${width}px`;
+        page.style.zoom = 'normal';
+        page.style.transform = `scale(${scale})`;
+        page.style.transformOrigin = 'top left';
+        page.style.marginBottom = '0';
 
-    syncViewportHeight();
-    requestAnimationFrame(syncViewportHeight);
+        const syncViewportHeight = () => {
+            const visualHeight = Math.ceil(page.getBoundingClientRect().height);
+
+            if (visualHeight > 0) {
+                viewport.style.height = `${visualHeight}px`;
+            }
+        };
+
+        syncViewportHeight();
+        requestAnimationFrame(syncViewportHeight);
+    }
 
     const menuScaled = document.querySelector('.lum-burger-menu__scaled');
 

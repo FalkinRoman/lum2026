@@ -12,7 +12,7 @@
 @endphp
 
 <div class="lum-viewport">
-    <div class="lum-page">
+    <div class="lum-page" data-lum-no-scale>
         <section class="lum-container relative bg-lum-ivory" data-lum-booking-page>
             <div class="tab:hidden">
                 @include('lum.partials.header-mobile', ['headerTone' => 'espresso'])

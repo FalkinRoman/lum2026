@@ -1823,41 +1823,55 @@
         }
     }
 
-    /* Booking page — контентная ширина под Exely iframe */
+    /* Booking page — без scale: fluid ширина, иначе Exely рисует левый gutter */
+    [data-lum-booking-page] > header {
+        left: 20px;
+        right: 20px;
+        width: auto;
+        max-width: none;
+    }
+
     .lum-booking-page__intro {
-        width: 335px;
+        width: 100%;
+        max-width: 335px;
         margin: 0 auto;
-        padding-top: 124px;
+        padding: 124px 20px 0;
+        box-sizing: border-box;
         text-align: center;
     }
 
     .lum-booking-page__engine {
-        width: 335px;
+        width: 100%;
+        max-width: 335px;
         margin: 28px auto 48px;
+        padding: 0 20px;
+        box-sizing: border-box;
+        overflow-x: clip;
     }
 
     @media (min-width: 431px) {
         .lum-booking-page__intro {
-            width: 720px;
+            max-width: 720px;
             padding-top: 160px;
         }
 
         .lum-booking-page__engine {
-            width: 880px;
+            max-width: 880px;
             margin: 36px auto 64px;
+            padding: 0 24px;
         }
     }
 
     @media (min-width: 1024px) {
         .lum-booking-page__intro {
-            width: 900px;
+            max-width: 900px;
             padding-top: 180px;
         }
 
         .lum-booking-page__engine {
-            /* Exely BE лучше смотрится не на 1470 — карточка формы ~1100 */
-            width: 1120px;
+            max-width: 1120px;
             margin: 40px auto 80px;
+            padding: 0 32px;
         }
     }
 
