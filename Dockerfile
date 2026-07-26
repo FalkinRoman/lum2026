@@ -19,6 +19,7 @@ RUN apt-get update \
         intl \
         mbstring \
         bcmath \
+        exif \
     && curl -sS https://getcomposer.org/installer \
         | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/lib/apt/lists/*
@@ -78,6 +79,13 @@ RUN apt-get update \
         git \
         unzip \
         libzip-dev \
+        libicu-dev \
+        libonig-dev \
+    && docker-php-ext-install \
+        zip \
+        intl \
+        mbstring \
+        exif \
     && curl -sS https://getcomposer.org/installer \
         | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/lib/apt/lists/*
@@ -113,6 +121,7 @@ RUN apt-get update \
         intl \
         mbstring \
         bcmath \
+        exif \
         opcache \
     && rm -rf /var/lib/apt/lists/*
 
