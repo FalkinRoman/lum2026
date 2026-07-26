@@ -1824,7 +1824,7 @@
     }
 
     /* Booking page — без scale: fluid ширина, иначе Exely рисует левый gutter */
-    [data-lum-booking-page] > header {
+    [data-lum-booking-page] header {
         left: 20px;
         right: 20px;
         width: auto;
