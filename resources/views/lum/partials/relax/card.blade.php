@@ -15,7 +15,7 @@
 ></span>
 
 <div class="pointer-events-none absolute left-1/2 z-[2] flex -translate-x-1/2 rotate-1 items-center justify-center bg-[#bee7fd] {{ $labelPadX }} {{ $labelPadY }}" style="top: {{ $labelTop }}px">
-    <p @class(['whitespace-nowrap text-center font-serif font-medium text-lum-espresso', $labelClass ?? 'text-[20px] leading-[24px] tracking-[-0.4px]'])>
+    <p @class(['text-center font-serif font-medium text-lum-espresso', $labelClass ?? 'text-[20px] leading-[24px] tracking-[-0.4px]'])>
         @if (! empty($activity['label_before']))
             <span class="not-italic">{{ $activity['label_before'] }}</span>
         @endif

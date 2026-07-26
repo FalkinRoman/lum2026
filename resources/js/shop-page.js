@@ -1,19 +1,30 @@
 function syncThumbIndicator(card, activeThumb) {
     const indicator = card.querySelector('[data-lum-shop-thumb-indicator]');
-    const wrap = activeThumb?.parentElement;
+    const wrap = card.querySelector('[data-lum-shop-thumbs]');
 
     if (! indicator || ! activeThumb || ! wrap) {
         return;
     }
 
     indicator.style.width = `${activeThumb.offsetWidth}px`;
-    indicator.style.left = `${wrap.offsetLeft + activeThumb.offsetLeft}px`;
+    indicator.style.left = `${activeThumb.offsetLeft}px`;
 }
 
 function setActiveButton(buttons, activeButton) {
     buttons.forEach((button) => {
         button.toggleAttribute('data-active', button === activeButton);
     });
+}
+
+function setProductImage(card, thumb) {
+    const mainImage = card.querySelector('[data-lum-shop-product-image]');
+    const thumbImage = thumb.querySelector('img');
+
+    if (! mainImage || ! thumbImage?.src) {
+        return;
+    }
+
+    mainImage.src = thumbImage.currentSrc || thumbImage.src;
 }
 
 function initShopProduct(card) {
@@ -30,6 +41,7 @@ function initShopProduct(card) {
         thumb.addEventListener('click', () => {
             setActiveButton(thumbs, thumb);
             syncThumbIndicator(card, thumb);
+            setProductImage(card, thumb);
         });
     });
 

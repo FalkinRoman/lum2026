@@ -1,25 +1,26 @@
 @php
     $items = trans('lum.shop.items');
+    $price = __('lum.shop.cta_price');
 
     $mobileCards = [
-        ['slug' => 'ocean-tee', 'top' => 296, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'ocean-tee', 'top' => 296],
         ['slug' => 'lum-cup', 'top' => 991],
-        ['slug' => 'ocean-tee', 'top' => 1589, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'ocean-tee', 'top' => 1589],
         ['slug' => 'lum-cup', 'top' => 2284],
     ];
 
     $tabletCards = [
-        ['slug' => 'ocean-tee', 'left' => 20, 'top' => 349, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'ocean-tee', 'left' => 20, 'top' => 349],
         ['slug' => 'lum-cup', 'left' => 490, 'top' => 349],
-        ['slug' => 'ocean-tee', 'left' => 490, 'top' => 1029, 'cta' => __('lum.shop.cta_reservation')],
+        ['slug' => 'ocean-tee', 'left' => 490, 'top' => 1029],
         ['slug' => 'lum-cup', 'left' => 20, 'top' => 1129],
     ];
 
     $desktopCards = [
-        ['slug' => 'ocean-tee', 'left' => 72, 'top' => 651, 'cta' => __('lum.shop.cta_price')],
+        ['slug' => 'ocean-tee', 'left' => 72, 'top' => 651],
         ['slug' => 'lum-cup', 'left' => 532, 'top' => 651],
-        ['slug' => 'ocean-tee', 'left' => 992, 'top' => 651, 'cta' => __('lum.shop.cta_reservation')],
-        ['slug' => 'lum-cup', 'left' => 1452, 'top' => 591],
+        ['slug' => 'ocean-tee', 'left' => 992, 'top' => 651],
+        ['slug' => 'lum-cup', 'left' => 1452, 'top' => 651],
     ];
 @endphp
 
@@ -38,16 +39,13 @@
         </div>
 
         @foreach ($mobileCards as $card)
-            @php
-                $product = $items[$card['slug']];
-                $cta = $card['cta'] ?? __('lum.shop.cta_reservation');
-            @endphp
+            @php $product = $items[$card['slug']]; @endphp
             <div class="absolute left-[20px] w-[335px]" style="top: {{ $card['top'] }}px" data-lum-villa-card>
                 @include('lum.partials.shop-page.product-card', [
                     'img' => $img,
                     'product' => $product,
                     'variant' => 'mobile',
-                    'cta' => $cta,
+                    'cta' => $price,
                 ])
             </div>
         @endforeach
@@ -67,16 +65,13 @@
         </div>
 
         @foreach ($tabletCards as $card)
-            @php
-                $product = $items[$card['slug']];
-                $cta = $card['cta'] ?? __('lum.shop.cta_reservation');
-            @endphp
+            @php $product = $items[$card['slug']]; @endphp
             <div class="absolute w-[450px]" style="left: {{ $card['left'] }}px; top: {{ $card['top'] }}px" data-lum-villa-card>
                 @include('lum.partials.shop-page.product-card', [
                     'img' => $img,
                     'product' => $product,
                     'variant' => 'tablet',
-                    'cta' => $cta,
+                    'cta' => $price,
                 ])
             </div>
         @endforeach
@@ -96,16 +91,13 @@
         </div>
 
         @foreach ($desktopCards as $card)
-            @php
-                $product = $items[$card['slug']];
-                $cta = $card['cta'] ?? __('lum.shop.cta_reservation');
-            @endphp
+            @php $product = $items[$card['slug']]; @endphp
             <div class="absolute" style="left: {{ $card['left'] }}px; top: {{ $card['top'] }}px" data-lum-villa-card>
                 @include('lum.partials.shop-page.product-card', [
                     'img' => $img,
                     'product' => $product,
                     'variant' => 'desktop',
-                    'cta' => $cta,
+                    'cta' => $price,
                 ])
             </div>
         @endforeach

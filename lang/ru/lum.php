@@ -248,37 +248,37 @@ return [
         'posts' => [
             [
                 'slug' => 'sri-lanka-guide',
-                'title' => 'The Sri Lanka Guide',
-                'excerpt' => 'Just a few hours from the airport. Light years away from the crowds. Here you you find the true Sri Lanka. And a small resort with a big view, a great restaurant, and a special sense of calm. Welcome to The Lum.',
+                'title' => 'Гид по Шри-Ланке',
+                'excerpt' => 'Всего в нескольких часах от аэропорта — и на световые годы от толпы. Здесь настоящая Шри-Ланка. Небольшой курорт с широким видом, отличным рестораном и особым чувством покоя. Добро пожаловать в The Lum.',
                 'image' => 'posts/sri-lanka-guide.webp',
-                'tags' => ['Food', 'Ocean'],
+                'tags' => ['Еда', 'Океан'],
                 'categories' => ['food', 'beach', 'sri-lanka'],
                 'theme' => 'cream',
             ],
             [
                 'slug' => 'nervous-system-retreat',
-                'title' => 'The 7-Day Nervous System Reset Retreat',
-                'excerpt' => 'Just a journey away from the ordinary. Far from the noise, close to nature. Discover the hidden beauty of Sri Lanka, where ocean views, mindful moments, and effortless calm come together. Welcome to LUM Ocean.',
+                'title' => '7-дневный ретрит для нервной системы',
+                'excerpt' => 'Вдали от шума, ближе к природе. Откройте скрытую красоту Шри-Ланки — виды на океан, осознанные моменты и лёгкое спокойствие. Добро пожаловать в LUM Ocean.',
                 'image' => 'posts/nervous-system-retreat.webp',
-                'tags' => ['Food', 'Ocean'],
+                'tags' => ['Еда', 'Океан'],
                 'categories' => ['food', 'kitchen'],
                 'theme' => 'dark',
             ],
             [
                 'slug' => 'lum-ocean-trip',
-                'title' => 'Lum Ocean Trip',
-                'excerpt' => 'A boutique hotel, restaurant, and lifestyle space for Relax, Surfing, and beautiful living by the ocean. European cuisine, grill parties, delicious cocktails, And the atmosphere of a tropical evening.',
+                'title' => 'Путешествие Lum Ocean',
+                'excerpt' => 'Бутик-отель, ресторан и лайфстайл-пространство для отдыха, сёрфинга и красивой жизни у океана. Европейская кухня, гриль-вечеринки, авторские коктейли и атмосфера тропического вечера.',
                 'image' => 'posts/lum-ocean-trip.webp',
-                'tags' => ['Food', 'Ocean'],
+                'tags' => ['Еда', 'Океан'],
                 'categories' => ['beach', 'kitchen'],
                 'theme' => 'muted',
             ],
             [
                 'slug' => 'restaurant-bar',
-                'title' => 'Our restaurant & bar is open daily from 9 am to 9 pm.',
-                'excerpt' => 'European cuisine, grill parties, delicious cocktails, and the atmosphere of a tropical evening by the ocean.',
+                'title' => 'Ресторан и бар открыты ежедневно с 9:00 до 21:00.',
+                'excerpt' => 'Европейская кухня, гриль-вечеринки, авторские коктейли и атмосфера тропического вечера у океана.',
                 'image' => 'surfing.webp',
-                'tags' => ['Surfing', 'Ocean'],
+                'tags' => ['Сёрфинг', 'Океан'],
                 'categories' => ['food', 'beach'],
                 'theme' => 'cream',
             ],
@@ -287,44 +287,44 @@ return [
 
     'post' => [
         'nervous-system-retreat' => [
-            'meta_title' => 'The 7-Day Nervous System Reset Retreat — Lum',
-            'title' => 'The 7-Day Nervous System Reset Retreat',
-            'excerpt' => 'Just a journey away from the ordinary. Far from the noise, close to nature. Discover the hidden beauty of Sri Lanka, where ocean views, mindful moments, and effortless calm come together. Welcome to LUM Ocean.',
-            'tags' => ['Food', 'Ocean'],
+            'meta_title' => '7-дневный ретрит для нервной системы — Lum',
+            'title' => '7-дневный ретрит для нервной системы',
+            'excerpt' => 'Вдали от шума, ближе к природе. Откройте скрытую красоту Шри-Ланки — виды на океан, осознанные моменты и лёгкое спокойствие. Добро пожаловать в LUM Ocean.',
+            'tags' => ['Еда', 'Океан'],
             'hero' => 'detail/nervous-system-retreat/hero.webp',
             'body' => [
-                'A week designed to slow the pulse and widen the horizon — morning yoga above the ocean, guided breathwork, and long afternoons with nowhere to be.',
-                'Each day balances movement and rest: coastal walks, tea in the garden, and evenings that end with the sound of the sea.',
+                'Неделя, чтобы замедлить пульс и расширить горизонт — утренняя йога над океаном, дыхательные практики и долгие дни без расписания.',
+                'Каждый день балансирует движение и отдых: прогулки вдоль берега, чай в саду и вечера под звук моря.',
             ],
         ],
         'sri-lanka-guide' => [
-            'meta_title' => 'The Sri Lanka Guide — Lum',
-            'title' => 'The Sri Lanka Guide',
-            'excerpt' => 'Just a few hours from the airport. Light years away from the crowds. Here you you find the true Sri Lanka. And a small resort with a big view, a great restaurant, and a special sense of calm. Welcome to The Lum.',
-            'tags' => ['Food', 'Ocean'],
+            'meta_title' => 'Гид по Шри-Ланке — Lum',
+            'title' => 'Гид по Шри-Ланке',
+            'excerpt' => 'Всего в нескольких часах от аэропорта — и на световые годы от толпы. Здесь настоящая Шри-Ланка. Небольшой курорт с широким видом, отличным рестораном и особым чувством покоя. Добро пожаловать в The Lum.',
+            'tags' => ['Еда', 'Океан'],
             'hero' => 'posts/sri-lanka-guide.webp',
             'body' => [
-                'From Galle Fort to hidden coves along the south coast, this is the Sri Lanka we return to — unhurried, generous, and full of light.',
+                'От форта Галле до укромных бухт южного побережья — это та Шри-Ланка, к которой мы возвращаемся: неспешная, щедрая и полная света.',
             ],
         ],
         'lum-ocean-trip' => [
-            'meta_title' => 'Lum Ocean Trip — Lum',
-            'title' => 'Lum Ocean Trip',
-            'excerpt' => 'A boutique hotel, restaurant, and lifestyle space for Relax, Surfing, and beautiful living by the ocean. European cuisine, grill parties, delicious cocktails, And the atmosphere of a tropical evening.',
-            'tags' => ['Food', 'Ocean'],
+            'meta_title' => 'Путешествие Lum Ocean — Lum',
+            'title' => 'Путешествие Lum Ocean',
+            'excerpt' => 'Бутик-отель, ресторан и лайфстайл-пространство для отдыха, сёрфинга и красивой жизни у океана. Европейская кухня, гриль-вечеринки, авторские коктейли и атмосфера тропического вечера.',
+            'tags' => ['Еда', 'Океан'],
             'hero' => 'posts/lum-ocean-trip.webp',
             'body' => [
-                'Surf at dawn, lunch under the palms, and sunset drinks as the tide turns — Lum Ocean is a rhythm, not a schedule.',
+                'Сёрф на рассвете, обед под пальмами и закатные напитки, когда меняется прилив — Lum Ocean это ритм, а не расписание.',
             ],
         ],
         'restaurant-bar' => [
-            'meta_title' => 'Restaurant & Bar — Lum',
-            'title' => 'Our restaurant & bar is open daily from 9 am to 9 pm.',
-            'excerpt' => 'European cuisine, grill parties, delicious cocktails, and the atmosphere of a tropical evening by the ocean.',
-            'tags' => ['Surfing', 'Ocean'],
+            'meta_title' => 'Ресторан и бар — Lum',
+            'title' => 'Ресторан и бар открыты ежедневно с 9:00 до 21:00.',
+            'excerpt' => 'Европейская кухня, гриль-вечеринки, авторские коктейли и атмосфера тропического вечера у океана.',
+            'tags' => ['Сёрфинг', 'Океан'],
             'hero' => 'surfing.webp',
             'body' => [
-                'Start the morning with surfing and end the day with a beautiful ocean sunset — our restaurant and bar are open daily from 9 am to 9 pm.',
+                'Начните утро с сёрфинга и завершите день красивым закатом у океана — наш ресторан и бар открыты ежедневно с 9:00 до 21:00.',
             ],
         ],
     ],
@@ -350,12 +350,12 @@ return [
     'shop' => [
         'eyebrow' => 'НАШ МАГАЗИН',
         'title_normal' => 'Загляни в',
-        'title_italic' => 'Lum Shop',
+        'title_italic' => 'магазин Lum',
         'cta' => 'в магазин',
         'page_title_normal' => 'lum',
-        'page_title_italic' => 'shop',
+        'page_title_italic' => 'магазин',
         'cta_price' => '44$',
-        'cta_reservation' => 'make a reservation',
+        'cta_reservation' => 'забронировать',
         'social_instagram' => '@lum_shop_sl',
         'social_whatsapp' => 'WhatsApp',
         'social_instagram_url' => 'https://www.instagram.com/lum_shop_sl/',
@@ -363,8 +363,8 @@ return [
         'items' => [
             'ocean-tee' => [
                 'type' => 'tee',
-                'title' => 'LUM OCEAN TEE',
-                'subtitle' => 'Classic Sun 100% Cotton · Washed & worn',
+                'title' => 'ФУТБОЛКА LUM OCEAN',
+                'subtitle' => 'Classic Sun · 100% хлопок · washed',
                 'image' => 'products/ocean-tee.webp',
                 'thumbs' => [
                     'products/thumbs/tee-01.webp',
@@ -382,8 +382,8 @@ return [
             ],
             'lum-cup' => [
                 'type' => 'cup',
-                'title' => 'LUM CUP',
-                'subtitle' => 'Organic Cotton · Vintage Wash',
+                'title' => 'КРУЖКА LUM',
+                'subtitle' => 'Органик · винтажная обработка',
                 'image' => 'products/lum-cup.webp',
                 'thumbs' => [
                     'products/thumbs/cup-01.webp',
@@ -424,12 +424,13 @@ return [
 
     'stay' => [
         'title_line1' => 'наши проекты',
-        'title_line2' => 'на юге',
-        'title_italic' => 'Шри-Ланки',
-        'eyebrow' => 'Места, в которые хочется возвращаться',
+        'title_line2' => 'на юге острова',
+        'title_italic' => 'Шри-Ланка',
+        'eyebrow' => 'Места, куда хочется вернуться',
         'quote' => '«Мне нужно, чтобы обо всём позаботились»',
-        'note_line1' => 'Или замедлиться: йога, медитация,',
-        'note_line2' => 'массаж или сибирская баня',
+        'quote_break' => "«Мне нужно,\nчтобы обо всём\nпозаботились»",
+        'note_line1' => 'Или замедлись: йога,',
+        'note_line2' => 'медитация, массаж или баня',
         'properties' => [
             [
                 'slug' => 'residence',
@@ -463,21 +464,21 @@ return [
     ],
 
     'dining' => [
-        'title_line1' => 'наш ресторан и бар',
-        'title_line2' => 'открыты ежедневно с',
-        'title_italic' => '9:00 до 21:00.',
+        'title_line1' => 'наш ресторан',
+        'title_line2' => 'и бар открыты',
+        'title_italic' => 'с 9:00 до 21:00.',
         'eyebrow' => 'Будем рады видеть вас',
         'quote_line1' => 'А что, ',
         'quote_line2' => 'если не нужно выбирать?',
-        'note_line1' => 'Или замедлиться: йога, медитация,',
-        'note_line2' => 'массаж или сибирская баня',
+        'note_line1' => 'Или замедлись: йога,',
+        'note_line2' => 'медитация, массаж или баня',
         'opening_soon' => 'Скоро открытие',
         'venues' => [
             [
                 'slug' => 'restaurant-bar',
                 'image' => 'restaurant-bar.webp',
-                'eyebrow' => 'ПРАВИЛЬНОЕ НАЧАЛО ДНЯ',
-                'subtitle' => 'закваска / авокадо / хлопья чили / яйцо пашот',
+                'eyebrow' => 'НАЧАЛО ДНЯ',
+                'subtitle' => 'закваска / авокадо / чили / пашот',
                 'title_normal' => 'Lum ',
                 'title_italic' => 'Restaurant & Bar',
                 'cta' => 'more_info',
@@ -519,23 +520,23 @@ return [
     'relax' => [
         'title_line1' => 'какой отдых в',
         'title_italic' => 'Шри-Ланке',
-        'title_line2' => ' ты выберешь?',
-        'eyebrow' => 'Начинай утро с сёрфинга и заканчивай день красивым закатом у океана',
-        'eyebrow_line1' => 'Начинай утро с сёрфинга и',
-        'eyebrow_line2' => 'заканчивай день красивым закатом у океана',
+        'title_line2' => 'ты выберешь?',
+        'eyebrow' => 'Сёрфинг утром, закат у океана вечером',
+        'eyebrow_line1' => 'Сёрфинг утром —',
+        'eyebrow_line2' => 'закат у океана вечером',
         'activities' => [
             [
                 'slug' => 'yoga',
                 'image' => 'yoga.webp',
                 'label_before' => 'полный ',
-                'label_italic' => 'перезагруз',
+                'label_italic' => 'reset',
                 'label_after' => '…',
                 'name' => 'ЙОГА',
             ],
             [
                 'slug' => 'surfing',
                 'image' => 'surfing.webp',
-                'label_all_italic' => 'красивый закат у океана',
+                'label_all_italic' => 'закат у океана',
                 'name' => 'СЁРФИНГ',
             ],
             [
@@ -604,8 +605,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
         'surfing' => [
@@ -657,8 +658,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
         'padel' => [
@@ -710,8 +711,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
     ],
@@ -960,8 +961,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
         'sandwich-spot' => [
@@ -981,8 +982,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
         'rosenkoester' => [
@@ -1002,8 +1003,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
         'brute-wine-bar' => [
@@ -1023,8 +1024,8 @@ return [
             'quote' => [
                 'line1' => 'А что, ',
                 'line2' => 'если не нужно выбирать?',
-                'note_line1' => 'Или замедлиться: йога, медитация,',
-                'note_line2' => 'массаж или сибирская баня',
+                'note_line1' => 'Или замедлись: йога,',
+                'note_line2' => 'медитация, массаж или баня',
             ],
         ],
     ],

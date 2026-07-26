@@ -130,17 +130,20 @@
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(57,54,46,0.74)]"></div>
                         </div>
                     </a>
-                    <div class="flex h-[320px] w-[396px] flex-col items-center bg-lum-sand px-[37px] pt-[44px] pb-[40px] text-center">
-                        <a href="{{ $postHref }}" class="flex flex-1 flex-col items-center text-inherit no-underline">
-                            <img src="{{ $img('ui/dot.svg') }}" alt="" class="mb-[12px] size-[6px]" width="6" height="6">
-                            <p class="lum-text-2 mb-[24px] font-medium uppercase">{{ $post['tags'][0] }}</p>
-                            <p class="lum-heading-3 flex flex-1 items-center text-lum-espresso">{{ $post['title'] }}</p>
+                    <div class="flex h-[320px] w-[396px] flex-col items-center bg-lum-sand px-[37px] pt-[44px] pb-[44px] text-center">
+                        <a href="{{ $postHref }}" class="flex w-full max-w-[322px] shrink-0 flex-col items-center gap-[24px] text-inherit no-underline">
+                            <div class="flex shrink-0 flex-col items-center gap-[12px]">
+                                <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
+                                <p class="lum-text-2 font-medium uppercase">{{ $post['tags'][0] }}</p>
+                            </div>
+                            <p class="line-clamp-4 w-full overflow-hidden lum-heading-3 text-lum-espresso">{{ $post['title'] }}</p>
                         </a>
+                        <div class="min-h-[24px] flex-1" aria-hidden="true"></div>
                         @include('lum.partials.link-read-more', [
                             'img' => $img,
                             'href' => $postHref,
                             'lineWidth' => 79,
-                            'classes' => 'lum-text-2 mt-auto font-medium text-lum-green',
+                            'classes' => 'shrink-0 lum-text-2 font-medium text-lum-green',
                         ])
                     </div>
                 </div>

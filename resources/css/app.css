@@ -1184,18 +1184,18 @@
 
     [data-lum-blog-card].lum-blog-card .lum-blog-card__content {
         display: flex;
-        flex: 1;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        flex-shrink: 0;
         color: inherit;
         text-decoration: none;
     }
 
     [data-lum-blog-card].lum-blog-card .lum-blog-card__body {
         display: flex;
-        flex: 1;
         flex-direction: column;
+        align-items: center;
+        overflow: hidden;
     }
 
     [data-lum-blog-card].lum-blog-card[data-lum-blog-variant='mobile'] {
@@ -1871,11 +1871,34 @@
     }
 
     [data-lum-shop-color] {
-        @apply rounded-full;
+        @apply relative rounded-full;
+        outline: 1px dashed transparent;
+        outline-offset: 3px;
+        transition: outline-color var(--lum-animation-nav);
+    }
+
+    [data-lum-shop-color]:hover:not([data-active]) {
+        outline-color: var(--color-lum-espresso);
     }
 
     [data-lum-shop-color][data-active] {
-        box-shadow: 0 0 0 1px theme('colors.lum-espresso');
+        outline-color: var(--color-lum-espresso);
+    }
+
+    [data-lum-shop-thumbs] {
+        @apply relative;
+    }
+
+    [data-lum-shop-thumb-indicator] {
+        @apply pointer-events-none absolute top-[calc(100%+6px)] left-0 h-[2px] bg-lum-green;
+        transition: left var(--lum-animation-slider), width var(--lum-animation-slider);
+    }
+
+    /* Cup card — Figma dashed frame (espresso, dash 6/6) */
+    .lum-shop-card--cup,
+    [data-lum-shop-type='cup'] {
+        border: 1px dashed var(--color-lum-espresso);
+        border-image: none;
     }
 
     [data-lum-shop-variant='mobile'] [data-lum-shop-size][data-active] {

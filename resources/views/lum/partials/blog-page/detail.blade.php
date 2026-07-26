@@ -16,7 +16,7 @@
                     <span>{{ $post['tags'][1] }}</span>
                 </div>
 
-                <h1 class="mt-[44px] font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="3">{{ $post['title'] }}</h1>
+                <h1 class="mt-[44px] w-full font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="3">{{ $post['title'] }}</h1>
 
                 <p class="mt-[32px] w-full text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply" data-lum-stay-intro-item data-lum-stay-intro-order="4">{{ $post['excerpt'] }}</p>
             </div>
@@ -47,9 +47,15 @@
                     <span>{{ $post['tags'][1] }}</span>
                 </div>
 
-                <h1 class="mt-[44px] font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="3">{{ $post['title'] }}</h1>
+                <h1 class="mt-[44px] w-full font-serif text-[36px] leading-[36px] tracking-[-0.25px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="3">{{ $post['title'] }}</h1>
 
                 <p class="mt-[32px] w-full text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply" data-lum-stay-intro-item data-lum-stay-intro-order="4">{{ $post['excerpt'] }}</p>
+
+                <div class="mt-[32px] flex w-full flex-col gap-[24px]" data-lum-scroll-stagger>
+                    @foreach ($post['body'] as $paragraph)
+                        <p class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply" data-lum-scroll-item>{{ $paragraph }}</p>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -74,7 +80,7 @@
                     <span>{{ $post['tags'][1] }}</span>
                 </div>
 
-                <h1 class="mt-[64px] font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="3">{{ $post['title'] }}</h1>
+                <h1 class="mt-[64px] w-full font-serif text-[56px] leading-[68px] tracking-[-0.25px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="3">{{ $post['title'] }}</h1>
 
                 <div class="mt-[44px] flex w-full flex-col gap-[40px]">
                     <p class="lum-text-2 text-lum-espresso mix-blend-multiply" data-lum-stay-intro-item data-lum-stay-intro-order="4">{{ $post['excerpt'] }}</p>

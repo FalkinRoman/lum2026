@@ -428,6 +428,7 @@ return [
         'title_italic' => 'Sri Lanka',
         'eyebrow' => 'Places you’ll want to return to',
         'quote' => '“I need everything to be taken care of”',
+        'quote_break' => '“I need everything to be taken care of”',
         'note_line1' => 'Or slow down yoga, meditation,',
         'note_line2' => 'massage or a siberian banya',
         'properties' => [

@@ -1,4 +1,5 @@
 @php
+    $isRu = app()->getLocale() === 'ru';
     $isOpeningSoon = ($venue['cta'] ?? 'more_info') === 'opening_soon';
     $btnClass = $isOpeningSoon ? 'lum-btn-orange' : 'lum-btn-ivory';
     $ctaLabel = $isOpeningSoon ? __('lum.dining.opening_soon') : __('lum.location.more_info');
@@ -13,7 +14,7 @@
 <div class="pointer-events-none absolute inset-x-0 z-[2] flex flex-col items-center gap-[4px] px-[24px]" style="top: {{ $eyebrowTop }}px">
     <div class="flex w-full max-w-[351px] items-center justify-center gap-[4px]">
         <img src="{{ $img('dining/line-left.svg') }}" alt="" class="h-px w-[38px] shrink-0 object-cover" width="38" height="1">
-        <p @class(['shrink-0 text-center font-medium uppercase text-lum-ivory', $eyebrowClass])>{{ $venue['eyebrow'] }}</p>
+        <p @class(['text-center font-medium uppercase text-lum-ivory', 'shrink-0' => ! $isRu, 'min-w-0' => $isRu, $eyebrowClass])>{{ $venue['eyebrow'] }}</p>
         <img src="{{ $img('dining/line-right.svg') }}" alt="" class="h-px w-[38px] shrink-0 object-cover" width="38" height="1">
     </div>
     <p @class(['w-full max-w-[351px] text-center text-lum-ivory', $subtitleClass])>{{ $venue['subtitle'] }}</p>
@@ -27,7 +28,7 @@
 </h2>
 
 @if ($isOpeningSoon)
-    <span @class([$btnClass, 'pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</span>
+    <span @class([$btnClass, 'pointer-events-none absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px]', $isRu ? 'tracking-[1.4px]' : 'tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</span>
 @else
-    <a href="{{ route('restaurant.show', $venue['slug']) }}" @class([$btnClass, 'absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</a>
+    <a href="{{ route('restaurant.show', $venue['slug']) }}" @class([$btnClass, 'absolute left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px]', $isRu ? 'tracking-[1.4px]' : 'tracking-[2.84px]']) style="top: {{ $ctaTop }}px">{{ $ctaLabel }}</a>
 @endif

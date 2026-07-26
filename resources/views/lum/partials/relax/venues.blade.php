@@ -1,5 +1,6 @@
 @php
     $activities = trans('lum.relax.activities');
+    $isRu = app()->getLocale() === 'ru';
 
     $mobileLayout = [
         ['top' => 540],
@@ -31,11 +32,14 @@
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[6px]" width="6" height="6" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-stay-intro-item="title">
                     {{ __('lum.relax.title_line1') }}<br>
-                    <span class="font-medium italic">{{ __('lum.relax.title_italic') }}</span>{{ __('lum.relax.title_line2') }}
+                    <span class="font-medium italic">{{ __('lum.relax.title_italic') }}</span>@if ($isRu)<br>@endif{{ __('lum.relax.title_line2') }}
                 </h1>
             </div>
 
-            <p class="mt-[16px] lum-text-3 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.relax.eyebrow') }}</p>
+            <p class="mt-[16px] text-center lum-text-3 font-medium uppercase leading-[18px] text-lum-espresso" data-lum-stay-intro-item="eyebrow">
+                {{ __('lum.relax.eyebrow_line1') }}<br>
+                {{ __('lum.relax.eyebrow_line2') }}
+            </p>
 
             @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'mob', 'marginClass' => 'mt-[44px]'])
         </div>
@@ -73,11 +77,14 @@
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[8px]" width="8" height="8" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-stay-intro-item="title">
                     {{ __('lum.relax.title_line1') }}<br>
-                    <span class="font-medium italic">{{ __('lum.relax.title_italic') }}</span>{{ __('lum.relax.title_line2') }}
+                    <span class="font-medium italic">{{ __('lum.relax.title_italic') }}</span>@if ($isRu)<br>@endif{{ __('lum.relax.title_line2') }}
                 </h1>
             </div>
 
-            <p class="mt-[12px] max-w-[392px] text-center text-[14px] font-medium uppercase leading-[25px] tracking-[0.16px] text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.relax.eyebrow') }}</p>
+            <p class="mt-[12px] max-w-[480px] text-center text-[14px] font-medium uppercase leading-[22px] tracking-[0.16px] text-lum-espresso" data-lum-stay-intro-item="eyebrow">
+                {{ __('lum.relax.eyebrow_line1') }}<br>
+                {{ __('lum.relax.eyebrow_line2') }}
+            </p>
 
             @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'tab', 'marginClass' => 'mt-[56px]'])
         </div>
@@ -114,7 +121,7 @@
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item="title">
                     {{ __('lum.relax.title_line1') }}<br>
-                    <span class="font-medium italic">{{ __('lum.relax.title_italic') }}</span>{{ __('lum.relax.title_line2') }}
+                    <span class="font-medium italic">{{ __('lum.relax.title_italic') }}</span>@if ($isRu)<br>@endif{{ __('lum.relax.title_line2') }}
                 </h1>
             </div>
 

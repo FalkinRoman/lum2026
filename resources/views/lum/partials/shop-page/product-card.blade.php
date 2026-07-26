@@ -3,12 +3,13 @@
     $isTee = ($product['type'] ?? 'tee') === 'tee';
     $isCup = ! $isTee;
     $thumbs = $product['thumbs'] ?? [$product['image']];
-    $cta = $cta ?? __('lum.shop.cta_reservation');
+    $cta = $cta ?? __('lum.shop.cta_price');
 
+    // Cup: Figma dashed frame — keep room under text for 1–2 line subtitle; CTA pinned to bottom
     $cardClass = match ($variant) {
-        'mobile' => $isTee ? 'h-[635px] w-[335px]' : 'h-[538px] w-[335px] border border-dashed border-lum-espresso',
-        'tablet' => $isTee ? 'h-[700px] w-[450px]' : 'h-[600px] w-[450px] border border-dashed border-lum-espresso',
-        default => $isTee ? 'h-[700px] w-[396px]' : 'h-[604px] w-[396px] border border-dashed border-lum-espresso',
+        'mobile' => $isTee ? 'h-[635px] w-[335px]' : 'h-[538px] w-[335px]',
+        'tablet' => $isTee ? 'h-[700px] w-[450px]' : 'h-[600px] w-[450px]',
+        default => $isTee ? 'h-[700px] w-[396px]' : 'h-[604px] w-[396px]',
     };
 
     $imageWrapClass = match (true) {
@@ -38,14 +39,7 @@
         default => 'absolute left-1/2 top-[337px] flex -translate-x-1/2',
     };
 
-    $indicatorClass = match (true) {
-        $variant === 'mobile' && $isCup => 'absolute left-[28px] top-[389px] h-[2px] w-[65px]',
-        $variant === 'mobile' => 'absolute left-[29px] top-[391px] h-[2px] w-[65px]',
-        $variant === 'tablet' => 'absolute left-[60px] top-[418px] h-[2px] w-[75px]',
-        $isCup => 'absolute left-[32px] top-[417px] h-[2px] w-[75px]',
-        default => 'absolute left-[33px] top-[418px] h-[2px] w-[75px]',
-    };
-
+    // Text sits under thumbs; cup CTA is bottom-pinned so RU wrap doesn't kill spacing
     $textWrapClass = match (true) {
         $isCup && $variant === 'mobile' => 'absolute left-1/2 top-[415px] w-[308px] -translate-x-1/2 text-center',
         $isCup && $variant === 'tablet' => 'absolute left-1/2 top-[443.5px] w-[308px] -translate-x-1/2 text-center',
@@ -58,13 +52,22 @@
     $buttonSize = $variant === 'desktop' ? 'lum-shop-btn--desk' : 'lum-shop-btn--compact';
 
     $buttonClass = match (true) {
-        $isCup && $variant === 'mobile' => "lum-shop-btn {$buttonSize} absolute left-[38px] top-[481px]",
-        $isCup => "lum-shop-btn {$buttonSize} absolute left-1/2 top-[524px] -translate-x-1/2",
+        $isCup && $variant === 'mobile' => "lum-shop-btn {$buttonSize} absolute bottom-[24px] left-1/2 -translate-x-1/2",
+        $isCup => "lum-shop-btn {$buttonSize} absolute bottom-[40px] left-1/2 -translate-x-1/2",
         default => "lum-shop-btn {$buttonSize} absolute bottom-0 left-1/2 -translate-x-1/2",
     };
 @endphp
 
-<article class="relative overflow-clip bg-lum-ivory {{ $cardClass }}" data-lum-shop-product data-lum-shop-variant="{{ $variant }}">
+<article
+    @class([
+        'relative overflow-clip bg-lum-ivory',
+        'lum-shop-card--cup' => $isCup,
+        $cardClass,
+    ])
+    data-lum-shop-product
+    data-lum-shop-variant="{{ $variant }}"
+    @if ($isCup) data-lum-shop-type="cup" @endif
+>
     @if ($imageWrapClass)
         <div class="{{ $imageWrapClass }}">
             <img
@@ -93,7 +96,7 @@
         @foreach ($thumbs as $index => $thumb)
             <button
                 type="button"
-                class="overflow-hidden {{ $thumbSize }}"
+                class="cursor-pointer overflow-hidden {{ $thumbSize }}"
                 data-lum-shop-thumb
                 data-index="{{ $index }}"
                 @if ($index === 0) data-active @endif
@@ -101,9 +104,8 @@
                 <img src="{{ $img('shop/' . $thumb) }}" alt="" class="h-full w-full object-cover" loading="lazy">
             </button>
         @endforeach
+        <div class="w-[65px]" data-lum-shop-thumb-indicator aria-hidden="true"></div>
     </div>
-
-    <div class="{{ $indicatorClass }} bg-lum-green transition-[left,width] duration-300 ease-out" data-lum-shop-thumb-indicator></div>
 
     <div class="{{ $textWrapClass }}">
         <p @class([
@@ -112,7 +114,7 @@
             'lum-text-2' => $variant !== 'mobile',
         ])>{{ $product['title'] }}</p>
         <p @class([
-            'mt-[6px] text-lum-espresso',
+            'mt-[6px] text-balance text-lum-espresso',
             'text-[14px] leading-[22px] tracking-[0.1px]' => $variant === 'mobile',
             'lum-text-2' => $variant !== 'mobile',
         ])>{{ $product['subtitle'] }}</p>
@@ -127,7 +129,7 @@
             @foreach ($product['colors'] as $index => $color)
                 <button
                     type="button"
-                    class="@if($variant === 'mobile') size-[40px] @else size-[44px] @endif"
+                    class="cursor-pointer @if($variant === 'mobile') size-[40px] @else size-[44px] @endif"
                     data-lum-shop-color
                     data-index="{{ $index }}"
                     @if ($index === 0) data-active @endif
@@ -146,7 +148,7 @@
                 <button
                     type="button"
                     @class([
-                        'lum-shop-size flex items-center justify-center border font-normal text-lum-espresso transition-colors duration-200',
+                        'lum-shop-size flex cursor-pointer items-center justify-center border font-normal text-lum-espresso transition-colors duration-200',
                         'size-[32px] text-[16px] leading-[25px] tracking-[0.16px]' => $variant === 'mobile',
                         'size-[36px] text-[18px] leading-[26px] tracking-[0.1px]' => $variant !== 'mobile',
                     ])

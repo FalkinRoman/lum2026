@@ -1,5 +1,6 @@
 @php
     $properties = trans('lum.stay.properties');
+    $isRu = app()->getLocale() === 'ru';
 
     $mobileLayout = [
         ['imageTop' => 495, 'textTop' => 901],
@@ -113,7 +114,7 @@
         @include('lum.partials.header', ['headerTone' => 'espresso', 'headerActive' => 'stay'])
         @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
 
-        <div class="absolute left-1/2 top-[292px] flex w-[552px] -translate-x-1/2 flex-col items-center text-center" data-lum-stay-hero>
+        <div @class(['absolute left-1/2 top-[292px] -translate-x-1/2 flex flex-col items-center text-center', 'w-[640px]' => $isRu, 'w-[552px]' => ! $isRu]) data-lum-stay-hero>
             <div class="flex w-full flex-col items-center gap-[24px]">
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item="title">

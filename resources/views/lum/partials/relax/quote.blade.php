@@ -29,8 +29,8 @@
                 <div class="relative flex flex-col items-center">
                     <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-1/2 top-[-35px] z-[1] h-[42px] w-[33px] -translate-x-1/2 rotate-2" width="33" height="42" loading="lazy">
                     <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
-                        <p class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ $noteLine1 }}</p>
-                        <p class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ $noteLine2 }}</p>
+                        <p class="whitespace-nowrap text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ $noteLine1 }}</p>
+                        <p class="whitespace-nowrap text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ $noteLine2 }}</p>
                     </div>
                 </div>
             </div>
@@ -59,8 +59,8 @@
                 <div class="relative flex flex-col items-center">
                     <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] z-[1] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
                     <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
-                        <p class="lum-text-2 text-lum-espresso">{{ $noteLine1 }}</p>
-                        <p class="lum-text-2 text-lum-espresso">{{ $noteLine2 }}</p>
+                        <p class="whitespace-nowrap lum-text-2 text-lum-espresso">{{ $noteLine1 }}</p>
+                        <p class="whitespace-nowrap lum-text-2 text-lum-espresso">{{ $noteLine2 }}</p>
                     </div>
                 </div>
             </div>
@@ -94,8 +94,8 @@
             <div class="relative flex flex-col items-center">
                 <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] z-[1] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
                 <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
-                    <p class="lum-body text-lum-espresso">{{ $noteLine1 }}</p>
-                    <p class="lum-body text-lum-espresso">{{ $noteLine2 }}</p>
+                    <p class="whitespace-nowrap lum-body text-lum-espresso">{{ $noteLine1 }}</p>
+                    <p class="whitespace-nowrap lum-body text-lum-espresso">{{ $noteLine2 }}</p>
                 </div>
             </div>
         </div>
