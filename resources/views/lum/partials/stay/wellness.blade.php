@@ -15,16 +15,14 @@
                 <p class="font-serif text-[42px] leading-[45px] text-lum-espresso">{!! nl2br(e(__('lum.stay.quote'))) !!}</p>
             </div>
 
-            <div class="absolute left-1/2 top-[331px] flex w-[280px] -translate-x-1/2 items-center justify-center gap-[8px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
-                <img src="{{ $img('stay/quote-line-half.svg') }}" alt="" class="h-px w-[130px] object-cover object-right" width="130" height="1">
-                <span class="w-[20px] shrink-0" aria-hidden="true"></span>
-                <img src="{{ $img('stay/quote-line-half.svg') }}" alt="" class="h-px w-[130px] -scale-x-100 object-cover object-left" width="130" height="1">
+            <div class="absolute left-1/2 top-[331px] w-[280px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
+                <img src="{{ $img('stay/quote-line-full.svg') }}" alt="" class="h-px w-full" width="280" height="1">
             </div>
 
             <div class="absolute left-1/2 top-[359px] w-[301px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.16">
                 <div class="relative flex flex-col items-center">
-                    <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-1/2 top-[-35px] h-[42px] w-[33px] -translate-x-1/2 rotate-2" width="33" height="42" loading="lazy">
-                    <div class="w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
+                    <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-1/2 top-[-35px] z-[1] h-[42px] w-[33px] -translate-x-1/2 rotate-2" width="33" height="42" loading="lazy">
+                    <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
                         <p class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ __('lum.stay.note_line1') }}</p>
                         <p class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso">{{ __('lum.stay.note_line2') }}</p>
                     </div>
@@ -49,16 +47,14 @@
                 <p class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-espresso">{!! nl2br(e(__('lum.stay.quote'))) !!}</p>
             </div>
 
-            <div class="absolute left-1/2 top-[340px] flex w-[733px] -translate-x-1/2 items-center justify-center gap-[12px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
-                <img src="{{ $img('stay/quote-line-half.svg') }}" alt="" class="h-[2px] w-[366px] object-cover object-right" width="366" height="2">
-                <span class="w-[40px] shrink-0" aria-hidden="true"></span>
-                <img src="{{ $img('stay/quote-line-half.svg') }}" alt="" class="h-[2px] w-[366px] -scale-x-100 object-cover object-left" width="366" height="2">
+            <div class="absolute left-1/2 top-[340px] w-[733px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
+                <img src="{{ $img('stay/quote-line-full.svg') }}" alt="" class="h-[2px] w-full" width="733" height="2">
             </div>
 
             <div class="absolute left-1/2 top-[378px] w-[301px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.16">
                 <div class="relative flex flex-col items-center">
-                    <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
-                    <div class="w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
+                    <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] z-[1] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
+                    <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
                         <p class="lum-text-2 text-lum-espresso">{{ __('lum.stay.note_line1') }}</p>
                         <p class="lum-text-2 text-lum-espresso">{{ __('lum.stay.note_line2') }}</p>
                     </div>
@@ -82,16 +78,14 @@
             <p class="whitespace-nowrap font-serif text-[88px] leading-[94px] text-lum-espresso">{!! nl2br(e(__('lum.stay.quote'))) !!}</p>
         </div>
 
-        <div class="absolute left-1/2 top-[1408px] flex w-[733px] -translate-x-1/2 items-center justify-center gap-[12px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
-            <img src="{{ $img('stay/quote-line-half.svg') }}" alt="" class="h-[2px] w-[366px] object-cover object-right" width="366" height="2">
-            <span class="w-[40px] shrink-0" aria-hidden="true"></span>
-            <img src="{{ $img('stay/quote-line-half.svg') }}" alt="" class="h-[2px] w-[366px] -scale-x-100 object-cover object-left" width="366" height="2">
+        <div class="absolute left-1/2 top-[1408px] w-[733px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
+            <img src="{{ $img('stay/quote-line-full.svg') }}" alt="" class="h-[2px] w-full" width="733" height="2">
         </div>
 
         <div class="absolute left-1/2 top-[1446px] w-[301px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.16">
             <div class="relative flex flex-col items-center">
-                <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
-                <div class="w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
+                <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] z-[1] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
+                <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
                     <p class="lum-body text-lum-espresso">{{ __('lum.stay.note_line1') }}</p>
                     <p class="lum-body text-lum-espresso">{{ __('lum.stay.note_line2') }}</p>
                 </div>

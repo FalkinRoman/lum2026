@@ -1,6 +1,6 @@
 @php
     $isOpeningSoon = ($venue['cta'] ?? 'more_info') === 'opening_soon';
-    $btnClass = $isOpeningSoon ? 'lum-btn-ivory' : 'lum-btn-dark';
+    $btnClass = $isOpeningSoon ? 'lum-btn-orange' : 'lum-btn-ivory';
     $ctaLabel = $isOpeningSoon ? __('lum.dining.opening_soon') : __('lum.location.more_info');
     $overlays = $venue['overlays'] ?? ['bg-black/32'];
 @endphp

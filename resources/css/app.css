@@ -207,6 +207,7 @@
     .lum-btn-ivory,
     .lum-btn-dark,
     .lum-btn-espresso,
+    .lum-btn-orange,
     .lum-burger-btn,
     .lum-tab {
         transition:
@@ -316,6 +317,7 @@
     .lum-btn-green,
     .lum-btn-ivory,
     .lum-btn-espresso,
+    .lum-btn-orange,
     .lum-btn.lum-btn-info,
     .lum-shop-btn {
         @apply relative overflow-hidden;
@@ -326,6 +328,7 @@
     .lum-btn-green::before,
     .lum-btn-ivory::before,
     .lum-btn-espresso::before,
+    .lum-btn-orange::before,
     .lum-btn.lum-btn-info::before,
     .lum-shop-btn::before {
         content: '';
@@ -365,6 +368,11 @@
 
     .lum-btn-ivory::before {
         background-color: var(--color-lum-ivory);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .lum-btn-orange::before {
+        background-color: var(--color-lum-orange-2);
         transform: translate3d(0, 0, 0);
     }
 
@@ -449,6 +457,7 @@
         .lum-btn-dark:hover::before,
         .lum-btn-ivory:hover::before,
         .lum-btn-espresso:hover::before,
+        .lum-btn-orange:hover::before,
         .lum-shop-btn:hover::before {
             transform: translate3d(0, -100%, 0);
         }
@@ -479,6 +488,11 @@
             @apply border-lum-ivory bg-transparent text-lum-ivory;
         }
 
+        .lum-btn-orange:hover {
+            @apply border-transparent bg-transparent;
+            color: var(--color-lum-orange-2);
+        }
+
         .lum-btn-espresso:hover {
             @apply border-lum-espresso bg-transparent text-lum-espresso;
         }
@@ -496,7 +510,8 @@
     .lum-btn,
     .lum-btn-ivory,
     .lum-btn-dark,
-    .lum-btn-espresso {
+    .lum-btn-espresso,
+    .lum-btn-orange {
         @apply border border-transparent;
     }
 
@@ -921,6 +936,10 @@
 
     .lum-btn-ivory {
         @apply inline-flex items-center justify-center rounded-[50px] border border-transparent px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-transparent text-lum-espresso;
+    }
+
+    .lum-btn-orange {
+        @apply inline-flex items-center justify-center rounded-[50px] border border-transparent px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold tracking-[3.2px] uppercase leading-[25px] bg-transparent text-lum-ivory;
     }
 
     .lum-btn-dark {
