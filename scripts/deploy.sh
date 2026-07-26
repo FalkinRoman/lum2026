@@ -55,9 +55,16 @@ else
     echo "APP_PORT=${WEB_PORT}" >> .env
 fi
 
+APP_URL="http://${APP_HOST}:${WEB_PORT}"
+if grep -q '^APP_URL=' .env; then
+    sed -i.bak "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
+else
+    echo "APP_URL=${APP_URL}" >> .env
+fi
+
 rm -f .env.bak
 
-echo "Using APP_URL=http://${APP_HOST}:${WEB_PORT}"
+echo "Using APP_URL=${APP_URL}"
 
 echo "Building production image..."
 docker compose --profile production build web
