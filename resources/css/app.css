@@ -27,6 +27,9 @@
     --color-lum-slate: #2d3638;
     --color-lum-ground: #39362e;
     --color-lum-green: #41606b;
+    --color-lum-script: rgb(74 92 255 / 0.82);
+    --color-lum-azure: #2d62e8;
+    --color-lum-mist: #82b7bb;
     --color-lum-rose: #f56f31;
     --color-lum-sand: #e2e1c8;
     --color-lum-orange: #ffb04a;
@@ -1330,6 +1333,12 @@
         @apply font-script lowercase;
     }
 
+    /* Floating polaroid overlays (shine / impressions / relax) — Figma color-burn blue */
+    .lum-script--burn {
+        color: var(--color-lum-script);
+        mix-blend-mode: color-burn;
+    }
+
     .lum-headline {
         @apply text-[24px] font-medium leading-[34px] tracking-[3.2px];
     }
@@ -1766,6 +1775,92 @@
         opacity: 1;
     }
 
+    /* Exely search — после стрелки Stay, ширины сетки 335 / 920 / 1470 */
+    .lum-stay-booking {
+        position: relative;
+        z-index: 15;
+        width: 335px;
+        margin: 32px auto 40px;
+    }
+
+    @media (min-width: 431px) {
+        .lum-stay-booking {
+            width: 920px;
+            margin: 40px auto 48px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .lum-stay-booking {
+            width: 1470px;
+            margin: 48px auto 64px;
+        }
+    }
+
+    /*
+     * Villa search под torn-edge:
+     * overhang mob ~28, tab ~44, desk ~109 — pt чуть больше края
+     */
+    .lum-villa-booking {
+        position: relative;
+        z-index: 15;
+        width: 335px;
+        margin: 0 auto;
+        padding: 40px 0 40px;
+    }
+
+    @media (min-width: 431px) {
+        .lum-villa-booking {
+            width: 920px;
+            padding: 72px 0 48px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .lum-villa-booking {
+            width: 1470px;
+            padding: 100px 0 64px;
+        }
+    }
+
+    /* Booking page — контентная ширина под Exely iframe */
+    .lum-booking-page__intro {
+        width: 335px;
+        margin: 0 auto;
+        padding-top: 124px;
+        text-align: center;
+    }
+
+    .lum-booking-page__engine {
+        width: 335px;
+        margin: 28px auto 48px;
+    }
+
+    @media (min-width: 431px) {
+        .lum-booking-page__intro {
+            width: 720px;
+            padding-top: 160px;
+        }
+
+        .lum-booking-page__engine {
+            width: 880px;
+            margin: 36px auto 64px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .lum-booking-page__intro {
+            width: 900px;
+            padding-top: 180px;
+        }
+
+        .lum-booking-page__engine {
+            /* Exely BE лучше смотрится не на 1470 — карточка формы ~1100 */
+            width: 1120px;
+            margin: 40px auto 80px;
+        }
+    }
+
     .lum-stay-property-link__photo {
         transition: transform var(--lum-animation-smooth);
         will-change: transform;
@@ -1816,6 +1911,16 @@
         @apply pointer-events-none absolute inset-0 z-[2] h-full w-full;
     }
 
+    /*
+     * Torn paper under hero: use transform shorthand (not separate rotate/scale
+     * props) so Chrome doesn't force overflow:clip and eat the right edge.
+     */
+    .lum-torn-edge {
+        overflow: visible;
+        transform: rotate(180deg) scaleX(-1);
+        transform-origin: center center;
+    }
+
     .lum-polaroid__photo {
         position: absolute;
         z-index: 1;
@@ -1828,7 +1933,7 @@
     }
 
     .lum-villa-polaroid__script {
-        color: #2d62e8;
+        color: var(--color-lum-azure);
         font-family: var(--font-villa-hand);
         font-weight: 400;
         text-transform: uppercase;

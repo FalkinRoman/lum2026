@@ -21,6 +21,7 @@
             'showCta' => true,
             'showLogomark' => false,
             'ctaLabel' => __('lum.activity.make_reservation'),
+            'ctaHref' => $activity['pricing']['cta_url'] ?? \App\Support\Site::bookUrl(),
         ])
         @include('lum.partials.quote-choice', [
             'img' => $img,

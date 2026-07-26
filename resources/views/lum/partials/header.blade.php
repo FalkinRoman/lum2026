@@ -64,7 +64,7 @@
             </button>
             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-desktop'])
         </div>
-        <a href="#" @class([
+        <a href="{{ \App\Support\Site::takeABreakUrl() }}" @class([
             'lum-btn-outline-ivory' => ! $isEspresso,
             'lum-btn-outline' => $isEspresso,
         ])>{{ __('lum.nav.take_a_break') }}</a>

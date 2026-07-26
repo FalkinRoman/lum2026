@@ -2,7 +2,7 @@
     {{-- MOBILE --}}
     <div class="relative h-full tab:hidden" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ $img('villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="375" height="680" loading="eager">
+            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="375" height="680" loading="eager">
             <div class="absolute inset-0 bg-black/48"></div>
         </div>
 
@@ -24,13 +24,13 @@
             </div>
         </div>
 
-        <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="pointer-events-none absolute bottom-[-28px] left-0 z-10 w-full rotate-180 scale-x-[-1]" width="375" height="54">
+        <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="lum-torn-edge pointer-events-none absolute bottom-[-28px] left-[-2px] z-10 h-[54px] w-[calc(100%+4px)] max-w-none" width="375" height="54">
     </div>
 
     {{-- TABLET --}}
     <div class="relative hidden h-full tab:block desk:hidden" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ $img('villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="960" height="1080" loading="eager">
+            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="960" height="1080" loading="eager">
             <div class="absolute inset-0 bg-black/48"></div>
         </div>
 
@@ -51,13 +51,13 @@
             </div>
         </div>
 
-        <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-0 z-10 h-[135px] w-[960px] max-w-none rotate-180 scale-x-[-1]" width="960" height="135">
+        <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="lum-torn-edge pointer-events-none absolute bottom-[-44px] left-[-2px] z-10 h-[135px] w-[calc(100%+4px)] max-w-none" width="960" height="135">
     </div>
 
     {{-- DESKTOP --}}
     <div class="relative hidden h-full desk:block" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ $img('villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="1920" height="1080" loading="eager">
+            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="1920" height="1080" loading="eager">
             <div class="absolute inset-0 bg-black/48"></div>
         </div>
 
@@ -83,6 +83,6 @@
             </div>
         </div>
 
-        <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-1/2 z-10 h-[135px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 scale-x-[-1]" width="960" height="135">
+        <img src="{{ $img('hero/torn-edge.svg') }}" alt="" class="lum-torn-edge pointer-events-none absolute bottom-[-109px] left-[-2px] z-10 h-[269px] w-[calc(100%+4px)] max-w-none" width="1920" height="269">
     </div>
 </section>

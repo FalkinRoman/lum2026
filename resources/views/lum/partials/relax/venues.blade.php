@@ -1,29 +1,22 @@
 @php
-    $activities = trans('lum.relax.activities');
+    use App\Support\ListingLayout;
+
+    $activities = collect($activities ?? []);
+    $count = $activities->count();
     $isRu = app()->getLocale() === 'ru';
 
-    $mobileLayout = [
-        ['top' => 540],
-        ['top' => 970],
-        ['top' => 1400],
-    ];
+    $mobileLayout = ListingLayout::mobileStack($count, 540, 430);
+    $tabletLayout = ListingLayout::grid2($count, [20, 490], 588, 565);
+    $desktopLayout = ListingLayout::grid2($count, [72, 686, 1299], 894, 804);
 
-    $tabletLayout = [
-        ['left' => 20, 'top' => 588],
-        ['left' => 490, 'top' => 588],
-        ['left' => 20, 'top' => 1153],
-    ];
-
-    $desktopLayout = [
-        ['left' => 72, 'top' => 866],
-        ['left' => 686, 'top' => 866],
-        ['left' => 1299, 'top' => 866],
-    ];
+    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 510);
+    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 645);
+    $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'top', 900);
 @endphp
 
 <section id="relax" class="lum-container relative bg-lum-ivory" data-lum-relax-page>
     {{-- MOBILE — Figma 101:533 --}}
-    <div class="relative h-[2090px] tab:hidden" data-lum-stay-intro data-lum-intro-first-row="1">
+    <div class="relative  tab:hidden" style="height: {{ $mobileHeight }}px" data-lum-stay-intro data-lum-intro-first-row="1">
         @include('lum.partials.header-mobile', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -68,7 +61,7 @@
     </div>
 
     {{-- TABLET — Figma 101:486 --}}
-    <div class="relative hidden h-[2078px] tab:block desk:hidden" data-lum-stay-intro data-lum-intro-first-row="3">
+    <div class="relative hidden  tab:block desk:hidden" style="height: {{ $tabletHeight }}px" data-lum-stay-intro data-lum-intro-first-row="3">
         @include('lum.partials.header-tablet', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -112,7 +105,7 @@
     </div>
 
     {{-- DESKTOP — Figma 101:387 --}}
-    <div class="relative hidden h-[1766px] desk:block" data-lum-stay-intro data-lum-intro-first-row="3">
+    <div class="relative hidden  desk:block" style="height: {{ $desktopHeight }}px" data-lum-stay-intro data-lum-intro-first-row="3">
         @include('lum.partials.header', ['headerTone' => 'espresso', 'headerActive' => 'relax'])
         @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
 

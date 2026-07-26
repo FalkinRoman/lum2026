@@ -6,7 +6,7 @@
 >
     @include('lum.partials.link-footer-nav', [
         'label' => __('lum.shop.social_instagram'),
-        'href' => __('lum.shop.social_instagram_url'),
+        'href' => \App\Support\Site::instagramUrl(),
         'variant' => 'line',
         'underlineTone' => 'espresso',
         'classes' => 'text-lum-espresso',
@@ -16,7 +16,7 @@
     <span class="text-lum-espresso/16">/</span>
     @include('lum.partials.link-footer-nav', [
         'label' => __('lum.shop.social_whatsapp'),
-        'href' => __('lum.shop.social_whatsapp_url'),
+        'href' => \App\Support\Site::whatsappUrl(),
         'variant' => 'line',
         'underlineTone' => 'espresso',
         'classes' => 'text-lum-espresso',

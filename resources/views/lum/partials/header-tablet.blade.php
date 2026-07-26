@@ -33,7 +33,7 @@
             @include('lum.partials.language-switcher')
         </div>
 
-        <a href="#" @class([
+        <a href="{{ \App\Support\Site::takeABreakUrl() }}" @class([
             'px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]',
             'lum-btn-outline-ivory' => ! $isEspresso,
             'lum-btn-outline' => $isEspresso,

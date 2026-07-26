@@ -5,7 +5,7 @@
             <span class="text-lum-ivory-40">{{ __('lum.burger_footer.reception') }}</span>
             @include('lum.partials.link-footer-nav', [
                 'label' => '+94 (779) 296-087',
-                'href' => 'tel:+94779296087',
+                'href' => \App\Support\Site::phoneHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory',
             ])
@@ -14,7 +14,7 @@
             <span class="text-lum-ivory-40">{{ __('lum.burger_footer.email') }}</span>
             @include('lum.partials.link-footer-nav', [
                 'label' => 'dimacake@gmail.com',
-                'href' => 'mailto:dimacake@gmail.com',
+                'href' => \App\Support\Site::emailHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory',
             ])
@@ -52,7 +52,7 @@
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.reception') }}</span>
             @include('lum.partials.link-footer-nav', [
                 'label' => '+94 (779) 296-087',
-                'href' => 'tel:+94779296087',
+                'href' => \App\Support\Site::phoneHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory tab:leading-[25px] desk:leading-[25px]',
             ])
@@ -61,7 +61,7 @@
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.email') }}</span>
             @include('lum.partials.link-footer-nav', [
                 'label' => 'dimacake@gmail.com',
-                'href' => 'mailto:dimacake@gmail.com',
+                'href' => \App\Support\Site::emailHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory tab:leading-[25px] desk:leading-[25px]',
             ])

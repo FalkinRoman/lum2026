@@ -61,7 +61,7 @@
                             </button>
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-burger-tab'])
                         </div>
-                        <a href="#" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
+                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
                         <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </a>
@@ -114,7 +114,7 @@
                     <div class="absolute bottom-[31px] left-[36px] font-serif text-[28px] font-medium leading-[34px] tracking-[0.36px] text-lum-ivory">
                         {!! __('lum.footer.address_menu') !!}
                     </div>
-                    <a href="#" class="lum-btn-ivory absolute bottom-[36px] right-[36px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
+                    <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory absolute bottom-[36px] right-[36px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
                 </div>
             </div>
 
@@ -152,7 +152,7 @@
                             </button>
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-burger-desk'])
                         </div>
-                        <a href="#" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
+                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
                         <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </a>
@@ -181,7 +181,7 @@
                     <div class="absolute bottom-[40px] left-[44px] font-serif text-[32px] font-medium leading-[36px] tracking-[0.32px] text-lum-ivory">
                         {!! __('lum.footer.address_menu') !!}
                     </div>
-                    <a href="#" class="lum-btn-ivory absolute bottom-[44px] right-[44px]">{{ __('lum.location.see_on_map_upper') }}</a>
+                    <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory absolute bottom-[44px] right-[44px]">{{ __('lum.location.see_on_map_upper') }}</a>
                 </div>
             </div>
         </div>

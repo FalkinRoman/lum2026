@@ -1,32 +1,44 @@
 @php
-    $items = trans('lum.shop.items');
-    $price = __('lum.shop.cta_price');
+    use App\Support\Content;
 
-    $mobileCards = [
-        ['slug' => 'ocean-tee', 'top' => 296],
-        ['slug' => 'lum-cup', 'top' => 991],
-        ['slug' => 'ocean-tee', 'top' => 1589],
-        ['slug' => 'lum-cup', 'top' => 2284],
-    ];
+    $items = $shopItems ?? Content::shopItemsKeyed();
+    $products = collect($items)->values();
+    $count = $products->count();
 
-    $tabletCards = [
-        ['slug' => 'ocean-tee', 'left' => 20, 'top' => 349],
-        ['slug' => 'lum-cup', 'left' => 490, 'top' => 349],
-        ['slug' => 'ocean-tee', 'left' => 490, 'top' => 1029],
-        ['slug' => 'lum-cup', 'left' => 20, 'top' => 1129],
-    ];
+    $mobileCards = [];
+    $top = 296;
+    foreach ($products as $product) {
+        $mobileCards[] = ['product' => $product, 'top' => $top];
+        $h = ($product['type'] ?? 'tee') === 'tee' ? 635 : 538;
+        $top += $h + 60;
+    }
+    $mobileHeight = max(900, $top + 80);
 
-    $desktopCards = [
-        ['slug' => 'ocean-tee', 'left' => 72, 'top' => 651],
-        ['slug' => 'lum-cup', 'left' => 532, 'top' => 651],
-        ['slug' => 'ocean-tee', 'left' => 992, 'top' => 651],
-        ['slug' => 'lum-cup', 'left' => 1452, 'top' => 651],
-    ];
+    $tabletCards = [];
+    foreach ($products as $i => $product) {
+        $tabletCards[] = [
+            'product' => $product,
+            'left' => $i % 2 === 0 ? 20 : 490,
+            'top' => 349 + (intdiv($i, 2) * 780),
+        ];
+    }
+    $tabletHeight = $count === 0 ? 900 : (349 + (intdiv($count - 1, 2) * 780) + 820);
+
+    $deskLefts = [72, 532, 992, 1452];
+    $desktopCards = [];
+    foreach ($products as $i => $product) {
+        $desktopCards[] = [
+            'product' => $product,
+            'left' => $deskLefts[$i % 4],
+            'top' => 651 + (intdiv($i, 4) * 820),
+        ];
+    }
+    $desktopHeight = $count === 0 ? 1100 : (651 + (intdiv($count - 1, 4) * 820) + 820);
 @endphp
 
 <section class="lum-container relative bg-lum-ivory">
-    {{-- MOBILE — Figma 192:1362 --}}
-    <div class="relative h-[2902px] tab:hidden">
+    {{-- MOBILE --}}
+    <div class="relative tab:hidden" style="height: {{ $mobileHeight }}px">
         @include('lum.partials.header-mobile', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -39,20 +51,19 @@
         </div>
 
         @foreach ($mobileCards as $card)
-            @php $product = $items[$card['slug']]; @endphp
             <div class="absolute left-[20px] w-[335px]" style="top: {{ $card['top'] }}px" data-lum-villa-card>
                 @include('lum.partials.shop-page.product-card', [
                     'img' => $img,
-                    'product' => $product,
+                    'product' => $card['product'],
                     'variant' => 'mobile',
-                    'cta' => $price,
+                    'cta' => $card['product']['price'] ?? $card['product']['cta_label'] ?? __('lum.shop.cta_price'),
                 ])
             </div>
         @endforeach
     </div>
 
-    {{-- TABLET — Figma 192:1267 --}}
-    <div class="relative hidden h-[1849px] tab:block desk:hidden">
+    {{-- TABLET --}}
+    <div class="relative hidden tab:block desk:hidden" style="height: {{ $tabletHeight }}px">
         @include('lum.partials.header-tablet', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -65,20 +76,19 @@
         </div>
 
         @foreach ($tabletCards as $card)
-            @php $product = $items[$card['slug']]; @endphp
             <div class="absolute w-[450px]" style="left: {{ $card['left'] }}px; top: {{ $card['top'] }}px" data-lum-villa-card>
                 @include('lum.partials.shop-page.product-card', [
                     'img' => $img,
-                    'product' => $product,
+                    'product' => $card['product'],
                     'variant' => 'tablet',
-                    'cta' => $price,
+                    'cta' => $card['product']['price'] ?? $card['product']['cta_label'] ?? __('lum.shop.cta_price'),
                 ])
             </div>
         @endforeach
     </div>
 
-    {{-- DESKTOP — Figma 192:1168 --}}
-    <div class="relative hidden h-[1471px] desk:block">
+    {{-- DESKTOP --}}
+    <div class="relative hidden desk:block" style="height: {{ $desktopHeight }}px">
         @include('lum.partials.header', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
 
@@ -91,13 +101,12 @@
         </div>
 
         @foreach ($desktopCards as $card)
-            @php $product = $items[$card['slug']]; @endphp
             <div class="absolute" style="left: {{ $card['left'] }}px; top: {{ $card['top'] }}px" data-lum-villa-card>
                 @include('lum.partials.shop-page.product-card', [
                     'img' => $img,
-                    'product' => $product,
+                    'product' => $card['product'],
                     'variant' => 'desktop',
-                    'cta' => $price,
+                    'cta' => $card['product']['price'] ?? $card['product']['cta_label'] ?? __('lum.shop.cta_price'),
                 ])
             </div>
         @endforeach

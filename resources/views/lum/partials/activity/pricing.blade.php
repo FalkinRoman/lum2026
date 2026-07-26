@@ -29,7 +29,7 @@
             @endforeach
         </div>
 
-        <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[805px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
+        <a href="{{ $pricing['cta_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info absolute left-1/2 top-[805px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
     </div>
 
     {{-- TABLET — Figma 190:624 (3 items) --}}
@@ -55,7 +55,7 @@
             @endforeach
         </div>
 
-        <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[883px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
+        <a href="{{ $pricing['cta_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info absolute left-1/2 top-[883px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
     </div>
 
     {{-- DESKTOP — Figma 190:461 (2×2) --}}
@@ -81,6 +81,6 @@
             @endforeach
         </div>
 
-        <a href="#" class="lum-btn lum-btn-info absolute left-1/2 top-[760px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
+        <a href="{{ $pricing['cta_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info absolute left-1/2 top-[760px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
     </div>
 </section>

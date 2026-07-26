@@ -1,31 +1,29 @@
 @php
-    $venues = trans('lum.dining.venues');
+    use App\Support\ListingLayout;
 
-    $mobileLayout = [
-        ['top' => 495],
-        ['top' => 925],
-        ['top' => 1355],
-        ['top' => 1785],
-    ];
+    $venues = collect($venues ?? []);
+    $count = $venues->count();
 
-    $tabletLayout = [
-        ['left' => 20, 'top' => 615],
-        ['left' => 490, 'top' => 615],
-        ['left' => 20, 'top' => 1180],
-        ['left' => 490, 'top' => 1180],
-    ];
+    $mobileLayout = ListingLayout::mobileStack($count, 495, 430);
+    $tabletLayout = ListingLayout::grid2($count, [20, 490], 615, 565);
+    // Desktop: 3-col first row then wrap (baseline 4 cards: 3 top + 1 bottom-left)
+    $deskLefts = [72, 686, 1299];
+    $desktopLayout = collect(range(0, max(0, $count - 1)))->map(function (int $i) use ($deskLefts) {
+        $cols = 3;
+        return [
+            'left' => $deskLefts[$i % $cols],
+            'top' => 894 + (intdiv($i, $cols) * 804),
+        ];
+    })->all();
 
-    $desktopLayout = [
-        ['left' => 72, 'top' => 894],
-        ['left' => 686, 'top' => 894],
-        ['left' => 1299, 'top' => 894],
-        ['left' => 72, 'top' => 1698],
-    ];
+    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 510);
+    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 645);
+    $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'top', 900);
 @endphp
 
 <section id="dining" class="lum-container relative bg-lum-ivory" data-lum-dining-page>
     {{-- MOBILE — Figma 91:496 --}}
-    <div class="relative h-[2295px] tab:hidden" data-lum-stay-intro data-lum-intro-first-row="1">
+    <div class="relative tab:hidden" style="height: {{ $mobileHeight }}px" data-lum-stay-intro data-lum-intro-first-row="1">
         @include('lum.partials.header-mobile', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -65,7 +63,7 @@
     </div>
 
     {{-- TABLET — Figma 91:438 --}}
-    <div class="relative hidden h-[1825px] tab:block desk:hidden" data-lum-stay-intro data-lum-intro-first-row="2">
+    <div class="relative hidden tab:block desk:hidden" style="height: {{ $tabletHeight }}px" data-lum-stay-intro data-lum-intro-first-row="2">
         @include('lum.partials.header-tablet', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
@@ -105,7 +103,7 @@
     </div>
 
     {{-- DESKTOP — Figma 91:373 --}}
-    <div class="relative hidden h-[2598px] desk:block" data-lum-stay-intro data-lum-intro-first-row="3">
+    <div class="relative hidden desk:block" style="height: {{ $desktopHeight }}px" data-lum-stay-intro data-lum-intro-first-row="3">
         @include('lum.partials.header', ['headerTone' => 'espresso', 'headerActive' => 'dining'])
         @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
 

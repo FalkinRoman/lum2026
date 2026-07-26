@@ -5,7 +5,7 @@
 @section('content')
 @php
     $img = fn (string $path) => asset('images/lum/' . $path);
-    $contact = trans('lum.contact');
+    $contact = $contact ?? \App\Support\Content::contact();
 @endphp
 
 <div class="lum-viewport" data-lum-contact-page>

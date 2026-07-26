@@ -33,7 +33,7 @@
                         <img src="{{ asset('images/lum/hero/burger.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                     </button>
 
-                    <a href="#" class="lum-btn-outline absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.break') }}</a>
+                    <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.break') }}</a>
                 </div>
             </div>
 
@@ -59,7 +59,7 @@
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-sticky'])
                         </div>
 
-                        <a href="#" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
+                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
 
                         <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
@@ -111,7 +111,7 @@
                             </button>
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-sticky-desk'])
                         </div>
-                        <a href="#" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
+                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
                         <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </a>

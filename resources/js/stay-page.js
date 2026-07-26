@@ -53,11 +53,13 @@ function getFirstRowCount(root) {
         return custom;
     }
 
-    if (root.classList.contains('desk:block')) {
+    const bp = root.dataset.lumStayBp || root.getAttribute('data-lum-stay-properties');
+
+    if (bp === 'desk' || root.classList.contains('desk:block')) {
         return 2;
     }
 
-    if (root.classList.contains('tab:block')) {
+    if (bp === 'tab' || root.classList.contains('tab:block')) {
         return 2;
     }
 
@@ -66,13 +68,24 @@ function getFirstRowCount(root) {
 
 function findStayPropertyCopy(image) {
     const index = image.dataset.lumStayProperty;
-    const breakpointRoot = image.closest('[data-lum-stay-intro]');
+    const propsRoot = image.closest('[data-lum-stay-properties]');
 
-    if (breakpointRoot) {
-        return breakpointRoot.querySelector(`[data-lum-stay-property-copy="${index}"]`);
+    if (propsRoot) {
+        return propsRoot.querySelector(`[data-lum-stay-property-copy][data-lum-stay-property="${index}"]`);
     }
 
-    return document.querySelector(`[data-lum-stay-property-copy="${index}"]`);
+    return document.querySelector(`[data-lum-stay-property-copy][data-lum-stay-property="${index}"]`);
+}
+
+function findStayPropertiesRoot(introRoot) {
+    const section = introRoot.closest('[data-lum-stay-page]');
+    const bp = introRoot.dataset.lumStayBp;
+
+    if (! section || ! bp) {
+        return null;
+    }
+
+    return section.querySelector(`[data-lum-stay-properties="${bp}"]`);
 }
 
 function initStayHeroIntro(root) {
@@ -88,7 +101,8 @@ function initStayHeroIntro(root) {
     const arrow = hero.querySelector('[data-lum-stay-intro-item="arrow"]');
     const heroItems = [dot, title, eyebrow, arrow].filter(Boolean);
     const firstRowCount = getFirstRowCount(root);
-    const images = [...root.querySelectorAll('[data-lum-stay-property-image]')].slice(0, firstRowCount);
+    const propsRoot = findStayPropertiesRoot(root) ?? root;
+    const images = [...propsRoot.querySelectorAll('[data-lum-stay-property-image]')].slice(0, firstRowCount);
     const copies = images.map((image) => findStayPropertyCopy(image)).filter(Boolean);
 
     gsap.set(heroItems, { y: 28, opacity: 0 });
@@ -289,10 +303,10 @@ export function initStayPage() {
             return;
         }
 
-        const root = image.closest('[data-lum-stay-intro]');
+        const propsRoot = image.closest('[data-lum-stay-properties]');
         const index = Number(image.dataset.lumStayProperty || 0);
 
-        if (! root || index < getFirstRowCount(root)) {
+        if (! propsRoot || index < getFirstRowCount(propsRoot)) {
             return;
         }
 

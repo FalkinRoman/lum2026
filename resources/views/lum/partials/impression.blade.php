@@ -9,6 +9,7 @@
     $startIndex = $startIndex ?? 0;
     // MORE INFO–style hover when CTA is on; green→ivory otherwise
     $ctaClass = $ctaClass ?? ($showCta ? 'lum-btn lum-btn-info' : 'lum-btn-green');
+    $ctaHref = $ctaHref ?? \App\Support\Site::takeABreakUrl();
 
     // With CTA: counter→btn 44/85/86, btn→bottom 80/84/125 (logomark shifts absolute tops)
     $sectionHeights = match (true) {
@@ -91,7 +92,7 @@
                 </p>
             </div>
             @if ($showCta)
-                <a href="#" @class([$ctaClass, 'lum-impression-cta--sm whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+                <a href="{{ $ctaHref }}" @class([$ctaClass, 'lum-impression-cta--sm whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
             @endif
         </div>
         @else
@@ -129,7 +130,7 @@
                 </p>
             </div>
             @if ($showCta)
-                <a href="#" @class([$ctaClass, 'lum-impression-cta--sm whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]'])>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+                <a href="{{ $ctaHref }}" @class([$ctaClass, 'lum-impression-cta--sm whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]'])>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
             @endif
         </div>
         @endif
@@ -189,7 +190,7 @@
                 </p>
             </div>
             @if ($showCta)
-                <a href="#" @class([$ctaClass, 'lum-impression-cta--tab whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+                <a href="{{ $ctaHref }}" @class([$ctaClass, 'lum-impression-cta--tab whitespace-nowrap px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]']) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
             @endif
         </div>
     </div>
@@ -250,7 +251,7 @@
                 </p>
             </div>
             @if ($showCta)
-                <a href="#" @class([$ctaClass, 'lum-impression-cta--desk whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] leading-[25px] tracking-[3.2px]']) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
+                <a href="{{ $ctaHref }}" @class([$ctaClass, 'lum-impression-cta--desk whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] leading-[25px] tracking-[3.2px]']) @if($showTabs) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12" @endif>{{ $ctaLabel ?? __('lum.nav.take_a_break') }}</a>
             @endif
         </div>
     </div>

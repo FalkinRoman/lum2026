@@ -30,8 +30,6 @@
             </div>
             <a href="{{ route('stay') }}" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>{{ __('lum.hero.cta') }}</a>
         </div>
-
-        <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="pointer-events-none absolute bottom-[-28px] left-0 w-full rotate-180 scale-x-[-1]" width="375" height="54">
     </div>
 
     {{-- TABLET --}}
@@ -65,11 +63,9 @@
             </div>
             <a href="{{ route('stay') }}" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>{{ __('lum.hero.cta') }}</a>
         </div>
-
-        <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-0 z-10 h-[135px] w-[960px] max-w-none rotate-180 scale-x-[-1]" width="960" height="135">
     </div>
 
-    {{-- DESKTOP (не трогаем) --}}
+    {{-- DESKTOP --}}
     <div class="relative hidden h-[1242px] desk:block">
         <div class="absolute inset-0 h-[1242px] overflow-hidden">
             <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img('hero/video-poster.png') }}" data-lum-hero-video data-lum-bp="desktop">
@@ -104,7 +100,5 @@
         </div>
 
         <a href="{{ route('stay') }}" class="lum-btn-outline-ivory absolute left-1/2 top-[1018px] z-20 -translate-x-1/2" data-lum-sticky-trigger>{{ __('lum.hero.cta') }}</a>
-
-        <img src="{{ $img('hero/torn-edge.svg') }}" alt="" class="pointer-events-none absolute bottom-[-109px] left-0 z-10 h-[269px] w-[1920px] max-w-none rotate-180 scale-x-[-1]" width="1920" height="269">
     </div>
 </section>

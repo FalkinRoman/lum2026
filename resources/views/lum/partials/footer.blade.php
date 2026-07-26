@@ -19,13 +19,13 @@
         <div class="absolute left-[20px] top-[102px] flex w-[335px] flex-col items-center gap-[16px] text-center text-lum-ivory">
             <p class="w-full font-serif text-[42px] leading-[45px]">
                 @include('lum.partials.link-3d-text', [
-                    'href' => 'tel:+94779296087',
+                    'href' => \App\Support\Site::phoneHref(),
                     'text' => '+94 (779) 296-087',
                 ])
             </p>
             <p class="w-full font-serif text-[22px] font-medium leading-[24px] tracking-[0.194px]">
                 @include('lum.partials.link-3d-text', [
-                    'href' => 'mailto:dimacake@gmail.com',
+                    'href' => \App\Support\Site::emailHref(),
                     'text' => 'dimacake@gmail.com',
                 ])
             </p>
@@ -69,7 +69,7 @@
         </div>
 
         <div class="absolute left-[20px] top-[562px]">
-            <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
         </div>
         <div class="absolute left-[281px] top-[562px] flex items-center gap-[10px]">
             @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
@@ -120,13 +120,13 @@
 
         <p class="absolute right-[278px] top-[200px] -translate-y-1/2 whitespace-nowrap text-right font-serif text-[52px] leading-[52px] text-lum-ivory">
             @include('lum.partials.link-3d-text', [
-                'href' => 'tel:+94779296087',
+                'href' => \App\Support\Site::phoneHref(),
                 'text' => '+94 (779) 296-087',
             ])
         </p>
         <p class="absolute right-[336px] top-[267px] -translate-y-1/2 whitespace-nowrap text-right font-serif text-[28px] font-medium leading-[34px] tracking-[0.364px] text-lum-ivory">
             @include('lum.partials.link-3d-text', [
-                'href' => 'mailto:dimacake@gmail.com',
+                'href' => \App\Support\Site::emailHref(),
                 'text' => 'dimacake@gmail.com',
             ])
         </p>
@@ -168,7 +168,7 @@
         </div>
 
         <div class="absolute left-[22px] top-[883px]">
-            <a href="#" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
         </div>
         <div class="absolute left-[866px] top-[883px] flex items-center gap-[10px]">
             @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
@@ -203,13 +203,13 @@
         <div class="absolute right-[72px] top-[72px] text-right text-lum-ivory">
             <p class="lum-heading-1">
                 @include('lum.partials.link-3d-text', [
-                    'href' => 'tel:+94779296087',
+                    'href' => \App\Support\Site::phoneHref(),
                     'text' => '+94 (779) 296-087',
                 ])
             </p>
             <p class="lum-heading-3 mt-[44px]">
                 @include('lum.partials.link-3d-text', [
-                    'href' => 'mailto:dimacake@gmail.com',
+                    'href' => \App\Support\Site::emailHref(),
                     'text' => 'dimacake@gmail.com',
                 ])
             </p>
@@ -237,7 +237,7 @@
         </div>
 
         <div class="absolute left-[72px] top-[635px] flex items-center gap-[10px]">
-            <a href="#" class="lum-btn-ivory">{{ __('lum.location.see_on_map_upper') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory">{{ __('lum.location.see_on_map_upper') }}</a>
             @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
             @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
         </div>

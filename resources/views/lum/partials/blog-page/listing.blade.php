@@ -1,5 +1,5 @@
 @php
-    $posts = trans('lum.blog.posts');
+    $posts = collect($posts ?? \App\Support\Content::blogPosts());
     $tabs = trans('lum.blog.tabs');
     $tabKeys = ['all', 'food', 'beach', 'kitchen', 'sri-lanka'];
 @endphp

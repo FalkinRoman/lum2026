@@ -23,7 +23,7 @@
                 @endforeach
             </div>
 
-            <a href="#" class="lum-btn lum-btn-info mt-[64px] whitespace-nowrap text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.excursion.book') }}</a>
+            <a href="{{ $excursion['book_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info mt-[64px] whitespace-nowrap text-[14px] leading-[23px] tracking-[2.84px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.excursion.book') }}</a>
 
             <p class="mt-[32px] whitespace-nowrap text-center text-[12px] font-medium leading-[14px] tracking-[0.6px] text-[#752a23]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.14">{{ $package['cost'] }}</p>
 
@@ -57,7 +57,7 @@
                 @endforeach
             </div>
 
-            <a href="#" class="lum-btn lum-btn-info mt-[64px] whitespace-nowrap lum-text-2 tracking-[3.2px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.excursion.book') }}</a>
+            <a href="{{ $excursion['book_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info mt-[64px] whitespace-nowrap lum-text-2 tracking-[3.2px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.excursion.book') }}</a>
 
             <p class="mt-[32px] whitespace-nowrap text-center text-[14px] font-medium leading-[14px] tracking-[0.6px] text-[#752a23]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.14">{{ $package['cost'] }}</p>
 
@@ -97,7 +97,7 @@
                         @endforeach
                     </div>
 
-                    <a href="#" class="lum-btn lum-btn-info mt-[120px] whitespace-nowrap lum-text-2 tracking-[3.2px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.excursion.book') }}</a>
+                    <a href="{{ $excursion['book_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info mt-[120px] whitespace-nowrap lum-text-2 tracking-[3.2px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">{{ __('lum.excursion.book') }}</a>
 
                     <p class="mt-[44px] whitespace-nowrap text-center text-[14px] font-medium leading-[14px] tracking-[0.6px] text-[#752a23]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.14">{{ $package['cost'] }}</p>
                 </div>

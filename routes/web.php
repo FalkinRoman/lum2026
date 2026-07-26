@@ -1,6 +1,12 @@
 <?php
 
 use App\Http\Controllers\LocaleController;
+use App\Models\Activity;
+use App\Models\BlogPost;
+use App\Models\Excursion;
+use App\Models\Restaurant;
+use App\Models\Villa;
+use App\Support\Content;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,27 +14,26 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/stay', function () {
-    return view('stay');
+    $properties = Content::villas();
+
+    return view('stay', compact('properties'));
 })->name('stay');
 
 Route::get('/dining', function () {
-    return view('dining');
+    $venues = Content::restaurants();
+
+    return view('dining', compact('venues'));
 })->name('dining');
 
 Route::get('/relax', function () {
-    return view('relax');
+    $activities = Content::activities();
+
+    return view('relax', compact('activities'));
 })->name('relax');
 
 Route::get('/relax/{slug}', function (string $slug) {
-    $slugs = collect(trans('lum.relax.activities'))->pluck('slug')->filter();
-
-    if (! $slugs->contains($slug)) {
-        abort(404);
-    }
-
-    $activity = trans("lum.activity.{$slug}");
-
-    if (! is_array($activity)) {
+    $activity = Content::activity($slug);
+    if (! $activity) {
         abort(404);
     }
 
@@ -36,19 +41,14 @@ Route::get('/relax/{slug}', function (string $slug) {
 })->name('relax.show');
 
 Route::get('/discover', function () {
-    return view('discover');
+    $places = Content::excursions();
+
+    return view('discover', compact('places'));
 })->name('discover');
 
 Route::get('/discover/{slug}', function (string $slug) {
-    $slugs = collect(trans('lum.discover.places'))->pluck('slug');
-
-    if (! $slugs->contains($slug)) {
-        abort(404);
-    }
-
-    $excursion = trans("lum.excursion.{$slug}");
-
-    if (! is_array($excursion)) {
+    $excursion = Content::excursion($slug);
+    if (! $excursion) {
         abort(404);
     }
 
@@ -56,31 +56,19 @@ Route::get('/discover/{slug}', function (string $slug) {
 })->name('discover.show');
 
 Route::get('/dining/{slug}', function (string $slug) {
-    $slugs = collect(trans('lum.dining.venues'))->pluck('slug');
-
-    if (! $slugs->contains($slug)) {
+    $restaurant = Content::restaurant($slug);
+    if (! $restaurant) {
         abort(404);
     }
 
-    $restaurant = trans("lum.restaurant.{$slug}");
+    $menuCategories = Content::menuCategories();
 
-    if (! is_array($restaurant)) {
-        abort(404);
-    }
-
-    return view('restaurant', compact('slug', 'restaurant'));
+    return view('restaurant', compact('slug', 'restaurant', 'menuCategories'));
 })->name('restaurant.show');
 
 Route::get('/stay/{slug}', function (string $slug) {
-    $slugs = collect(trans('lum.stay.properties'))->pluck('slug');
-
-    if (! $slugs->contains($slug)) {
-        abort(404);
-    }
-
-    $villa = trans("lum.villa.{$slug}");
-
-    if (! is_array($villa)) {
+    $villa = Content::villa($slug);
+    if (! $villa) {
         abort(404);
     }
 
@@ -88,19 +76,14 @@ Route::get('/stay/{slug}', function (string $slug) {
 })->name('villa.show');
 
 Route::get('/blog', function () {
-    return view('blog');
+    $posts = Content::blogPosts();
+
+    return view('blog', compact('posts'));
 })->name('blog');
 
 Route::get('/blog/{slug}', function (string $slug) {
-    $slugs = collect(trans('lum.blog.posts'))->pluck('slug');
-
-    if (! $slugs->contains($slug)) {
-        abort(404);
-    }
-
-    $post = trans("lum.post.{$slug}");
-
-    if (! is_array($post)) {
+    $post = Content::blogPost($slug);
+    if (! $post) {
         abort(404);
     }
 
@@ -108,11 +91,19 @@ Route::get('/blog/{slug}', function (string $slug) {
 })->name('blog.show');
 
 Route::get('/contacts', function () {
-    return view('contacts');
+    $contact = Content::contact();
+
+    return view('contacts', compact('contact'));
 })->name('contacts');
 
 Route::get('/shop', function () {
-    return view('shop');
+    $shopItems = Content::shopItemsKeyed();
+
+    return view('shop', compact('shopItems'));
 })->name('shop');
+
+Route::get('/booking', function () {
+    return view('booking');
+})->name('booking');
 
 Route::get('/locale/{locale}', LocaleController::class)->name('locale.switch');

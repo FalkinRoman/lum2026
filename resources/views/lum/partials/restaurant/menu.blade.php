@@ -1,13 +1,18 @@
 @php
-    $menu = $restaurant['menu'] ?? [
+    $menuCategories = collect($menuCategories ?? \App\Support\Content::menuCategories());
+    $categories = $menuCategories->map(fn ($c) => [
+        'key' => $c['key'],
+        'label' => $c['label'],
+    ])->values()->all();
+    $items = $menuCategories->mapWithKeys(fn ($c) => [$c['key'] => $c['items']])->all();
+
+    $menu = [
         'eyebrow' => __('lum.restaurant.menu_eyebrow'),
         'title_normal' => __('lum.restaurant.menu_title_normal'),
         'title_italic' => __('lum.restaurant.menu_title_italic'),
-        'categories' => trans('lum.restaurant.menu_categories'),
-        'items' => trans('lum.restaurant.menu_items'),
+        'categories' => $categories,
+        'items' => $items,
     ];
-    $categories = $menu['categories'];
-    $items = $menu['items'];
 @endphp
 
 <section class="lum-container relative bg-lum-ivory" data-lum-restaurant-menu>

@@ -2,6 +2,10 @@
 
 @section('title', __('lum.meta.stay_title'))
 
+@push('head')
+    @include('lum.exely.head')
+@endpush
+
 @section('content')
 @php
     $img = fn (string $path) => asset('images/lum/' . $path);
@@ -9,6 +13,7 @@
 
 <div class="lum-viewport">
     <div class="lum-page">
+        {{-- Multi-search сидит после стрелки в intro Stay --}}
         @include('lum.partials.stay.properties', ['img' => $img])
         @include('lum.partials.stay.wellness', ['img' => $img])
         @include('lum.partials.footer', ['img' => $img])

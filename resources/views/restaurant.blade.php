@@ -12,7 +12,7 @@
     <div class="lum-page">
         @include('lum.partials.restaurant.hero', ['img' => $img, 'restaurant' => $restaurant, 'assetBase' => $assetBase])
         @include('lum.partials.restaurant.gallery', ['img' => $img, 'restaurant' => $restaurant, 'assetBase' => $assetBase])
-        @include('lum.partials.restaurant.menu', ['img' => $img, 'restaurant' => $restaurant])
+        @include('lum.partials.restaurant.menu', ['img' => $img, 'restaurant' => $restaurant, 'menuCategories' => $menuCategories])
         @include('lum.partials.impression', [
             'img' => $img,
             'variant' => 'villa',
@@ -21,6 +21,7 @@
             'showCta' => true,
             'showLogomark' => false,
             'ctaLabel' => __('lum.restaurant.book_table'),
+            'ctaHref' => $restaurant['book_url'] ?? \App\Support\Site::bookUrl(),
         ])
         @include('lum.partials.quote-choice', [
             'img' => $img,

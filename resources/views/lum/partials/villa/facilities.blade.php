@@ -1,5 +1,11 @@
 @php
-    $facilities = trans('lum.villa.facilities');
+    $facilities = array_merge([
+        'eyebrow' => __('lum.villa.facilities.eyebrow'),
+        'title_normal' => __('lum.villa.facilities.title_normal'),
+        'title_italic' => __('lum.villa.facilities.title_italic'),
+        'items_left' => [],
+        'items_right' => [],
+    ], $villa['facilities'] ?? []);
 @endphp
 
 <section class="lum-container relative bg-lum-ivory h-[1594px] tab:h-[1204px] desk:h-[992px]" data-lum-villa-panel>

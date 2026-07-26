@@ -1,36 +1,29 @@
 @php
-    $properties = trans('lum.stay.properties');
+    use App\Support\Exely;
+    use App\Support\ListingLayout;
+
+    $properties = collect($properties ?? []);
+    $count = $properties->count();
     $isRu = app()->getLocale() === 'ru';
+    $exelyEnabled = Exely::enabled();
 
-    $mobileLayout = [
-        ['imageTop' => 495, 'textTop' => 901],
-        ['imageTop' => 1041, 'textTop' => 1447],
-        ['imageTop' => 1587, 'textTop' => 1993],
-        ['imageTop' => 2133, 'textTop' => 2539],
-    ];
+    // Карточки после booking-блока — топы от 0
+    $mobileLayout = ListingLayout::mobileStay($count, 0);
+    $tabletLayout = ListingLayout::stayTablet($count, 0);
+    $desktopLayout = ListingLayout::stayDesktop($count, 0);
 
-    $tabletLayout = [
-        ['left' => 20, 'imageTop' => 615, 'textTop' => 1172],
-        ['left' => 490, 'imageTop' => 615, 'textTop' => 1172],
-        ['left' => 20, 'imageTop' => 1340, 'textTop' => 1897],
-        ['left' => 490, 'imageTop' => 1340, 'textTop' => 1897],
-    ];
-
-    $desktopLayout = [
-        ['left' => 225, 'imageTop' => 942, 'textTop' => 1794],
-        ['left' => 992, 'imageTop' => 942, 'textTop' => 1794],
-        ['left' => 225, 'imageTop' => 1968, 'textTop' => 2820],
-        ['left' => 992, 'imageTop' => 1968, 'textTop' => 2820],
-    ];
+    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'textTop', 180);
+    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'textTop', 180);
+    $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'textTop', 200);
 @endphp
 
 <section id="stay" class="lum-container relative bg-lum-ivory" data-lum-stay-page>
-    {{-- MOBILE — Figma 73:673 --}}
-    <div class="relative h-[2719px] tab:hidden" data-lum-stay-intro>
+    {{-- MOBILE intro --}}
+    <div class="relative tab:hidden" data-lum-stay-intro data-lum-stay-bp="mob">
         @include('lum.partials.header-mobile', ['headerTone' => 'espresso'])
         @include('lum.partials.sticky-trigger')
 
-        <div class="absolute left-1/2 top-[124px] flex w-[335px] -translate-x-1/2 flex-col items-center text-center" data-lum-stay-hero>
+        <div class="mx-auto flex w-[335px] flex-col items-center pt-[124px] text-center" data-lum-stay-hero>
             <div class="flex w-full flex-col items-center gap-[16px]">
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[6px]" width="6" height="6" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-stay-intro-item="title">
@@ -44,7 +37,58 @@
 
             @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'mob', 'marginClass' => 'mt-[44px]'])
         </div>
+    </div>
 
+    {{-- TABLET intro --}}
+    <div class="relative hidden tab:block desk:hidden" data-lum-stay-intro data-lum-stay-bp="tab">
+        @include('lum.partials.header-tablet', ['headerTone' => 'espresso'])
+        @include('lum.partials.sticky-trigger')
+
+        <div class="mx-auto flex w-[920px] flex-col items-center pt-[160px] text-center" data-lum-stay-hero>
+            <div class="flex flex-col items-center gap-[12px]">
+                <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[8px]" width="8" height="8" data-lum-stay-intro-item="dot">
+                <h1 class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-stay-intro-item="title">
+                    {{ __('lum.stay.title_line1') }}<br>
+                    {{ __('lum.stay.title_line2') }}<br>
+                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
+                </h1>
+            </div>
+
+            <p class="mt-[12px] whitespace-nowrap lum-text-2 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
+
+            @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'tab', 'marginClass' => 'mt-[56px]'])
+        </div>
+    </div>
+
+    {{-- DESKTOP intro --}}
+    <div class="relative hidden desk:block" data-lum-stay-intro data-lum-stay-bp="desk">
+        @include('lum.partials.header', ['headerTone' => 'espresso', 'headerActive' => 'stay'])
+        @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
+
+        <div @class(['mx-auto flex flex-col items-center pt-[292px] text-center', 'w-[640px]' => $isRu, 'w-[552px]' => ! $isRu]) data-lum-stay-hero>
+            <div class="flex w-full flex-col items-center gap-[24px]">
+                <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12" data-lum-stay-intro-item="dot">
+                <h1 class="font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item="title">
+                    {{ __('lum.stay.title_line1') }}<br>
+                    {{ __('lum.stay.title_line2') }}<br>
+                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
+                </h1>
+            </div>
+
+            <p class="mt-[28px] whitespace-nowrap lum-eyebrow text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
+
+            @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'desk', 'marginClass' => 'mt-[64px]'])
+        </div>
+    </div>
+
+    @if ($exelyEnabled)
+        <div class="lum-stay-booking" data-lum-stay-booking>
+            @include('lum.exely.search', ['variant' => 'inline'])
+        </div>
+    @endif
+
+    {{-- MOBILE properties --}}
+    <div class="relative tab:hidden" style="height: {{ $mobileHeight }}px" data-lum-stay-properties="mob">
         @foreach ($properties as $index => $property)
             @php $layout = $mobileLayout[$index]; @endphp
 
@@ -67,26 +111,8 @@
         @endforeach
     </div>
 
-    {{-- TABLET — Figma 73:579 --}}
-    <div class="relative hidden h-[2125px] tab:block desk:hidden" data-lum-stay-intro>
-        @include('lum.partials.header-tablet', ['headerTone' => 'espresso'])
-        @include('lum.partials.sticky-trigger')
-
-        <div class="absolute left-1/2 top-[160px] flex w-[920px] -translate-x-1/2 flex-col items-center text-center" data-lum-stay-hero>
-            <div class="flex flex-col items-center gap-[12px]">
-                <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[8px]" width="8" height="8" data-lum-stay-intro-item="dot">
-                <h1 class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-stay-intro-item="title">
-                    {{ __('lum.stay.title_line1') }}<br>
-                    {{ __('lum.stay.title_line2') }}<br>
-                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
-                </h1>
-            </div>
-
-            <p class="mt-[12px] whitespace-nowrap lum-text-2 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
-
-            @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'tab', 'marginClass' => 'mt-[56px]'])
-        </div>
-
+    {{-- TABLET properties --}}
+    <div class="relative hidden tab:block desk:hidden" style="height: {{ $tabletHeight }}px" data-lum-stay-properties="tab">
         @foreach ($properties as $index => $property)
             @php $layout = $tabletLayout[$index]; @endphp
 
@@ -109,26 +135,8 @@
         @endforeach
     </div>
 
-    {{-- DESKTOP — Figma 73:487 --}}
-    <div class="relative hidden h-[3074px] desk:block" data-lum-stay-intro>
-        @include('lum.partials.header', ['headerTone' => 'espresso', 'headerActive' => 'stay'])
-        @include('lum.partials.sticky-trigger', ['desktopTop' => 132])
-
-        <div @class(['absolute left-1/2 top-[292px] -translate-x-1/2 flex flex-col items-center text-center', 'w-[640px]' => $isRu, 'w-[552px]' => ! $isRu]) data-lum-stay-hero>
-            <div class="flex w-full flex-col items-center gap-[24px]">
-                <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12" data-lum-stay-intro-item="dot">
-                <h1 class="font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item="title">
-                    {{ __('lum.stay.title_line1') }}<br>
-                    {{ __('lum.stay.title_line2') }}<br>
-                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
-                </h1>
-            </div>
-
-            <p class="mt-[28px] whitespace-nowrap lum-eyebrow text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
-
-            @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'desk', 'marginClass' => 'mt-[64px]'])
-        </div>
-
+    {{-- DESKTOP properties --}}
+    <div class="relative hidden desk:block" style="height: {{ $desktopHeight }}px" data-lum-stay-properties="desk">
         @foreach ($properties as $index => $property)
             @php $layout = $desktopLayout[$index]; @endphp
 
