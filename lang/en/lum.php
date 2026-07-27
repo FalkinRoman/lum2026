@@ -11,6 +11,8 @@ return [
         'contact_title' => 'Lum — Contacts',
         'shop_title' => 'Lum — Shop',
         'booking_title' => 'Lum — Booking',
+        'privacy_title' => 'Lum — Privacy Policy',
+        'terms_title' => 'Lum — Terms of Use',
     ],
 
     'booking' => [
@@ -439,7 +441,7 @@ return [
         'address_tablet' => 'Thiththagalla road, Walhengoda,',
         'address_tablet_2' => '80650 Sri Lanka',
         'address_menu' => 'Thiththagalla road,<br>Ahangama, Sri Lanka',
-        'copyright' => '©Lum — 2026 all rights Reserved',
+        'copyright' => '©Lum — :year all rights Reserved',
         'privacy' => 'Privacy Policy',
         'terms' => 'Terms of Use',
         'credits_prefix' => 'Des & Dev /',

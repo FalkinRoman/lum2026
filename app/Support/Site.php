@@ -7,25 +7,39 @@ use Illuminate\Support\Facades\Cache;
 
 class Site
 {
+    private static ?SiteSetting $memo = null;
+
     public static function settings(): SiteSetting
     {
-        // Request-level memo only — caching Eloquent+Spatie via DB store
-        // unserializes as __PHP_Incomplete_Class.
-        return once(fn () => SiteSetting::current());
+        return self::$memo ??= SiteSetting::current();
     }
 
     public static function forget(): void
     {
+        self::$memo = null;
         Cache::forget('site_settings');
     }
 
-    public static function takeABreakUrl(): string
+    public static function bookingDestination(): string
     {
         if (Exely::enabled()) {
             return Exely::bookingUrl();
         }
 
-        return self::settings()->take_a_break_url ?: '#';
+        $settings = self::settings();
+
+        if ($settings->use_booking_page) {
+            return route('booking');
+        }
+
+        return $settings->book_url
+            ?: $settings->take_a_break_url
+            ?: route('booking');
+    }
+
+    public static function takeABreakUrl(): string
+    {
+        return self::bookingDestination();
     }
 
     public static function mapUrl(): string
@@ -39,11 +53,7 @@ class Site
             return $fallback;
         }
 
-        if (Exely::enabled()) {
-            return Exely::bookingUrl();
-        }
-
-        return self::settings()->book_url ?: (self::settings()->take_a_break_url ?: '#');
+        return self::bookingDestination();
     }
 
     public static function villaBookingUrl(?string $hotelId = null, ?string $roomTypeId = null): string
@@ -52,7 +62,7 @@ class Site
             return Exely::bookingUrl($hotelId, $roomTypeId);
         }
 
-        return self::takeABreakUrl();
+        return self::bookingDestination();
     }
 
     public static function phone(): string
@@ -63,6 +73,16 @@ class Site
     public static function phoneHref(): string
     {
         return self::settings()->telHref();
+    }
+
+    public static function phonePersonal(): string
+    {
+        return (string) (self::settings()->phone_personal ?: '');
+    }
+
+    public static function phonePersonalHref(): string
+    {
+        return self::settings()->personalTelHref();
     }
 
     public static function email(): string
@@ -88,6 +108,53 @@ class Site
     public static function telegramUrl(): string
     {
         return self::settings()->telegram_url ?: '#';
+    }
+
+    public static function socialUrl(string $network): string
+    {
+        return match ($network) {
+            'instagram' => self::instagramUrl(),
+            'whatsapp' => self::whatsappUrl(),
+            'telegram' => self::telegramUrl(),
+            default => '#',
+        };
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function footerAddress(): array
+    {
+        $lines = self::settings()->getTranslation('footer_address', app()->getLocale()) ?: [];
+
+        if (is_array($lines) && count(array_filter($lines)) > 0) {
+            return array_values(array_map('strval', $lines));
+        }
+
+        return [
+            (string) __('lum.footer.address_line1'),
+            (string) __('lum.footer.address_line2'),
+            (string) __('lum.footer.address_line3'),
+        ];
+    }
+
+    public static function copyrightYear(): int
+    {
+        return (int) Cache::remember(
+            'lum.footer_copyright_year',
+            now()->endOfYear(),
+            fn () => (int) now()->year,
+        );
+    }
+
+    public static function copyright(): string
+    {
+        return (string) __('lum.footer.copyright', ['year' => self::copyrightYear()]);
+    }
+
+    public static function reviews(): string
+    {
+        return (string) __('lum.footer.reviews');
     }
 
     public static function imageUrl(?string $path, string $prefix = 'images/lum/'): string

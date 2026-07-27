@@ -7,6 +7,7 @@ use App\Models\SiteSetting;
 use App\Support\Site;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -46,14 +47,14 @@ class ManageSiteSettings extends Page implements HasForms
 
         $this->form->fill([
             'phone' => $settings->phone,
-            'phone_href' => $settings->phone_href,
+            'phone_personal' => $settings->phone_personal,
             'email' => $settings->email,
             'map_url' => $settings->map_url,
             'whatsapp_url' => $settings->whatsapp_url,
             'instagram_url' => $settings->instagram_url,
             'telegram_url' => $settings->telegram_url,
-            'take_a_break_url' => $settings->take_a_break_url,
-            'book_url' => $settings->book_url,
+            'use_booking_page' => $settings->use_booking_page ?? true,
+            'book_url' => $settings->book_url ?: $settings->take_a_break_url,
             'address' => [
                 'en' => $settings->getTranslation('address', 'en', useFallbackLocale: false),
                 'ru' => $settings->getTranslation('address', 'ru', useFallbackLocale: false),
@@ -62,19 +63,8 @@ class ManageSiteSettings extends Page implements HasForms
                 'en' => $settings->getTranslation('footer_address', 'en', useFallbackLocale: false) ?? [],
                 'ru' => $settings->getTranslation('footer_address', 'ru', useFallbackLocale: false) ?? [],
             ],
-            'reviews' => [
-                'en' => $settings->getTranslation('reviews', 'en', useFallbackLocale: false),
-                'ru' => $settings->getTranslation('reviews', 'ru', useFallbackLocale: false),
-            ],
-            'copyright' => [
-                'en' => $settings->getTranslation('copyright', 'en', useFallbackLocale: false),
-                'ru' => $settings->getTranslation('copyright', 'ru', useFallbackLocale: false),
-            ],
-            'legal' => [
-                'en' => $settings->getTranslation('legal', 'en', useFallbackLocale: false) ?? [],
-                'ru' => $settings->getTranslation('legal', 'ru', useFallbackLocale: false) ?? [],
-            ],
-            'hours_editor' => $this->hoursToRows($settings),
+            'hours_editor' => $this->pairRowsToEditor($settings, 'hours'),
+            'legal_editor' => $this->legalRowsWithoutPhone($settings),
         ]);
     }
 
@@ -82,51 +72,83 @@ class ManageSiteSettings extends Page implements HasForms
     {
         return $schema
             ->components([
-                Section::make('Контакты')
+                Section::make('Общие контакты')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('phone')->label('Телефон'),
-                        TextInput::make('phone_href')->label('Ссылка телефона')->helperText('например tel:+94779296087'),
-                        TextInput::make('email')->label('Email')->email(),
-                        TextInput::make('map_url')->label('URL карты')->url(),
-                        TextInput::make('whatsapp_url')->label('WhatsApp URL')->url(),
+                        TextInput::make('phone')
+                            ->label('Телефон виллы (ресепшн)')
+                            ->required(),
+                        TextInput::make('phone_personal')
+                            ->label('Телефон личный'),
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->required(),
+                        TextInput::make('map_url')
+                            ->label('URL карты')
+                            ->url(),
                         TextInput::make('instagram_url')->label('Instagram URL')->url(),
-                        TextInput::make('telegram_url')->label('Telegram URL')->url(),
-                        TextInput::make('take_a_break_url')
-                            ->label('URL «Take a break»')
-                            ->url()
-                            ->helperText('Игнорируется при включённом Exely — CTA ведут на /booking'),
-                        TextInput::make('book_url')
-                            ->label('URL бронирования')
-                            ->url()
-                            ->helperText('Игнорируется при включённом Exely — CTA ведут на /booking'),
+                        TextInput::make('whatsapp_url')->label('WhatsApp URL')->url(),
+                        TextInput::make('telegram_url')->label('Telegram URL')->url()->columnSpanFull(),
                     ]),
 
-                Section::make('Адрес и тексты')
+                Section::make('Бронирование')
+                    ->description('Кнопки «Take a break» (хедер и меню) и Book (активности, экскурсии и похожие CTA).')
+                    ->schema([
+                        Radio::make('use_booking_page')
+                            ->label('Куда вести эти кнопки')
+                            ->boolean(
+                                trueLabel: 'На страницу /booking на сайте',
+                                falseLabel: 'На внешнюю ссылку',
+                            )
+                            ->default(true)
+                            ->live()
+                            ->required(),
+                        TextInput::make('book_url')
+                            ->label('Внешняя ссылка')
+                            ->url()
+                            ->placeholder('https://...')
+                            ->helperText('WhatsApp, Booking.com или другой URL')
+                            ->visible(fn ($get) => ! $get('use_booking_page'))
+                            ->required(fn ($get) => ! $get('use_booking_page')),
+                    ]),
+
+                Section::make('Страница «Контакты»')
                     ->schema([
                         Locales::text('address', 'Адрес', textarea: true),
-                        Locales::json('footer_address', 'Адрес в футере'),
-                        Locales::text('reviews', 'Отзывы', textarea: true),
-                        Locales::text('copyright', 'Копирайт'),
-                        Locales::json('legal', 'Юридическое'),
-                    ]),
-
-                Section::make('Часы работы')
-                    ->schema([
                         Repeater::make('hours_editor')
                             ->label('Часы работы')
-                            ->addActionLabel('Добавить строку')
-                            ->reorderable()
+                            ->addable(false)
+                            ->deletable(false)
+                            ->reorderable(false)
                             ->default([])
                             ->schema([
-                                Grid::make(4)
-                                    ->schema([
-                                        TextInput::make('label_en')->label('Подпись (EN)'),
-                                        TextInput::make('label_ru')->label('Подпись (RU)'),
-                                        TextInput::make('value_en')->label('Значение (EN)'),
-                                        TextInput::make('value_ru')->label('Значение (RU)'),
-                                    ]),
+                                Grid::make(4)->schema([
+                                    TextInput::make('label_en')->label('Дни (EN)'),
+                                    TextInput::make('label_ru')->label('Дни (RU)'),
+                                    TextInput::make('value_en')->label('Время (EN)'),
+                                    TextInput::make('value_ru')->label('Время (RU)'),
+                                ]),
                             ]),
+                        Repeater::make('legal_editor')
+                            ->label('Реквизиты')
+                            ->addable(false)
+                            ->deletable(false)
+                            ->reorderable(false)
+                            ->default([])
+                            ->schema([
+                                Grid::make(4)->schema([
+                                    TextInput::make('label_en')->label('Подпись (EN)'),
+                                    TextInput::make('label_ru')->label('Подпись (RU)'),
+                                    TextInput::make('value_en')->label('Значение (EN)'),
+                                    TextInput::make('value_ru')->label('Значение (RU)'),
+                                ]),
+                            ]),
+                    ]),
+
+                Section::make('Футер')
+                    ->schema([
+                        Locales::json('footer_address', 'Адрес (массив строк)'),
                     ]),
             ])
             ->statePath('data');
@@ -146,18 +168,21 @@ class ManageSiteSettings extends Page implements HasForms
     {
         $state = $this->form->getState();
 
-        $rows = $state['hours_editor'] ?? [];
-        unset($state['hours_editor']);
+        $state['hours'] = $this->editorToPairRows($state['hours_editor'] ?? []);
+        $state['legal'] = $this->mergePersonalPhoneIntoLegal(
+            $this->editorToPairRows($state['legal_editor'] ?? []),
+            (string) ($state['phone_personal'] ?? '')
+        );
+        unset($state['hours_editor'], $state['legal_editor']);
 
-        $hoursEn = [];
-        $hoursRu = [];
+        $state['use_booking_page'] = (bool) ($state['use_booking_page'] ?? true);
 
-        foreach ($rows as $row) {
-            $hoursEn[] = ['label' => $row['label_en'] ?? '', 'value' => $row['value_en'] ?? ''];
-            $hoursRu[] = ['label' => $row['label_ru'] ?? '', 'value' => $row['value_ru'] ?? ''];
-        }
+        // Keep legacy CTA field in sync with the single booking URL.
+        $state['take_a_break_url'] = $state['book_url'] ?? null;
 
-        $state['hours'] = ['en' => $hoursEn, 'ru' => $hoursRu];
+        // tel: links are derived from phone numbers in code — keep DB columns in sync.
+        $state['phone_href'] = self::telFromPhone((string) ($state['phone'] ?? ''));
+        $state['phone_personal_href'] = self::telFromPhone((string) ($state['phone_personal'] ?? ''));
 
         $settings = SiteSetting::current();
         $settings->fill($state);
@@ -171,15 +196,64 @@ class ManageSiteSettings extends Page implements HasForms
             ->send();
     }
 
+    protected static function telFromPhone(string $phone): ?string
+    {
+        $digits = preg_replace('/[^\d+]/', '', $phone);
+
+        return $digits !== '' ? 'tel:'.$digits : null;
+    }
+
     /**
      * @return array<int, array<string, string>>
      */
-    protected function hoursToRows(SiteSetting $settings): array
+    protected function legalRowsWithoutPhone(SiteSetting $settings): array
     {
-        $en = $settings->getTranslation('hours', 'en', useFallbackLocale: false) ?? [];
-        $ru = $settings->getTranslation('hours', 'ru', useFallbackLocale: false) ?? [];
-        $count = max(count($en), count($ru));
+        return array_values(array_filter(
+            $this->pairRowsToEditor($settings, 'legal'),
+            function (array $row): bool {
+                $en = mb_strtolower(trim((string) ($row['label_en'] ?? '')));
+                $ru = mb_strtolower(trim((string) ($row['label_ru'] ?? '')));
 
+                return ! in_array($en, ['phone'], true) && ! in_array($ru, ['телефон', 'phone'], true);
+            }
+        ));
+    }
+
+    /**
+     * @param  array{en: list<array{label: string, value: string}>, ru: list<array{label: string, value: string}>}  $legal
+     * @return array{en: list<array{label: string, value: string}>, ru: list<array{label: string, value: string}>}
+     */
+    protected function mergePersonalPhoneIntoLegal(array $legal, string $phonePersonal): array
+    {
+        foreach (['en', 'ru'] as $locale) {
+            $legal[$locale] = array_values(array_filter(
+                $legal[$locale] ?? [],
+                function (array $row): bool {
+                    $label = mb_strtolower(trim((string) ($row['label'] ?? '')));
+
+                    return ! in_array($label, ['phone', 'телефон'], true);
+                }
+            ));
+
+            if ($phonePersonal !== '') {
+                array_splice($legal[$locale], min(1, count($legal[$locale])), 0, [[
+                    'label' => $locale === 'ru' ? 'Телефон' : 'Phone',
+                    'value' => $phonePersonal,
+                ]]);
+            }
+        }
+
+        return $legal;
+    }
+
+    /**
+     * @return array<int, array<string, string>>
+     */
+    protected function pairRowsToEditor(SiteSetting $settings, string $field): array
+    {
+        $en = $settings->getTranslation($field, 'en', useFallbackLocale: false) ?? [];
+        $ru = $settings->getTranslation($field, 'ru', useFallbackLocale: false) ?? [];
+        $count = max(count($en), count($ru));
         $rows = [];
 
         for ($i = 0; $i < $count; $i++) {
@@ -192,5 +266,22 @@ class ManageSiteSettings extends Page implements HasForms
         }
 
         return $rows;
+    }
+
+    /**
+     * @param  array<int, array<string, string>>  $rows
+     * @return array{en: list<array{label: string, value: string}>, ru: list<array{label: string, value: string}>}
+     */
+    protected function editorToPairRows(array $rows): array
+    {
+        $en = [];
+        $ru = [];
+
+        foreach ($rows as $row) {
+            $en[] = ['label' => $row['label_en'] ?? '', 'value' => $row['value_en'] ?? ''];
+            $ru[] = ['label' => $row['label_ru'] ?? '', 'value' => $row['value_ru'] ?? ''];
+        }
+
+        return ['en' => $en, 'ru' => $ru];
     }
 }

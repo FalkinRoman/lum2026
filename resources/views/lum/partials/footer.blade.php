@@ -6,6 +6,11 @@
 @php
     $villaUrl = fn (string $slug) => route('villa.show', $slug);
     $isRu = app()->getLocale() === 'ru';
+    $sitePhone = \App\Support\Site::phone();
+    $siteEmail = \App\Support\Site::email();
+    $footerAddress = \App\Support\Site::footerAddress();
+    $footerCopyright = \App\Support\Site::copyright();
+    $footerReviews = \App\Support\Site::reviews();
 @endphp
     <img src="{{ $img('footer/bg.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover" width="1920" height="800">
 
@@ -20,13 +25,13 @@
             <p class="w-full font-serif text-[42px] leading-[45px]">
                 @include('lum.partials.link-3d-text', [
                     'href' => \App\Support\Site::phoneHref(),
-                    'text' => '+94 (779) 296-087',
+                    'text' => $sitePhone,
                 ])
             </p>
             <p class="w-full font-serif text-[22px] font-medium leading-[24px] tracking-[0.194px]">
                 @include('lum.partials.link-3d-text', [
                     'href' => \App\Support\Site::emailHref(),
-                    'text' => 'dimacake@gmail.com',
+                    'text' => $siteEmail,
                 ])
             </p>
         </div>
@@ -58,25 +63,25 @@
             <p class="flex items-center gap-[4px] text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-ivory">
                 4.9
                 <span class="text-lum-ivory-40">/</span>
-                <span class="text-lum-ivory-40">{{ __('lum.footer.reviews') }}</span>
+                <span class="text-lum-ivory-40">{{ $footerReviews }}</span>
             </p>
         </div>
 
         <div class="absolute left-[20px] top-[546px] -translate-y-full font-serif text-[22px] font-medium leading-[24px] tracking-[0.194px] text-lum-ivory">
-            <p>{{ __('lum.footer.address_line1') }}</p>
-            <p>{{ __('lum.footer.address_line2') }}</p>
-            <p>{{ __('lum.footer.address_line3') }}</p>
+            @foreach ($footerAddress as $line)
+                <p>{{ $line }}</p>
+            @endforeach
         </div>
 
         <div class="absolute left-[20px] top-[562px]">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
         </div>
         <div class="absolute left-[281px] top-[562px] flex items-center gap-[10px]">
-            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
-            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram', 'href' => \App\Support\Site::instagramUrl()])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp', 'href' => \App\Support\Site::whatsappUrl()])
         </div>
 
-        <p class="absolute left-[20px] top-[655px] -translate-y-1/2 text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
+        <p class="absolute left-[20px] top-[655px] -translate-y-1/2 text-[14px] leading-[22px] tracking-[0.1px] font-normal text-lum-ivory-40 whitespace-nowrap">{{ $footerCopyright }}</p>
 
         <div
             @class([
@@ -85,8 +90,8 @@
                 'left-[calc(50%-68px)] top-[678px] -translate-x-1/2 gap-[40px] whitespace-nowrap' => ! $isRu,
             ])
         >
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'href' => route('privacy'), 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'href' => route('terms'), 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
         <button
@@ -121,13 +126,13 @@
         <p class="absolute right-[278px] top-[200px] -translate-y-1/2 whitespace-nowrap text-right font-serif text-[52px] leading-[52px] text-lum-ivory">
             @include('lum.partials.link-3d-text', [
                 'href' => \App\Support\Site::phoneHref(),
-                'text' => '+94 (779) 296-087',
+                'text' => $sitePhone,
             ])
         </p>
         <p class="absolute right-[336px] top-[267px] -translate-y-1/2 whitespace-nowrap text-right font-serif text-[28px] font-medium leading-[34px] tracking-[0.364px] text-lum-ivory">
             @include('lum.partials.link-3d-text', [
                 'href' => \App\Support\Site::emailHref(),
-                'text' => 'dimacake@gmail.com',
+                'text' => $siteEmail,
             ])
         </p>
 
@@ -158,28 +163,29 @@
             <p class="flex items-center gap-[4px] lum-text-3 font-medium text-lum-ivory">
                 4.9
                 <span class="text-lum-ivory-40">/</span>
-                <span class="text-lum-ivory-40">{{ __('lum.footer.reviews') }}</span>
+                <span class="text-lum-ivory-40">{{ $footerReviews }}</span>
             </p>
         </div>
 
         <div class="absolute left-[22px] top-[864px] -translate-y-full font-serif text-[28px] font-medium leading-[34px] tracking-[0.364px] text-lum-ivory">
-            <p>{{ __('lum.footer.address_tablet') }}</p>
-            <p>{{ __('lum.footer.address_tablet_2') }}</p>
+            @foreach ($footerAddress as $line)
+                <p>{{ $line }}</p>
+            @endforeach
         </div>
 
         <div class="absolute left-[22px] top-[883px]">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.location.see_on_map_upper') }}</a>
         </div>
         <div class="absolute left-[866px] top-[883px] flex items-center gap-[10px]">
-            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
-            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram', 'href' => \App\Support\Site::instagramUrl()])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp', 'href' => \App\Support\Site::whatsappUrl()])
         </div>
 
-        <p class="absolute left-[22px] top-[991.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
+        <p class="absolute left-[22px] top-[991.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">{{ $footerCopyright }}</p>
 
         <div class="lum-footer-legal absolute left-[20px] top-[1024px] gap-[40px] lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'href' => route('privacy'), 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'href' => route('terms'), 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
         @include('lum.partials.footer-credits', [
@@ -204,13 +210,13 @@
             <p class="lum-heading-1">
                 @include('lum.partials.link-3d-text', [
                     'href' => \App\Support\Site::phoneHref(),
-                    'text' => '+94 (779) 296-087',
+                    'text' => $sitePhone,
                 ])
             </p>
             <p class="lum-heading-3 mt-[44px]">
                 @include('lum.partials.link-3d-text', [
                     'href' => \App\Support\Site::emailHref(),
-                    'text' => 'dimacake@gmail.com',
+                    'text' => $siteEmail,
                 ])
             </p>
         </div>
@@ -227,19 +233,20 @@
             <p class="flex items-center gap-[4px] lum-text-3 font-medium text-lum-ivory">
                 4.9
                 <span class="text-lum-ivory-40">/</span>
-                <span class="text-lum-ivory-40">{{ __('lum.footer.reviews') }}</span>
+                <span class="text-lum-ivory-40">{{ $footerReviews }}</span>
             </p>
         </div>
 
         <div class="absolute left-[72px] top-[615px] -translate-y-full lum-heading-3 text-lum-ivory">
-            <p>{{ __('lum.footer.address_tablet') }}</p>
-            <p>{{ __('lum.footer.address_tablet_2') }}</p>
+            @foreach ($footerAddress as $line)
+                <p>{{ $line }}</p>
+            @endforeach
         </div>
 
         <div class="absolute left-[72px] top-[635px] flex items-center gap-[10px]">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory">{{ __('lum.location.see_on_map_upper') }}</a>
-            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram'])
-            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp'])
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-ivory">{{ __('lum.location.see_on_map_upper') }}</a>
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'instagram', 'href' => \App\Support\Site::instagramUrl()])
+            @include('lum.partials.footer-social', ['img' => $img, 'network' => 'whatsapp', 'href' => \App\Support\Site::whatsappUrl()])
         </div>
 
         <nav class="absolute left-[1415px] top-[615px] flex gap-[40px] lum-text-2 font-medium text-lum-ivory">
@@ -255,11 +262,11 @@
 
         <div class="absolute bottom-[64px] left-1/2 h-px w-[1776px] -translate-x-1/2 bg-lum-ivory-40 opacity-16"></div>
 
-        <p class="absolute left-[72px] top-[768.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">{{ __('lum.footer.copyright') }}</p>
+        <p class="absolute left-[72px] top-[768.5px] -translate-y-1/2 lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">{{ $footerCopyright }}</p>
 
         <div class="lum-footer-legal absolute left-1/2 top-[756px] -translate-x-1/2 gap-[40px] lum-text-2 font-normal text-lum-ivory-40 whitespace-nowrap">
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
-            @include('lum.partials.link-footer-nav', ['img' => $img, 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'href' => route('privacy'), 'label' => __('lum.footer.privacy'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
+            @include('lum.partials.link-footer-nav', ['img' => $img, 'href' => route('terms'), 'label' => __('lum.footer.terms'), 'classes' => 'lum-link--footer-legal', 'variant' => 'line'])
         </div>
 
         @include('lum.partials.footer-credits', [

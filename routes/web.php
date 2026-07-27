@@ -96,6 +96,26 @@ Route::get('/contacts', function () {
     return view('contacts', compact('contact'));
 })->name('contacts');
 
+Route::get('/privacy', function () {
+    $settings = \App\Support\Site::settings();
+    $page = [
+        'title' => $settings->privacy_title ?: __('lum.footer.privacy'),
+        'body' => $settings->privacy_body ?: '',
+    ];
+
+    return view('legal', compact('page'));
+})->name('privacy');
+
+Route::get('/terms', function () {
+    $settings = \App\Support\Site::settings();
+    $page = [
+        'title' => $settings->terms_title ?: __('lum.footer.terms'),
+        'body' => $settings->terms_body ?: '',
+    ];
+
+    return view('legal', compact('page'));
+})->name('terms');
+
 Route::get('/shop', function () {
     $shopItems = Content::shopItemsKeyed();
 

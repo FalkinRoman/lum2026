@@ -85,6 +85,8 @@ $pages = [
     '/blog/lum-ocean-trip',
     '/blog/restaurant-bar',
     '/contacts',
+    '/privacy',
+    '/terms',
     '/shop',
 ];
 

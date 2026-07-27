@@ -346,17 +346,42 @@ class Content
     public static function contact(): array
     {
         $s = Site::settings();
+        $locale = app()->getLocale();
+        $legal = $s->getTranslation('legal', $locale) ?: [];
+
+        if ($s->phone_personal) {
+            $replaced = false;
+
+            foreach ($legal as $i => $row) {
+                $label = mb_strtolower((string) ($row['label'] ?? ''));
+
+                if (in_array($label, ['phone', 'телефон'], true)) {
+                    $legal[$i]['value'] = $s->phone_personal;
+                    $replaced = true;
+                    break;
+                }
+            }
+
+            if (! $replaced) {
+                $legal[] = [
+                    'label' => $locale === 'ru' ? 'Телефон' : 'Phone',
+                    'value' => $s->phone_personal,
+                ];
+            }
+        }
 
         return [
             'title' => __('lum.contact.title'),
             'address' => $s->address,
             'phone' => $s->phone,
+            'phone_personal' => $s->phone_personal,
             'email' => $s->email,
             'see_on_map' => __('lum.contact.see_on_map'),
-            'hours' => $s->getTranslation('hours', app()->getLocale()) ?: [],
-            'legal' => $s->getTranslation('legal', app()->getLocale()) ?: [],
+            'hours' => $s->getTranslation('hours', $locale) ?: [],
+            'legal' => $legal,
             'map_url' => Site::mapUrl(),
             'phone_href' => Site::phoneHref(),
+            'phone_personal_href' => Site::phonePersonalHref(),
             'email_href' => Site::emailHref(),
         ];
     }

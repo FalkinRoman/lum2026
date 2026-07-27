@@ -57,7 +57,7 @@ class CmsContentSeeder extends Seeder
 
         $site->fill([
             'phone' => $en['contact']['phone'],
-            'phone_href' => 'tel:+94779296087',
+            'phone_personal' => '+7 (916) 934-11-44',
             'email' => $en['contact']['email'],
             'map_url' => 'https://maps.google.com/?q=Thiththagalla+road,+Ahangama,+Sri+Lanka',
             'whatsapp_url' => $en['shop']['social_whatsapp_url'],
@@ -65,6 +65,7 @@ class CmsContentSeeder extends Seeder
             'telegram_url' => 'https://t.me/ivantaskayev',
             'take_a_break_url' => $en['shop']['social_whatsapp_url'],
             'book_url' => $en['shop']['social_whatsapp_url'],
+            'use_booking_page' => true,
         ]);
 
         $this->setTranslations($site, [
@@ -75,8 +76,62 @@ class CmsContentSeeder extends Seeder
                 'en' => [$en['footer']['address_line1'], $en['footer']['address_line2'], $en['footer']['address_line3']],
                 'ru' => [$ru['footer']['address_line1'], $ru['footer']['address_line2'], $ru['footer']['address_line3']],
             ],
-            'reviews' => ['en' => $en['footer']['reviews'], 'ru' => $ru['footer']['reviews']],
-            'copyright' => ['en' => $en['footer']['copyright'], 'ru' => $ru['footer']['copyright']],
+            'privacy_title' => [
+                'en' => 'Privacy Policy',
+                'ru' => 'Политика конфиденциальности',
+            ],
+            'privacy_body' => [
+                'en' => <<<'TXT'
+This is a placeholder Privacy Policy for Lum Residence.
+
+We collect only the information you share with us when you enquire, book a stay, or contact us (for example your name, email, phone number, and stay details).
+
+We use this information to respond to requests, manage bookings, and improve our guest experience. We do not sell your personal data.
+
+If you have questions about how we handle your data, please contact us at the email listed on our Contacts page.
+
+This text can be edited in the admin panel under Site settings → Privacy Policy.
+TXT,
+                'ru' => <<<'TXT'
+Это заглушка Политики конфиденциальности Lum Residence.
+
+Мы обрабатываем только те данные, которые вы сами передаёте при запросе, бронировании или обращении (например имя, email, телефон и детали проживания).
+
+Данные используются для ответа на запросы, оформления бронирований и улучшения сервиса. Мы не продаём персональные данные третьим лицам.
+
+Вопросы по обработке данных — на email со страницы Контакты.
+
+Этот текст можно править в админке: Настройки сайта → Политика конфиденциальности.
+TXT,
+            ],
+            'terms_title' => [
+                'en' => 'Terms of Use',
+                'ru' => 'Условия использования',
+            ],
+            'terms_body' => [
+                'en' => <<<'TXT'
+This is a placeholder Terms of Use for the Lum Residence website.
+
+By using this website you agree to browse the content for informational purposes. Booking, payment, and stay terms may be confirmed separately when you reserve a villa or service.
+
+Website content (texts, photos, design) belongs to Lum Residence unless otherwise noted. Please do not copy or reuse it without permission.
+
+We may update these terms from time to time. The latest version is always published on this page.
+
+This text can be edited in the admin panel under Site settings → Terms of Use.
+TXT,
+                'ru' => <<<'TXT'
+Это заглушка Условий использования сайта Lum Residence.
+
+Используя сайт, вы соглашаетесь просматривать материалы в информационных целях. Условия бронирования, оплаты и проживания подтверждаются отдельно при резерве виллы или услуги.
+
+Контент сайта (тексты, фото, дизайн) принадлежит Lum Residence, если не указано иное. Копирование без разрешения не допускается.
+
+Мы можем обновлять эти условия. Актуальная версия всегда на этой странице.
+
+Этот текст можно править в админке: Настройки сайта → Условия использования.
+TXT,
+            ],
         ]);
     }
 

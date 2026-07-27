@@ -4,7 +4,7 @@
         <div class="absolute left-[20px] top-[20px] flex flex-col gap-[6px]">
             <span class="text-lum-ivory-40">{{ __('lum.burger_footer.reception') }}</span>
             @include('lum.partials.link-footer-nav', [
-                'label' => '+94 (779) 296-087',
+                'label' => \App\Support\Site::phone(),
                 'href' => \App\Support\Site::phoneHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory',
@@ -13,7 +13,7 @@
         <div class="absolute left-[20px] top-[74px] flex flex-col gap-[6px]">
             <span class="text-lum-ivory-40">{{ __('lum.burger_footer.email') }}</span>
             @include('lum.partials.link-footer-nav', [
-                'label' => 'dimacake@gmail.com',
+                'label' => \App\Support\Site::email(),
                 'href' => \App\Support\Site::emailHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory',
@@ -24,21 +24,21 @@
             <div class="flex items-baseline gap-[12px] whitespace-nowrap text-lum-ivory">
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.instagram'),
-                    'href' => '#',
+                    'href' => \App\Support\Site::instagramUrl(),
                     'variant' => 'line',
                     'classes' => 'text-lum-ivory',
                 ])
                 <span class="text-lum-ivory-40">/</span>
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.whatsapp'),
-                    'href' => '#',
+                    'href' => \App\Support\Site::whatsappUrl(),
                     'variant' => 'line',
                     'classes' => 'text-lum-ivory',
                 ])
                 <span class="text-lum-ivory-40">/</span>
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.telegram'),
-                    'href' => '#',
+                    'href' => \App\Support\Site::telegramUrl(),
                     'variant' => 'line',
                     'classes' => 'text-lum-ivory',
                 ])
@@ -51,7 +51,7 @@
         <div class="flex shrink-0 flex-col gap-[6px] tab:gap-0">
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.reception') }}</span>
             @include('lum.partials.link-footer-nav', [
-                'label' => '+94 (779) 296-087',
+                'label' => \App\Support\Site::phone(),
                 'href' => \App\Support\Site::phoneHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory tab:leading-[25px] desk:leading-[25px]',
@@ -60,7 +60,7 @@
         <div class="flex shrink-0 flex-col gap-[6px] tab:gap-0">
             <span class="text-lum-ivory-40 tab:leading-[25px] desk:leading-[25px]">{{ __('lum.burger_footer.email') }}</span>
             @include('lum.partials.link-footer-nav', [
-                'label' => 'dimacake@gmail.com',
+                'label' => \App\Support\Site::email(),
                 'href' => \App\Support\Site::emailHref(),
                 'variant' => 'line',
                 'classes' => 'text-lum-ivory tab:leading-[25px] desk:leading-[25px]',
@@ -71,21 +71,21 @@
             <div class="flex flex-wrap items-baseline gap-[16px] text-lum-ivory tab:leading-[25px] desk:leading-[25px]">
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.instagram'),
-                    'href' => '#',
+                    'href' => \App\Support\Site::instagramUrl(),
                     'variant' => 'line',
                     'classes' => 'text-lum-ivory',
                 ])
                 <span class="text-lum-ivory-40">/</span>
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.whatsapp'),
-                    'href' => '#',
+                    'href' => \App\Support\Site::whatsappUrl(),
                     'variant' => 'line',
                     'classes' => 'text-lum-ivory',
                 ])
                 <span class="text-lum-ivory-40">/</span>
                 @include('lum.partials.link-footer-nav', [
                     'label' => __('lum.burger_footer.telegram'),
-                    'href' => '#',
+                    'href' => \App\Support\Site::telegramUrl(),
                     'variant' => 'line',
                     'classes' => 'text-lum-ivory',
                 ])

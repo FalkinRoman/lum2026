@@ -1,6 +1,6 @@
 @php
     $network = $network ?? 'instagram';
-    $href = $href ?? '#';
+    $href = $href ?? \App\Support\Site::socialUrl($network);
     $label = $label ?? __('lum.burger_footer.' . $network);
     $tone = $tone ?? 'dark';
 @endphp

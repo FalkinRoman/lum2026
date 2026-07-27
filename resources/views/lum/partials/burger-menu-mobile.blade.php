@@ -79,7 +79,7 @@
             {!! __('lum.footer.address_menu') !!}
         </p>
         <div class="absolute left-[20px] top-[323px]">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-ivory inline-flex px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.844px]">{{ __('lum.location.see_on_map_upper') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-ivory inline-flex px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.844px]">{{ __('lum.location.see_on_map_upper') }}</a>
         </div>
     </div>
 </div>

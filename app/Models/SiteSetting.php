@@ -12,6 +12,8 @@ class SiteSetting extends Model
     protected $fillable = [
         'phone',
         'phone_href',
+        'phone_personal',
+        'phone_personal_href',
         'email',
         'map_url',
         'whatsapp_url',
@@ -19,12 +21,17 @@ class SiteSetting extends Model
         'telegram_url',
         'take_a_break_url',
         'book_url',
+        'use_booking_page',
         'address',
         'hours',
         'legal',
         'footer_address',
         'reviews',
         'copyright',
+        'privacy_title',
+        'privacy_body',
+        'terms_title',
+        'terms_body',
     ];
 
     public array $translatable = [
@@ -34,6 +41,10 @@ class SiteSetting extends Model
         'footer_address',
         'reviews',
         'copyright',
+        'privacy_title',
+        'privacy_body',
+        'terms_title',
+        'terms_body',
     ];
 
     protected function casts(): array
@@ -42,6 +53,7 @@ class SiteSetting extends Model
             'hours' => 'array',
             'legal' => 'array',
             'footer_address' => 'array',
+            'use_booking_page' => 'boolean',
         ];
     }
 
@@ -52,11 +64,23 @@ class SiteSetting extends Model
 
     public function telHref(): string
     {
-        return $this->phone_href ?: ('tel:'.preg_replace('/[^\d+]/', '', (string) $this->phone));
+        return self::telLink((string) $this->phone);
+    }
+
+    public function personalTelHref(): string
+    {
+        return self::telLink((string) $this->phone_personal);
     }
 
     public function mailHref(): string
     {
         return 'mailto:'.($this->email ?: '');
+    }
+
+    public static function telLink(string $phone): string
+    {
+        $digits = preg_replace('/[^\d+]/', '', $phone);
+
+        return $digits !== '' ? 'tel:'.$digits : '#';
     }
 }

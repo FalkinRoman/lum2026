@@ -45,6 +45,9 @@ function initVillaIntro(root) {
         return;
     }
 
+    const staggerAttr = Number(root.dataset.lumIntroStagger);
+    const stagger = Number.isFinite(staggerAttr) && staggerAttr >= 0 ? staggerAttr : INTRO_STAGGER;
+
     // Avoid GSAP `y` on nodes with Tailwind translate-* (overwrites CSS transform → layout jump).
     const hasCssTranslate = (el) => /(?:^|\s)-?translate-/.test(el.className);
     const marginItems = items.filter(hasCssTranslate);
@@ -63,7 +66,7 @@ function initVillaIntro(root) {
                 opacity: 1,
                 duration: INTRO_DURATION,
                 ease: INTRO_EASE,
-                stagger: INTRO_STAGGER,
+                stagger,
                 delay: 0.22,
                 onComplete: () => {
                     gsap.set(targets, { clearProps: useMargin ? 'marginTop,opacity' : 'y,opacity' });

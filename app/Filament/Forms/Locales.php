@@ -22,14 +22,14 @@ class Locales
     /**
      * Plain translatable text/textarea field (string per locale).
      */
-    public static function text(string $name, string $label, bool $textarea = false, bool $required = false): Tabs
+    public static function text(string $name, string $label, bool $textarea = false, bool $required = false, int $rows = 3): Tabs
     {
         $en = $textarea
-            ? Textarea::make("{$name}.en")->label("{$label} (EN)")->rows(3)
+            ? Textarea::make("{$name}.en")->label("{$label} (EN)")->rows($rows)
             : TextInput::make("{$name}.en")->label("{$label} (EN)");
 
         $ru = $textarea
-            ? Textarea::make("{$name}.ru")->label("{$label} (RU)")->rows(3)
+            ? Textarea::make("{$name}.ru")->label("{$label} (RU)")->rows($rows)
             : TextInput::make("{$name}.ru")->label("{$label} (RU)");
 
         if ($required) {

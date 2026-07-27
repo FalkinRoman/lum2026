@@ -32,7 +32,7 @@
                 {!! $location['heading'] ?? __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[32px] h-px w-[335px]" width="335" height="1">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[90px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-dark relative z-[1] mt-[90px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
         </div>
 
         <div class="relative z-0 mx-auto flex w-[335px] flex-col gap-[24px] pb-[40px]">
@@ -97,7 +97,7 @@
                 {!! $location['heading'] ?? __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[580px]" width="580" height="2">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[118px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-dark relative z-[1] mt-[118px] px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
         </div>
 
         <div class="relative z-0 mx-auto w-[920px] pb-[40px]">
@@ -127,7 +127,7 @@
                 {!! $location['heading'] ?? __('lum.location.heading') !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[856px]" width="856" height="2">
-            <a href="{{ \App\Support\Site::mapUrl() }}" class="lum-btn-dark relative z-[1] mt-[160px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
+            <a href="{{ \App\Support\Site::mapUrl() }}" target="_blank" rel="noopener noreferrer" class="lum-btn-dark relative z-[1] mt-[160px]">{{ $location['see_on_map'] ?? __('lum.location.see_on_map') }}</a>
         </div>
 
         <div class="relative z-0 mx-auto flex w-[1776px] gap-[64px] pb-[60px]">
