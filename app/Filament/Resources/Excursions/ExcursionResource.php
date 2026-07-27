@@ -21,9 +21,15 @@ class ExcursionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catalog';
+    protected static string|UnitEnum|null $navigationGroup = 'Путешествия';
 
-    protected static ?string $navigationLabel = 'Excursions';
+    protected static ?string $navigationLabel = 'Экскурсии';
+
+    protected static ?int $navigationSort = 50;
+
+    protected static ?string $modelLabel = 'Экскурсия';
+
+    protected static ?string $pluralModelLabel = 'Экскурсии';
 
     protected static ?string $recordTitleAttribute = 'slug';
 

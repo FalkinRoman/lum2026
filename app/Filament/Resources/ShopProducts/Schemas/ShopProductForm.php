@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ShopProducts\Schemas;
 
 use App\Filament\Forms\Locales;
+use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -15,7 +16,7 @@ class ShopProductForm
     {
         return $schema
             ->components([
-                Section::make('Product')
+                Section::make('Товар')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
@@ -23,36 +24,38 @@ class ShopProductForm
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('type')
+                            ->label('Тип')
                             ->default('tee')
                             ->required(),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                         Toggle::make('is_published')
-                            ->label('Published')
+                            ->label('Опубликовано')
                             ->default(true),
-                        TextInput::make('price'),
+                        TextInput::make('price')->label('Цена'),
                         TextInput::make('cta_label')
-                            ->label('CTA label'),
+                            ->label('Текст CTA'),
                     ]),
 
-                Section::make('Images & options')
+                Section::make('Изображения и опции')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('image')
-                            ->label('Image path')
+                        LumImage::single('image', 'Главное изображение', 'shop/products')
                             ->columnSpanFull(),
-                        TagsInput::make('thumbs')->label('Thumbnails (paths)'),
-                        TagsInput::make('colors'),
-                        TagsInput::make('sizes'),
+                        LumImage::many('thumbs', 'Превью / галерея', 'shop/products/thumbs', 8)
+                            ->columnSpanFull(),
+                        LumImage::many('colors', 'Цвета (иконки)', 'shop/products/colors', 8),
+                        TagsInput::make('sizes')->label('Размеры'),
                     ]),
 
-                Section::make('Titles')
+                Section::make('Заголовки')
                     ->schema([
-                        Locales::text('title', 'Title', required: true),
-                        Locales::text('subtitle', 'Subtitle'),
+                        Locales::text('title', 'Заголовок', required: true),
+                        Locales::text('subtitle', 'Подзаголовок'),
                     ]),
             ]);
     }

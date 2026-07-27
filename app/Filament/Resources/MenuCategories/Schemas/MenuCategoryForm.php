@@ -13,7 +13,7 @@ class MenuCategoryForm
     {
         return $schema
             ->components([
-                Section::make('Menu category')
+                Section::make('Категория меню')
                     ->columns(2)
                     ->schema([
                         TextInput::make('key')
@@ -21,13 +21,14 @@ class MenuCategoryForm
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                     ]),
 
-                Locales::text('label', 'Label', required: true),
+                Locales::text('label', 'Название', required: true),
             ]);
     }
 }

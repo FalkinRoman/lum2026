@@ -25,13 +25,13 @@ class ManageSiteSettings extends Page implements HasForms
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Настройки';
 
-    protected static ?string $navigationLabel = 'Site settings';
+    protected static ?string $navigationLabel = 'Настройки сайта';
 
-    protected static ?int $navigationSort = -2;
+    protected static ?int $navigationSort = 90;
 
-    protected static ?string $title = 'Site settings';
+    protected static ?string $title = 'Настройки сайта';
 
     protected string $view = 'filament.pages.manage-site-settings';
 
@@ -82,49 +82,49 @@ class ManageSiteSettings extends Page implements HasForms
     {
         return $schema
             ->components([
-                Section::make('Contacts')
+                Section::make('Контакты')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('phone')->label('Phone'),
-                        TextInput::make('phone_href')->label('Phone href')->helperText('e.g. tel:+79990000000'),
+                        TextInput::make('phone')->label('Телефон'),
+                        TextInput::make('phone_href')->label('Ссылка телефона')->helperText('например tel:+94779296087'),
                         TextInput::make('email')->label('Email')->email(),
-                        TextInput::make('map_url')->label('Map URL')->url(),
+                        TextInput::make('map_url')->label('URL карты')->url(),
                         TextInput::make('whatsapp_url')->label('WhatsApp URL')->url(),
                         TextInput::make('instagram_url')->label('Instagram URL')->url(),
                         TextInput::make('telegram_url')->label('Telegram URL')->url(),
                         TextInput::make('take_a_break_url')
-                            ->label('Take a break URL')
+                            ->label('URL «Take a break»')
                             ->url()
-                            ->helperText('Ignored while Exely is enabled — CTAs go to /booking'),
+                            ->helperText('Игнорируется при включённом Exely — CTA ведут на /booking'),
                         TextInput::make('book_url')
-                            ->label('Book URL')
+                            ->label('URL бронирования')
                             ->url()
-                            ->helperText('Ignored while Exely is enabled — CTAs go to /booking'),
+                            ->helperText('Игнорируется при включённом Exely — CTA ведут на /booking'),
                     ]),
 
-                Section::make('Address & texts')
+                Section::make('Адрес и тексты')
                     ->schema([
-                        Locales::text('address', 'Address', textarea: true),
-                        Locales::json('footer_address', 'Footer address'),
-                        Locales::text('reviews', 'Reviews', textarea: true),
-                        Locales::text('copyright', 'Copyright'),
-                        Locales::json('legal', 'Legal'),
+                        Locales::text('address', 'Адрес', textarea: true),
+                        Locales::json('footer_address', 'Адрес в футере'),
+                        Locales::text('reviews', 'Отзывы', textarea: true),
+                        Locales::text('copyright', 'Копирайт'),
+                        Locales::json('legal', 'Юридическое'),
                     ]),
 
-                Section::make('Opening hours')
+                Section::make('Часы работы')
                     ->schema([
                         Repeater::make('hours_editor')
-                            ->label('Hours')
-                            ->addActionLabel('Add row')
+                            ->label('Часы работы')
+                            ->addActionLabel('Добавить строку')
                             ->reorderable()
                             ->default([])
                             ->schema([
                                 Grid::make(4)
                                     ->schema([
-                                        TextInput::make('label_en')->label('Label (EN)'),
-                                        TextInput::make('label_ru')->label('Label (RU)'),
-                                        TextInput::make('value_en')->label('Value (EN)'),
-                                        TextInput::make('value_ru')->label('Value (RU)'),
+                                        TextInput::make('label_en')->label('Подпись (EN)'),
+                                        TextInput::make('label_ru')->label('Подпись (RU)'),
+                                        TextInput::make('value_en')->label('Значение (EN)'),
+                                        TextInput::make('value_ru')->label('Значение (RU)'),
                                     ]),
                             ]),
                     ]),
@@ -136,7 +136,7 @@ class ManageSiteSettings extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('Save')
+                ->label('Сохранить')
                 ->icon(Heroicon::OutlinedCheck)
                 ->action('save'),
         ];
@@ -166,7 +166,7 @@ class ManageSiteSettings extends Page implements HasForms
         Site::forget();
 
         Notification::make()
-            ->title('Settings saved')
+            ->title('Настройки сохранены')
             ->success()
             ->send();
     }

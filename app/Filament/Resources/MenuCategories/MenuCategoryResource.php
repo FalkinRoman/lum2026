@@ -22,9 +22,15 @@ class MenuCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catalog';
+    protected static string|UnitEnum|null $navigationGroup = 'Гастрономия';
 
-    protected static ?string $navigationLabel = 'Menu categories';
+    protected static ?string $navigationLabel = 'Меню';
+
+    protected static ?int $navigationSort = 31;
+
+    protected static ?string $modelLabel = 'Категория меню';
+
+    protected static ?string $pluralModelLabel = 'Категории меню';
 
     protected static ?string $recordTitleAttribute = 'key';
 

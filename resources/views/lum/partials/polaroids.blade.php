@@ -16,15 +16,15 @@
     {{-- MOBILE — Figma 216:812 impressions y=58.34 --}}
     <div class="relative z-20 h-full tab:hidden" data-lum-scroll-stagger>
         @foreach ([
-            ['left' => '59.07px', 'top' => '107.45px', 'rotate' => '13.51deg', 'fw' => '153px', 'fh' => '229px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '14px'],
-            ['left' => '198.36px', 'top' => '156px', 'rotate' => '-0.97deg', 'fw' => '153px', 'fh' => '229px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '14px'],
-            ['left' => '91px', 'top' => '852.55px', 'rotate' => '-9.98deg', 'fw' => '153px', 'fh' => '229px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '14px'],
+            ['left' => '59.07px', 'top' => '107.45px', 'rotate' => '13.51deg', 'fw' => '153px', 'fh' => '229px', 'photo' => ($polaroids['photos'][0] ?? 'polaroids/photo-1.jpg'), 'date' => '06.08.2023', 'script' => '14px'],
+            ['left' => '198.36px', 'top' => '156px', 'rotate' => '-0.97deg', 'fw' => '153px', 'fh' => '229px', 'photo' => ($polaroids['photos'][1] ?? 'polaroids/photo-2.jpg'), 'date' => '06.01.2024', 'script' => '14px'],
+            ['left' => '91px', 'top' => '852.55px', 'rotate' => '-9.98deg', 'fw' => '153px', 'fh' => '229px', 'photo' => ($polaroids['photos'][2] ?? 'polaroids/photo-3.jpg'), 'date' => '07.03.2023', 'script' => '14px'],
         ] as $polaroid)
             <div class="absolute z-20" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" data-lum-scroll-item style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="271" height="405">
                     <p class="absolute left-0 right-0 top-[10px] z-[3] text-center text-[10px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
+                    <img src="{{ $img(str_starts_with($polaroid['photo'], 'polaroids/') ? $polaroid['photo'] : 'polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
                     <p class="lum-script absolute bottom-[16px] left-0 right-0 z-[3] px-[8px] text-center leading-[1.1] tracking-[1.1px] text-lum-azure" style="font-size: {{ $polaroid['script'] }};">{{ $polaroids['share'] ?? __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -60,15 +60,15 @@
     {{-- TABLET — Figma 216:506 impressions y=-24.57 --}}
     <div class="relative z-20 hidden h-full tab:block desk:hidden" data-lum-scroll-stagger>
         @foreach ([
-            ['left' => '108.77px', 'top' => '147.56px', 'rotate' => '13.51deg', 'fw' => '251px', 'fh' => '375px', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023', 'script' => '18px'],
-            ['left' => '654.73px', 'top' => '138px', 'rotate' => '-0.97deg', 'fw' => '251px', 'fh' => '375px', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024', 'script' => '18px'],
-            ['left' => '380px', 'top' => '184.2px', 'rotate' => '-9.98deg', 'fw' => '251px', 'fh' => '375px', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023', 'script' => '18px'],
+            ['left' => '108.77px', 'top' => '147.56px', 'rotate' => '13.51deg', 'fw' => '251px', 'fh' => '375px', 'photo' => ($polaroids['photos'][0] ?? 'polaroids/photo-1.jpg'), 'date' => '06.08.2023', 'script' => '18px'],
+            ['left' => '654.73px', 'top' => '138px', 'rotate' => '-0.97deg', 'fw' => '251px', 'fh' => '375px', 'photo' => ($polaroids['photos'][1] ?? 'polaroids/photo-2.jpg'), 'date' => '06.01.2024', 'script' => '18px'],
+            ['left' => '380px', 'top' => '184.2px', 'rotate' => '-9.98deg', 'fw' => '251px', 'fh' => '375px', 'photo' => ($polaroids['photos'][2] ?? 'polaroids/photo-3.jpg'), 'date' => '07.03.2023', 'script' => '18px'],
         ] as $polaroid)
             <div class="absolute z-20" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" data-lum-scroll-item style="width: {{ $polaroid['fw'] }}; height: {{ $polaroid['fh'] }};">
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="271" height="405">
                     <p class="absolute left-0 right-0 top-[14px] z-[3] text-center text-[12px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
+                    <img src="{{ $img(str_starts_with($polaroid['photo'], 'polaroids/') ? $polaroid['photo'] : 'polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
                     <p class="lum-script absolute bottom-[20px] left-0 right-0 z-[3] px-[10px] text-center leading-[1.1] tracking-[1.1px] text-lum-azure" style="font-size: {{ $polaroid['script'] }};">{{ $polaroids['share'] ?? __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -104,15 +104,15 @@
     {{-- DESKTOP — Figma 216:216 impressions y=-19.97 --}}
     <div class="relative z-20 hidden h-full desk:block" data-lum-scroll-stagger>
         @foreach ([
-            ['left' => '216px', 'top' => '362px', 'rotate' => '13.5deg', 'photo' => 'photo-1.jpg', 'date' => '06.08.2023'],
-            ['left' => '787px', 'top' => '109px', 'rotate' => '-5.5deg', 'photo' => 'photo-2.jpg', 'date' => '06.01.2024'],
-            ['left' => '1463px', 'top' => '392px', 'rotate' => '-1deg', 'photo' => 'photo-3.jpg', 'date' => '07.03.2023'],
+            ['left' => '216px', 'top' => '362px', 'rotate' => '13.5deg', 'photo' => ($polaroids['photos'][0] ?? 'polaroids/photo-1.jpg'), 'date' => '06.08.2023'],
+            ['left' => '787px', 'top' => '109px', 'rotate' => '-5.5deg', 'photo' => ($polaroids['photos'][1] ?? 'polaroids/photo-2.jpg'), 'date' => '06.01.2024'],
+            ['left' => '1463px', 'top' => '392px', 'rotate' => '-1deg', 'photo' => ($polaroids['photos'][2] ?? 'polaroids/photo-3.jpg'), 'date' => '07.03.2023'],
         ] as $polaroid)
             <div class="absolute z-20 h-[405px] w-[271px]" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative h-full w-full" data-lum-scroll-item>
                     <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="271" height="405">
                     <p class="absolute left-0 right-0 top-[18px] z-[3] text-center font-sans text-[14px] leading-none tracking-[0.6px] text-lum-espresso">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img('polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
+                    <img src="{{ $img(str_starts_with($polaroid['photo'], 'polaroids/') ? $polaroid['photo'] : 'polaroids/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
                     <p class="lum-script absolute bottom-[28px] left-0 right-0 z-[3] px-[12px] text-center text-[22px] leading-[24px] tracking-[1.1px] text-lum-azure">{{ $polaroids['share'] ?? __('lum.polaroids.share') }}</p>
                 </div>
             </div>

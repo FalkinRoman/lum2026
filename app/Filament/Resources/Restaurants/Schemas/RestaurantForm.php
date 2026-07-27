@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Restaurants\Schemas;
 
 use App\Filament\Forms\Locales;
-use Filament\Forms\Components\TagsInput;
+use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -15,7 +15,7 @@ class RestaurantForm
     {
         return $schema
             ->components([
-                Section::make('Restaurant')
+                Section::make('Ресторан')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
@@ -23,61 +23,61 @@ class RestaurantForm
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                         Toggle::make('is_published')
-                            ->label('Published')
+                            ->label('Опубликовано')
                             ->default(true),
                         Toggle::make('opening_soon')
-                            ->label('Opening soon'),
+                            ->label('Скоро открытие'),
                         TextInput::make('book_url')
-                            ->label('Book URL')
+                            ->label('URL бронирования')
                             ->url(),
                     ]),
 
-                Section::make('Images')
+                Section::make('Изображения')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('listing_image')->label('Listing image path'),
-                        TextInput::make('hero_image')->label('Hero image path'),
-                        TextInput::make('oval_image')->label('Oval image path'),
-                        TagsInput::make('gallery_images')
-                            ->label('Gallery images (paths)')
+                        LumImage::single('listing_image', 'Карточка', 'dining'),
+                        LumImage::single('hero_image', 'Hero', 'dining/detail'),
+                        LumImage::single('oval_image', 'Овал', 'dining/detail'),
+                        LumImage::many('gallery_images', 'Галерея', 'dining/detail', 12)
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Titles')
+                Section::make('Заголовки')
                     ->schema([
-                        Locales::text('eyebrow', 'Eyebrow'),
-                        Locales::text('subtitle', 'Subtitle'),
-                        Locales::text('title_normal', 'Title normal', required: true),
-                        Locales::text('title_italic', 'Title italic'),
+                        Locales::text('eyebrow', 'Надзаголовок'),
+                        Locales::text('subtitle', 'Подзаголовок'),
+                        Locales::text('title_normal', 'Заголовок', required: true),
+                        Locales::text('title_italic', 'Заголовок (курсив)'),
                         Locales::text('meta_title', 'Meta title'),
                     ]),
 
                 Section::make('Hero')
                     ->schema([
-                        Locales::text('hero_eyebrow', 'Hero eyebrow'),
-                        Locales::text('hero_title_normal', 'Hero title normal'),
-                        Locales::text('hero_title_italic', 'Hero title italic'),
+                        Locales::text('hero_eyebrow', 'Hero надзаголовок'),
+                        Locales::text('hero_title_normal', 'Hero заголовок'),
+                        Locales::text('hero_title_italic', 'Hero заголовок (курсив)'),
                     ]),
 
-                Section::make('Gallery')
+                Section::make('Галерея')
                     ->schema([
-                        Locales::text('gallery_eyebrow', 'Gallery eyebrow'),
-                        Locales::text('gallery_title_normal', 'Gallery title normal'),
-                        Locales::text('gallery_title_italic', 'Gallery title italic'),
-                        Locales::text('gallery_body', 'Gallery body', textarea: true),
+                        Locales::text('gallery_eyebrow', 'Галерея: надзаголовок'),
+                        Locales::text('gallery_title_normal', 'Галерея: заголовок'),
+                        Locales::text('gallery_title_italic', 'Галерея: заголовок (курсив)'),
+                        Locales::text('gallery_body', 'Галерея: текст', textarea: true),
                     ]),
 
-                Section::make('Quote')
+                Section::make('Цитата')
                     ->schema([
-                        Locales::text('quote_line1', 'Quote line 1'),
-                        Locales::text('quote_line2', 'Quote line 2'),
-                        Locales::text('quote_note_line1', 'Quote note line 1'),
-                        Locales::text('quote_note_line2', 'Quote note line 2'),
+                        Locales::text('quote_line1', 'Цитата: строка 1'),
+                        Locales::text('quote_line2', 'Цитата: строка 2'),
+                        Locales::text('quote_note_line1', 'Цитата: примечание 1'),
+                        Locales::text('quote_note_line2', 'Цитата: примечание 2'),
                     ]),
             ]);
     }

@@ -21,13 +21,15 @@ class BlogPostResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Content';
+    protected static string|UnitEnum|null $navigationGroup = 'Блог';
 
-    protected static ?string $navigationLabel = 'Blog posts';
+    protected static ?string $navigationLabel = 'Посты';
 
-    protected static ?string $modelLabel = 'Blog post';
+    protected static ?int $navigationSort = 70;
 
-    protected static ?string $pluralModelLabel = 'Blog posts';
+    protected static ?string $modelLabel = 'Пост блога';
+
+    protected static ?string $pluralModelLabel = 'Посты блога';
 
     protected static ?string $recordTitleAttribute = 'slug';
 

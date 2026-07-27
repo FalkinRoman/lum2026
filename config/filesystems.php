@@ -47,6 +47,19 @@ return [
             'report' => false,
         ],
 
+        /*
+         * CMS uploads for Filament — paths stay relative to public/images/lum
+         * so frontend $img('villa/hero.webp') keeps working.
+         */
+        'lum' => [
+            'driver' => 'local',
+            'root' => public_path('images/lum'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/images/lum',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

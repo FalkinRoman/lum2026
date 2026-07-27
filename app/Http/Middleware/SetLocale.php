@@ -13,6 +13,13 @@ class SetLocale
 
     public function handle(Request $request, Closure $next): Response
     {
+        // Админка Filament — всегда RU (не зависит от языка публичного сайта).
+        if ($request->is('admin', 'admin/*')) {
+            App::setLocale('ru');
+
+            return $next($request);
+        }
+
         $locale = $request->session()->get('locale')
             ?? $request->cookie('lum_locale')
             ?? config('app.locale', 'en');

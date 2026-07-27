@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\MenuCategories\RelationManagers;
 
 use App\Filament\Forms\Locales;
+use App\Filament\Forms\LumImage;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -14,6 +15,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -21,27 +23,29 @@ class MenuItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
 
+    protected static ?string $title = 'Позиции меню';
+
     protected static string|BackedEnum|null $icon = Heroicon::OutlinedQueueList;
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Section::make('Item')
+                Section::make('Позиция')
                     ->columns(2)
                     ->schema([
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
-                        TextInput::make('image')
-                            ->label('Image path'),
+                        LumImage::single('image', 'Изображение', 'dining/menu'),
                     ]),
 
-                Locales::text('name', 'Name', required: true),
-                Locales::text('description', 'Description', textarea: true),
-                Locales::text('price', 'Price'),
+                Locales::text('name', 'Название', required: true),
+                Locales::text('description', 'Описание', textarea: true),
+                Locales::text('price', 'Цена'),
             ]);
     }
 
@@ -50,15 +54,22 @@ class MenuItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
+                ImageColumn::make('image')
+                    ->label('')
+                    ->disk('lum')
+                    ->height(40)
+                    ->width(40)
+                    ->circular()
+                    ->defaultImageUrl(null),
                 TextColumn::make('name')
-                    ->label('Name (EN)')
+                    ->label('Название (EN)')
                     ->getStateUsing(fn ($record) => $record->getTranslation('name', 'en'))
                     ->limit(40),
                 TextColumn::make('price')
-                    ->label('Price (EN)')
+                    ->label('Цена (EN)')
                     ->getStateUsing(fn ($record) => $record->getTranslation('price', 'en')),
                 TextColumn::make('sort_order')
-                    ->label('Sort order')
+                    ->label('Порядок')
                     ->sortable(),
             ])
             ->defaultSort('sort_order')

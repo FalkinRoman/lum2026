@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Excursions\Schemas;
 
 use App\Filament\Forms\Locales;
-use Filament\Forms\Components\TagsInput;
+use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -15,7 +15,7 @@ class ExcursionForm
     {
         return $schema
             ->components([
-                Section::make('Excursion')
+                Section::make('Экскурсия')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
@@ -23,52 +23,55 @@ class ExcursionForm
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                         Toggle::make('is_published')
-                            ->label('Published')
+                            ->label('Опубликовано')
                             ->default(true),
                         TextInput::make('book_url')
-                            ->label('Book URL')
+                            ->label('URL бронирования')
                             ->url(),
                     ]),
 
-                Section::make('Images')
+                Section::make('Изображения')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('listing_image')->label('Listing image path'),
-                        TextInput::make('oval_image')->label('Oval image path'),
-                        TextInput::make('wellness_hero')->label('Wellness hero path'),
-                        TagsInput::make('gallery_images')->label('Gallery images (paths)'),
-                        TagsInput::make('package_images')->label('Package images (paths)'),
+                        LumImage::single('listing_image', 'Карточка', 'discover'),
+                        LumImage::single('oval_image', 'Овал', 'discover/detail'),
+                        LumImage::single('wellness_hero', 'Wellness hero', 'discover/detail'),
+                        LumImage::many('gallery_images', 'Галерея', 'discover/detail', 12)
+                            ->columnSpanFull(),
+                        LumImage::many('package_images', 'Изображения пакета', 'discover/detail', 8)
+                            ->columnSpanFull(),
                     ]),
 
-                Section::make('Titles')
+                Section::make('Заголовки')
                     ->schema([
-                        Locales::text('title', 'Title', required: true),
-                        Locales::text('region', 'Region'),
+                        Locales::text('title', 'Заголовок', required: true),
+                        Locales::text('region', 'Регион'),
                         Locales::text('meta_title', 'Meta title'),
-                        Locales::text('intro_title', 'Intro title'),
-                        Locales::text('intro_body', 'Intro body', textarea: true),
+                        Locales::text('intro_title', 'Intro заголовок'),
+                        Locales::text('intro_body', 'Intro текст', textarea: true),
                     ]),
 
-                Section::make('Gallery')
+                Section::make('Галерея')
                     ->schema([
-                        Locales::text('gallery_eyebrow', 'Gallery eyebrow'),
-                        Locales::text('gallery_title_normal', 'Gallery title normal'),
-                        Locales::text('gallery_title_italic', 'Gallery title italic'),
-                        Locales::tags('polaroid_dates', 'Polaroid dates'),
+                        Locales::text('gallery_eyebrow', 'Галерея: надзаголовок'),
+                        Locales::text('gallery_title_normal', 'Галерея: заголовок'),
+                        Locales::text('gallery_title_italic', 'Галерея: заголовок (курсив)'),
+                        Locales::tags('polaroid_dates', 'Даты на полароидах'),
                     ]),
 
-                Section::make('Package')
+                Section::make('Пакет')
                     ->schema([
-                        Locales::text('package_eyebrow', 'Package eyebrow'),
-                        Locales::text('package_title_normal', 'Package title normal'),
-                        Locales::text('package_title_italic', 'Package title italic'),
-                        Locales::text('package_cost', 'Package cost'),
-                        Locales::json('package_items', 'Package items')->columnSpanFull(),
+                        Locales::text('package_eyebrow', 'Пакет: надзаголовок'),
+                        Locales::text('package_title_normal', 'Пакет: заголовок'),
+                        Locales::text('package_title_italic', 'Пакет: заголовок (курсив)'),
+                        Locales::text('package_cost', 'Стоимость пакета'),
+                        Locales::json('package_items', 'Пункты пакета')->columnSpanFull(),
                     ]),
             ]);
     }

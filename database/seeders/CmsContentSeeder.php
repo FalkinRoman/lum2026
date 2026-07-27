@@ -95,7 +95,7 @@ class CmsContentSeeder extends Seeder
             $post = BlogPost::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'sort_order' => $index,
+                    'sort_order' => $index + 1,
                     'is_published' => true,
                     'published_at' => now()->subDays(count($enPosts) - $index),
                     'theme' => $enPost['theme'] ?? 'cream',
@@ -141,7 +141,7 @@ class CmsContentSeeder extends Seeder
             $villa = Villa::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'sort_order' => $index,
+                    'sort_order' => $index + 1,
                     'is_published' => true,
                     'listing_image' => 'stay/'.$enProperty['image'],
                     'slide_photo' => isset($enSlide['photo']) ? 'villas/'.$enSlide['photo'].'.webp' : null,
@@ -211,7 +211,7 @@ class CmsContentSeeder extends Seeder
             $restaurant = Restaurant::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'sort_order' => $index,
+                    'sort_order' => $index + 1,
                     'is_published' => true,
                     'opening_soon' => ($enVenue['cta'] ?? null) === 'opening_soon',
                     'listing_image' => 'dining/'.$enVenue['image'],
@@ -257,7 +257,7 @@ class CmsContentSeeder extends Seeder
 
             $category = MenuCategory::query()->updateOrCreate(
                 ['key' => $key],
-                ['sort_order' => $index]
+                ['sort_order' => $index + 1]
             );
 
             $this->setTranslations($category, [
@@ -275,7 +275,7 @@ class CmsContentSeeder extends Seeder
 
                 $menuItem = MenuItem::query()->create([
                     'menu_category_id' => $category->id,
-                    'sort_order' => $itemIndex,
+                    'sort_order' => $itemIndex + 1,
                 ]);
 
                 $this->setTranslations($menuItem, [
@@ -303,7 +303,7 @@ class CmsContentSeeder extends Seeder
             $activity = Activity::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'sort_order' => $index,
+                    'sort_order' => $index + 1,
                     'is_published' => true,
                     'listing_image' => 'relax/'.$enActivity['image'],
                     'hero_image' => $assetBase.'/hero.webp',
@@ -361,7 +361,7 @@ class CmsContentSeeder extends Seeder
             $excursion = Excursion::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'sort_order' => $index,
+                    'sort_order' => $index + 1,
                     'is_published' => true,
                     'listing_image' => 'discover/'.$enPlace['image'],
                     'oval_image' => $assetBase.'/oval.webp',
@@ -408,7 +408,7 @@ class CmsContentSeeder extends Seeder
                 ['slug' => $slug],
                 [
                     'type' => $enItem['type'] ?? 'tee',
-                    'sort_order' => $index,
+                    'sort_order' => $index + 1,
                     'is_published' => true,
                     'image' => 'shop/'.$enItem['image'],
                     'thumbs' => array_map(fn ($thumb) => 'shop/'.$thumb, $enItem['thumbs'] ?? []),
@@ -433,13 +433,18 @@ class CmsContentSeeder extends Seeder
         $ru = $this->ru;
 
         HomeSection::put('hero', [
-            'en' => $en['hero'],
-            'ru' => $ru['hero'],
+            'en' => array_merge($en['hero'], ['video_poster' => 'hero/video-poster.png']),
+            'ru' => array_merge($ru['hero'], ['video_poster' => 'hero/video-poster.png']),
         ]);
 
+        $polaroidPhotos = [
+            'polaroids/photo-1.jpg',
+            'polaroids/photo-2.jpg',
+            'polaroids/photo-3.jpg',
+        ];
         HomeSection::put('polaroids', [
-            'en' => $en['polaroids'],
-            'ru' => $ru['polaroids'],
+            'en' => array_merge($en['polaroids'], ['photos' => $polaroidPhotos]),
+            'ru' => array_merge($ru['polaroids'], ['photos' => $polaroidPhotos]),
         ]);
 
         HomeSection::put('location', [

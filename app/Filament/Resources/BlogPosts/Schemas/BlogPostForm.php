@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BlogPosts\Schemas;
 
 use App\Filament\Forms\Locales;
+use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
@@ -19,7 +20,7 @@ class BlogPostForm
     {
         return $schema
             ->components([
-                Section::make('Post')
+                Section::make('Пост')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
@@ -35,55 +36,53 @@ class BlogPostForm
                             ->default('cream')
                             ->required(),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                         DateTimePicker::make('published_at')
-                            ->label('Published at'),
+                            ->label('Дата публикации'),
                         Toggle::make('is_published')
-                            ->label('Published')
+                            ->label('Опубликовано')
                             ->default(true),
                     ]),
 
-                Section::make('Images')
+                Section::make('Изображения')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('image')
-                            ->label('Image path')
-                            ->helperText('Relative path, e.g. images/lum/blog/post.jpg'),
-                        TextInput::make('hero')
-                            ->label('Hero image path'),
+                        LumImage::single('image', 'Превью / карточка', 'blog'),
+                        LumImage::single('hero', 'Hero', 'blog'),
                     ]),
 
-                Section::make('Content')
+                Section::make('Контент')
                     ->schema([
-                        Locales::text('title', 'Title', required: true),
-                        Locales::text('excerpt', 'Excerpt', textarea: true),
+                        Locales::text('title', 'Заголовок', required: true),
+                        Locales::text('excerpt', 'Анонс', textarea: true),
                         Locales::text('meta_title', 'Meta title'),
 
                         Grid::make(2)
                             ->schema([
                                 Textarea::make('body.en')
-                                    ->label('Body (EN)')
+                                    ->label('Текст (EN)')
                                     ->rows(10)
-                                    ->helperText('One paragraph per blank-line separated block')
+                                    ->helperText('Абзацы через пустую строку')
                                     ->formatStateUsing(fn ($state) => is_array($state) ? implode("\n\n", $state) : $state)
                                     ->dehydrateStateUsing(fn ($state) => array_values(array_filter(preg_split('/\n\s*\n/', (string) $state)))),
                                 Textarea::make('body.ru')
-                                    ->label('Body (RU)')
+                                    ->label('Текст (RU)')
                                     ->rows(10)
-                                    ->helperText('One paragraph per blank-line separated block')
+                                    ->helperText('Абзацы через пустую строку')
                                     ->formatStateUsing(fn ($state) => is_array($state) ? implode("\n\n", $state) : $state)
                                     ->dehydrateStateUsing(fn ($state) => array_values(array_filter(preg_split('/\n\s*\n/', (string) $state)))),
                             ]),
                     ]),
 
-                Section::make('Taxonomy')
+                Section::make('Таксономия')
                     ->columns(2)
                     ->schema([
-                        TagsInput::make('tags'),
-                        TagsInput::make('categories'),
+                        TagsInput::make('tags')->label('Теги'),
+                        TagsInput::make('categories')->label('Категории'),
                     ]),
             ]);
     }

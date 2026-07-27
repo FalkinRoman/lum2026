@@ -21,9 +21,15 @@ class RestaurantResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCake;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catalog';
+    protected static string|UnitEnum|null $navigationGroup = 'Гастрономия';
 
-    protected static ?string $navigationLabel = 'Restaurants';
+    protected static ?string $navigationLabel = 'Рестораны';
+
+    protected static ?int $navigationSort = 30;
+
+    protected static ?string $modelLabel = 'Ресторан';
+
+    protected static ?string $pluralModelLabel = 'Рестораны';
 
     protected static ?string $recordTitleAttribute = 'slug';
 

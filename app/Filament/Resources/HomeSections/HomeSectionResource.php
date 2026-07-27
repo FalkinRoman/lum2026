@@ -21,9 +21,15 @@ class HomeSectionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Content';
+    protected static string|UnitEnum|null $navigationGroup = 'Главная';
 
-    protected static ?string $navigationLabel = 'Home sections';
+    protected static ?string $navigationLabel = 'Секции';
+
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $modelLabel = 'Секция главной';
+
+    protected static ?string $pluralModelLabel = 'Секции главной';
 
     protected static ?string $recordTitleAttribute = 'key';
 

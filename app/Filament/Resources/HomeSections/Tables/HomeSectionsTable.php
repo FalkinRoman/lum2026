@@ -18,7 +18,7 @@ class HomeSectionsTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label('Обновлено')
                     ->dateTime()
                     ->sortable(),
             ])

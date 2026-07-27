@@ -21,9 +21,15 @@ class VillaResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHomeModern;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catalog';
+    protected static string|UnitEnum|null $navigationGroup = 'Проживание';
 
-    protected static ?string $navigationLabel = 'Villas';
+    protected static ?string $navigationLabel = 'Виллы';
+
+    protected static ?int $navigationSort = 20;
+
+    protected static ?string $modelLabel = 'Вилла';
+
+    protected static ?string $pluralModelLabel = 'Виллы';
 
     protected static ?string $recordTitleAttribute = 'slug';
 

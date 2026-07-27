@@ -31,7 +31,7 @@ return new class extends Migration
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->boolean('is_published')->default(true);
             $table->timestamp('published_at')->nullable();
             $table->string('theme')->default('cream');
@@ -49,7 +49,7 @@ return new class extends Migration
         Schema::create('villas', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->boolean('is_published')->default(true);
             $table->string('listing_image')->nullable();
             $table->string('slide_photo')->nullable();
@@ -80,7 +80,7 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->boolean('is_published')->default(true);
             $table->boolean('opening_soon')->default(false);
             $table->string('listing_image')->nullable();
@@ -110,7 +110,7 @@ return new class extends Migration
         Schema::create('menu_categories', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->json('label')->nullable();
             $table->timestamps();
         });
@@ -118,7 +118,7 @@ return new class extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_category_id')->constrained()->cascadeOnDelete();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->string('image')->nullable();
             $table->json('name')->nullable();
             $table->json('description')->nullable();
@@ -129,7 +129,7 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->boolean('is_published')->default(true);
             $table->string('listing_image')->nullable();
             $table->string('hero_image')->nullable();
@@ -162,7 +162,7 @@ return new class extends Migration
         Schema::create('excursions', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->boolean('is_published')->default(true);
             $table->string('listing_image')->nullable();
             $table->string('oval_image')->nullable();
@@ -191,7 +191,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->string('type')->default('tee');
-            $table->unsignedInteger('sort_order')->default(0);
+            $table->unsignedInteger('sort_order')->default(1);
             $table->boolean('is_published')->default(true);
             $table->string('image')->nullable();
             $table->json('thumbs')->nullable();

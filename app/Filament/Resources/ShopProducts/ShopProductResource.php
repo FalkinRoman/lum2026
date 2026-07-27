@@ -21,9 +21,15 @@ class ShopProductResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Catalog';
+    protected static string|UnitEnum|null $navigationGroup = 'Магазин';
 
-    protected static ?string $navigationLabel = 'Shop products';
+    protected static ?string $navigationLabel = 'Товары';
+
+    protected static ?int $navigationSort = 60;
+
+    protected static ?string $modelLabel = 'Товар';
+
+    protected static ?string $pluralModelLabel = 'Товары';
 
     protected static ?string $recordTitleAttribute = 'slug';
 

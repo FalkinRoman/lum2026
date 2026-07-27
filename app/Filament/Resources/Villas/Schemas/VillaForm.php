@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Villas\Schemas;
 
 use App\Filament\Forms\Locales;
-use Filament\Forms\Components\TagsInput;
+use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -15,7 +15,7 @@ class VillaForm
     {
         return $schema
             ->components([
-                Section::make('Villa')
+                Section::make('Вилла')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
@@ -23,73 +23,73 @@ class VillaForm
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                         Toggle::make('is_published')
-                            ->label('Published')
+                            ->label('Опубликовано')
                             ->default(true),
                     ]),
 
-                Section::make('Exely booking')
-                    ->description('Map this villa to Exely hotel / room type from the client cabinet. Leave empty → general /booking.')
+                Section::make('Бронирование Exely')
+                    ->description('Привязка виллы к отелю/типу номера Exely. Пусто → общий /booking.')
                     ->columns(2)
                     ->schema([
                         TextInput::make('exely_hotel_id')
                             ->label('Exely hotel ID')
-                            ->helperText('Known: 502887, 514444')
+                            ->helperText('Известные: 502887, 514444')
                             ->maxLength(32),
                         TextInput::make('exely_room_type_id')
                             ->label('Exely room type ID')
-                            ->helperText('Deep-link Book now to this room')
+                            ->helperText('Deep-link кнопки Book now на этот номер')
                             ->maxLength(32),
                     ]),
 
-                Section::make('Images')
+                Section::make('Изображения')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('listing_image')->label('Listing image path'),
-                        TextInput::make('slide_photo')->label('Slide photo path'),
-                        TextInput::make('slide_oval')->label('Slide oval path'),
-                        TextInput::make('hero_image')->label('Hero image path'),
-                        TagsInput::make('gallery_images')
-                            ->label('Gallery images (paths)')
+                        LumImage::single('listing_image', 'Карточка', 'stay'),
+                        LumImage::single('slide_photo', 'Фото слайда', 'villas'),
+                        LumImage::single('slide_oval', 'Овал слайда', 'villas'),
+                        LumImage::single('hero_image', 'Hero', 'villa'),
+                        LumImage::many('gallery_images', 'Галерея', 'villa', 12)
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Titles')
+                Section::make('Заголовки')
                     ->schema([
-                        Locales::text('title_normal', 'Title normal', required: true),
-                        Locales::text('title_italic', 'Title italic'),
-                        Locales::text('title_mobile_normal', 'Title mobile normal'),
-                        Locales::text('title_mobile_italic', 'Title mobile italic'),
-                        Locales::text('subtitle', 'Subtitle'),
-                        Locales::text('subtitle_line1', 'Subtitle line 1'),
-                        Locales::text('subtitle_line2', 'Subtitle line 2'),
+                        Locales::text('title_normal', 'Заголовок', required: true),
+                        Locales::text('title_italic', 'Заголовок (курсив)'),
+                        Locales::text('title_mobile_normal', 'Заголовок mobile'),
+                        Locales::text('title_mobile_italic', 'Заголовок mobile (курсив)'),
+                        Locales::text('subtitle', 'Подзаголовок'),
+                        Locales::text('subtitle_line1', 'Подзаголовок: строка 1'),
+                        Locales::text('subtitle_line2', 'Подзаголовок: строка 2'),
                         Locales::text('meta_title', 'Meta title'),
                     ]),
 
                 Section::make('Hero')
                     ->schema([
-                        Locales::text('hero_eyebrow', 'Hero eyebrow'),
-                        Locales::text('hero_title_normal', 'Hero title normal'),
-                        Locales::text('hero_title_italic', 'Hero title italic'),
+                        Locales::text('hero_eyebrow', 'Hero надзаголовок'),
+                        Locales::text('hero_title_normal', 'Hero заголовок'),
+                        Locales::text('hero_title_italic', 'Hero заголовок (курсив)'),
                     ]),
 
-                Section::make('Gallery')
+                Section::make('Галерея')
                     ->schema([
-                        Locales::text('gallery_eyebrow', 'Gallery eyebrow'),
-                        Locales::text('gallery_title_normal', 'Gallery title normal'),
-                        Locales::text('gallery_title_italic', 'Gallery title italic'),
-                        Locales::text('gallery_body', 'Gallery body', textarea: true),
-                        Locales::text('gallery_body_bottom', 'Gallery body (bottom)', textarea: true),
+                        Locales::text('gallery_eyebrow', 'Галерея: надзаголовок'),
+                        Locales::text('gallery_title_normal', 'Галерея: заголовок'),
+                        Locales::text('gallery_title_italic', 'Галерея: заголовок (курсив)'),
+                        Locales::text('gallery_body', 'Галерея: текст', textarea: true),
+                        Locales::text('gallery_body_bottom', 'Галерея: текст снизу', textarea: true),
                     ]),
 
-                Section::make('Facilities')
+                Section::make('Удобства')
                     ->schema([
-                        Locales::tags('facilities_left', 'Facilities (left column)'),
-                        Locales::tags('facilities_right', 'Facilities (right column)'),
+                        Locales::tags('facilities_left', 'Удобства (левая колонка)'),
+                        Locales::tags('facilities_right', 'Удобства (правая колонка)'),
                     ]),
             ]);
     }

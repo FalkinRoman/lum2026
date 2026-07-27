@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Activities\Schemas;
 
 use App\Filament\Forms\Locales;
-use Filament\Forms\Components\TagsInput;
+use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
@@ -15,7 +15,7 @@ class ActivityForm
     {
         return $schema
             ->components([
-                Section::make('Activity')
+                Section::make('Активность')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
@@ -23,69 +23,69 @@ class ActivityForm
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         TextInput::make('sort_order')
-                            ->label('Sort order')
+                            ->label('Порядок')
                             ->numeric()
-                            ->default(0)
+                            ->default(1)
+                            ->minValue(1)
                             ->required(),
                         Toggle::make('is_published')
-                            ->label('Published')
+                            ->label('Опубликовано')
                             ->default(true),
                     ]),
 
-                Section::make('Images')
+                Section::make('Изображения')
                     ->columns(2)
                     ->schema([
-                        TextInput::make('listing_image')->label('Listing image path'),
-                        TextInput::make('hero_image')->label('Hero image path'),
-                        TextInput::make('oval_image')->label('Oval image path'),
-                        TagsInput::make('gallery_images')
-                            ->label('Gallery images (paths)')
+                        LumImage::single('listing_image', 'Карточка', 'relax'),
+                        LumImage::single('hero_image', 'Hero', 'relax/detail'),
+                        LumImage::single('oval_image', 'Овал', 'relax/detail'),
+                        LumImage::many('gallery_images', 'Галерея', 'relax/detail', 12)
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Titles')
+                Section::make('Заголовки')
                     ->schema([
-                        Locales::text('label_before', 'Label before'),
-                        Locales::text('label_italic', 'Label italic'),
-                        Locales::text('label_after', 'Label after'),
-                        Locales::text('name', 'Name', required: true),
+                        Locales::text('label_before', 'Лейбл: до'),
+                        Locales::text('label_italic', 'Лейбл: курсив'),
+                        Locales::text('label_after', 'Лейбл: после'),
+                        Locales::text('name', 'Название', required: true),
                         Locales::text('meta_title', 'Meta title'),
                     ]),
 
                 Section::make('Hero')
                     ->schema([
-                        Locales::text('hero_eyebrow', 'Hero eyebrow'),
-                        Locales::text('hero_title_normal', 'Hero title normal'),
-                        Locales::text('hero_title_italic', 'Hero title italic'),
+                        Locales::text('hero_eyebrow', 'Hero надзаголовок'),
+                        Locales::text('hero_title_normal', 'Hero заголовок'),
+                        Locales::text('hero_title_italic', 'Hero заголовок (курсив)'),
                     ]),
 
-                Section::make('Gallery')
+                Section::make('Галерея')
                     ->schema([
-                        Locales::text('gallery_eyebrow', 'Gallery eyebrow'),
-                        Locales::text('gallery_title_normal', 'Gallery title normal'),
-                        Locales::text('gallery_title_italic', 'Gallery title italic'),
-                        Locales::text('gallery_body', 'Gallery body', textarea: true),
+                        Locales::text('gallery_eyebrow', 'Галерея: надзаголовок'),
+                        Locales::text('gallery_title_normal', 'Галерея: заголовок'),
+                        Locales::text('gallery_title_italic', 'Галерея: заголовок (курсив)'),
+                        Locales::text('gallery_body', 'Галерея: текст', textarea: true),
                     ]),
 
-                Section::make('Quote')
+                Section::make('Цитата')
                     ->schema([
-                        Locales::text('quote_line1', 'Quote line 1'),
-                        Locales::text('quote_line2', 'Quote line 2'),
-                        Locales::text('quote_note', 'Quote note'),
+                        Locales::text('quote_line1', 'Цитата: строка 1'),
+                        Locales::text('quote_line2', 'Цитата: строка 2'),
+                        Locales::text('quote_note', 'Цитата: примечание'),
                     ]),
 
-                Section::make('Pricing')
+                Section::make('Цены')
                     ->columns(2)
                     ->schema([
                         TextInput::make('pricing_cta_url')
-                            ->label('Pricing CTA URL')
+                            ->label('URL кнопки прайсинга')
                             ->url()
                             ->columnSpanFull(),
-                        Locales::text('pricing_eyebrow', 'Pricing eyebrow'),
-                        Locales::text('pricing_title_normal', 'Pricing title normal'),
-                        Locales::text('pricing_title_italic', 'Pricing title italic'),
-                        Locales::text('pricing_cta', 'Pricing CTA label'),
-                        Locales::json('pricing_items', 'Pricing items')->columnSpanFull(),
+                        Locales::text('pricing_eyebrow', 'Цены: надзаголовок'),
+                        Locales::text('pricing_title_normal', 'Цены: заголовок'),
+                        Locales::text('pricing_title_italic', 'Цены: заголовок (курсив)'),
+                        Locales::text('pricing_cta', 'Цены: CTA'),
+                        Locales::json('pricing_items', 'Позиции прайса')->columnSpanFull(),
                     ]),
             ]);
     }

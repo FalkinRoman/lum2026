@@ -18,14 +18,14 @@ class MenuCategoriesTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('label')
-                    ->label('Label (EN)')
+                    ->label('Подпись (EN)')
                     ->getStateUsing(fn ($record) => $record->getTranslation('label', 'en'))
                     ->limit(40),
                 TextColumn::make('items_count')
-                    ->label('Items')
+                    ->label('Позиции')
                     ->counts('items'),
                 TextColumn::make('sort_order')
-                    ->label('Sort order')
+                    ->label('Порядок')
                     ->sortable(),
             ])
             ->defaultSort('sort_order')
