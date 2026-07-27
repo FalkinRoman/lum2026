@@ -73,6 +73,8 @@ function scaleLumPage() {
     const noScale = page.hasAttribute('data-lum-no-scale')
         || Boolean(document.querySelector('[data-lum-no-scale]'));
 
+    const footer = page.querySelector('footer');
+
     if (noScale) {
         page.style.width = '100%';
         page.style.maxWidth = '100%';
@@ -84,12 +86,30 @@ function scaleLumPage() {
         viewport.style.width = '100%';
         viewport.style.maxWidth = '100%';
         viewport.style.overflowX = '';
+
+        // Booking без scale: футер всё ещё 375/960/1920-артборд → справа дыра.
+        // Скейлим только footer, Exely-форму не трогаем.
+        if (footer) {
+            footer.style.width = `${width}px`;
+            footer.style.maxWidth = `${width}px`;
+            footer.style.transformOrigin = 'top left';
+            footer.style.transform = `scale(${scale})`;
+            footer.style.marginBottom = `${Math.ceil(footer.offsetHeight * (scale - 1))}px`;
+        }
     } else {
         page.style.width = `${width}px`;
         page.style.zoom = 'normal';
         page.style.transform = `scale(${scale})`;
         page.style.transformOrigin = 'top left';
         page.style.marginBottom = '0';
+
+        if (footer) {
+            footer.style.width = '';
+            footer.style.maxWidth = '';
+            footer.style.transform = '';
+            footer.style.transformOrigin = '';
+            footer.style.marginBottom = '';
+        }
 
         const syncViewportHeight = () => {
             const visualHeight = Math.ceil(page.getBoundingClientRect().height);
