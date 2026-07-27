@@ -1240,6 +1240,105 @@
         }
     }
 
+    .lum-blog-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding-top: 24px;
+    }
+
+    .lum-blog-pagination__pages {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .lum-blog-pagination__page {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        height: 36px;
+        padding: 0 10px;
+        border: 1px solid color-mix(in srgb, var(--color-lum-espresso) 16%, transparent);
+        font-family: var(--font-sans);
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.6px;
+        line-height: 1;
+        color: var(--color-lum-espresso);
+        text-decoration: none;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .lum-blog-pagination__page.is-active {
+        background: var(--color-lum-espresso);
+        border-color: var(--color-lum-espresso);
+        color: var(--color-lum-ivory);
+    }
+
+    .lum-blog-pagination__arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid color-mix(in srgb, var(--color-lum-espresso) 16%, transparent);
+        text-decoration: none;
+        transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .lum-blog-pagination__arrow img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .lum-blog-pagination__arrow.is-disabled {
+        opacity: 0.28;
+        pointer-events: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lum-blog-pagination__page:hover:not(.is-active) {
+            border-color: var(--color-lum-espresso);
+        }
+
+        .lum-blog-pagination__arrow:hover:not(.is-disabled) {
+            background: var(--color-lum-espresso);
+            border-color: var(--color-lum-espresso);
+        }
+
+        .lum-blog-pagination__arrow:hover:not(.is-disabled) img {
+            filter: invert(1) brightness(1.2);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .lum-blog-pagination {
+            gap: 24px;
+            padding-top: 40px;
+        }
+
+        .lum-blog-pagination__page {
+            min-width: 44px;
+            height: 44px;
+            font-size: 16px;
+        }
+
+        .lum-blog-pagination__arrow {
+            width: 44px;
+            height: 44px;
+        }
+
+        .lum-blog-pagination__arrow img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
     .lum-villas-view-cursor {
         position: fixed;
         left: 0;

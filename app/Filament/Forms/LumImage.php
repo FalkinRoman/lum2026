@@ -10,9 +10,14 @@ use Filament\Forms\Components\FileUpload;
  */
 class LumImage
 {
-    public static function single(string $name, string $label, string $directory = 'uploads'): FileUpload
-    {
-        return FileUpload::make($name)
+    public static function single(
+        string $name,
+        string $label,
+        string $directory = 'uploads',
+        ?string $helperText = 'Пусто = изображение не задано. Загрузите файл — появится миниатюра.',
+        bool $editor = false,
+    ): FileUpload {
+        $field = FileUpload::make($name)
             ->label($label)
             ->disk('lum')
             ->directory($directory)
@@ -34,8 +39,17 @@ class LumImage
             ->uploadButtonPosition('center')
             ->openable()
             ->downloadable()
-            ->nullable()
-            ->helperText('Пусто = изображение не задано. Загрузите файл — появится миниатюра.');
+            ->nullable();
+
+        if ($helperText !== null) {
+            $field->helperText($helperText);
+        }
+
+        if ($editor) {
+            $field->imageEditor();
+        }
+
+        return $field;
     }
 
     public static function many(

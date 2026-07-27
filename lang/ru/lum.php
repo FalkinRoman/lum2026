@@ -280,6 +280,15 @@ return [
         'read_more' => 'Читать далее',
         'page_title' => 'блог',
         'back' => 'назад',
+        'empty' => 'Пока нет постов.',
+        'pagination_label' => 'Страницы блога',
+        'pagination_prev' => 'Предыдущая страница',
+        'pagination_next' => 'Следующая страница',
+        'tab_all' => 'ВСЕ',
+        'tab_food' => 'ЕДА',
+        'tab_beach' => 'ПЛЯЖ',
+        'tab_kitchen' => 'КУХНЯ',
+        'tab_sri_lanka' => 'ШРИ-ЛАНКА',
         'tabs' => ['ВСЕ', 'ЕДА', 'ПЛЯЖ', 'КУХНЯ', 'ШРИ-ЛАНКА'],
         'posts' => [
             [

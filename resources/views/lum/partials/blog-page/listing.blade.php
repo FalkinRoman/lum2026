@@ -1,7 +1,10 @@
 @php
-    $posts = collect($posts ?? \App\Support\Content::blogPosts());
-    $tabs = trans('lum.blog.tabs');
-    $tabKeys = ['all', 'food', 'beach', 'kitchen', 'sri-lanka'];
+    /** @var \Illuminate\Pagination\LengthAwarePaginator $posts */
+    $posts = $posts ?? \App\Support\Content::blogIndex();
+    $category = $category ?? 'all';
+    $blogTabs = \App\Support\Content::blogTabs();
+    $tabs = $blogTabs['labels'];
+    $tabKeys = $blogTabs['keys'];
 @endphp
 
 <section class="lum-container relative bg-lum-ivory">
@@ -16,17 +19,23 @@
                 <h1 class="text-center font-serif text-[42px] leading-[45px] text-lum-espresso">{{ __('lum.blog.page_title') }}</h1>
             </div>
 
-            @include('lum.partials.blog-page.tabs', ['tabs' => $tabs, 'tabKeys' => $tabKeys, 'variant' => 'mobile'])
+            @include('lum.partials.blog-page.tabs', ['tabs' => $tabs, 'tabKeys' => $tabKeys, 'variant' => 'mobile', 'activeCategory' => $category])
         </div>
 
-        <div class="flex flex-col gap-[20px] px-[20px] pt-[383px] pb-[80px]" data-lum-blog-grid>
-            @foreach ($posts as $post)
+        <div class="flex flex-col gap-[20px] px-[20px] pt-[383px] pb-[40px]" data-lum-blog-grid>
+            @forelse ($posts as $post)
                 <div data-lum-blog-post data-categories="{{ implode(' ', $post['categories']) }}">
                     <div data-lum-blog-card>
                         @include('lum.partials.blog-page.card', ['img' => $img, 'post' => $post, 'variant' => 'mobile'])
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <p class="py-[40px] text-center text-[14px] text-lum-espresso/50">{{ __('lum.blog.empty') }}</p>
+            @endforelse
+        </div>
+
+        <div class="px-[20px] pb-[80px]">
+            @include('lum.partials.blog-page.pagination', ['paginator' => $posts, 'img' => $img])
         </div>
     </div>
 
@@ -40,17 +49,23 @@
                 <h1 class="whitespace-nowrap text-center font-serif text-[52px] leading-[52px] text-lum-espresso">{{ __('lum.blog.page_title') }}</h1>
             </div>
 
-            @include('lum.partials.blog-page.tabs', ['tabs' => $tabs, 'tabKeys' => $tabKeys, 'variant' => 'tablet'])
+            @include('lum.partials.blog-page.tabs', ['tabs' => $tabs, 'tabKeys' => $tabKeys, 'variant' => 'tablet', 'activeCategory' => $category])
         </div>
 
-        <div class="flex flex-col gap-[20px] px-[20px] pt-[356px] pb-[120px]" data-lum-blog-grid>
-            @foreach ($posts as $post)
+        <div class="flex flex-col gap-[20px] px-[20px] pt-[356px] pb-[40px]" data-lum-blog-grid>
+            @forelse ($posts as $post)
                 <div data-lum-blog-post data-categories="{{ implode(' ', $post['categories']) }}">
                     <div data-lum-blog-card>
                         @include('lum.partials.blog-page.card', ['img' => $img, 'post' => $post, 'variant' => 'tablet'])
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <p class="py-[40px] text-center text-[14px] text-lum-espresso/50">{{ __('lum.blog.empty') }}</p>
+            @endforelse
+        </div>
+
+        <div class="px-[20px] pb-[120px]">
+            @include('lum.partials.blog-page.pagination', ['paginator' => $posts, 'img' => $img])
         </div>
     </div>
 
@@ -65,17 +80,23 @@
                 <h1 class="w-full text-center font-serif text-[88px] leading-[94px] text-lum-espresso">{{ __('lum.blog.page_title') }}</h1>
             </div>
 
-            @include('lum.partials.blog-page.tabs', ['tabs' => $tabs, 'tabKeys' => $tabKeys, 'variant' => 'desktop'])
+            @include('lum.partials.blog-page.tabs', ['tabs' => $tabs, 'tabKeys' => $tabKeys, 'variant' => 'desktop', 'activeCategory' => $category])
         </div>
 
-        <div class="grid grid-cols-2 gap-x-[64px] gap-y-[64px] px-[225px] pt-[595px] pb-[160px]" data-lum-blog-grid>
-            @foreach ($posts as $post)
+        <div class="grid grid-cols-2 gap-x-[64px] gap-y-[64px] px-[225px] pt-[595px] pb-[40px]" data-lum-blog-grid>
+            @forelse ($posts as $post)
                 <div data-lum-blog-post data-categories="{{ implode(' ', $post['categories']) }}">
                     <div class="w-[703px]" data-lum-blog-card>
                         @include('lum.partials.blog-page.card', ['img' => $img, 'post' => $post, 'variant' => 'desktop'])
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <p class="col-span-2 py-[40px] text-center text-[18px] text-lum-espresso/50">{{ __('lum.blog.empty') }}</p>
+            @endforelse
+        </div>
+
+        <div class="px-[225px] pb-[160px]">
+            @include('lum.partials.blog-page.pagination', ['paginator' => $posts, 'img' => $img])
         </div>
     </div>
 </section>

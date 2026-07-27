@@ -75,10 +75,12 @@ Route::get('/stay/{slug}', function (string $slug) {
     return view('villa', compact('slug', 'villa'));
 })->name('villa.show');
 
-Route::get('/blog', function () {
-    $posts = Content::blogPosts();
+Route::get('/blog', function (\Illuminate\Http\Request $request) {
+    $category = $request->string('category')->toString() ?: 'all';
+    $page = max(1, (int) $request->query('page', 1));
+    $posts = Content::blogIndex($category, $page);
 
-    return view('blog', compact('posts'));
+    return view('blog', compact('posts', 'category'));
 })->name('blog');
 
 Route::get('/blog/{slug}', function (string $slug) {

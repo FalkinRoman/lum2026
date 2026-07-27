@@ -280,6 +280,15 @@ return [
         'read_more' => 'Read More',
         'page_title' => 'blog',
         'back' => 'back',
+        'empty' => 'No posts yet.',
+        'pagination_label' => 'Blog pages',
+        'pagination_prev' => 'Previous page',
+        'pagination_next' => 'Next page',
+        'tab_all' => 'ALL',
+        'tab_food' => 'FOOD',
+        'tab_beach' => 'BEACH',
+        'tab_kitchen' => 'KITCHEN',
+        'tab_sri_lanka' => 'SRI-LANKA',
         'tabs' => ['ALL', 'FOOD', 'BEACH', 'KITCHEN', 'SRI-LANKA'],
         'posts' => [
             [

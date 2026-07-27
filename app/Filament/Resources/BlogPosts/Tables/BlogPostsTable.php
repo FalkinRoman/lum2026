@@ -37,14 +37,13 @@ class BlogPostsTable
                 TextColumn::make('sort_order')
                     ->label('Порядок')
                     ->sortable(),
-                TextColumn::make('theme')
-                    ->badge(),
                 TextColumn::make('published_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
             ->filters([
                 TernaryFilter::make('is_published')
                     ->label('Опубликовано'),

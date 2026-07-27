@@ -9,7 +9,7 @@
 
 <div class="lum-viewport" data-lum-blog-page>
     <div class="lum-page">
-        @include('lum.partials.blog-page.listing', ['img' => $img])
+        @include('lum.partials.blog-page.listing', ['img' => $img, 'posts' => $posts, 'category' => $category])
         @include('lum.partials.footer', ['img' => $img])
     </div>
 </div>

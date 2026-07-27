@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources\BlogPosts\Schemas;
 
-use App\Filament\Forms\Locales;
 use App\Filament\Forms\LumImage;
+use App\Models\BlogPost;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 
 class BlogPostForm
@@ -19,22 +19,15 @@ class BlogPostForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Section::make('Пост')
-                    ->columns(2)
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
-                        Select::make('theme')
-                            ->options([
-                                'cream' => 'Cream',
-                                'dark' => 'Dark',
-                                'muted' => 'Muted',
-                            ])
-                            ->default('cream')
-                            ->required(),
                         TextInput::make('sort_order')
                             ->label('Порядок')
                             ->numeric()
@@ -48,42 +41,100 @@ class BlogPostForm
                             ->default(true),
                     ]),
 
-                Section::make('Изображения')
-                    ->columns(2)
-                    ->schema([
-                        LumImage::single('image', 'Превью / карточка', 'blog'),
-                        LumImage::single('hero', 'Hero', 'blog'),
-                    ]),
-
                 Section::make('Контент')
+                    ->columnSpanFull()
                     ->schema([
-                        Locales::text('title', 'Заголовок', required: true),
-                        Locales::text('excerpt', 'Анонс', textarea: true),
-                        Locales::text('meta_title', 'Meta title'),
-
-                        Grid::make(2)
-                            ->schema([
-                                Textarea::make('body.en')
-                                    ->label('Текст (EN)')
-                                    ->rows(10)
-                                    ->helperText('Абзацы через пустую строку')
-                                    ->formatStateUsing(fn ($state) => is_array($state) ? implode("\n\n", $state) : $state)
-                                    ->dehydrateStateUsing(fn ($state) => array_values(array_filter(preg_split('/\n\s*\n/', (string) $state)))),
-                                Textarea::make('body.ru')
-                                    ->label('Текст (RU)')
-                                    ->rows(10)
-                                    ->helperText('Абзацы через пустую строку')
-                                    ->formatStateUsing(fn ($state) => is_array($state) ? implode("\n\n", $state) : $state)
-                                    ->dehydrateStateUsing(fn ($state) => array_values(array_filter(preg_split('/\n\s*\n/', (string) $state)))),
+                        Tabs::make('locale')
+                            ->contained(false)
+                            ->columnSpanFull()
+                            ->tabs([
+                                Tab::make('EN')->schema(self::localeFields('en')),
+                                Tab::make('RU')->schema(self::localeFields('ru')),
                             ]),
                     ]),
 
-                Section::make('Таксономия')
-                    ->columns(2)
+                Section::make('Изображения')
+                    ->columnSpanFull()
                     ->schema([
-                        TagsInput::make('tags')->label('Теги'),
-                        TagsInput::make('categories')->label('Категории'),
+                        LumImage::single('image', 'Превью / карточка', 'blog', helperText: null, editor: true),
+                        LumImage::single('hero', 'Hero (страница статьи)', 'blog', helperText: null, editor: true),
+                    ]),
+
+                Section::make('Таксономия')
+                    ->columnSpanFull()
+                    ->schema([
+                        Select::make('tags')
+                            ->label('Теги')
+                            ->multiple()
+                            ->searchable()
+                            ->options(fn (): array => BlogPost::taxonomyOptions('tags'))
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->label('Новый тег')
+                                    ->required()
+                                    ->maxLength(80),
+                            ])
+                            ->createOptionUsing(fn (array $data): string => trim($data['name']))
+                            ->createOptionModalHeading('Новый тег')
+                            ->placeholder('Выберите или создайте тег'),
+                        Select::make('categories')
+                            ->label('Категории')
+                            ->multiple()
+                            ->searchable()
+                            ->options(fn (): array => BlogPost::taxonomyOptions('categories'))
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->label('Новая категория')
+                                    ->required()
+                                    ->maxLength(80)
+                                    ->helperText('Ключ для фильтра на /blog, например food или sri-lanka'),
+                            ])
+                            ->createOptionUsing(fn (array $data): string => trim($data['name']))
+                            ->createOptionModalHeading('Новая категория')
+                            ->placeholder('Выберите или создайте категорию'),
                     ]),
             ]);
+    }
+
+    /**
+     * @return array<\Filament\Forms\Components\Component>
+     */
+    private static function localeFields(string $locale): array
+    {
+        $required = $locale === 'en';
+
+        $title = TextInput::make("title.{$locale}")
+            ->label('Заголовок')
+            ->maxLength(255);
+
+        $excerpt = Textarea::make("excerpt.{$locale}")
+            ->label('Анонс')
+            ->rows(4);
+
+        $body = Textarea::make("body.{$locale}")
+            ->label('Текст')
+            ->rows(12)
+            ->helperText('Абзацы через пустую строку')
+            ->formatStateUsing(fn ($state) => is_array($state) ? implode("\n\n", $state) : $state)
+            ->dehydrateStateUsing(fn ($state) => array_values(array_filter(
+                preg_split('/\n\s*\n/', (string) $state) ?: [],
+                fn ($paragraph) => trim((string) $paragraph) !== '',
+            )));
+
+        $metaTitle = TextInput::make("meta_title.{$locale}")
+            ->label('Meta title')
+            ->maxLength(255)
+            ->helperText('Пусто = заголовок + « — Lum»');
+
+        $metaDescription = Textarea::make("meta_description.{$locale}")
+            ->label('Meta description')
+            ->rows(3)
+            ->helperText('Пусто = анонс (до 160 символов)');
+
+        if ($required) {
+            $title->required();
+        }
+
+        return [$title, $excerpt, $body, $metaTitle, $metaDescription];
     }
 }

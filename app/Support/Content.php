@@ -10,6 +10,7 @@ use App\Models\MenuCategory;
 use App\Models\Restaurant;
 use App\Models\ShopProduct;
 use App\Models\Villa;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**
@@ -35,17 +36,93 @@ class Content
         return $path;
     }
 
+    public const BLOG_PER_PAGE = 6;
+
     public static function blogPosts(): Collection
     {
-        return BlogPost::published()->orderBy('sort_order')->get()->map(fn (BlogPost $p) => [
-            'slug' => $p->slug,
-            'title' => $p->title,
-            'excerpt' => $p->excerpt,
-            'image' => self::stripPrefix($p->image, 'blog/'),
-            'tags' => $p->tags ?? [],
-            'categories' => $p->categories ?? [],
-            'theme' => $p->theme,
-        ]);
+        $themes = BlogPost::THEME_CYCLE;
+
+        return BlogPost::published()
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get()
+            ->values()
+            ->map(fn (BlogPost $p, int $index) => [
+                'slug' => $p->slug,
+                'title' => $p->title,
+                'excerpt' => $p->excerpt,
+                'image' => self::stripPrefix($p->image, 'blog/'),
+                'tags' => $p->tags ?? [],
+                'categories' => $p->categories ?? [],
+                'theme' => $themes[$index % count($themes)],
+            ]);
+    }
+
+    /**
+     * Paginated blog listing. Themes cycle within the active category filter.
+     * Pagination UI should render only when $paginator->hasPages().
+     */
+    public static function blogIndex(?string $category = null, int $page = 1): LengthAwarePaginator
+    {
+        $category = filled($category) ? $category : 'all';
+        $page = max(1, $page);
+        $themes = BlogPost::THEME_CYCLE;
+
+        $all = self::blogPosts();
+
+        if ($category !== 'all') {
+            $all = $all
+                ->filter(fn (array $post): bool => in_array($category, $post['categories'] ?? [], true))
+                ->values()
+                ->map(fn (array $post, int $index): array => array_merge($post, [
+                    'theme' => $themes[$index % count($themes)],
+                ]));
+        }
+
+        $perPage = self::BLOG_PER_PAGE;
+        $total = $all->count();
+        $items = $all->forPage($page, $perPage)->values();
+
+        return new LengthAwarePaginator(
+            $items,
+            $total,
+            $perPage,
+            $page,
+            [
+                'path' => route('blog'),
+                'pageName' => 'page',
+                'query' => array_filter([
+                    'category' => $category !== 'all' ? $category : null,
+                ]),
+            ],
+        );
+    }
+
+    /**
+     * Filter tabs for /blog: All + distinct categories from published posts.
+     *
+     * @return array{keys: list<string>, labels: list<string>}
+     */
+    public static function blogTabs(): array
+    {
+        $keys = ['all'];
+        $labels = [__('lum.blog.tab_all')];
+
+        $labelMap = [
+            'food' => 'lum.blog.tab_food',
+            'beach' => 'lum.blog.tab_beach',
+            'kitchen' => 'lum.blog.tab_kitchen',
+            'sri-lanka' => 'lum.blog.tab_sri_lanka',
+        ];
+
+        foreach (BlogPost::usedCategories() as $category) {
+            $keys[] = $category;
+            $labels[] = isset($labelMap[$category])
+                ? __($labelMap[$category])
+                : mb_strtoupper(str_replace('-', '—', $category));
+        }
+
+        return ['keys' => $keys, 'labels' => $labels];
     }
 
     public static function blogPost(string $slug): ?array
@@ -55,15 +132,22 @@ class Content
             return null;
         }
 
+        $title = (string) $p->title;
+        $excerpt = (string) $p->excerpt;
+        $metaTitle = trim((string) ($p->meta_title ?: ''));
+        $metaDescription = trim((string) ($p->meta_description ?: ''));
+
         return [
-            'meta_title' => $p->meta_title ?: ($p->title.' — Lum'),
-            'title' => $p->title,
-            'excerpt' => $p->excerpt,
+            'meta_title' => $metaTitle !== '' ? $metaTitle : ($title.' — Lum'),
+            'meta_description' => $metaDescription !== ''
+                ? $metaDescription
+                : \Illuminate\Support\Str::limit($excerpt, 160, ''),
+            'title' => $title,
+            'excerpt' => $excerpt,
             'tags' => $p->tags ?? [],
             'hero' => self::stripPrefix($p->hero ?: $p->image, 'blog/'),
             'body' => is_array($p->body) ? $p->body : [],
             'image' => self::stripPrefix($p->image, 'blog/'),
-            'theme' => $p->theme,
             'categories' => $p->categories ?? [],
             'slug' => $p->slug,
         ];

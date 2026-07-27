@@ -20,6 +20,7 @@
         })();
     </script>
     <title>@yield('title', __('lum.meta.title'))</title>
+    @yield('meta')
     <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">

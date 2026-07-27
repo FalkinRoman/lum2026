@@ -165,8 +165,12 @@ TXT,
                 'title' => ['en' => $enPost['title'], 'ru' => $ruPost['title']],
                 'excerpt' => ['en' => $enPost['excerpt'], 'ru' => $ruPost['excerpt']],
                 'meta_title' => [
-                    'en' => $enDetail['meta_title'] ?? $enPost['title'],
-                    'ru' => $ruDetail['meta_title'] ?? $ruPost['title'],
+                    'en' => $enDetail['meta_title'] ?? ($enPost['title'].' — Lum'),
+                    'ru' => $ruDetail['meta_title'] ?? ($ruPost['title'].' — Lum'),
+                ],
+                'meta_description' => [
+                    'en' => $enDetail['meta_description'] ?? \Illuminate\Support\Str::limit($enPost['excerpt'] ?? '', 160, ''),
+                    'ru' => $ruDetail['meta_description'] ?? \Illuminate\Support\Str::limit($ruPost['excerpt'] ?? '', 160, ''),
                 ],
                 'body' => [
                     'en' => $enDetail['body'] ?? [],

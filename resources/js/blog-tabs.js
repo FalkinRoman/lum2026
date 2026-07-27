@@ -1,6 +1,5 @@
 import gsap from 'gsap';
 
-const EASE = 'power3.out';
 const INTRO_EASE = 'power3.out';
 const INTRO_DURATION = 1.15;
 const INTRO_STAGGER = 0.18;
@@ -9,20 +8,10 @@ const CARDS_AFTER_INTRO_PAUSE = 0.03;
 
 const REVEAL_DURATION = 0.9;
 const REVEAL_STAGGER = 0.12;
-const HIDE_DURATION = 0.3;
-
-function syncBlogLayout() {
-    document.dispatchEvent(new CustomEvent('lum:layout-change'));
-}
+const EASE = 'power3.out';
 
 function isSectionVisible(section) {
     return window.getComputedStyle(section).display !== 'none';
-}
-
-function shouldShowPost(post, category) {
-    const categories = (post.dataset.categories || '').split(' ').filter(Boolean);
-
-    return category === 'all' || categories.includes(category);
 }
 
 function getCardTarget(post) {
@@ -53,16 +42,12 @@ function primePosts(posts) {
     });
 }
 
-function revealPosts(posts, { stagger = true } = {}) {
+function revealPosts(posts) {
     if (! posts.length) {
         return;
     }
 
     const targets = posts.map(getCardTarget);
-
-    posts.forEach((post) => {
-        post.hidden = false;
-    });
 
     gsap.killTweensOf(targets);
     gsap.fromTo(
@@ -74,39 +59,12 @@ function revealPosts(posts, { stagger = true } = {}) {
             scale: 1,
             duration: REVEAL_DURATION,
             ease: EASE,
-            stagger: stagger ? REVEAL_STAGGER : 0,
+            stagger: REVEAL_STAGGER,
             onComplete: () => {
                 gsap.set(targets, { clearProps: 'transform,opacity,visibility' });
             },
         },
     );
-}
-
-function hidePosts(posts, onComplete) {
-    if (! posts.length) {
-        onComplete?.();
-
-        return;
-    }
-
-    const targets = posts.map(getCardTarget);
-
-    gsap.killTweensOf(targets);
-    gsap.to(targets, {
-        autoAlpha: 0,
-        y: 28,
-        scale: 0.985,
-        duration: HIDE_DURATION,
-        ease: 'power2.in',
-        stagger: 0.06,
-        onComplete: () => {
-            posts.forEach((post) => {
-                post.hidden = true;
-            });
-            gsap.set(targets, { clearProps: 'transform,opacity,visibility' });
-            onComplete?.();
-        },
-    });
 }
 
 function animateIntro(section, onComplete) {
@@ -138,14 +96,12 @@ function animateIntro(section, onComplete) {
 }
 
 function runIntroThenCards(section, posts) {
-    const visiblePosts = posts.filter((post) => ! post.hidden);
-
     primeIntroItems(getIntroItems(section));
-    primePosts(visiblePosts);
+    primePosts(posts);
 
     animateIntro(section, () => {
         gsap.delayedCall(CARDS_AFTER_INTRO_PAUSE, () => {
-            revealPosts(visiblePosts);
+            revealPosts(posts);
         });
     });
 }
@@ -166,7 +122,6 @@ function playSectionSequence(section, posts, reducedMotion) {
             gsap.set(item, { clearProps: 'y,opacity' });
         });
         posts.forEach((post) => {
-            post.hidden = ! shouldShowPost(post, 'all');
             gsap.set(getCardTarget(post), { clearProps: 'transform,opacity,visibility' });
         });
 
@@ -176,75 +131,14 @@ function playSectionSequence(section, posts, reducedMotion) {
     runIntroThenCards(section, posts);
 }
 
-function setupBlogSection(section, reducedMotion) {
-    const tabsRoot = section.querySelector('[data-lum-blog-tabs]');
-
-    if (! tabsRoot) {
-        return;
-    }
-
-    const tabs = [...tabsRoot.querySelectorAll('[data-lum-blog-tab]')];
-    const posts = [...section.querySelectorAll('[data-lum-blog-post]')];
-
-    if (! tabs.length || ! posts.length) {
-        return;
-    }
-
-    const setActive = (activeTab) => {
-        const category = activeTab.dataset.category || 'all';
-
-        tabs.forEach((tab) => {
-            const isActive = tab === activeTab;
-
-            tab.classList.toggle('lum-tab--active', isActive);
-            tab.classList.toggle('lum-tab--inactive', ! isActive);
-
-            const label = tab.textContent?.replace(/^✓/, '') ?? '';
-            tab.textContent = isActive ? `✓${label}` : label;
-        });
-
-        if (reducedMotion) {
-            posts.forEach((post) => {
-                post.hidden = ! shouldShowPost(post, category);
-            });
-            syncBlogLayout();
-
-            return;
-        }
-
-        const toHide = posts.filter((post) => ! post.hidden && ! shouldShowPost(post, category));
-        const toShow = posts.filter((post) => post.hidden && shouldShowPost(post, category));
-
-        const finishReveal = () => {
-            revealPosts(toShow, { stagger: true });
-            syncBlogLayout();
-        };
-
-        if (toHide.length) {
-            hidePosts(toHide, finishReveal);
-        } else {
-            finishReveal();
-        }
-    };
-
-    tabs.forEach((tab) => {
-        tab.addEventListener('click', () => setActive(tab));
-    });
-
-    return { posts };
-}
-
 export function initBlogTabs() {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const sections = [...document.querySelectorAll('[data-lum-blog-section]')];
     const sectionData = [];
 
     sections.forEach((section) => {
-        const data = setupBlogSection(section, reducedMotion);
-
-        if (data) {
-            sectionData.push({ section, posts: data.posts });
-        }
+        const posts = [...section.querySelectorAll('[data-lum-blog-post]')];
+        sectionData.push({ section, posts });
     });
 
     const playVisibleSequences = () => {
