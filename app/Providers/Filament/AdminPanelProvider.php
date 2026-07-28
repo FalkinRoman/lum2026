@@ -55,9 +55,7 @@ class AdminPanelProvider extends PanelProvider
 
                     .lum-admin-brand {
                         display: flex;
-                        flex-direction: column;
-                        align-items: flex-start;
-                        gap: 0.15rem;
+                        align-items: center;
                         line-height: 1;
                     }
 
@@ -67,31 +65,13 @@ class AdminPanelProvider extends PanelProvider
                         width: auto;
                     }
 
-                    .lum-admin-brand__admin {
-                        font-family: 'Vollkorn', ui-serif, Georgia, serif;
-                        font-style: italic;
-                        font-weight: 500;
-                        font-size: 0.72rem;
-                        letter-spacing: 0.22em;
-                        text-transform: lowercase;
-                        color: #2E2720;
-                        opacity: 0.72;
-                        padding-left: 0.1rem;
-                    }
-
                     /* Login page — slightly larger brand */
                     .fi-simple-layout .lum-admin-brand {
-                        align-items: center;
+                        justify-content: center;
                     }
 
                     .fi-simple-layout .lum-admin-brand__logo {
                         height: 2.35rem;
-                    }
-
-                    .fi-simple-layout .lum-admin-brand__admin {
-                        font-size: 0.85rem;
-                        letter-spacing: 0.28em;
-                        opacity: 0.78;
                     }
                 </style>
                 HTML
@@ -102,7 +82,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('LUM')
-            ->brandLogo(fn (): \Illuminate\Contracts\View\View => view('filament.brand'))
+            ->brandLogo(fn (): \Illuminate\Contracts\View\View => view('filament.brand', ['dark' => false]))
+            ->darkModeBrandLogo(fn (): \Illuminate\Contracts\View\View => view('filament.brand', ['dark' => true]))
             ->brandLogoHeight('2.75rem')
             ->login()
             ->defaultAvatarProvider(UserSilhouetteAvatarProvider::class)
