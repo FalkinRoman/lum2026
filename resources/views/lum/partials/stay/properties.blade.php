@@ -1,11 +1,17 @@
 @php
     use App\Support\Exely;
     use App\Support\ListingLayout;
+    use App\Support\Content;
 
     $properties = collect($properties ?? []);
     $count = $properties->count();
     $isRu = app()->getLocale() === 'ru';
     $exelyEnabled = Exely::enabled();
+
+    $stayTitle1 = Content::pageText('stay', 'intro', 'title_line1');
+    $stayTitle2 = Content::pageText('stay', 'intro', 'title_line2');
+    $stayTitleItalic = Content::pageText('stay', 'intro', 'title_italic');
+    $stayEyebrow = Content::pageText('stay', 'intro', 'eyebrow');
 
     // Карточки после booking-блока — топы от 0
     $mobileLayout = ListingLayout::mobileStay($count, 0);
@@ -27,13 +33,13 @@
             <div class="flex w-full flex-col items-center gap-[16px]">
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[6px]" width="6" height="6" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-stay-intro-item="title">
-                    {{ __('lum.stay.title_line1') }}<br>
-                    {{ __('lum.stay.title_line2') }}<br>
-                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
+                    {{ $stayTitle1 }}<br>
+                    {{ $stayTitle2 }}<br>
+                    <span class="font-medium italic">{{ $stayTitleItalic }}</span>
                 </h1>
             </div>
 
-            <p class="mt-[16px] whitespace-nowrap lum-text-3 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
+            <p class="mt-[16px] whitespace-nowrap lum-text-3 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ $stayEyebrow }}</p>
 
             @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'mob', 'marginClass' => 'mt-[44px]'])
         </div>
@@ -48,13 +54,13 @@
             <div class="flex flex-col items-center gap-[12px]">
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[8px]" width="8" height="8" data-lum-stay-intro-item="dot">
                 <h1 class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-stay-intro-item="title">
-                    {{ __('lum.stay.title_line1') }}<br>
-                    {{ __('lum.stay.title_line2') }}<br>
-                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
+                    {{ $stayTitle1 }}<br>
+                    {{ $stayTitle2 }}<br>
+                    <span class="font-medium italic">{{ $stayTitleItalic }}</span>
                 </h1>
             </div>
 
-            <p class="mt-[12px] whitespace-nowrap lum-text-2 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
+            <p class="mt-[12px] whitespace-nowrap lum-text-2 font-medium uppercase text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ $stayEyebrow }}</p>
 
             @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'tab', 'marginClass' => 'mt-[56px]'])
         </div>
@@ -69,13 +75,13 @@
             <div class="flex w-full flex-col items-center gap-[24px]">
                 <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12" data-lum-stay-intro-item="dot">
                 <h1 class="font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item="title">
-                    {{ __('lum.stay.title_line1') }}<br>
-                    {{ __('lum.stay.title_line2') }}<br>
-                    <span class="font-medium italic">{{ __('lum.stay.title_italic') }}</span>
+                    {{ $stayTitle1 }}<br>
+                    {{ $stayTitle2 }}<br>
+                    <span class="font-medium italic">{{ $stayTitleItalic }}</span>
                 </h1>
             </div>
 
-            <p class="mt-[28px] whitespace-nowrap lum-eyebrow text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ __('lum.stay.eyebrow') }}</p>
+            <p class="mt-[28px] whitespace-nowrap lum-eyebrow text-lum-espresso" data-lum-stay-intro-item="eyebrow">{{ $stayEyebrow }}</p>
 
             @include('lum.partials.stay.scroll-arrow', ['img' => $img, 'variant' => 'desk', 'marginClass' => 'mt-[64px]'])
         </div>

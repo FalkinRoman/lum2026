@@ -8,6 +8,7 @@ use App\Models\Excursion;
 use App\Models\HomeSection;
 use App\Models\MenuCategory;
 use App\Models\MenuItem;
+use App\Models\PageSection;
 use App\Models\Restaurant;
 use App\Models\ShopProduct;
 use App\Models\SiteSetting;
@@ -44,6 +45,7 @@ class CmsContentSeeder extends Seeder
             $this->seedExcursions();
             $this->seedShopProducts();
             $this->seedHomeSections();
+            $this->seedPageSections();
         });
 
         Site::forget();
@@ -667,6 +669,73 @@ TXT,
         HomeSection::put('villas_intro', [
             'en' => $enVillas,
             'ru' => $ruVillas,
+        ]);
+    }
+
+    private function seedPageSections(): void
+    {
+        $en = $this->en;
+        $ru = $this->ru;
+
+        PageSection::put('stay', 'intro', [
+            'en' => Arr::only($en['stay'], ['title_line1', 'title_line2', 'title_italic', 'eyebrow']),
+            'ru' => Arr::only($ru['stay'], ['title_line1', 'title_line2', 'title_italic', 'eyebrow']),
+        ]);
+
+        PageSection::put('stay', 'media', [
+            'en' => ['hero_image' => 'stay/wellness-hero.webp', 'oval_image' => 'stay/wellness-oval.webp'],
+            'ru' => ['hero_image' => 'stay/wellness-hero.webp', 'oval_image' => 'stay/wellness-oval.webp'],
+        ]);
+
+        PageSection::put('stay', 'quote', [
+            'en' => Arr::only($en['stay'], ['quote', 'quote_break', 'note_line1', 'note_line2']),
+            'ru' => Arr::only($ru['stay'], ['quote', 'quote_break', 'note_line1', 'note_line2']),
+        ]);
+
+        PageSection::put('dining', 'intro', [
+            'en' => Arr::only($en['dining'], ['title_line1', 'title_line2', 'title_italic', 'eyebrow']),
+            'ru' => Arr::only($ru['dining'], ['title_line1', 'title_line2', 'title_italic', 'eyebrow']),
+        ]);
+
+        PageSection::put('dining', 'media', [
+            'en' => ['hero_image' => 'dining/wellness-hero.webp', 'oval_image' => 'dining/wellness-oval.webp'],
+            'ru' => ['hero_image' => 'dining/wellness-hero.webp', 'oval_image' => 'dining/wellness-oval.webp'],
+        ]);
+
+        PageSection::put('dining', 'quote', [
+            'en' => Arr::only($en['dining'], ['quote_line1', 'quote_line2', 'note_line1', 'note_line2']),
+            'ru' => Arr::only($ru['dining'], ['quote_line1', 'quote_line2', 'note_line1', 'note_line2']),
+        ]);
+
+        PageSection::put('relax', 'intro', [
+            'en' => Arr::only($en['relax'], ['title_line1', 'title_line2', 'title_italic', 'eyebrow_line1', 'eyebrow_line2']),
+            'ru' => Arr::only($ru['relax'], ['title_line1', 'title_line2', 'title_italic', 'eyebrow_line1', 'eyebrow_line2']),
+        ]);
+
+        PageSection::put('relax', 'media', [
+            'en' => [
+                'hero_image' => 'relax/wellness-hero.webp',
+                'hero_image_mob' => 'relax/wellness-hero-mob.webp',
+                'hero_image_tab' => 'relax/wellness-hero-tab.webp',
+                'oval_image' => 'relax/wellness-oval.webp',
+            ],
+            'ru' => [
+                'hero_image' => 'relax/wellness-hero.webp',
+                'hero_image_mob' => 'relax/wellness-hero-mob.webp',
+                'hero_image_tab' => 'relax/wellness-hero-tab.webp',
+                'oval_image' => 'relax/wellness-oval.webp',
+            ],
+        ]);
+
+        // Relax quote texts mirrored from dining (legacy blade), own media above.
+        PageSection::put('relax', 'quote', [
+            'en' => Arr::only($en['dining'], ['quote_line1', 'quote_line2', 'note_line1', 'note_line2']),
+            'ru' => Arr::only($ru['dining'], ['quote_line1', 'quote_line2', 'note_line1', 'note_line2']),
+        ]);
+
+        PageSection::put('discover', 'intro', [
+            'en' => Arr::only($en['discover'], ['title_normal', 'title_italic', 'eyebrow']),
+            'ru' => Arr::only($ru['discover'], ['title_normal', 'title_italic', 'eyebrow']),
         ]);
     }
 

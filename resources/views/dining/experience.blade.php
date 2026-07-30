@@ -1,1 +1,1 @@
-@include('lum.partials.quote-choice', ['img' => $img])
+@include('lum.partials.dining.experience', ['img' => $img])

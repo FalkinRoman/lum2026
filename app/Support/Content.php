@@ -7,6 +7,7 @@ use App\Models\BlogPost;
 use App\Models\Excursion;
 use App\Models\HomeSection;
 use App\Models\MenuCategory;
+use App\Models\PageSection;
 use App\Models\Restaurant;
 use App\Models\ShopProduct;
 use App\Models\Villa;
@@ -678,6 +679,78 @@ class Content
         $locale ??= app()->getLocale();
 
         return $payload[$locale] ?? $payload['en'] ?? $payload;
+    }
+
+    /**
+     * Landing page section payload for current locale (stay/dining/relax/discover).
+     *
+     * @return array<string, mixed>
+     */
+    public static function pageLocale(string $page, string $key, ?string $locale = null): array
+    {
+        $payload = PageSection::get($page, $key);
+        if (! is_array($payload)) {
+            return [];
+        }
+
+        $locale ??= app()->getLocale();
+        $data = $payload[$locale] ?? $payload['en'] ?? [];
+
+        return is_array($data) ? $data : [];
+    }
+
+    /**
+     * Text field from page section with lang fallback: __('lum.{page}.{field}').
+     */
+    public static function pageText(string $page, string $key, string $field, ?string $langFallback = null): string
+    {
+        $data = self::pageLocale($page, $key);
+        $value = $data[$field] ?? null;
+
+        if (is_string($value) && trim($value) !== '') {
+            return $value;
+        }
+
+        $langKey = $langFallback ?? "lum.{$page}.{$field}";
+
+        return (string) __($langKey);
+    }
+
+    /**
+     * Media path from page section; null if cleared/missing (caller may use stub or default asset).
+     */
+    public static function pageMedia(string $page, string $key, string $field): ?string
+    {
+        $data = self::pageLocale($page, $key);
+        $value = $data[$field] ?? null;
+
+        if (! is_string($value) || trim($value) === '') {
+            return null;
+        }
+
+        return ltrim($value, '/');
+    }
+
+    /**
+     * Resolve page media URL: CMS path → url; missing row → default asset; cleared field → stub.
+     */
+    public static function pageMediaUrl(string $page, string $key, string $field, ?string $defaultAsset = null): string
+    {
+        $payload = PageSection::get($page, $key);
+
+        if (! is_array($payload)) {
+            return $defaultAsset
+                ? asset('images/lum/'.ltrim($defaultAsset, '/'))
+                : self::mediaStubUrl();
+        }
+
+        $path = self::pageMedia($page, $key, $field);
+
+        if ($path === null) {
+            return self::mediaStubUrl();
+        }
+
+        return self::hasMedia($path) ? self::mediaUrl($path) : self::mediaStubUrl();
     }
 
     public static function contact(): array

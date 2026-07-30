@@ -1,6 +1,8 @@
 @php
-    $heroImage = $heroImage ?? 'dining/wellness-hero.webp';
-    $ovalImage = $ovalImage ?? 'dining/wellness-oval.webp';
+    $heroImageUrl = $heroImageUrl
+        ?? (filled($heroImage ?? null) ? $img($heroImage) : $img('dining/wellness-hero.webp'));
+    $ovalImageUrl = $ovalImageUrl
+        ?? (filled($ovalImage ?? null) ? $img($ovalImage) : $img('dining/wellness-oval.webp'));
     $quoteLine1 = $quoteLine1 ?? __('lum.dining.quote_line1');
     $quoteLine2 = $quoteLine2 ?? __('lum.dining.quote_line2');
     $noteLine1 = $noteLine1 ?? __('lum.dining.note_line1');
@@ -11,11 +13,11 @@
     {{-- MOBILE --}}
     <div class="relative tab:hidden">
         <div class="relative z-[1] h-[660px] overflow-hidden" data-lum-stay-wellness-hero>
-            <img src="{{ $img($heroImage) }}" alt="" class="h-full w-full object-cover" width="375" height="660" loading="lazy">
+            <img src="{{ $heroImageUrl }}" alt="" class="h-full w-full object-cover" width="375" height="660" loading="lazy">
         </div>
 
         <div class="pointer-events-none absolute left-1/2 z-[3] h-[188px] w-[140px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 513px" data-lum-stay-wellness-oval>
-            <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="140" height="188" loading="lazy">
+            <img src="{{ $ovalImageUrl }}" alt="" class="h-full w-full object-cover" width="140" height="188" loading="lazy">
         </div>
 
         <div class="relative z-[2] -mt-[64px] h-[563px] w-full bg-lum-ivory">
@@ -46,11 +48,11 @@
     {{-- TABLET --}}
     <div class="relative hidden tab:block desk:hidden">
         <div class="relative z-[1] h-[660px] overflow-hidden" data-lum-stay-wellness-hero>
-            <img src="{{ $img($heroImage) }}" alt="" class="h-full w-full object-cover" width="960" height="660" loading="lazy">
+            <img src="{{ $heroImageUrl }}" alt="" class="h-full w-full object-cover" width="960" height="660" loading="lazy">
         </div>
 
         <div class="pointer-events-none absolute left-1/2 z-[3] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 473px" data-lum-stay-wellness-oval>
-            <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="180" height="240" loading="lazy">
+            <img src="{{ $ovalImageUrl }}" alt="" class="h-full w-full object-cover" width="180" height="240" loading="lazy">
         </div>
 
         <div class="relative z-[2] -mt-[64px] h-[588px] w-full bg-lum-ivory">
@@ -80,11 +82,11 @@
     {{-- DESKTOP --}}
     <div class="relative hidden h-[1658px] desk:block">
         <div class="absolute left-0 top-0 h-[820px] w-full overflow-hidden" data-lum-stay-wellness-hero>
-            <img src="{{ $img($heroImage) }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
+            <img src="{{ $heroImageUrl }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
         </div>
 
         <div class="absolute left-1/2 top-[550px] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
-            <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+            <img src="{{ $ovalImageUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
         </div>
 
         <div class="absolute left-1/2 top-[1100px] flex -translate-x-1/2 flex-col items-center gap-[24px] text-center" data-lum-scroll-reveal>

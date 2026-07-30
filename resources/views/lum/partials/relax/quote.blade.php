@@ -1,15 +1,30 @@
 @php
-    $quoteLine1 = __('lum.dining.quote_line1');
-    $quoteLine2 = __('lum.dining.quote_line2');
-    $noteLine1 = __('lum.dining.note_line1');
-    $noteLine2 = __('lum.dining.note_line2');
+    use App\Support\Content;
+
+    $quoteLine1 = Content::pageText('relax', 'quote', 'quote_line1', 'lum.dining.quote_line1');
+    $quoteLine2 = Content::pageText('relax', 'quote', 'quote_line2', 'lum.dining.quote_line2');
+    $noteLine1 = Content::pageText('relax', 'quote', 'note_line1', 'lum.dining.note_line1');
+    $noteLine2 = Content::pageText('relax', 'quote', 'note_line2', 'lum.dining.note_line2');
+
+    $heroDeskUrl = Content::pageMediaUrl('relax', 'media', 'hero_image', 'relax/wellness-hero.webp');
+    $heroMobUrl = Content::pageMedia('relax', 'media', 'hero_image_mob')
+        ? Content::pageMediaUrl('relax', 'media', 'hero_image_mob', 'relax/wellness-hero-mob.webp')
+        : (Content::pageMedia('relax', 'media', 'hero_image')
+            ? $heroDeskUrl
+            : Content::pageMediaUrl('relax', 'media', 'hero_image_mob', 'relax/wellness-hero-mob.webp'));
+    $heroTabUrl = Content::pageMedia('relax', 'media', 'hero_image_tab')
+        ? Content::pageMediaUrl('relax', 'media', 'hero_image_tab', 'relax/wellness-hero-tab.webp')
+        : (Content::pageMedia('relax', 'media', 'hero_image')
+            ? $heroDeskUrl
+            : Content::pageMediaUrl('relax', 'media', 'hero_image_tab', 'relax/wellness-hero-tab.webp'));
+    $ovalUrl = Content::pageMediaUrl('relax', 'media', 'oval_image', 'relax/wellness-oval.webp');
 @endphp
 
 <section class="lum-container relative overflow-visible bg-lum-ivory" data-lum-stay-wellness>
     {{-- MOBILE — Figma 101:565 + 101:567 --}}
     <div class="relative overflow-visible tab:hidden">
         <div class="relative z-[1] -mt-[120px] h-[780px] overflow-visible" data-lum-stay-wellness-hero>
-            <img src="{{ $img('relax/wellness-hero-mob.webp') }}" alt="" class="h-full w-full object-cover" width="375" height="780" loading="lazy">
+            <img src="{{ $heroMobUrl }}" alt="" class="h-full w-full object-cover" width="375" height="780" loading="lazy">
         </div>
 
         <div class="relative z-[2] h-[563px] w-full bg-lum-ivory">
@@ -40,7 +55,7 @@
     {{-- TABLET — Figma 101:518 + 101:520 --}}
     <div class="relative hidden overflow-visible tab:block desk:hidden">
         <div class="relative z-[1] -mt-[160px] h-[820px] overflow-visible" data-lum-stay-wellness-hero>
-            <img src="{{ $img('relax/wellness-hero-tab.webp') }}" alt="" class="h-full w-full object-cover" width="960" height="820" loading="lazy">
+            <img src="{{ $heroTabUrl }}" alt="" class="h-full w-full object-cover" width="960" height="820" loading="lazy">
         </div>
 
         <div class="relative z-[2] h-[588px] w-full bg-lum-ivory">
@@ -72,11 +87,11 @@
         <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="absolute left-[72px] top-0 h-[63px] w-[1776px]" width="1776" height="63">
 
         <div class="absolute left-1/2 top-[183px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
-            <img src="{{ $img('relax/wellness-oval.webp') }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+            <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
         </div>
 
         <div class="absolute left-0 top-[433px] z-[1] h-[820px] w-full overflow-hidden" data-lum-stay-wellness-hero>
-            <img src="{{ $img('relax/wellness-hero.webp') }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
+            <img src="{{ $heroDeskUrl }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
         </div>
 
         <div class="absolute left-1/2 top-[1373px] flex -translate-x-1/2 flex-col items-center gap-[24px] text-center" data-lum-scroll-reveal>
