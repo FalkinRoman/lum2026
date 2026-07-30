@@ -1,4 +1,7 @@
-@php $shopTeaser = \App\Support\Content::homeLocale('shop_teaser') ?? []; @endphp
+@php
+    // Единый тизер: всегда HomeSection shop_teaser (главная → везде).
+    $shopTeaser = \App\Support\Content::homeLocale('shop_teaser') ?? [];
+@endphp
 <section class="lum-container lum-shop relative h-[675px] overflow-hidden tab:h-[455px] desk:h-[768px]" data-lum-shop-parallax>
     <div class="lum-shop__bg absolute inset-0 overflow-hidden" aria-hidden="true">
         @if (\App\Support\Content::hasMedia($shopTeaser['background_image'] ?? null))

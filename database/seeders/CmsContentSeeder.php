@@ -201,16 +201,52 @@ TXT,
             $enDetail = $this->en['villa'][$slug] ?? [];
             $ruDetail = $this->ru['villa'][$slug] ?? [];
 
+            $enImpression = $this->en['villa']['impression'] ?? [];
+            $ruImpression = $this->ru['villa']['impression'] ?? [];
+            $enTabs = is_array($enImpression['tabs'] ?? null) ? $enImpression['tabs'] : [];
+            $ruTabs = is_array($ruImpression['tabs'] ?? null) ? $ruImpression['tabs'] : [];
+            $impressionImages = [
+                'villa/impression/slide-01.webp',
+                'villa/impression/slide-02.webp',
+                'villa/impression/slide-03.webp',
+                'villa/impression/slide-04.webp',
+            ];
+            $impressionGalleries = [];
+            $tabCount = max(count($enTabs), count($ruTabs));
+            for ($ti = 0; $ti < $tabCount; $ti++) {
+                $enLabel = is_string($enTabs[$ti] ?? null) ? $enTabs[$ti] : '';
+                $ruLabel = is_string($ruTabs[$ti] ?? null) ? $ruTabs[$ti] : '';
+                if ($enLabel === '' && $ruLabel === '') {
+                    continue;
+                }
+                $impressionGalleries[] = [
+                    'label' => [
+                        'en' => $enLabel !== '' ? $enLabel : $ruLabel,
+                        'ru' => $ruLabel !== '' ? $ruLabel : $enLabel,
+                    ],
+                    'images' => $impressionImages,
+                ];
+            }
+
             $villa = Villa::query()->updateOrCreate(
                 ['slug' => $slug],
                 [
                     'sort_order' => $index + 1,
                     'is_published' => true,
+                    'exely_hotel_id' => config('exely.villa_hotels.'.$slug) ?: null,
+                    'impression_cta_mode' => 'villa',
                     'listing_image' => 'stay/'.$enProperty['image'],
                     'slide_photo' => isset($enSlide['photo']) ? 'villas/'.$enSlide['photo'].'.webp' : null,
                     'slide_oval' => isset($enSlide['oval']) ? 'villas/'.$enSlide['oval'].'.webp' : null,
                     'hero_image' => 'villa/hero.webp',
-                    'gallery_images' => ['villa/gallery-01.webp', 'villa/gallery-02.webp'],
+                    'gallery_images' => [
+                        ['path' => 'villa/gallery-01.webp', 'date' => '06.08.2023'],
+                        ['path' => 'villa/gallery-02.webp', 'date' => '06.01.2024'],
+                        ['path' => 'villa/gallery-03.webp', 'date' => '07.03.2023'],
+                    ],
+                    'facilities_image_left' => 'villa/facilities-left.webp',
+                    'facilities_image_right' => 'villa/facilities-right.webp',
+                    'impression_galleries' => $impressionGalleries,
                 ]
             );
 
@@ -252,8 +288,23 @@ TXT,
                 'gallery_title_italic' => ['en' => $enDetail['gallery']['title_italic'] ?? '', 'ru' => $ruDetail['gallery']['title_italic'] ?? ''],
                 'gallery_body' => ['en' => $enDetail['gallery']['body'] ?? '', 'ru' => $ruDetail['gallery']['body'] ?? ''],
                 'gallery_body_bottom' => ['en' => $enDetail['gallery']['body_bottom'] ?? '', 'ru' => $ruDetail['gallery']['body_bottom'] ?? ''],
+                'facilities_eyebrow' => ['en' => $enFacilities['eyebrow'] ?? '', 'ru' => $ruFacilities['eyebrow'] ?? ''],
+                'facilities_title_normal' => ['en' => $enFacilities['title_normal'] ?? '', 'ru' => $ruFacilities['title_normal'] ?? ''],
+                'facilities_title_italic' => ['en' => $enFacilities['title_italic'] ?? '', 'ru' => $ruFacilities['title_italic'] ?? ''],
                 'facilities_left' => ['en' => $enFacilities['items_left'], 'ru' => $ruFacilities['items_left']],
                 'facilities_right' => ['en' => $enFacilities['items_right'], 'ru' => $ruFacilities['items_right']],
+                'impression_title_normal' => [
+                    'en' => $enImpression['title_normal'] ?? '',
+                    'ru' => $ruImpression['title_normal'] ?? '',
+                ],
+                'impression_title_caps' => [
+                    'en' => $enImpression['title_caps'] ?? '',
+                    'ru' => $ruImpression['title_caps'] ?? '',
+                ],
+                'impression_cta' => [
+                    'en' => $this->en['nav']['take_a_break'] ?? 'take a break',
+                    'ru' => $this->ru['nav']['take_a_break'] ?? 'сделать паузу',
+                ],
             ]);
         }
     }

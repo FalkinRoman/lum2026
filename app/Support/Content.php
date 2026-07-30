@@ -435,6 +435,108 @@ class Content
             return null;
         }
 
+        $defaultPolaroidDates = ['06.08.2023', '06.01.2024', '07.03.2023'];
+        $defaultPolaroidPaths = [
+            'villa/gallery-01.webp',
+            'villa/gallery-02.webp',
+            'villa/gallery-03.webp',
+        ];
+
+        $polaroids = [];
+        $rawGallery = is_array($v->gallery_images) ? array_values($v->gallery_images) : [];
+        for ($i = 0; $i < 3; $i++) {
+            $item = $rawGallery[$i] ?? null;
+            $path = null;
+            $date = $defaultPolaroidDates[$i] ?? '';
+
+            if (is_string($item) && trim($item) !== '') {
+                $path = ltrim($item, '/');
+            } elseif (is_array($item)) {
+                $path = is_string($item['path'] ?? null) ? ltrim($item['path'], '/') : null;
+                if (is_string($item['date'] ?? null) && trim($item['date']) !== '') {
+                    $date = trim($item['date']);
+                }
+            }
+
+            if ($path === null || $path === '') {
+                $path = $defaultPolaroidPaths[$i];
+            }
+
+            $polaroids[] = [
+                'path' => $path,
+                'date' => $date,
+            ];
+        }
+
+        $impressionSlides = collect($v->impression_slides ?? [])
+            ->map(fn ($path) => self::impressionStem(is_string($path) ? $path : null))
+            ->filter()
+            ->values()
+            ->all();
+
+        if ($impressionSlides === []) {
+            $impressionSlides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+        }
+
+        $locale = app()->getLocale();
+        $impressionTabs = [];
+        $rawGalleries = is_array($v->impression_galleries) ? $v->impression_galleries : [];
+
+        foreach ($rawGalleries as $gallery) {
+            if (! is_array($gallery)) {
+                continue;
+            }
+
+            $labelData = is_array($gallery['label'] ?? null) ? $gallery['label'] : [];
+            $label = (string) ($labelData[$locale] ?? $labelData['en'] ?? $labelData['ru'] ?? '');
+            if (trim($label) === '') {
+                continue;
+            }
+
+            $images = is_array($gallery['images'] ?? null) ? $gallery['images'] : [];
+            $slides = array_values(array_filter(array_map(
+                fn ($img) => self::impressionStem(is_string($img) ? $img : null),
+                $images,
+            )));
+
+            if ($slides === []) {
+                continue;
+            }
+
+            $impressionTabs[] = [
+                'label' => $label,
+                'slides' => $slides,
+            ];
+        }
+
+        // Legacy fallback: flat tabs + shared slides
+        if ($impressionTabs === []) {
+            $legacyTabs = $v->impression_tabs;
+            if (! is_array($legacyTabs) || $legacyTabs === []) {
+                $legacyTabs = trans('lum.villa.impression.tabs');
+                $legacyTabs = is_array($legacyTabs) ? $legacyTabs : [];
+            }
+
+            foreach ($legacyTabs as $label) {
+                if (! is_string($label) || trim($label) === '') {
+                    continue;
+                }
+                $impressionTabs[] = [
+                    'label' => $label,
+                    'slides' => $impressionSlides,
+                ];
+            }
+        }
+
+        if ($impressionTabs === []) {
+            $impressionTabs[] = [
+                'label' => 'GALLERY',
+                'slides' => $impressionSlides,
+            ];
+        }
+
+        $hotelId = Exely::hotelIdForVilla($v->slug, $v->exely_hotel_id);
+
         return [
             'meta_title' => $v->meta_title,
             'hero' => [
@@ -449,21 +551,70 @@ class Content
                 'title_italic' => $v->gallery_title_italic,
                 'body' => $v->gallery_body,
                 'body_bottom' => $v->gallery_body_bottom,
-                'images' => $v->gallery_images ?? [],
+                'polaroids' => $polaroids,
             ],
             'facilities' => [
+                'eyebrow' => filled($v->facilities_eyebrow)
+                    ? $v->facilities_eyebrow
+                    : __('lum.villa.facilities.eyebrow'),
+                'title_normal' => filled($v->facilities_title_normal)
+                    ? $v->facilities_title_normal
+                    : __('lum.villa.facilities.title_normal'),
+                'title_italic' => filled($v->facilities_title_italic)
+                    ? $v->facilities_title_italic
+                    : __('lum.villa.facilities.title_italic'),
                 'items_left' => $v->facilities_left ?? [],
                 'items_right' => $v->facilities_right ?? [],
+                'image_left' => filled($v->facilities_image_left)
+                    ? $v->facilities_image_left
+                    : 'villa/facilities-left.webp',
+                'image_right' => filled($v->facilities_image_right)
+                    ? $v->facilities_image_right
+                    : 'villa/facilities-right.webp',
+            ],
+            'impression' => [
+                'title_normal' => filled($v->impression_title_normal)
+                    ? $v->impression_title_normal
+                    : __('lum.villa.impression.title_normal'),
+                'title_caps' => filled($v->impression_title_caps)
+                    ? $v->impression_title_caps
+                    : __('lum.villa.impression.title_caps'),
+                'tabs' => $impressionTabs,
+                'slides' => $impressionTabs[0]['slides'] ?? $impressionSlides,
+                'img_base' => 'villa/impression',
+                'cta' => filled($v->impression_cta)
+                    ? $v->impression_cta
+                    : __('lum.nav.take_a_break'),
+                'cta_href' => self::villaImpressionCtaHref($v, $hotelId),
             ],
             'listing_image' => $v->listing_image,
             'slug' => $v->slug,
-            'exely_hotel_id' => $v->exely_hotel_id,
+            'exely_hotel_id' => $hotelId,
             'exely_room_type_id' => $v->exely_room_type_id,
-            'booking_url' => Site::villaBookingUrl(
-                Exely::hotelIdForVilla($v->slug, $v->exely_hotel_id),
-                $v->exely_room_type_id,
-            ),
+            'booking_url' => Site::villaBookingUrl($hotelId),
         ];
+    }
+
+    public static function villaImpressionCtaHref(Villa $villa, ?string $hotelId = null): string
+    {
+        $mode = $villa->impression_cta_mode ?: 'villa';
+
+        return match ($mode) {
+            'site' => Site::takeABreakUrl(),
+            'custom' => self::link($villa->impression_cta_url, 'booking'),
+            default => Site::villaBookingUrl(
+                $hotelId ?? Exely::hotelIdForVilla($villa->slug, $villa->exely_hotel_id),
+            ),
+        };
+    }
+
+    public static function impressionStem(?string $path): string
+    {
+        $path = self::stripPrefix((string) $path, 'villa/impression/');
+        $path = preg_replace('/\.(webp|jpe?g|png)$/i', '', $path) ?? $path;
+        $path = preg_replace('/-sm$/i', '', $path) ?? $path;
+
+        return $path;
     }
 
     public static function restaurants(): Collection

@@ -38,10 +38,14 @@
             'img' => $img,
             'variant' => 'villa',
             'titleKey' => 'lum.villa.impression',
-            'imgBase' => 'villa/impression',
+            'imgBase' => $villa['impression']['img_base'] ?? 'villa/impression',
             'showLogomark' => true,
             'showCta' => true,
-            'ctaHref' => $villa['booking_url'] ?? \App\Support\Site::takeABreakUrl(),
+            'ctaHref' => $villa['impression']['cta_href']
+                ?? $villa['booking_url']
+                ?? \App\Support\Site::takeABreakUrl(),
+            'ctaLabel' => $villa['impression']['cta'] ?? null,
+            'cmsImpression' => $villa['impression'] ?? null,
         ])
         @include('lum.partials.shop', ['img' => $img])
         @include('lum.partials.footer', ['img' => $img])

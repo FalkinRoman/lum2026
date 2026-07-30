@@ -5,6 +5,8 @@
         'title_italic' => __('lum.villa.facilities.title_italic'),
         'items_left' => [],
         'items_right' => [],
+        'image_left' => 'villa/facilities-left.webp',
+        'image_right' => 'villa/facilities-right.webp',
     ], $villa['facilities'] ?? []);
 @endphp
 
@@ -28,7 +30,7 @@
             @endforeach
         </div>
 
-        <img src="{{ $img('villa/facilities-left.webp') }}" alt="" class="absolute left-[20px] top-[458px] h-[396px] w-[335px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="335" height="396" loading="lazy" data-lum-villa-card>
+        <img src="{{ $img($facilities['image_left']) }}" alt="" class="absolute left-[20px] top-[458px] h-[396px] w-[335px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="335" height="396" loading="lazy" data-lum-villa-card>
 
         <div class="absolute left-[20px] top-[898px] w-[335px]" data-lum-scroll-stagger data-lum-scroll-stagger-fade>
             @foreach ($facilities['items_right'] as $index => $item)
@@ -39,7 +41,7 @@
             @endforeach
         </div>
 
-        <img src="{{ $img('villa/facilities-right.webp') }}" alt="" class="absolute left-[20px] top-[1118px] h-[396px] w-[335px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="335" height="396" loading="lazy" data-lum-villa-card>
+        <img src="{{ $img($facilities['image_right']) }}" alt="" class="absolute left-[20px] top-[1118px] h-[396px] w-[335px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="335" height="396" loading="lazy" data-lum-villa-card>
     </div>
 
     {{-- TABLET — Figma 78:609 --}}
@@ -69,8 +71,8 @@
             @endforeach
         </div>
 
-        <img src="{{ $img('villa/facilities-left.webp') }}" alt="" class="absolute left-[20px] top-[592px] h-[532px] w-[450px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="450" height="532" loading="lazy" data-lum-villa-card>
-        <img src="{{ $img('villa/facilities-right.webp') }}" alt="" class="absolute left-[490px] top-[592px] h-[532px] w-[450px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="450" height="532" loading="lazy" data-lum-villa-card>
+        <img src="{{ $img($facilities['image_left']) }}" alt="" class="absolute left-[20px] top-[592px] h-[532px] w-[450px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="450" height="532" loading="lazy" data-lum-villa-card>
+        <img src="{{ $img($facilities['image_right']) }}" alt="" class="absolute left-[490px] top-[592px] h-[532px] w-[450px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="450" height="532" loading="lazy" data-lum-villa-card>
     </div>
 
     {{-- DESKTOP — Figma 78:434 --}}
@@ -100,7 +102,7 @@
             @endforeach
         </div>
 
-        <img src="{{ $img('villa/facilities-left.webp') }}" alt="" class="absolute left-[72px] top-[460px] h-[532px] w-[396px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="396" height="532" loading="lazy" data-lum-villa-card>
-        <img src="{{ $img('villa/facilities-right.webp') }}" alt="" class="absolute left-[1452px] top-[460px] h-[532px] w-[396px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="396" height="532" loading="lazy" data-lum-villa-card>
+        <img src="{{ $img($facilities['image_left']) }}" alt="" class="absolute left-[72px] top-[460px] h-[532px] w-[396px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="396" height="532" loading="lazy" data-lum-villa-card>
+        <img src="{{ $img($facilities['image_right']) }}" alt="" class="absolute left-[1452px] top-[460px] h-[532px] w-[396px] object-cover shadow-[3px_3px_0_rgba(0,0,0,0.25)]" width="396" height="532" loading="lazy" data-lum-villa-card>
     </div>
 </section>

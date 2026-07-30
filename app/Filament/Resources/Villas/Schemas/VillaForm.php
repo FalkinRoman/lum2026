@@ -4,9 +4,13 @@ namespace App\Filament\Resources\Villas\Schemas;
 
 use App\Filament\Forms\Locales;
 use App\Filament\Forms\LumImage;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 
 class VillaForm
@@ -14,14 +18,18 @@ class VillaForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Section::make('Вилла')
+                    ->description('Служебные поля. Create / delete — из списка и шапки.')
                     ->columns(2)
                     ->schema([
                         TextInput::make('slug')
+                            ->label('Slug')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->helperText('URL: /stay/{slug}'),
                         TextInput::make('sort_order')
                             ->label('Порядок')
                             ->numeric()
@@ -31,65 +39,121 @@ class VillaForm
                         Toggle::make('is_published')
                             ->label('Опубликовано')
                             ->default(true),
-                    ]),
-
-                Section::make('Бронирование Exely')
-                    ->description('Привязка виллы к отелю/типу номера Exely. Пусто → общий /booking.')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('exely_hotel_id')
-                            ->label('Exely hotel ID')
-                            ->helperText('Известные: 502887, 514444')
-                            ->maxLength(32),
-                        TextInput::make('exely_room_type_id')
-                            ->label('Exely room type ID')
-                            ->helperText('Deep-link кнопки Book now на этот номер')
-                            ->maxLength(32),
-                    ]),
-
-                Section::make('Изображения')
-                    ->columns(2)
-                    ->schema([
-                        LumImage::single('listing_image', 'Карточка', 'stay'),
-                        LumImage::single('slide_photo', 'Фото слайда', 'villas'),
-                        LumImage::single('slide_oval', 'Овал слайда', 'villas'),
-                        LumImage::single('hero_image', 'Hero', 'villa'),
-                        LumImage::many('gallery_images', 'Галерея', 'villa', 12)
+                        Locales::text('meta_title', 'Meta title')
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Заголовки')
+                Section::make('1. Карточка на /stay')
+                    ->description('Как карточка на листинге Stay.')
                     ->schema([
+                        LumImage::single('listing_image', 'Фото карточки', 'stay'),
                         Locales::text('title_normal', 'Заголовок', required: true),
                         Locales::text('title_italic', 'Заголовок (курсив)'),
-                        Locales::text('title_mobile_normal', 'Заголовок mobile'),
-                        Locales::text('title_mobile_italic', 'Заголовок mobile (курсив)'),
-                        Locales::text('subtitle', 'Подзаголовок'),
-                        Locales::text('subtitle_line1', 'Подзаголовок: строка 1'),
-                        Locales::text('subtitle_line2', 'Подзаголовок: строка 2'),
-                        Locales::text('meta_title', 'Meta title'),
+                        Locales::text('subtitle', 'Подзаголовок', textarea: true),
                     ]),
 
-                Section::make('Hero')
+                Section::make('2. Hero страницы')
+                    ->description('Верх detail /stay/{slug}.')
                     ->schema([
-                        Locales::text('hero_eyebrow', 'Hero надзаголовок'),
-                        Locales::text('hero_title_normal', 'Hero заголовок'),
-                        Locales::text('hero_title_italic', 'Hero заголовок (курсив)'),
+                        LumImage::single('hero_image', 'Большое фото', 'villa'),
+                        Locales::text('hero_eyebrow', 'Надзаголовок'),
+                        Locales::text('hero_title_normal', 'Заголовок'),
+                        Locales::text('hero_title_italic', 'Заголовок (курсив)'),
                     ]),
 
-                Section::make('Галерея')
+                Section::make('3. Бронирование Exely')
+                    ->description('Привязка страницы виллы к отелю в Exely. Виджет «Book online» откроется сразу с этой виллой.')
                     ->schema([
-                        Locales::text('gallery_eyebrow', 'Галерея: надзаголовок'),
-                        Locales::text('gallery_title_normal', 'Галерея: заголовок'),
-                        Locales::text('gallery_title_italic', 'Галерея: заголовок (курсив)'),
-                        Locales::text('gallery_body', 'Галерея: текст', textarea: true),
-                        Locales::text('gallery_body_bottom', 'Галерея: текст снизу', textarea: true),
+                        Select::make('exely_hotel_id')
+                            ->label('Вилла в Exely')
+                            ->options(fn (): array => \App\Support\Exely::hotelOptions())
+                            ->searchable()
+                            ->nullable()
+                            ->placeholder('— Общий поиск (все) —')
+                            ->helperText('Модификатор hotel_id для виджета. Пусто = мульти-поиск как на /stay.'),
                     ]),
 
-                Section::make('Удобства')
+                Section::make('4. Галерея')
+                    ->description('Тексты + до 3 полароидов (фото + дата). Desktop — 3, mobile/tablet — первые 2.')
                     ->schema([
-                        Locales::tags('facilities_left', 'Удобства (левая колонка)'),
-                        Locales::tags('facilities_right', 'Удобства (правая колонка)'),
+                        Locales::text('gallery_eyebrow', 'Надзаголовок'),
+                        Locales::text('gallery_title_normal', 'Заголовок'),
+                        Locales::text('gallery_title_italic', 'Заголовок (курсив)'),
+                        Locales::text('gallery_body', 'Текст сверху', textarea: true),
+                        Locales::text('gallery_body_bottom', 'Текст снизу', textarea: true),
+                        Repeater::make('gallery_images')
+                            ->label('Полароиды')
+                            ->reorderable()
+                            ->maxItems(3)
+                            ->defaultItems(0)
+                            ->schema([
+                                LumImage::single('path', 'Фото', 'villa', helperText: null),
+                                TextInput::make('date')
+                                    ->label('Дата на полароиде')
+                                    ->placeholder('06.08.2023')
+                                    ->maxLength(32),
+                            ])
+                            ->itemLabel(fn (array $state): ?string => filled($state['date'] ?? null)
+                                ? (string) $state['date']
+                                : 'Полароид')
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('5. Удобства')
+                    ->description('Как блок Facilities на detail.')
+                    ->schema([
+                        Locales::text('facilities_eyebrow', 'Надзаголовок'),
+                        Locales::text('facilities_title_normal', 'Заголовок'),
+                        Locales::text('facilities_title_italic', 'Заголовок (курсив)'),
+                        LumImage::single('facilities_image_left', 'Фото слева', 'villa'),
+                        LumImage::single('facilities_image_right', 'Фото справа', 'villa'),
+                        Locales::tags('facilities_left', 'Список слева'),
+                        Locales::tags('facilities_right', 'Список справа'),
+                    ]),
+
+                Section::make('6. Impression')
+                    ->description('Каждый таб = своя галерея. Клик по табу переключает слайды. Таб без картинок не показывается.')
+                    ->schema([
+                        Locales::text('impression_title_normal', 'Заголовок (курсивная строка)'),
+                        Locales::text('impression_title_caps', 'Заголовок (CAPS)'),
+                        Repeater::make('impression_galleries')
+                            ->label('Табы и галереи')
+                            ->reorderable()
+                            ->defaultItems(0)
+                            ->schema([
+                                Tabs::make('tab_locale')
+                                    ->contained(false)
+                                    ->tabs([
+                                        Tab::make('EN')->schema([
+                                            TextInput::make('label.en')->label('Название таба')->required(),
+                                        ]),
+                                        Tab::make('RU')->schema([
+                                            TextInput::make('label.ru')->label('Название таба')->required(),
+                                        ]),
+                                    ]),
+                                LumImage::many('images', 'Слайды таба', 'villa/impression', 12),
+                            ])
+                            ->itemLabel(fn (array $state): ?string => data_get($state, 'label.en')
+                                ?: data_get($state, 'label.ru')
+                                ?: 'Таб')
+                            ->columnSpanFull(),
+                        Locales::text('impression_cta', 'Текст кнопки'),
+                        Select::make('impression_cta_mode')
+                            ->label('Куда ведёт кнопка')
+                            ->options([
+                                'villa' => 'Бронирование этой виллы (/booking + Exely hotel)',
+                                'site' => 'Как Take a break в настройках сайта',
+                                'custom' => 'Своя ссылка',
+                            ])
+                            ->default('villa')
+                            ->live()
+                            ->required(),
+                        TextInput::make('impression_cta_url')
+                            ->label('Своя ссылка')
+                            ->url()
+                            ->placeholder('https://… или /path')
+                            ->visible(fn ($get): bool => $get('impression_cta_mode') === 'custom')
+                            ->required(fn ($get): bool => $get('impression_cta_mode') === 'custom'),
                     ]),
             ]);
     }

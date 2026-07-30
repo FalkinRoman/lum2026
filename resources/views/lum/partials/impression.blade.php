@@ -23,6 +23,7 @@
     $homeInterior = ($titleKey === 'lum.interior' && $imgBase === 'interior')
         ? \App\Support\Content::homeInterior()
         : null;
+    $cmsImpression = $cmsImpression ?? null;
 
     $tabGalleries = [];
     if ($homeInterior) {
@@ -49,6 +50,66 @@
         if ($tabs === []) {
             $showTabs = false;
         }
+        $mobileTabRows = [
+            array_slice($tabs, 0, 2),
+            array_slice($tabs, 2, 3),
+            array_slice($tabs, 5),
+        ];
+    } elseif (is_array($cmsImpression)) {
+        $titleNormal = $cmsImpression['title_normal'] ?? __($titleKey.'.title_normal');
+        $titleCaps = $cmsImpression['title_caps'] ?? __($titleKey.'.title_caps');
+        $imgBase = $cmsImpression['img_base'] ?? $imgBase;
+
+        $rawTabs = is_array($cmsImpression['tabs'] ?? null) ? $cmsImpression['tabs'] : [];
+        $tabGalleries = [];
+        $tabs = [];
+
+        foreach ($rawTabs as $i => $gallery) {
+            if (is_string($gallery)) {
+                $slides = is_array($cmsImpression['slides'] ?? null) ? $cmsImpression['slides'] : ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+                $tabGalleries[] = ['label' => $gallery, 'slides' => $slides];
+                $tabs[] = [
+                    'label' => ($i === 0 ? '✓' : '').$gallery,
+                    'active' => $i === 0,
+                    'index' => $i,
+                ];
+
+                continue;
+            }
+
+            if (! is_array($gallery)) {
+                continue;
+            }
+
+            $label = is_string($gallery['label'] ?? null) ? $gallery['label'] : '';
+            $slides = is_array($gallery['slides'] ?? null) ? $gallery['slides'] : [];
+            if (trim($label) === '' || $slides === []) {
+                continue;
+            }
+
+            $idx = count($tabs);
+            $tabGalleries[] = ['label' => $label, 'slides' => $slides];
+            $tabs[] = [
+                'label' => ($idx === 0 ? '✓' : '').$label,
+                'active' => $idx === 0,
+                'index' => $idx,
+            ];
+        }
+
+        $slides = $tabGalleries[0]['slides'] ?? (is_array($cmsImpression['slides'] ?? null) ? $cmsImpression['slides'] : []);
+        if ($slides === []) {
+            $slides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+        }
+        $total = max(count($slides), 1);
+        $progressTotal = max(
+            $total,
+            ...(array_map(fn (array $g) => max(count($g['slides'] ?? []), 1), $tabGalleries) ?: [1]),
+        );
+
+        if ($tabs === []) {
+            $showTabs = false;
+        }
+
         $mobileTabRows = [
             array_slice($tabs, 0, 2),
             array_slice($tabs, 2, 3),

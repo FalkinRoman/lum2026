@@ -18,7 +18,15 @@ class Villa extends Model
         'subtitle', 'subtitle_line1', 'subtitle_line2', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
         'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic',
-        'gallery_body', 'gallery_body_bottom', 'facilities_left', 'facilities_right',
+        'gallery_body', 'gallery_body_bottom',
+        'facilities_eyebrow', 'facilities_title_normal', 'facilities_title_italic',
+        'facilities_left', 'facilities_right',
+        'facilities_image_left', 'facilities_image_right',
+        'impression_title_normal', 'impression_title_caps', 'impression_tabs',
+        'impression_slides', 'impression_galleries', 'impression_cta',
+        'impression_cta_mode', 'impression_cta_url',
+        'shop_eyebrow', 'shop_title_normal', 'shop_title_italic', 'shop_cta',
+        'shop_background_image',
     ];
 
     public array $translatable = [
@@ -26,7 +34,12 @@ class Villa extends Model
         'subtitle', 'subtitle_line1', 'subtitle_line2', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
         'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic',
-        'gallery_body', 'gallery_body_bottom', 'facilities_left', 'facilities_right',
+        'gallery_body', 'gallery_body_bottom',
+        'facilities_eyebrow', 'facilities_title_normal', 'facilities_title_italic',
+        'facilities_left', 'facilities_right',
+        'impression_title_normal', 'impression_title_caps', 'impression_tabs',
+        'impression_cta',
+        'shop_eyebrow', 'shop_title_normal', 'shop_title_italic', 'shop_cta',
     ];
 
     protected function casts(): array
@@ -36,6 +49,9 @@ class Villa extends Model
             'gallery_images' => 'array',
             'facilities_left' => 'array',
             'facilities_right' => 'array',
+            'impression_tabs' => 'array',
+            'impression_slides' => 'array',
+            'impression_galleries' => 'array',
         ];
     }
 

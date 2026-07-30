@@ -89,10 +89,21 @@ class Exely
             : 'be-search-form';
     }
 
+    public static function hotelLabel(?string $hotelId): ?string
+    {
+        if (! $hotelId) {
+            return null;
+        }
+
+        $hotel = config('exely.hotels.'.$hotelId);
+
+        return is_array($hotel) ? (string) ($hotel['label'] ?? $hotelId) : $hotelId;
+    }
+
     public static function hotelIdForVilla(?string $slug, ?string $storedHotelId = null): ?string
     {
-        if ($storedHotelId) {
-            return $storedHotelId;
+        if (filled($storedHotelId)) {
+            return (string) $storedHotelId;
         }
 
         if (! $slug) {

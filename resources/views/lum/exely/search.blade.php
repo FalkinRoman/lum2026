@@ -2,6 +2,7 @@
     $variant = $variant ?? 'main'; // main | sticky | hero | inline
     $hotelId = $hotelId ?? null;
     $containerId = \App\Support\Exely::searchContainerId($hotelId);
+    $hotelLabel = \App\Support\Exely::hotelLabel($hotelId);
     $isSticky = $variant === 'sticky';
     $isHero = $variant === 'hero';
     $isInline = $variant === 'inline';
@@ -131,13 +132,20 @@
     .lum-exely-search__mount {
         width: 100%;
         opacity: 0;
+        visibility: hidden;
         pointer-events: none;
-        transition: opacity 0.18s ease;
+        transition: opacity 0.25s ease;
     }
 
     .lum-exely-search__shell.is-ready .lum-exely-search__mount {
         opacity: 1;
+        visibility: visible;
         pointer-events: auto;
+    }
+
+    /* Пока Exely тянет CSS в parent — не показываем сырой iframe */
+    .lum-exely-search__shell:not(.is-ready) .lum-exely-search__mount * {
+        visibility: hidden !important;
     }
 
     .lum-exely-search__shell.is-ready .lum-exely-skeleton {
@@ -301,6 +309,11 @@
                             <em>{{ __('lum.booking.hotel') }}</em>
                             <b>{{ __('lum.booking.hotel_placeholder') }}</b>
                         </div>
+                    @elseif ($hotelLabel)
+                        <div class="lum-exely-skeleton__field">
+                            <em>{{ __('lum.booking.hotel') }}</em>
+                            <b>{{ $hotelLabel }}</b>
+                        </div>
                     @endif
                     <div class="lum-exely-skeleton__field">
                         <em>{{ __('lum.booking.check_in') }}</em>
@@ -354,19 +367,21 @@
             iframe.dataset.lumExelyBound = '1';
 
             var settle = function () {
-                // Exely ресайзит iframe после paint — ждём стабильную высоту
+                // Exely ресайзит iframe + подгружает CSS в parent — ждём стабильную высоту + паузу
                 var tries = 0;
                 var last = 0;
+                var stable = 0;
                 var tick = function () {
                     var h = parseInt(iframe.style.height || iframe.getAttribute('height') || '0', 10);
                     if (h > 40 && h === last) {
-                        finish();
-                        return;
+                        stable += 1;
+                    } else {
+                        stable = 0;
                     }
                     last = h;
                     tries += 1;
-                    if (tries > 40) {
-                        finish();
+                    if (stable >= 4 || tries > 60) {
+                        window.setTimeout(finish, 350);
                         return;
                     }
                     window.setTimeout(tick, 50);
