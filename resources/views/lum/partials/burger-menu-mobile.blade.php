@@ -4,6 +4,7 @@
     $currentShort = $locale === 'en' ? __('lum.lang.en_short') : __('lum.lang.ru_short');
     $villaUrl = $villaUrl ?? fn (string $slug) => route('villa.show', $slug);
     $menuActive = $menuActive ?? [];
+    $menuImageUrl = $menuImageUrl ?? \App\Support\Site::menuImageUrl();
 @endphp
 {{-- Figma 160:305 mobile open burger — 375×1010 (457 + 375 + 178 footer) --}}
 <div class="relative w-full tab:hidden">
@@ -73,7 +74,7 @@
 
     {{-- 160:417 image — 375×375 --}}
     <div class="relative h-[375px] w-full overflow-hidden" data-lum-menu-reveal="4">
-        <img src="{{ asset('images/lum/menu/map.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover">
+        <img src="{{ $menuImageUrl }}" alt="" class="absolute inset-0 h-full w-full object-cover">
         <div class="absolute inset-0 bg-black/32"></div>
         <p class="absolute left-[20px] top-[255px] w-[335px] font-serif text-[22px] font-medium leading-[24px] tracking-[0.194px] text-lum-ivory">
             {!! __('lum.footer.address_menu') !!}

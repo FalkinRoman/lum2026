@@ -47,6 +47,20 @@ class Site
         return self::settings()->map_url ?: '#';
     }
 
+    /**
+     * Burger menu hero photo (right panel / mobile map block).
+     */
+    public static function menuImageUrl(): string
+    {
+        $path = self::settings()->menu_image;
+
+        if (is_string($path) && trim($path) !== '') {
+            return Content::mediaUrl($path);
+        }
+
+        return asset('images/lum/menu/map.jpg');
+    }
+
     public static function bookUrl(?string $fallback = null): string
     {
         if ($fallback) {

@@ -2,6 +2,7 @@
     $locale = app()->getLocale();
     $villaUrl = fn (string $slug) => route('villa.show', $slug);
     $villaSlug = request()->routeIs('villa.show') ? (string) request()->route('slug') : null;
+    $menuImageUrl = \App\Support\Site::menuImageUrl();
     $menuActive = [
         'home' => request()->routeIs('home'),
         'stay' => request()->routeIs('stay'),
@@ -109,7 +110,7 @@
                 </div>
 
                 <div class="absolute left-[20px] top-[499px] z-10 h-[480px] w-[920px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
-                    <img src="{{ asset('images/lum/menu/map.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover">
+                    <img src="{{ $menuImageUrl }}" alt="" class="absolute inset-0 h-full w-full object-cover">
                     <div class="absolute inset-0 bg-black/32"></div>
                     <div class="absolute bottom-[31px] left-[36px] font-serif text-[28px] font-medium leading-[34px] tracking-[0.36px] text-lum-ivory">
                         {!! __('lum.footer.address_menu') !!}
@@ -176,7 +177,7 @@
                 </nav>
 
                 <div class="absolute right-[72px] top-[168px] z-10 h-[528px] w-[703px] overflow-hidden bg-lum-green" data-lum-menu-reveal="4">
-                    <img src="{{ asset('images/lum/menu/map.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover">
+                    <img src="{{ $menuImageUrl }}" alt="" class="absolute inset-0 h-full w-full object-cover">
                     <div class="absolute inset-0 bg-black/32"></div>
                     <div class="absolute bottom-[40px] left-[44px] font-serif text-[32px] font-medium leading-[36px] tracking-[0.32px] text-lum-ivory">
                         {!! __('lum.footer.address_menu') !!}

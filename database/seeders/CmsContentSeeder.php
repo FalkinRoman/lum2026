@@ -67,6 +67,7 @@ class CmsContentSeeder extends Seeder
             'take_a_break_url' => $en['shop']['social_whatsapp_url'],
             'book_url' => $en['shop']['social_whatsapp_url'],
             'use_booking_page' => true,
+            'menu_image' => 'menu/map.jpg',
         ]);
 
         $this->setTranslations($site, [

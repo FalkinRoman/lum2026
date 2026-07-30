@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Forms\Locales;
+use App\Filament\Forms\LumImage;
 use App\Models\SiteSetting;
 use App\Support\Site;
 use BackedEnum;
@@ -50,6 +51,7 @@ class ManageSiteSettings extends Page implements HasForms
             'phone_personal' => $settings->phone_personal,
             'email' => $settings->email,
             'map_url' => $settings->map_url,
+            'menu_image' => $settings->menu_image ?: 'menu/map.jpg',
             'whatsapp_url' => $settings->whatsapp_url,
             'instagram_url' => $settings->instagram_url,
             'telegram_url' => $settings->telegram_url,
@@ -87,6 +89,12 @@ class ManageSiteSettings extends Page implements HasForms
                         TextInput::make('map_url')
                             ->label('URL карты')
                             ->url(),
+                        LumImage::single(
+                            'menu_image',
+                            'Картинка в меню (хедер)',
+                            'menu',
+                            helperText: 'Большое фото справа в открытом меню. Пусто = menu/map.jpg по умолчанию.',
+                        )->columnSpanFull(),
                         TextInput::make('instagram_url')->label('Instagram URL')->url(),
                         TextInput::make('whatsapp_url')->label('WhatsApp URL')->url(),
                         TextInput::make('telegram_url')->label('Telegram URL')->url()->columnSpanFull(),
@@ -179,6 +187,14 @@ class ManageSiteSettings extends Page implements HasForms
 
         // Keep legacy CTA field in sync with the single booking URL.
         $state['take_a_break_url'] = $state['book_url'] ?? null;
+
+        $menuImage = $state['menu_image'] ?? null;
+        if (is_array($menuImage)) {
+            $menuImage = $menuImage[0] ?? null;
+        }
+        $state['menu_image'] = is_string($menuImage) && trim($menuImage) !== ''
+            ? ltrim($menuImage, '/')
+            : null;
 
         // tel: links are derived from phone numbers in code — keep DB columns in sync.
         $state['phone_href'] = self::telFromPhone((string) ($state['phone'] ?? ''));

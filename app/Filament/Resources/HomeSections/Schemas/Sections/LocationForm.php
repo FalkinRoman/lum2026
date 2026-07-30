@@ -32,11 +32,16 @@ class LocationForm
                 ]),
 
             Section::make('Карточки')
+                ->description('Ровно 3 карточки под вёрстку главной. Добавлять/удалять нельзя — только править и менять порядок.')
                 ->columnSpanFull()
                 ->schema([
                     Repeater::make('cards')
                         ->label('Карточки')
                         ->defaultItems(3)
+                        ->minItems(3)
+                        ->maxItems(3)
+                        ->addable(false)
+                        ->deletable(false)
                         ->reorderable()
                         ->schema([
                             Hidden::make('_meta'),

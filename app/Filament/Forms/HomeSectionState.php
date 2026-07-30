@@ -402,9 +402,7 @@ class HomeSectionState
         $ruCards = is_array($ru['cards'] ?? null) ? $ru['cards'] : [];
         $cards = [];
 
-        $count = max(count($enCards), count($ruCards), 3);
-
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $e = is_array($enCards[$i] ?? null) ? $enCards[$i] : [];
             $r = is_array($ruCards[$i] ?? null) ? $ruCards[$i] : [];
             $cards[] = [
@@ -441,7 +439,7 @@ class HomeSectionState
         $enCards = [];
         $ruCards = [];
 
-        foreach ($formCards as $card) {
+        foreach (array_slice(array_values($formCards), 0, 3) as $card) {
             if (! is_array($card)) {
                 continue;
             }
@@ -470,8 +468,26 @@ class HomeSectionState
             ]);
         }
 
-        $en['cards'] = $enCards;
-        $ru['cards'] = $ruCards;
+        // Pad to exactly 3 so front layout never breaks.
+        while (count($enCards) < 3) {
+            $enCards[] = [
+                'title' => '',
+                'listLines' => [],
+                'photo' => null,
+                'activeImg' => null,
+                'route' => null,
+            ];
+            $ruCards[] = [
+                'title' => '',
+                'listLines' => [],
+                'photo' => null,
+                'activeImg' => null,
+                'route' => null,
+            ];
+        }
+
+        $en['cards'] = array_slice($enCards, 0, 3);
+        $ru['cards'] = array_slice($ruCards, 0, 3);
 
         return ['en' => $en, 'ru' => $ru];
     }

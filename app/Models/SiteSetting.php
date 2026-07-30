@@ -16,6 +16,7 @@ class SiteSetting extends Model
         'phone_personal_href',
         'email',
         'map_url',
+        'menu_image',
         'whatsapp_url',
         'instagram_url',
         'telegram_url',
