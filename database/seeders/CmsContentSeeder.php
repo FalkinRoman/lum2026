@@ -670,6 +670,7 @@ TXT,
         $enItems = $this->en['shop']['items'];
         $ruItems = $this->ru['shop']['items'];
         $price = $this->en['shop']['cta_price'];
+        $whatsapp = $this->en['shop']['social_whatsapp_url'] ?? null;
 
         $index = 0;
 
@@ -684,9 +685,13 @@ TXT,
                     'is_published' => true,
                     'image' => 'shop/'.$enItem['image'],
                     'thumbs' => array_map(fn ($thumb) => 'shop/'.$thumb, $enItem['thumbs'] ?? []),
-                    'colors' => array_map(fn ($color) => 'shop/'.$color, $enItem['colors'] ?? []),
+                    'colors' => array_map(
+                        fn ($color) => ['kind' => 'image', 'image' => 'shop/'.$color, 'hex' => null],
+                        $enItem['colors'] ?? [],
+                    ),
                     'sizes' => $enItem['sizes'] ?? [],
                     'price' => $price,
+                    'cta_url' => $whatsapp,
                 ]
             );
 

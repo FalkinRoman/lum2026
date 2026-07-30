@@ -1,4 +1,71 @@
+import gsap from 'gsap';
 import { getLenis } from './smooth-scroll';
+
+const PAGE_SCROLL_OFFSET = 96;
+const REVEAL_DURATION = 0.75;
+const REVEAL_STAGGER = 0.1;
+const REVEAL_EASE = 'power3.out';
+
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function getVisibleMenuPanels(layout) {
+    return [...layout.querySelectorAll('[data-lum-menu-panel]:not(.hidden)')];
+}
+
+function getMenuCardTarget(panel) {
+    return panel.firstElementChild || panel;
+}
+
+function primeMenuCards(panels) {
+    if (! panels.length || prefersReducedMotion()) {
+        return;
+    }
+
+    gsap.set(panels.map(getMenuCardTarget), { autoAlpha: 0, y: 36 });
+}
+
+function animateMenuCards(panels) {
+    if (! panels.length || prefersReducedMotion()) {
+        return;
+    }
+
+    const targets = panels.map(getMenuCardTarget);
+
+    gsap.killTweensOf(targets);
+    gsap.fromTo(
+        targets,
+        { autoAlpha: 0, y: 36 },
+        {
+            autoAlpha: 1,
+            y: 0,
+            duration: REVEAL_DURATION,
+            ease: REVEAL_EASE,
+            stagger: REVEAL_STAGGER,
+            onComplete: () => {
+                gsap.set(targets, { clearProps: 'transform,opacity,visibility' });
+            },
+        },
+    );
+}
+
+function scrollToFirstMenuCard(layout) {
+    const firstCard = layout.querySelector('[data-lum-menu-panel]:not(.hidden)');
+    const target = firstCard
+        ?? layout.querySelector('[data-lum-menu-grid]')
+        ?? layout;
+
+    const top = target.getBoundingClientRect().top + window.scrollY;
+    const nextY = Math.max(0, top - PAGE_SCROLL_OFFSET);
+    const lenis = getLenis();
+
+    if (lenis) {
+        lenis.scrollTo(nextY, { immediate: false, duration: 0.7 });
+    } else {
+        window.scrollTo({ top: nextY, behavior: 'smooth' });
+    }
+}
 
 export function initRestaurantMenu() {
     document.querySelectorAll('[data-lum-restaurant-menu]').forEach((root) => {
@@ -113,49 +180,25 @@ export function initRestaurantMenu() {
             renderPagination(layout, activeCategory);
         };
 
-        /** Keep pagination at the same viewport Y after height changes (1 vs 2 cards). */
-        const stabilizePaginationScroll = (layout, anchorTop) => {
-            if (anchorTop == null) {
-                return;
-            }
+        const revealVisibleCards = (layout, { scroll = true } = {}) => {
+            const panels = getVisibleMenuPanels(layout);
+            primeMenuCards(panels);
 
-            const nav = layout.querySelector('[data-lum-menu-pagination]');
-            if (! nav || nav.hidden) {
-                return;
-            }
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (scroll) {
+                        scrollToFirstMenuCard(layout);
+                    }
 
-            const afterTop = nav.getBoundingClientRect().top;
-            const delta = afterTop - anchorTop;
-
-            if (Math.abs(delta) < 1) {
-                return;
-            }
-
-            const nextY = Math.max(0, window.scrollY + delta);
-            const lenis = getLenis();
-
-            if (lenis) {
-                lenis.scrollTo(nextY, { immediate: true });
-            } else {
-                window.scrollTo(0, nextY);
-            }
+                    animateMenuCards(panels);
+                });
+            });
         };
 
         const changePage = (layout, page) => {
-            const nav = layout.querySelector('[data-lum-menu-pagination]');
-            const anchorTop = nav && ! nav.hidden
-                ? nav.getBoundingClientRect().top
-                : null;
-
             setLayoutPage(layout, activeCategory, page);
             renderLayout(layout);
-
-            // Double rAF: layout paint after hidden toggles
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    stabilizePaginationScroll(layout, anchorTop);
-                });
-            });
+            revealVisibleCards(layout, { scroll: true });
         };
 
         const render = () => {
@@ -181,9 +224,9 @@ export function initRestaurantMenu() {
 
             layouts.forEach((layout) => {
                 setLayoutPage(layout, category, 1);
+                renderLayout(layout);
+                revealVisibleCards(layout, { scroll: true });
             });
-
-            render();
         };
 
         tabs.forEach((tab) => {

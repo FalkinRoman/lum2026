@@ -2,7 +2,14 @@
     $variant = $variant ?? 'mobile';
     $isTee = ($product['type'] ?? 'tee') === 'tee';
     $isCup = ! $isTee;
-    $thumbs = $product['thumbs'] ?? [$product['image']];
+    $image = filled($product['image'] ?? null) ? (string) $product['image'] : '';
+    $thumbs = array_values(array_filter(
+        is_array($product['thumbs'] ?? null) ? $product['thumbs'] : [],
+        fn ($t) => is_string($t) && $t !== '',
+    ));
+    if ($thumbs === [] && $image !== '') {
+        $thumbs = [$image];
+    }
     $cta = $cta ?? __('lum.shop.cta_price');
 
     // Cup: Figma dashed frame — keep room under text for 1–2 line subtitle; CTA pinned to bottom
@@ -25,6 +32,16 @@
         $variant === 'mobile' => 'h-[300px] w-full object-cover',
         $variant === 'tablet' => 'h-[313px] w-full object-cover',
         default => 'h-[313px] w-full object-cover',
+    };
+
+    $imagePlaceholderClass = match (true) {
+        $variant === 'tablet' && $isTee => 'absolute left-1/2 top-0 h-[313px] w-[350px] -translate-x-1/2 bg-lum-espresso/6',
+        $isTee && $variant === 'mobile' => 'h-[300px] w-full bg-lum-espresso/6',
+        $isTee && $variant === 'tablet' => 'h-[313px] w-full bg-lum-espresso/6',
+        $isTee => 'mx-auto h-[313px] w-[350px] bg-lum-espresso/6',
+        $variant === 'mobile' => 'h-[300px] w-full bg-lum-espresso/6',
+        $variant === 'tablet' => 'h-[313px] w-full bg-lum-espresso/6',
+        default => 'h-[313px] w-full bg-lum-espresso/6',
     };
 
     $thumbSize = $variant === 'mobile' ? 'size-[65px]' : 'size-[75px]';
@@ -70,19 +87,23 @@
 >
     @if ($imageWrapClass)
         <div class="{{ $imageWrapClass }}">
-            <img
-                src="{{ $img('shop/' . $product['image']) }}"
-                alt=""
-                class="{{ $imageClass }}"
-                width="350"
-                height="313"
-                loading="lazy"
-                data-lum-shop-product-image
-            >
+            @if ($image !== '')
+                <img
+                    src="{{ $img('shop/' . $image) }}"
+                    alt=""
+                    class="{{ $imageClass }}"
+                    width="350"
+                    height="313"
+                    loading="lazy"
+                    data-lum-shop-product-image
+                >
+            @else
+                <div class="{{ $imagePlaceholderClass }}" data-lum-shop-product-image aria-hidden="true"></div>
+            @endif
         </div>
-    @else
+    @elseif ($image !== '')
         <img
-            src="{{ $img('shop/' . $product['image']) }}"
+            src="{{ $img('shop/' . $image) }}"
             alt=""
             class="{{ $imageClass }}"
             width="350"
@@ -90,22 +111,26 @@
             loading="lazy"
             data-lum-shop-product-image
         >
+    @else
+        <div class="{{ $imagePlaceholderClass }}" data-lum-shop-product-image aria-hidden="true"></div>
     @endif
 
-    <div class="{{ $thumbWrapClass }} flex {{ $thumbGap }}" data-lum-shop-thumbs>
-        @foreach ($thumbs as $index => $thumb)
-            <button
-                type="button"
-                class="cursor-pointer overflow-hidden {{ $thumbSize }}"
-                data-lum-shop-thumb
-                data-index="{{ $index }}"
-                @if ($index === 0) data-active @endif
-            >
-                <img src="{{ $img('shop/' . $thumb) }}" alt="" class="h-full w-full object-cover" loading="lazy">
-            </button>
-        @endforeach
-        <div class="w-[65px]" data-lum-shop-thumb-indicator aria-hidden="true"></div>
-    </div>
+    @if ($thumbs !== [])
+        <div class="{{ $thumbWrapClass }} flex {{ $thumbGap }}" data-lum-shop-thumbs>
+            @foreach ($thumbs as $index => $thumb)
+                <button
+                    type="button"
+                    class="cursor-pointer overflow-hidden {{ $thumbSize }}"
+                    data-lum-shop-thumb
+                    data-index="{{ $index }}"
+                    @if ($index === 0) data-active @endif
+                >
+                    <img src="{{ $img('shop/' . $thumb) }}" alt="" class="h-full w-full object-cover" loading="lazy">
+                </button>
+            @endforeach
+            <div class="w-[65px]" data-lum-shop-thumb-indicator aria-hidden="true"></div>
+        </div>
+    @endif
 
     <div class="{{ $textWrapClass }}">
         <p @class([
@@ -121,44 +146,69 @@
     </div>
 
     @if ($isTee)
-        <div @class([
-            'absolute flex',
-            'left-1/2 top-[483px] -translate-x-1/2 gap-[20px]' => $variant === 'mobile',
-            'left-1/2 top-[524px] -translate-x-1/2 gap-[10px]' => $variant !== 'mobile',
-        ]) data-lum-shop-colors>
-            @foreach ($product['colors'] as $index => $color)
-                <button
-                    type="button"
-                    class="cursor-pointer @if($variant === 'mobile') size-[40px] @else size-[44px] @endif"
-                    data-lum-shop-color
-                    data-index="{{ $index }}"
-                    @if ($index === 0) data-active @endif
-                >
-                    <img src="{{ $img('shop/' . $color) }}" alt="" class="size-full" loading="lazy">
-                </button>
-            @endforeach
-        </div>
+        @if (($product['colors'] ?? []) !== [])
+            <div @class([
+                'absolute flex',
+                'left-1/2 top-[483px] -translate-x-1/2 gap-[20px]' => $variant === 'mobile',
+                'left-1/2 top-[524px] -translate-x-1/2 gap-[10px]' => $variant !== 'mobile',
+            ]) data-lum-shop-colors>
+                @foreach ($product['colors'] as $index => $color)
+                    @php
+                        $colorKind = is_array($color) ? ($color['kind'] ?? 'image') : 'image';
+                        $colorHex = is_array($color) ? ($color['hex'] ?? null) : null;
+                        $colorImage = is_array($color)
+                            ? ($color['image'] ?? null)
+                            : (is_string($color) ? $color : null);
+                    @endphp
+                    <button
+                        type="button"
+                        class="cursor-pointer overflow-hidden @if($variant === 'mobile') size-[40px] @else size-[44px] @endif"
+                        data-lum-shop-color
+                        data-index="{{ $index }}"
+                        @if ($index === 0) data-active @endif
+                    >
+                        @if ($colorKind === 'hex' && filled($colorHex))
+                            <span class="block size-full rounded-full" style="background: {{ $colorHex }}" aria-hidden="true"></span>
+                        @elseif (filled($colorImage))
+                            <img src="{{ $img('shop/' . $colorImage) }}" alt="" class="size-full object-cover" loading="lazy">
+                        @endif
+                    </button>
+                @endforeach
+            </div>
+        @endif
 
-        <div @class([
-            'absolute flex gap-[12px]',
-            'left-1/2 top-[547px] -translate-x-1/2' => $variant === 'mobile',
-            'left-1/2 top-[592px] -translate-x-1/2' => $variant !== 'mobile',
-        ]) data-lum-shop-sizes>
-            @foreach ($product['sizes'] as $index => $size)
-                <button
-                    type="button"
-                    @class([
-                        'lum-shop-size flex cursor-pointer items-center justify-center border font-normal text-lum-espresso transition-colors duration-200',
-                        'size-[32px] text-[16px] leading-[25px] tracking-[0.16px]' => $variant === 'mobile',
-                        'size-[36px] text-[18px] leading-[26px] tracking-[0.1px]' => $variant !== 'mobile',
-                    ])
-                    data-lum-shop-size
-                    data-index="{{ $index }}"
-                    @if ($index === 0) data-active @endif
-                >{{ $size }}</button>
-            @endforeach
-        </div>
+        @if (($product['sizes'] ?? []) !== [])
+            <div @class([
+                'absolute flex gap-[12px]',
+                'left-1/2 top-[547px] -translate-x-1/2' => $variant === 'mobile',
+                'left-1/2 top-[592px] -translate-x-1/2' => $variant !== 'mobile',
+            ]) data-lum-shop-sizes>
+                @foreach ($product['sizes'] as $index => $size)
+                    <button
+                        type="button"
+                        @class([
+                            'lum-shop-size flex cursor-pointer items-center justify-center border font-normal text-lum-espresso transition-colors duration-200',
+                            'size-[32px] text-[16px] leading-[25px] tracking-[0.16px]' => $variant === 'mobile',
+                            'size-[36px] text-[18px] leading-[26px] tracking-[0.1px]' => $variant !== 'mobile',
+                        ])
+                        data-lum-shop-size
+                        data-index="{{ $index }}"
+                        @if ($index === 0) data-active @endif
+                    >{{ $size }}</button>
+                @endforeach
+            </div>
+        @endif
     @endif
 
-    <button type="button" class="{{ $buttonClass }}">{{ $cta }}</button>
+    @php
+        $ctaHref = $product['cta_href'] ?? \App\Support\Site::whatsappUrl();
+        $ctaExternal = str_starts_with($ctaHref, 'http://')
+            || str_starts_with($ctaHref, 'https://')
+            || str_starts_with($ctaHref, '//');
+    @endphp
+    <a
+        href="{{ $ctaHref }}"
+        class="{{ $buttonClass }}"
+        @if ($ctaExternal) target="_blank" rel="noopener noreferrer" @endif
+    >{{ $cta }}</a>
 </article>

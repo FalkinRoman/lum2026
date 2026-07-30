@@ -12,7 +12,7 @@ class ShopProduct extends Model
 
     protected $fillable = [
         'slug', 'type', 'sort_order', 'is_published',
-        'image', 'thumbs', 'colors', 'sizes', 'price', 'cta_label',
+        'image', 'thumbs', 'colors', 'sizes', 'price', 'cta_label', 'cta_url',
         'title', 'subtitle',
     ];
 
@@ -30,7 +30,7 @@ class ShopProduct extends Model
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('is_published', true)->orderBy('sort_order');
+        return $query->where('is_published', true)->orderBy('sort_order')->orderBy('id');
     }
 
     public function getRouteKeyName(): string

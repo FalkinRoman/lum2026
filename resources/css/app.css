@@ -1271,6 +1271,89 @@
         margin-top: 0 !important;
     }
 
+    .lum-shop-pagination {
+        padding-top: 0;
+        width: max-content;
+        max-width: min(335px, calc(100% - 40px));
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    .lum-shop-pagination .lum-blog-pagination__pages {
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .lum-shop-pagination .lum-blog-pagination__page {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 8px;
+        flex-shrink: 0;
+    }
+
+    .lum-shop-pagination .lum-blog-pagination__arrow {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        cursor: pointer;
+        background: transparent;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    .lum-shop-pagination .lum-blog-pagination__page {
+        cursor: pointer;
+        background: transparent;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    .lum-shop-pagination .lum-blog-pagination__page.is-active {
+        cursor: default;
+    }
+
+    .lum-shop-pagination[hidden] {
+        display: none !important;
+    }
+
+    @media (min-width: 431px) {
+        .lum-shop-pagination {
+            max-width: calc(100% - 40px);
+            gap: 16px;
+        }
+
+        .lum-shop-pagination .lum-blog-pagination__pages {
+            gap: 8px;
+        }
+
+        .lum-shop-pagination .lum-blog-pagination__page {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+        }
+
+        .lum-shop-pagination .lum-blog-pagination__arrow {
+            width: 36px;
+            height: 36px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .lum-shop-pagination {
+            gap: 24px;
+        }
+
+        .lum-shop-pagination .lum-blog-pagination__page {
+            min-width: 44px;
+            height: 44px;
+        }
+
+        .lum-shop-pagination .lum-blog-pagination__arrow {
+            width: 44px;
+            height: 44px;
+        }
+    }
+
     .lum-blog-pagination__pages {
         display: flex;
         flex-wrap: wrap;

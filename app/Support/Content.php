@@ -1191,17 +1191,62 @@ class Content
         return ShopProduct::published()->get()->map(function (ShopProduct $p) {
             $strip = fn (?string $path) => self::stripPrefix($path, 'shop/');
 
+            $image = $strip($p->image);
+            $thumbs = array_values(array_filter(array_map($strip, $p->thumbs ?? []), fn ($v) => $v !== ''));
+            if ($thumbs === [] && $image !== '') {
+                $thumbs = [$image];
+            }
+
+            $colors = [];
+            foreach (array_values(is_array($p->colors) ? $p->colors : []) as $item) {
+                if (is_string($item) && trim($item) !== '') {
+                    $raw = trim($item);
+                    if (preg_match('/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/', $raw)) {
+                        $colors[] = ['kind' => 'hex', 'hex' => $raw];
+                    } else {
+                        $path = $strip($raw);
+                        if ($path !== '') {
+                            $colors[] = ['kind' => 'image', 'image' => $path];
+                        }
+                    }
+
+                    continue;
+                }
+
+                if (! is_array($item)) {
+                    continue;
+                }
+
+                if (($item['kind'] ?? '') === 'hex' && filled($item['hex'] ?? null)) {
+                    $colors[] = ['kind' => 'hex', 'hex' => (string) $item['hex']];
+
+                    continue;
+                }
+
+                $path = $strip($item['image'] ?? null);
+                if ($path !== '') {
+                    $colors[] = ['kind' => 'image', 'image' => $path];
+                }
+            }
+
+            $sizes = is_array($p->sizes)
+                ? array_values(array_filter($p->sizes, fn ($v) => is_string($v) && trim($v) !== ''))
+                : [];
+
             return [
                 'slug' => $p->slug,
-                'type' => $p->type,
+                'type' => $p->type ?: 'tee',
                 'title' => $p->title,
                 'subtitle' => $p->subtitle,
-                'image' => $strip($p->image),
-                'thumbs' => array_map($strip, $p->thumbs ?? []),
-                'colors' => array_map($strip, $p->colors ?? []),
-                'sizes' => $p->sizes ?? [],
+                'image' => $image,
+                'thumbs' => $thumbs,
+                'colors' => $colors,
+                'sizes' => $sizes,
                 'price' => $p->price,
                 'cta_label' => $p->cta_label ?: $p->price,
+                'cta_href' => filled($p->cta_url)
+                    ? self::link($p->cta_url, 'shop')
+                    : Site::whatsappUrl(),
             ];
         });
     }
