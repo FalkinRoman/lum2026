@@ -5,24 +5,27 @@
 @section('content')
 @php
     $img = fn (string $path) => asset('images/lum/' . $path);
-    $assetBase = 'discover/detail/' . $slug;
 @endphp
 
 <div class="lum-viewport" data-lum-excursion-page>
     <div class="lum-page">
         @include('lum.partials.discover-excursion.intro', ['img' => $img, 'excursion' => $excursion])
-        @include('lum.partials.discover-excursion.hero-oval', ['img' => $img, 'assetBase' => $assetBase])
-        @include('lum.partials.discover-excursion.gallery', ['img' => $img, 'excursion' => $excursion, 'assetBase' => $assetBase])
-        @include('lum.partials.discover-excursion.package', ['img' => $img, 'excursion' => $excursion, 'assetBase' => $assetBase])
+        @include('lum.partials.discover-excursion.hero-oval', ['img' => $img, 'excursion' => $excursion])
+        @include('lum.partials.discover-excursion.gallery', ['img' => $img, 'excursion' => $excursion])
+        @include('lum.partials.discover-excursion.package', ['img' => $img, 'excursion' => $excursion])
         @include('lum.partials.impression', [
             'img' => $img,
             'variant' => 'villa',
             'titleKey' => 'lum.excursion.impression',
-            'imgBase' => 'discover/detail/shared/impression',
-            'showCta' => false,
+            'imgBase' => $excursion['impression']['img_base'] ?? 'discover/detail/shared/impression',
+            'showCta' => true,
             'showLogomark' => false,
-            'showTabs' => false,
-            'ctaLabel' => __('lum.excursion.book'),
+            'showTabs' => true,
+            'ctaLabel' => $excursion['impression']['cta'] ?? __('lum.excursion.book'),
+            'ctaHref' => $excursion['impression']['cta_href']
+                ?? $excursion['book_url']
+                ?? \App\Support\Site::bookUrl(),
+            'cmsImpression' => $excursion['impression'] ?? null,
         ])
         @include('lum.partials.footer', ['img' => $img])
     </div>

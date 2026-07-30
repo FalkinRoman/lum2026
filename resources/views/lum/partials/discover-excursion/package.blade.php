@@ -1,6 +1,11 @@
 @php
     $package = $excursion['package'];
     $items = $package['items'];
+    $slug = $excursion['slug'] ?? '';
+    $assetBase = 'discover/detail/'.$slug;
+    $pkgImages = is_array($package['images'] ?? null) ? array_values($package['images']) : [];
+    $pkg0 = $pkgImages[0] ?? ($assetBase.'/package-01.webp');
+    $pkg1 = $pkgImages[1] ?? ($assetBase.'/package-02.webp');
 @endphp
 
 <section class="lum-container relative overflow-hidden bg-lum-ivory" data-lum-villa-panel data-lum-excursion-package>
@@ -29,10 +34,10 @@
 
             <div class="mt-[80px] flex w-full flex-col gap-[40px]">
                 <div class="h-[396px] w-full overflow-hidden" data-lum-villa-card>
-                    <img src="{{ $img($assetBase . '/package-01.webp') }}" alt="" class="h-full w-full object-cover" width="335" height="396" loading="lazy">
+                    <img src="{{ $img($pkg0) }}" alt="" class="h-full w-full object-cover" width="335" height="396" loading="lazy">
                 </div>
                 <div class="h-[396px] w-full overflow-hidden" data-lum-villa-card>
-                    <img src="{{ $img($assetBase . '/package-02.webp') }}" alt="" class="h-full w-full object-cover" width="335" height="396" loading="lazy">
+                    <img src="{{ $img($pkg1) }}" alt="" class="h-full w-full object-cover" width="335" height="396" loading="lazy">
                 </div>
             </div>
         </div>
@@ -63,10 +68,10 @@
 
             <div class="mt-[80px] flex w-full gap-[20px]">
                 <div class="h-[532px] w-[450px] overflow-hidden" data-lum-villa-card>
-                    <img src="{{ $img($assetBase . '/package-01.webp') }}" alt="" class="h-full w-full object-cover" width="450" height="532" loading="lazy">
+                    <img src="{{ $img($pkg0) }}" alt="" class="h-full w-full object-cover" width="450" height="532" loading="lazy">
                 </div>
                 <div class="h-[532px] w-[450px] overflow-hidden" data-lum-villa-card>
-                    <img src="{{ $img($assetBase . '/package-02.webp') }}" alt="" class="h-full w-full object-cover" width="450" height="532" loading="lazy">
+                    <img src="{{ $img($pkg1) }}" alt="" class="h-full w-full object-cover" width="450" height="532" loading="lazy">
                 </div>
             </div>
         </div>
@@ -83,7 +88,7 @@
 
             <div class="relative mt-[80px] flex w-[1776px] items-start justify-between">
                 <div class="h-[532px] w-[396px] shrink-0 overflow-hidden" data-lum-villa-card>
-                    <img src="{{ $img($assetBase . '/package-02.webp') }}" alt="" class="h-full w-full object-cover" width="396" height="532" loading="lazy">
+                    <img src="{{ $img($pkg1) }}" alt="" class="h-full w-full object-cover" width="396" height="532" loading="lazy">
                 </div>
 
                 <div class="flex w-[856px] flex-col items-center">
@@ -103,7 +108,7 @@
                 </div>
 
                 <div class="h-[532px] w-[396px] shrink-0 overflow-hidden" data-lum-villa-card>
-                    <img src="{{ $img($assetBase . '/package-01.webp') }}" alt="" class="h-full w-full object-cover" width="396" height="532" loading="lazy">
+                    <img src="{{ $img($pkg0) }}" alt="" class="h-full w-full object-cover" width="396" height="532" loading="lazy">
                 </div>
             </div>
         </div>

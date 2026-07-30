@@ -617,6 +617,117 @@ class Content
         return $path;
     }
 
+    /**
+     * @param  list<string|array{path?:string,date?:string}|null>  $rawGallery
+     * @param  list<string>  $defaultPaths
+     * @param  list<string>  $defaultDates
+     * @return list<array{path:string,date:string}>
+     */
+    public static function galleryPolaroids(array $rawGallery, array $defaultPaths, array $defaultDates): array
+    {
+        $polaroids = [];
+        $raw = array_values($rawGallery);
+
+        for ($i = 0; $i < 3; $i++) {
+            $item = $raw[$i] ?? null;
+            $path = null;
+            $date = $defaultDates[$i] ?? '';
+
+            if (is_string($item) && trim($item) !== '') {
+                $path = ltrim($item, '/');
+            } elseif (is_array($item)) {
+                $path = is_string($item['path'] ?? null) ? ltrim($item['path'], '/') : null;
+                if (is_string($item['date'] ?? null) && trim($item['date']) !== '') {
+                    $date = trim($item['date']);
+                }
+            }
+
+            if ($path === null || $path === '') {
+                $path = $defaultPaths[$i] ?? '';
+            }
+
+            $polaroids[] = [
+                'path' => $path,
+                'date' => $date,
+            ];
+        }
+
+        return $polaroids;
+    }
+
+    /**
+     * @return list<array{label:string,slides:list<string>}>
+     */
+    public static function impressionTabsFromGalleries(
+        ?array $rawGalleries,
+        string $prefix,
+        string $fallbackLangKey,
+        array $defaultSlides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'],
+    ): array {
+        $locale = app()->getLocale();
+        $tabs = [];
+        $raw = is_array($rawGalleries) ? $rawGalleries : [];
+
+        foreach ($raw as $gallery) {
+            if (! is_array($gallery)) {
+                continue;
+            }
+
+            $labelData = is_array($gallery['label'] ?? null) ? $gallery['label'] : [];
+            $label = (string) ($labelData[$locale] ?? $labelData['en'] ?? $labelData['ru'] ?? '');
+            if (trim($label) === '') {
+                continue;
+            }
+
+            $images = is_array($gallery['images'] ?? null) ? $gallery['images'] : [];
+            $slides = array_values(array_filter(array_map(
+                function ($img) use ($prefix) {
+                    if (! is_string($img) || trim($img) === '') {
+                        return null;
+                    }
+                    $stem = self::stripPrefix(ltrim($img, '/'), $prefix);
+                    $stem = preg_replace('/\.(webp|jpe?g|png)$/i', '', $stem) ?? $stem;
+                    $stem = preg_replace('/-sm$/i', '', $stem) ?? $stem;
+
+                    return $stem !== '' ? $stem : null;
+                },
+                $images,
+            )));
+
+            if ($slides === []) {
+                continue;
+            }
+
+            $tabs[] = [
+                'label' => $label,
+                'slides' => $slides,
+            ];
+        }
+
+        if ($tabs === []) {
+            $legacyTabs = trans($fallbackLangKey);
+            $legacyTabs = is_array($legacyTabs) ? $legacyTabs : [];
+            foreach ($legacyTabs as $label) {
+                if (! is_string($label) || trim($label) === '') {
+                    continue;
+                }
+                $tabs[] = [
+                    'label' => $label,
+                    'slides' => $defaultSlides,
+                ];
+            }
+        }
+
+        if ($tabs === []) {
+            $tabs[] = [
+                'label' => 'GALLERY',
+                'slides' => $defaultSlides,
+            ];
+        }
+
+        return $tabs;
+    }
+
     public static function restaurants(): Collection
     {
         return Restaurant::published()->get()->map(fn (Restaurant $r) => [
@@ -869,6 +980,29 @@ class Content
             return null;
         }
 
+        $assetBase = 'relax/detail/'.$slug;
+        $defaultDates = ['06.05.2026', '06.05.2026', '06.05.2026'];
+        $defaultPaths = [
+            $assetBase.'/gallery-01.webp',
+            $assetBase.'/gallery-02.webp',
+            $assetBase.'/gallery-03.webp',
+        ];
+
+        $polaroids = self::galleryPolaroids(
+            is_array($a->gallery_images) ? $a->gallery_images : [],
+            $defaultPaths,
+            $defaultDates,
+        );
+
+        $impressionPrefix = 'dining/detail/shared/impression/';
+        $defaultSlides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+        $impressionTabs = self::impressionTabsFromGalleries(
+            $a->impression_galleries,
+            $impressionPrefix,
+            'lum.activity.impression.tabs',
+            $defaultSlides,
+        );
+
         $noteParts = preg_split("/\r\n|\n|\r/", (string) $a->quote_note) ?: [];
 
         return [
@@ -877,8 +1011,8 @@ class Content
                 'eyebrow' => $a->hero_eyebrow,
                 'title_normal' => $a->hero_title_normal,
                 'title_italic' => $a->hero_title_italic,
-                'image' => $a->hero_image,
-                'oval' => $a->oval_image,
+                'image' => filled($a->hero_image) ? $a->hero_image : $assetBase.'/hero.webp',
+                'oval' => filled($a->oval_image) ? $a->oval_image : $assetBase.'/oval.webp',
             ],
             'gallery' => [
                 'eyebrow' => $a->gallery_eyebrow,
@@ -886,7 +1020,7 @@ class Content
                 'title_italic' => $a->gallery_title_italic,
                 'body' => $a->gallery_body,
                 'body_bottom' => $a->gallery_body_bottom ?? '',
-                'images' => $a->gallery_images ?? [],
+                'polaroids' => $polaroids,
             ],
             'quote' => [
                 'line1' => $a->quote_line1,
@@ -894,6 +1028,12 @@ class Content
                 'note' => $a->quote_note,
                 'note_line1' => $noteParts[0] ?? '',
                 'note_line2' => $noteParts[1] ?? '',
+                'hero_image' => filled($a->quote_hero_image)
+                    ? $a->quote_hero_image
+                    : 'dining/detail/shared/quote-hero.webp',
+                'oval_image' => filled($a->quote_oval_image)
+                    ? $a->quote_oval_image
+                    : 'dining/detail/shared/quote-oval.webp',
             ],
             'pricing' => [
                 'eyebrow' => $a->pricing_eyebrow,
@@ -903,8 +1043,34 @@ class Content
                 'cta_url' => $a->pricing_cta_url ?: Site::bookUrl(),
                 'items' => $a->pricing_items ?? [],
             ],
+            'impression' => [
+                'title_normal' => filled($a->impression_title_normal)
+                    ? $a->impression_title_normal
+                    : __('lum.activity.impression.title_normal'),
+                'title_caps' => filled($a->impression_title_caps)
+                    ? $a->impression_title_caps
+                    : __('lum.activity.impression.title_caps'),
+                'tabs' => $impressionTabs,
+                'slides' => $impressionTabs[0]['slides'] ?? $defaultSlides,
+                'img_base' => 'dining/detail/shared/impression',
+                'cta' => filled($a->impression_cta)
+                    ? $a->impression_cta
+                    : __('lum.activity.make_reservation'),
+                'cta_href' => self::activityImpressionCtaHref($a),
+            ],
             'slug' => $a->slug,
         ];
+    }
+
+    public static function activityImpressionCtaHref(Activity $activity): string
+    {
+        $mode = $activity->impression_cta_mode ?: 'activity';
+
+        return match ($mode) {
+            'site' => Site::takeABreakUrl(),
+            'custom' => self::link($activity->impression_cta_url, 'relax'),
+            default => $activity->pricing_cta_url ?: Site::bookUrl(),
+        };
     }
 
     public static function excursions(): Collection
@@ -924,6 +1090,47 @@ class Content
             return null;
         }
 
+        $assetBase = 'discover/detail/'.$slug;
+        $defaultDates = ['06.08.2023', '06.01.2024', '07.03.2023'];
+        $defaultPaths = [
+            $assetBase.'/gallery-01.webp',
+            $assetBase.'/gallery-02.webp',
+            $assetBase.'/gallery-03.webp',
+        ];
+
+        // Legacy polaroid_dates as date fallbacks when gallery still has plain strings
+        $legacyDates = $e->polaroid_dates;
+        if (is_array($legacyDates) && ! array_is_list($legacyDates)) {
+            $legacyDates = array_values($legacyDates['en'] ?? $legacyDates['ru'] ?? []);
+        }
+        if (is_array($legacyDates) && $legacyDates !== []) {
+            foreach (array_values($legacyDates) as $i => $d) {
+                if (is_string($d) && trim($d) !== '') {
+                    $defaultDates[$i] = trim($d);
+                }
+            }
+        }
+
+        $polaroids = self::galleryPolaroids(
+            is_array($e->gallery_images) ? $e->gallery_images : [],
+            $defaultPaths,
+            $defaultDates,
+        );
+
+        $packageImages = is_array($e->package_images) ? array_values(array_filter($e->package_images, 'is_string')) : [];
+        if ($packageImages === []) {
+            $packageImages = [$assetBase.'/package-01.webp', $assetBase.'/package-02.webp'];
+        }
+
+        $impressionPrefix = 'discover/detail/shared/impression/';
+        $defaultSlides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+        $impressionTabs = self::impressionTabsFromGalleries(
+            $e->impression_galleries,
+            $impressionPrefix,
+            'lum.excursion.impression.tabs',
+            $defaultSlides,
+        );
+
         return [
             'meta_title' => $e->meta_title,
             'intro' => [
@@ -936,8 +1143,7 @@ class Content
                 'title_italic' => $e->gallery_title_italic,
                 'body' => $e->gallery_body ?? '',
                 'body_bottom' => $e->gallery_body_bottom ?? '',
-                'images' => $e->gallery_images ?? [],
-                'polaroid_dates' => $e->polaroid_dates ?? [],
+                'polaroids' => $polaroids,
             ],
             'package' => [
                 'eyebrow' => $e->package_eyebrow,
@@ -945,13 +1151,39 @@ class Content
                 'title_italic' => $e->package_title_italic,
                 'items' => $e->package_items ?? [],
                 'cost' => $e->package_cost,
-                'images' => $e->package_images ?? [],
+                'images' => $packageImages,
             ],
-            'oval' => $e->oval_image,
-            'wellness_hero' => $e->wellness_hero,
+            'oval' => filled($e->oval_image) ? $e->oval_image : $assetBase.'/oval.webp',
+            'wellness_hero' => filled($e->wellness_hero) ? $e->wellness_hero : $assetBase.'/wellness-hero.webp',
             'book_url' => $e->book_url ?: Site::bookUrl(),
+            'impression' => [
+                'title_normal' => filled($e->impression_title_normal)
+                    ? $e->impression_title_normal
+                    : __('lum.excursion.impression.title_normal'),
+                'title_caps' => filled($e->impression_title_caps)
+                    ? $e->impression_title_caps
+                    : __('lum.excursion.impression.title_caps'),
+                'tabs' => $impressionTabs,
+                'slides' => $impressionTabs[0]['slides'] ?? $defaultSlides,
+                'img_base' => 'discover/detail/shared/impression',
+                'cta' => filled($e->impression_cta)
+                    ? $e->impression_cta
+                    : __('lum.excursion.book'),
+                'cta_href' => self::excursionImpressionCtaHref($e),
+            ],
             'slug' => $e->slug,
         ];
+    }
+
+    public static function excursionImpressionCtaHref(Excursion $excursion): string
+    {
+        $mode = $excursion->impression_cta_mode ?: 'excursion';
+
+        return match ($mode) {
+            'site' => Site::takeABreakUrl(),
+            'custom' => self::link($excursion->impression_cta_url, 'discover'),
+            default => $excursion->book_url ?: Site::bookUrl(),
+        };
     }
 
     public static function shopProducts(): Collection

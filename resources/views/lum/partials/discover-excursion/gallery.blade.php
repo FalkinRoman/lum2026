@@ -1,20 +1,37 @@
 @php
     $gallery = $excursion['gallery'];
-    $polaroidDates = $gallery['polaroid_dates'] ?? ['06.08.2023', '06.01.2024', '07.03.2023'];
+    $slug = $excursion['slug'] ?? '';
+    $assetBase = 'discover/detail/'.$slug;
+    $cmsPolaroids = $gallery['polaroids'] ?? [];
+    $pick = function (int $i, string $fallbackPhoto, string $fallbackDate) use ($cmsPolaroids, $assetBase): array {
+        $item = $cmsPolaroids[$i] ?? null;
+        $path = is_array($item) && filled($item['path'] ?? null)
+            ? (string) $item['path']
+            : $assetBase.'/'.$fallbackPhoto;
+        $date = is_array($item) && filled($item['date'] ?? null)
+            ? (string) $item['date']
+            : $fallbackDate;
+
+        return ['path' => $path, 'date' => $date];
+    };
+
+    $p0 = $pick(0, 'gallery-01.webp', '06.08.2023');
+    $p1 = $pick(1, 'gallery-02.webp', '06.01.2024');
+    $p2 = $pick(2, 'gallery-03.webp', '07.03.2023');
 
     $galleryPolaroids = [
         'mob' => [
-            ['rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'photo' => 'gallery-01.webp', 'date' => $polaroidDates[0]],
-            ['rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'photo' => 'gallery-02.webp', 'date' => $polaroidDates[1]],
+            ['rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'path' => $p0['path'], 'date' => $p0['date']],
+            ['rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'path' => $p1['path'], 'date' => $p1['date']],
         ],
         'tab' => [
-            ['rotate' => '6deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'photo' => 'gallery-01.webp', 'date' => $polaroidDates[0]],
-            ['rotate' => '-4deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'photo' => 'gallery-02.webp', 'date' => $polaroidDates[1]],
+            ['rotate' => '6deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'path' => $p0['path'], 'date' => $p0['date']],
+            ['rotate' => '-4deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'path' => $p1['path'], 'date' => $p1['date']],
         ],
         'desk' => [
-            ['rotate' => '5deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'photo' => 'gallery-01.webp', 'date' => $polaroidDates[0]],
-            ['rotate' => '-3deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'photo' => 'gallery-02.webp', 'date' => $polaroidDates[1]],
-            ['rotate' => '7deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'photo' => 'gallery-03.webp', 'date' => $polaroidDates[2]],
+            ['rotate' => '5deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p0['path'], 'date' => $p0['date']],
+            ['rotate' => '-3deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p1['path'], 'date' => $p1['date']],
+            ['rotate' => '7deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p2['path'], 'date' => $p2['date']],
         ],
     ];
 @endphp
@@ -38,7 +55,7 @@
                     <div class="relative shrink-0" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                         <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                         <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.23px;">{{ $polaroid['date'] }}</p>
-                        <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
+                        <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo">
                         <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[4px] text-center leading-[1]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 0.2px;">{{ __('lum.polaroids.share') }}</p>
                     </div>
                 @endforeach
@@ -68,7 +85,7 @@
                     <div class="relative shrink-0" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                         <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                         <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.4px;">{{ $polaroid['date'] }}</p>
-                        <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
+                        <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo">
                         <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[10px] text-center leading-[1.05]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 0.5px;">{{ __('lum.polaroids.share') }}</p>
                     </div>
                 @endforeach
@@ -98,7 +115,7 @@
                     <div class="relative shrink-0" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                         <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
                         <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.79px;">{{ $polaroid['date'] }}</p>
-                        <img src="{{ $img($assetBase . '/' . $polaroid['photo']) }}" alt="" class="lum-polaroid__photo">
+                        <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo">
                         <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[12px] text-center leading-[1.05]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 1.14px;">{{ __('lum.polaroids.share') }}</p>
                     </div>
                 @endforeach

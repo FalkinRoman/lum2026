@@ -18,6 +18,8 @@ class Excursion extends Model
         'gallery_body', 'gallery_body_bottom', 'polaroid_dates',
         'package_eyebrow', 'package_title_normal', 'package_title_italic',
         'package_items', 'package_cost', 'book_url',
+        'impression_title_normal', 'impression_title_caps', 'impression_galleries',
+        'impression_cta', 'impression_cta_mode', 'impression_cta_url',
     ];
 
     public array $translatable = [
@@ -26,6 +28,7 @@ class Excursion extends Model
         'gallery_body', 'gallery_body_bottom',
         'package_eyebrow', 'package_title_normal', 'package_title_italic',
         'package_items', 'package_cost', 'polaroid_dates',
+        'impression_title_normal', 'impression_title_caps', 'impression_cta',
     ];
 
     protected function casts(): array
@@ -36,6 +39,7 @@ class Excursion extends Model
             'package_images' => 'array',
             'package_items' => 'array',
             'polaroid_dates' => 'array',
+            'impression_galleries' => 'array',
         ];
     }
 

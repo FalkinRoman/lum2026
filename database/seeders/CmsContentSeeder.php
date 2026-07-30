@@ -474,6 +474,32 @@ TXT,
         $enActivities = $this->en['relax']['activities'];
         $ruActivities = collect($this->ru['relax']['activities'])->keyBy('slug');
         $whatsapp = $this->en['shop']['social_whatsapp_url'];
+        $enImpression = $this->en['activity']['impression'] ?? [];
+        $ruImpression = $this->ru['activity']['impression'] ?? [];
+        $enTabs = is_array($enImpression['tabs'] ?? null) ? $enImpression['tabs'] : [];
+        $ruTabs = is_array($ruImpression['tabs'] ?? null) ? $ruImpression['tabs'] : [];
+        $impressionImages = [
+            'dining/detail/shared/impression/slide-01.webp',
+            'dining/detail/shared/impression/slide-02.webp',
+            'dining/detail/shared/impression/slide-03.webp',
+            'dining/detail/shared/impression/slide-04.webp',
+        ];
+        $impressionGalleries = [];
+        $tabCount = max(count($enTabs), count($ruTabs));
+        for ($ti = 0; $ti < $tabCount; $ti++) {
+            $enLabel = is_string($enTabs[$ti] ?? null) ? $enTabs[$ti] : '';
+            $ruLabel = is_string($ruTabs[$ti] ?? null) ? $ruTabs[$ti] : '';
+            if ($enLabel === '' && $ruLabel === '') {
+                continue;
+            }
+            $impressionGalleries[] = [
+                'label' => [
+                    'en' => $enLabel !== '' ? $enLabel : $ruLabel,
+                    'ru' => $ruLabel !== '' ? $ruLabel : $enLabel,
+                ],
+                'images' => $impressionImages,
+            ];
+        }
 
         foreach ($enActivities as $index => $enActivity) {
             $slug = $enActivity['slug'];
@@ -490,8 +516,16 @@ TXT,
                     'listing_image' => 'relax/'.$enActivity['image'],
                     'hero_image' => $assetBase.'/hero.webp',
                     'oval_image' => $assetBase.'/oval.webp',
-                    'gallery_images' => [$assetBase.'/gallery-01.webp', $assetBase.'/gallery-02.webp'],
+                    'gallery_images' => [
+                        ['path' => $assetBase.'/gallery-01.webp', 'date' => '06.05.2026'],
+                        ['path' => $assetBase.'/gallery-02.webp', 'date' => '06.05.2026'],
+                        ['path' => $assetBase.'/gallery-03.webp', 'date' => '06.05.2026'],
+                    ],
                     'pricing_cta_url' => $whatsapp,
+                    'impression_cta_mode' => 'activity',
+                    'impression_galleries' => $impressionGalleries,
+                    'quote_hero_image' => 'dining/detail/shared/quote-hero.webp',
+                    'quote_oval_image' => 'dining/detail/shared/quote-oval.webp',
                 ]
             );
 
@@ -523,6 +557,18 @@ TXT,
                 'pricing_title_italic' => ['en' => $enDetail['pricing']['title_italic'] ?? '', 'ru' => $ruDetail['pricing']['title_italic'] ?? ''],
                 'pricing_cta' => ['en' => $enDetail['pricing']['cta'] ?? '', 'ru' => $ruDetail['pricing']['cta'] ?? ''],
                 'pricing_items' => ['en' => $enDetail['pricing']['items'] ?? [], 'ru' => $ruDetail['pricing']['items'] ?? []],
+                'impression_title_normal' => [
+                    'en' => $enImpression['title_normal'] ?? '',
+                    'ru' => $ruImpression['title_normal'] ?? '',
+                ],
+                'impression_title_caps' => [
+                    'en' => $enImpression['title_caps'] ?? '',
+                    'ru' => $ruImpression['title_caps'] ?? '',
+                ],
+                'impression_cta' => [
+                    'en' => $this->en['activity']['make_reservation'] ?? 'make a reservation',
+                    'ru' => $this->ru['activity']['make_reservation'] ?? 'забронировать',
+                ],
             ]);
         }
     }
@@ -532,6 +578,32 @@ TXT,
         $enPlaces = $this->en['discover']['places'];
         $ruPlaces = collect($this->ru['discover']['places'])->keyBy('slug');
         $whatsapp = $this->en['shop']['social_whatsapp_url'];
+        $enImpression = $this->en['excursion']['impression'] ?? [];
+        $ruImpression = $this->ru['excursion']['impression'] ?? [];
+        $enTabs = is_array($enImpression['tabs'] ?? null) ? $enImpression['tabs'] : [];
+        $ruTabs = is_array($ruImpression['tabs'] ?? null) ? $ruImpression['tabs'] : [];
+        $impressionImages = [
+            'discover/detail/shared/impression/slide-01.webp',
+            'discover/detail/shared/impression/slide-02.webp',
+            'discover/detail/shared/impression/slide-03.webp',
+            'discover/detail/shared/impression/slide-04.webp',
+        ];
+        $impressionGalleries = [];
+        $tabCount = max(count($enTabs), count($ruTabs));
+        for ($ti = 0; $ti < $tabCount; $ti++) {
+            $enLabel = is_string($enTabs[$ti] ?? null) ? $enTabs[$ti] : '';
+            $ruLabel = is_string($ruTabs[$ti] ?? null) ? $ruTabs[$ti] : '';
+            if ($enLabel === '' && $ruLabel === '') {
+                continue;
+            }
+            $impressionGalleries[] = [
+                'label' => [
+                    'en' => $enLabel !== '' ? $enLabel : $ruLabel,
+                    'ru' => $ruLabel !== '' ? $ruLabel : $enLabel,
+                ],
+                'images' => $impressionImages,
+            ];
+        }
 
         foreach ($enPlaces as $index => $enPlace) {
             $slug = $enPlace['slug'];
@@ -539,6 +611,7 @@ TXT,
             $enDetail = $this->en['excursion'][$slug] ?? [];
             $ruDetail = $this->ru['excursion'][$slug] ?? [];
             $assetBase = 'discover/detail/'.$slug;
+            $enDates = $enDetail['gallery']['polaroid_dates'] ?? ['06.08.2023', '06.01.2024', '07.03.2023'];
 
             $excursion = Excursion::query()->updateOrCreate(
                 ['slug' => $slug],
@@ -548,9 +621,15 @@ TXT,
                     'listing_image' => 'discover/'.$enPlace['image'],
                     'oval_image' => $assetBase.'/oval.webp',
                     'wellness_hero' => $assetBase.'/wellness-hero.webp',
-                    'gallery_images' => [$assetBase.'/gallery-01.webp', $assetBase.'/gallery-02.webp', $assetBase.'/gallery-03.webp'],
+                    'gallery_images' => [
+                        ['path' => $assetBase.'/gallery-01.webp', 'date' => $enDates[0] ?? '06.08.2023'],
+                        ['path' => $assetBase.'/gallery-02.webp', 'date' => $enDates[1] ?? '06.01.2024'],
+                        ['path' => $assetBase.'/gallery-03.webp', 'date' => $enDates[2] ?? '07.03.2023'],
+                    ],
                     'package_images' => [$assetBase.'/package-01.webp', $assetBase.'/package-02.webp'],
                     'book_url' => $whatsapp,
+                    'impression_cta_mode' => 'excursion',
+                    'impression_galleries' => $impressionGalleries,
                 ]
             );
 
@@ -565,12 +644,23 @@ TXT,
                 'gallery_title_italic' => ['en' => $enDetail['gallery']['title_italic'] ?? '', 'ru' => $ruDetail['gallery']['title_italic'] ?? ''],
                 'gallery_body' => ['en' => $enDetail['gallery']['body'] ?? '', 'ru' => $ruDetail['gallery']['body'] ?? ''],
                 'gallery_body_bottom' => ['en' => $enDetail['gallery']['body_bottom'] ?? '', 'ru' => $ruDetail['gallery']['body_bottom'] ?? ''],
-                'polaroid_dates' => ['en' => $enDetail['gallery']['polaroid_dates'] ?? [], 'ru' => $ruDetail['gallery']['polaroid_dates'] ?? []],
                 'package_eyebrow' => ['en' => $enDetail['package']['eyebrow'] ?? '', 'ru' => $ruDetail['package']['eyebrow'] ?? ''],
                 'package_title_normal' => ['en' => $enDetail['package']['title_normal'] ?? '', 'ru' => $ruDetail['package']['title_normal'] ?? ''],
                 'package_title_italic' => ['en' => $enDetail['package']['title_italic'] ?? '', 'ru' => $ruDetail['package']['title_italic'] ?? ''],
                 'package_items' => ['en' => $enDetail['package']['items'] ?? [], 'ru' => $ruDetail['package']['items'] ?? []],
                 'package_cost' => ['en' => $enDetail['package']['cost'] ?? '', 'ru' => $ruDetail['package']['cost'] ?? ''],
+                'impression_title_normal' => [
+                    'en' => $enImpression['title_normal'] ?? '',
+                    'ru' => $ruImpression['title_normal'] ?? '',
+                ],
+                'impression_title_caps' => [
+                    'en' => $enImpression['title_caps'] ?? '',
+                    'ru' => $ruImpression['title_caps'] ?? '',
+                ],
+                'impression_cta' => [
+                    'en' => $this->en['excursion']['book'] ?? 'book',
+                    'ru' => $this->ru['excursion']['book'] ?? 'забронировать',
+                ],
             ]);
         }
     }
