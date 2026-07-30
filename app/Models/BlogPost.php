@@ -82,7 +82,7 @@ class BlogPost extends Model
 
     public function fillSeoFallbacks(): void
     {
-        foreach (['en', 'ru'] as $locale) {
+        foreach (\App\Support\Locales::codes() as $locale) {
             $title = trim((string) $this->getTranslation('title', $locale, false));
             $excerpt = trim((string) $this->getTranslation('excerpt', $locale, false));
             $metaTitle = trim((string) $this->getTranslation('meta_title', $locale, false));

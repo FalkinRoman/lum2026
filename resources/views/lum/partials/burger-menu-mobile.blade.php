@@ -1,13 +1,16 @@
 @php
     $locale = app()->getLocale();
-    $otherLocale = $locale === 'en' ? 'ru' : 'en';
-    $currentShort = $locale === 'en' ? __('lum.lang.en_short') : __('lum.lang.ru_short');
+    $localeShorts = [
+        'en' => __('lum.lang.en_short'),
+        'ru' => __('lum.lang.ru_short'),
+        'zh' => __('lum.lang.zh_short'),
+    ];
     $villaUrl = $villaUrl ?? fn (string $slug) => route('villa.show', $slug);
     $menuActive = $menuActive ?? [];
     $menuImageUrl = $menuImageUrl ?? \App\Support\Site::menuImageUrl();
 @endphp
 {{-- Figma 160:305 mobile open burger — 375×1010 (457 + 375 + 178 footer) --}}
-<div class="relative w-full tab:hidden">
+    <div class="relative w-full tab:hidden">
     {{-- 160:388 burger panel — h 457 --}}
     <div class="relative h-[457px] w-full bg-lum-ivory">
         <header class="absolute left-[20px] top-0 z-50 h-[80px] w-[335px] border-b border-lum-espresso/16">
@@ -20,16 +23,23 @@
             <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.844px]">{{ __('lum.nav.break') }}</a>
         </header>
 
-        {{-- 160:415 / 160:414 / 160:413 — lang row --}}
+        {{-- Lang row: En / Ru / 中 --}}
         <div class="absolute left-[20px] top-[87px] z-50 flex h-[32px] w-[335px] items-center gap-[10px]" data-lum-menu-reveal="1">
-            <a
-                href="{{ route('locale.switch', $otherLocale) }}"
-                class="flex h-full shrink-0 items-center justify-center whitespace-nowrap text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso transition-opacity duration-300 hover:opacity-70"
-                aria-current="true"
-                aria-label="{{ __('lum.lang.select') }}"
-            >✓{{ $currentShort }}</a>
-            <div class="h-[24px] w-px shrink-0 bg-lum-espresso/16" aria-hidden="true"></div>
-            <p class="text-[12px] font-medium leading-[12px] tracking-[0.6px] text-lum-espresso">{{ __('lum.lang.select') }}</p>
+            @foreach ($localeShorts as $code => $short)
+                <a
+                    href="{{ route('locale.switch', $code) }}"
+                    @class([
+                        'flex h-full shrink-0 items-center justify-center whitespace-nowrap text-[12px] font-medium leading-[12px] tracking-[0.6px] transition-opacity duration-300 hover:opacity-70',
+                        'text-lum-espresso' => $locale === $code,
+                        'text-lum-espresso-40' => $locale !== $code,
+                    ])
+                    @if ($locale === $code) aria-current="true" @endif
+                    aria-label="{{ __('lum.lang.select') }}"
+                >@if ($locale === $code)✓@endif{{ $short }}</a>
+                @if (! $loop->last)
+                    <div class="h-[24px] w-px shrink-0 bg-lum-espresso/16" aria-hidden="true"></div>
+                @endif
+            @endforeach
         </div>
         {{-- 160:407 --}}
         <div class="absolute left-[20px] top-[125px] h-px w-[335px] bg-lum-espresso/16" data-lum-menu-reveal="1" aria-hidden="true"></div>

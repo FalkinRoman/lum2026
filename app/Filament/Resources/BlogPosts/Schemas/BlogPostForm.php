@@ -4,6 +4,7 @@ namespace App\Filament\Resources\BlogPosts\Schemas;
 
 use App\Filament\Forms\LumImage;
 use App\Models\BlogPost;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -47,10 +48,10 @@ class BlogPostForm
                         Tabs::make('locale')
                             ->contained(false)
                             ->columnSpanFull()
-                            ->tabs([
-                                Tab::make('EN')->schema(self::localeFields('en')),
-                                Tab::make('RU')->schema(self::localeFields('ru')),
-                            ]),
+                            ->tabs(array_map(
+                                fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::localeFields($locale)),
+                                AppLocales::codes(),
+                            )),
                     ]),
 
                 Section::make('Изображения')

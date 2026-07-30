@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PageSections\Schemas\Sections;
 
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -23,10 +24,10 @@ class RelaxIntroForm
                 ->schema([
                     Tabs::make('locale')
                         ->contained(false)
-                        ->tabs([
-                            Tab::make('EN')->schema(self::fields('en')),
-                            Tab::make('RU')->schema(self::fields('ru')),
-                        ]),
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::fields($locale)),
+                            AppLocales::codes(),
+                        )),
                 ]),
         ];
     }

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Forms;
 
+use App\Support\Locales;
+
 /**
  * Flatten / rebuild HomeSection payload for typed Filament forms.
  */
@@ -14,20 +16,19 @@ class HomeSectionState
     public static function fill(string $key, array $data): array
     {
         $payload = is_array($data['payload'] ?? null) ? $data['payload'] : [];
-        $en = is_array($payload['en'] ?? null) ? $payload['en'] : [];
-        $ru = is_array($payload['ru'] ?? null) ? $payload['ru'] : [];
 
-        $data['en'] = $en;
-        $data['ru'] = $ru;
+        foreach (Locales::codes() as $locale) {
+            $data[$locale] = is_array($payload[$locale] ?? null) ? $payload[$locale] : [];
+        }
 
         return match ($key) {
-            'hero' => self::fillHero($data, $en),
-            'polaroids' => self::fillPolaroids($data, $en),
-            'villas_intro' => self::fillVillas($data, $en, $ru),
-            'location' => self::fillLocation($data, $en, $ru),
-            'interior' => self::fillInterior($data, $en, $ru),
-            'blog' => self::fillBlog($data, $en),
-            'shop_teaser' => self::fillShop($data, $en),
+            'hero' => self::fillHero($data, $data['en']),
+            'polaroids' => self::fillPolaroids($data),
+            'villas_intro' => self::fillVillas($data),
+            'location' => self::fillLocation($data),
+            'interior' => self::fillInterior($data),
+            'blog' => self::fillBlog($data, $data['en']),
+            'shop_teaser' => self::fillShop($data, $data['en']),
             default => $data,
         };
     }
@@ -46,16 +47,16 @@ class HomeSectionState
             'interior' => self::saveInterior($data),
             'blog' => self::saveBlog($data),
             'shop_teaser' => self::saveShop($data),
-            default => [
-                'en' => is_array($data['en'] ?? null) ? $data['en'] : [],
-                'ru' => is_array($data['ru'] ?? null) ? $data['ru'] : [],
-            ],
+            default => self::localePayloadFromData($data),
         };
 
         $data['payload'] = $payload;
+
+        foreach (Locales::codes() as $locale) {
+            unset($data[$locale]);
+        }
+
         unset(
-            $data['en'],
-            $data['ru'],
             $data['video'],
             $data['video_poster'],
             $data['video_position'],
@@ -77,6 +78,21 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
+     * @return array<string, array<string, mixed>>
+     */
+    private static function localePayloadFromData(array $data): array
+    {
+        $payload = [];
+
+        foreach (Locales::codes() as $locale) {
+            $payload[$locale] = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+        }
+
+        return $payload;
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
      * @param  array<string, mixed>  $en
      * @return array<string, mixed>
      */
@@ -94,12 +110,10 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private static function saveHero(array $data): array
     {
-        $en = is_array($data['en'] ?? null) ? $data['en'] : [];
-        $ru = is_array($data['ru'] ?? null) ? $data['ru'] : [];
         $ctaUrl = filled($data['cta_url'] ?? null) ? trim((string) $data['cta_url']) : 'stay';
         $shared = [
             // null = cleared in admin; front shows poster or dark stub (no seed fallback)
@@ -109,19 +123,23 @@ class HomeSectionState
             'cta_url' => $ctaUrl,
         ];
 
-        return [
-            'en' => array_merge($en, $shared),
-            'ru' => array_merge($ru, $shared),
-        ];
+        $payload = [];
+
+        foreach (Locales::codes() as $locale) {
+            $localeData = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+            $payload[$locale] = array_merge($localeData, $shared);
+        }
+
+        return $payload;
     }
 
     /**
      * @param  array<string, mixed>  $data
-     * @param  array<string, mixed>  $en
      * @return array<string, mixed>
      */
-    private static function fillPolaroids(array $data, array $en): array
+    private static function fillPolaroids(array $data): array
     {
+        $en = $data['en'];
         $photos = is_array($en['photos'] ?? null) ? $en['photos'] : [];
         $data['photos'] = [
             self::nullablePath($photos[0] ?? null),
@@ -132,12 +150,10 @@ class HomeSectionState
             ? $en['cta_url']
             : 'stay';
 
-        $ru = is_array($data['ru'] ?? null) ? $data['ru'] : [];
-        if (! filled($en['cta'] ?? null)) {
-            $data['en']['cta'] = __('lum.hero.cta', [], 'en');
-        }
-        if (! filled($ru['cta'] ?? null)) {
-            $data['ru']['cta'] = __('lum.hero.cta', [], 'ru');
+        foreach (Locales::codes() as $locale) {
+            if (! filled($data[$locale]['cta'] ?? null)) {
+                $data[$locale]['cta'] = __('lum.hero.cta', [], $locale);
+            }
         }
 
         return $data;
@@ -145,12 +161,16 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private static function savePolaroids(array $data): array
     {
-        $en = is_array($data['en'] ?? null) ? $data['en'] : [];
-        $ru = is_array($data['ru'] ?? null) ? $data['ru'] : [];
+        $locales = [];
+
+        foreach (Locales::codes() as $locale) {
+            $locales[$locale] = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+        }
+
         $photos = is_array($data['photos'] ?? null) ? array_values($data['photos']) : [];
         $photos = [
             self::nullablePath($photos[0] ?? null),
@@ -161,72 +181,63 @@ class HomeSectionState
 
         // Keep motion ticker words if already present.
         foreach (['share', 'shine', 'impressions', 'relax'] as $word) {
-            $en[$word] ??= $ru[$word] ?? null;
-            $ru[$word] ??= $en[$word] ?? null;
+            $found = null;
+
+            foreach (Locales::codes() as $locale) {
+                if (filled($locales[$locale][$word] ?? null)) {
+                    $found = $locales[$locale][$word];
+                    break;
+                }
+            }
+
+            foreach (Locales::codes() as $locale) {
+                $locales[$locale][$word] ??= $found;
+            }
         }
 
-        if (! filled($en['cta'] ?? null)) {
-            $en['cta'] = __('lum.hero.cta', [], 'en');
-        }
-        if (! filled($ru['cta'] ?? null)) {
-            $ru['cta'] = __('lum.hero.cta', [], 'ru');
+        foreach (Locales::codes() as $locale) {
+            if (! filled($locales[$locale]['cta'] ?? null)) {
+                $locales[$locale]['cta'] = __('lum.hero.cta', [], $locale);
+            }
+
+            $locales[$locale]['photos'] = $photos;
+            $locales[$locale]['cta_url'] = $ctaUrl;
         }
 
-        $en['photos'] = $photos;
-        $ru['photos'] = $photos;
-        $en['cta_url'] = $ctaUrl;
-        $ru['cta_url'] = $ctaUrl;
-
-        return ['en' => $en, 'ru' => $ru];
+        return $locales;
     }
 
     /**
      * @param  array<string, mixed>  $data
-     * @param  array<string, mixed>  $en
-     * @param  array<string, mixed>  $ru
      * @return array<string, mixed>
      */
-    private static function fillVillas(array $data, array $en, array $ru): array
+    private static function fillVillas(array $data): array
     {
-        $en = self::hydrateVillasIntro($en);
-        $ru = self::hydrateVillasIntro($ru);
-        $data['en'] = $en;
-        $data['ru'] = $ru;
+        foreach (Locales::codes() as $locale) {
+            $data[$locale] = self::hydrateVillasIntro($data[$locale]);
+        }
 
-        $enSlides = is_array($en['slides'] ?? null) ? $en['slides'] : [];
-        $ruSlides = is_array($ru['slides'] ?? null) ? $ru['slides'] : [];
-        $count = max(count($enSlides), count($ruSlides), 1);
+        $localeSlides = [];
+
+        foreach (Locales::codes() as $locale) {
+            $localeSlides[$locale] = is_array($data[$locale]['slides'] ?? null) ? $data[$locale]['slides'] : [];
+        }
+
+        $count = max(array_merge(array_map('count', $localeSlides), [1]));
         $count = min($count, 4);
         $slides = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $e = is_array($enSlides[$i] ?? null) ? $enSlides[$i] : [];
-            $r = is_array($ruSlides[$i] ?? null) ? $ruSlides[$i] : [];
             $slides[] = [
-                'villa_id' => $e['villa_id'] ?? $r['villa_id'] ?? null,
-                'slug' => $e['slug'] ?? $r['slug'] ?? null,
-                'photo' => self::nullableVillaMedia($e['photo'] ?? $r['photo'] ?? null),
-                'oval' => self::nullableVillaMedia($e['oval'] ?? $r['oval'] ?? null),
-                'title_normal' => [
-                    'en' => $e['title_normal'] ?? $e['titleNormal'] ?? '',
-                    'ru' => $r['title_normal'] ?? $r['titleNormal'] ?? '',
-                ],
-                'title_italic' => [
-                    'en' => $e['title_italic'] ?? $e['titleItalic'] ?? '',
-                    'ru' => $r['title_italic'] ?? $r['titleItalic'] ?? '',
-                ],
-                'subtitle' => [
-                    'en' => $e['subtitle'] ?? '',
-                    'ru' => $r['subtitle'] ?? '',
-                ],
-                'subtitle_line1' => [
-                    'en' => $e['subtitle_line1'] ?? $e['subtitleLine1'] ?? '',
-                    'ru' => $r['subtitle_line1'] ?? $r['subtitleLine1'] ?? '',
-                ],
-                'subtitle_line2' => [
-                    'en' => $e['subtitle_line2'] ?? $e['subtitleLine2'] ?? '',
-                    'ru' => $r['subtitle_line2'] ?? $r['subtitleLine2'] ?? '',
-                ],
+                'villa_id' => self::sharedSlideField($localeSlides, $i, 'villa_id'),
+                'slug' => self::sharedSlideField($localeSlides, $i, 'slug'),
+                'photo' => self::nullableVillaMedia(self::sharedSlideField($localeSlides, $i, 'photo')),
+                'oval' => self::nullableVillaMedia(self::sharedSlideField($localeSlides, $i, 'oval')),
+                'title_normal' => self::localeMapFromSlides($localeSlides, $i, 'title_normal', 'titleNormal'),
+                'title_italic' => self::localeMapFromSlides($localeSlides, $i, 'title_italic', 'titleItalic'),
+                'subtitle' => self::localeMapFromSlides($localeSlides, $i, 'subtitle'),
+                'subtitle_line1' => self::localeMapFromSlides($localeSlides, $i, 'subtitle_line1', 'subtitleLine1'),
+                'subtitle_line2' => self::localeMapFromSlides($localeSlides, $i, 'subtitle_line2', 'subtitleLine2'),
             ];
         }
 
@@ -237,62 +248,87 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private static function saveVillas(array $data): array
     {
-        $en = self::syncVillasIntroLegacy(is_array($data['en'] ?? null) ? $data['en'] : []);
-        $ru = self::syncVillasIntroLegacy(is_array($data['ru'] ?? null) ? $data['ru'] : []);
         $formSlides = is_array($data['slides'] ?? null) ? $data['slides'] : [];
+        $payload = [];
 
-        $enSlides = [];
-        $ruSlides = [];
+        foreach (Locales::codes() as $locale) {
+            $localePayload = self::syncVillasIntroLegacy(is_array($data[$locale] ?? null) ? $data[$locale] : []);
+            $localeSlides = [];
 
-        foreach (array_slice(array_values($formSlides), 0, 4) as $slide) {
-            if (! is_array($slide)) {
-                continue;
+            foreach (array_slice(array_values($formSlides), 0, 4) as $slide) {
+                if (! is_array($slide)) {
+                    continue;
+                }
+
+                $slide = self::reconcileVillaSlide($slide);
+
+                $shared = [
+                    'villa_id' => $slide['villa_id'] ?? null,
+                    'slug' => $slide['slug'] ?? null,
+                    'photo' => self::nullableVillaMedia($slide['photo'] ?? null),
+                    'oval' => self::nullableVillaMedia($slide['oval'] ?? null),
+                ];
+
+                $localeSlides[] = array_merge($shared, [
+                    'title_normal' => data_get($slide, "title_normal.{$locale}", ''),
+                    'title_italic' => data_get($slide, "title_italic.{$locale}", ''),
+                    'subtitle' => data_get($slide, "subtitle.{$locale}", ''),
+                    'subtitle_line1' => data_get($slide, "subtitle_line1.{$locale}", ''),
+                    'subtitle_line2' => data_get($slide, "subtitle_line2.{$locale}", ''),
+                    'titleNormal' => data_get($slide, "title_normal.{$locale}", ''),
+                    'titleItalic' => data_get($slide, "title_italic.{$locale}", ''),
+                    'subtitleLine1' => data_get($slide, "subtitle_line1.{$locale}", ''),
+                    'subtitleLine2' => data_get($slide, "subtitle_line2.{$locale}", ''),
+                ]);
             }
 
-            $slide = self::reconcileVillaSlide($slide);
-
-            $shared = [
-                'villa_id' => $slide['villa_id'] ?? null,
-                'slug' => $slide['slug'] ?? null,
-                'photo' => self::nullableVillaMedia($slide['photo'] ?? null),
-                'oval' => self::nullableVillaMedia($slide['oval'] ?? null),
-            ];
-
-            $enSlides[] = array_merge($shared, [
-                'title_normal' => data_get($slide, 'title_normal.en', ''),
-                'title_italic' => data_get($slide, 'title_italic.en', ''),
-                'subtitle' => data_get($slide, 'subtitle.en', ''),
-                'subtitle_line1' => data_get($slide, 'subtitle_line1.en', ''),
-                'subtitle_line2' => data_get($slide, 'subtitle_line2.en', ''),
-                'titleNormal' => data_get($slide, 'title_normal.en', ''),
-                'titleItalic' => data_get($slide, 'title_italic.en', ''),
-                'subtitleLine1' => data_get($slide, 'subtitle_line1.en', ''),
-                'subtitleLine2' => data_get($slide, 'subtitle_line2.en', ''),
-            ]);
-
-            $ruSlides[] = array_merge($shared, [
-                'title_normal' => data_get($slide, 'title_normal.ru', ''),
-                'title_italic' => data_get($slide, 'title_italic.ru', ''),
-                'subtitle' => data_get($slide, 'subtitle.ru', ''),
-                'subtitle_line1' => data_get($slide, 'subtitle_line1.ru', ''),
-                'subtitle_line2' => data_get($slide, 'subtitle_line2.ru', ''),
-                'titleNormal' => data_get($slide, 'title_normal.ru', ''),
-                'titleItalic' => data_get($slide, 'title_italic.ru', ''),
-                'subtitleLine1' => data_get($slide, 'subtitle_line1.ru', ''),
-                'subtitleLine2' => data_get($slide, 'subtitle_line2.ru', ''),
-            ]);
+            $localePayload['slides'] = $localeSlides;
+            $localePayload['view'] = $localePayload['view'] ?? 'VIEW';
+            $payload[$locale] = $localePayload;
         }
 
-        $en['slides'] = $enSlides;
-        $ru['slides'] = $ruSlides;
-        $en['view'] = $en['view'] ?? 'VIEW';
-        $ru['view'] = $ru['view'] ?? 'VIEW';
+        return $payload;
+    }
 
-        return ['en' => $en, 'ru' => $ru];
+    /**
+     * @param  array<string, list<array<string, mixed>>>  $localeSlides
+     * @return array<string, string>
+     */
+    private static function localeMapFromSlides(array $localeSlides, int $i, string $field, ?string $legacy = null): array
+    {
+        $map = [];
+
+        foreach (Locales::codes() as $locale) {
+            $slide = is_array($localeSlides[$locale][$i] ?? null) ? $localeSlides[$locale][$i] : [];
+            $map[$locale] = $slide[$field] ?? ($legacy ? ($slide[$legacy] ?? '') : '');
+        }
+
+        return $map;
+    }
+
+    /**
+     * First non-empty slide field across locales (en preferred).
+     *
+     * @param  array<string, list<array<string, mixed>>>  $localeSlides
+     */
+    private static function sharedSlideField(array $localeSlides, int $i, string $field): mixed
+    {
+        $order = array_merge(['en'], array_diff(Locales::codes(), ['en']));
+
+        foreach ($order as $locale) {
+            $slide = is_array($localeSlides[$locale][$i] ?? null) ? $localeSlides[$locale][$i] : [];
+            $value = $slide[$field] ?? null;
+
+            if (filled($value)) {
+                return $value;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -392,32 +428,38 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @param  array<string, mixed>  $en
-     * @param  array<string, mixed>  $ru
      * @return array<string, mixed>
      */
-    private static function fillLocation(array $data, array $en, array $ru): array
+    private static function fillLocation(array $data): array
     {
-        $enCards = is_array($en['cards'] ?? null) ? $en['cards'] : [];
-        $ruCards = is_array($ru['cards'] ?? null) ? $ru['cards'] : [];
+        $localeCards = [];
+
+        foreach (Locales::codes() as $locale) {
+            $localeCards[$locale] = is_array($data[$locale]['cards'] ?? null) ? $data[$locale]['cards'] : [];
+        }
+
         $cards = [];
 
         for ($i = 0; $i < 3; $i++) {
-            $e = is_array($enCards[$i] ?? null) ? $enCards[$i] : [];
-            $r = is_array($ruCards[$i] ?? null) ? $ruCards[$i] : [];
+            $metaLocale = self::firstNonEmptyCardMeta($localeCards, $i);
+            $meta = is_array($localeCards[$metaLocale][$i] ?? null) ? $localeCards[$metaLocale][$i] : [];
+
+            $titleMap = [];
+            $listLinesMap = [];
+
+            foreach (Locales::codes() as $locale) {
+                $card = is_array($localeCards[$locale][$i] ?? null) ? $localeCards[$locale][$i] : [];
+                $titleMap[$locale] = $card['title'] ?? '';
+                $listLinesMap[$locale] = self::linesToText($card['listLines'] ?? []);
+            }
+
             $cards[] = [
-                '_meta' => $e,
-                'title' => [
-                    'en' => $e['title'] ?? '',
-                    'ru' => $r['title'] ?? '',
-                ],
-                'route' => $e['route'] ?? $r['route'] ?? '',
-                'photo' => $e['photo'] ?? $r['photo'] ?? null,
-                'activeImg' => $e['activeImg'] ?? $r['activeImg'] ?? null,
-                'list_lines' => [
-                    'en' => self::linesToText($e['listLines'] ?? []),
-                    'ru' => self::linesToText($r['listLines'] ?? []),
-                ],
+                '_meta' => $meta,
+                'title' => $titleMap,
+                'route' => self::sharedCardField($localeCards, $i, 'route'),
+                'photo' => self::sharedCardField($localeCards, $i, 'photo'),
+                'activeImg' => self::sharedCardField($localeCards, $i, 'activeImg'),
+                'list_lines' => $listLinesMap,
             ];
         }
 
@@ -427,114 +469,161 @@ class HomeSectionState
     }
 
     /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @param  array<string, list<array<string, mixed>>>  $localeCards
      */
-    private static function saveLocation(array $data): array
+    private static function firstNonEmptyCardMeta(array $localeCards, int $i): string
     {
-        $en = is_array($data['en'] ?? null) ? $data['en'] : [];
-        $ru = is_array($data['ru'] ?? null) ? $data['ru'] : [];
-        $formCards = is_array($data['cards'] ?? null) ? $data['cards'] : [];
+        $order = array_merge(['en'], array_diff(Locales::codes(), ['en']));
 
-        $enCards = [];
-        $ruCards = [];
-
-        foreach (array_slice(array_values($formCards), 0, 3) as $card) {
-            if (! is_array($card)) {
-                continue;
+        foreach ($order as $locale) {
+            if (is_array($localeCards[$locale][$i] ?? null)) {
+                return $locale;
             }
-
-            $meta = $card['_meta'] ?? [];
-            if (is_string($meta)) {
-                $meta = json_decode($meta, true) ?? [];
-            }
-            if (! is_array($meta)) {
-                $meta = [];
-            }
-            $shared = [
-                'photo' => self::nullablePath($card['photo'] ?? null),
-                'activeImg' => self::nullablePath($card['activeImg'] ?? null),
-                'route' => $card['route'] ?? ($meta['route'] ?? null),
-            ];
-
-            $enCards[] = array_merge($meta, $shared, [
-                'title' => data_get($card, 'title.en', ''),
-                'listLines' => self::textToLines(data_get($card, 'list_lines.en', '')),
-            ]);
-
-            $ruCards[] = array_merge($meta, $shared, [
-                'title' => data_get($card, 'title.ru', ''),
-                'listLines' => self::textToLines(data_get($card, 'list_lines.ru', '')),
-            ]);
         }
 
-        // Pad to exactly 3 so front layout never breaks.
-        while (count($enCards) < 3) {
-            $enCards[] = [
-                'title' => '',
-                'listLines' => [],
-                'photo' => null,
-                'activeImg' => null,
-                'route' => null,
-            ];
-            $ruCards[] = [
-                'title' => '',
-                'listLines' => [],
-                'photo' => null,
-                'activeImg' => null,
-                'route' => null,
-            ];
+        return 'en';
+    }
+
+    /**
+     * @param  array<string, list<array<string, mixed>>>  $localeCards
+     */
+    private static function sharedCardField(array $localeCards, int $i, string $field): mixed
+    {
+        $order = array_merge(['en'], array_diff(Locales::codes(), ['en']));
+
+        foreach ($order as $locale) {
+            $card = is_array($localeCards[$locale][$i] ?? null) ? $localeCards[$locale][$i] : [];
+            $value = $card[$field] ?? null;
+
+            if (filled($value)) {
+                return $value;
+            }
         }
 
-        $en['cards'] = array_slice($enCards, 0, 3);
-        $ru['cards'] = array_slice($ruCards, 0, 3);
-
-        return ['en' => $en, 'ru' => $ru];
+        return null;
     }
 
     /**
      * @param  array<string, mixed>  $data
-     * @param  array<string, mixed>  $en
-     * @param  array<string, mixed>  $ru
+     * @return array<string, array<string, mixed>>
+     */
+    private static function saveLocation(array $data): array
+    {
+        $formCards = is_array($data['cards'] ?? null) ? $data['cards'] : [];
+        $payload = [];
+
+        foreach (Locales::codes() as $locale) {
+            $localePayload = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+            $localeCards = [];
+
+            foreach (array_slice(array_values($formCards), 0, 3) as $card) {
+                if (! is_array($card)) {
+                    continue;
+                }
+
+                $meta = $card['_meta'] ?? [];
+                if (is_string($meta)) {
+                    $meta = json_decode($meta, true) ?? [];
+                }
+                if (! is_array($meta)) {
+                    $meta = [];
+                }
+
+                $shared = [
+                    'photo' => self::nullablePath($card['photo'] ?? null),
+                    'activeImg' => self::nullablePath($card['activeImg'] ?? null),
+                    'route' => $card['route'] ?? ($meta['route'] ?? null),
+                ];
+
+                $localeCards[] = array_merge($meta, $shared, [
+                    'title' => data_get($card, "title.{$locale}", ''),
+                    'listLines' => self::textToLines(data_get($card, "list_lines.{$locale}", '')),
+                ]);
+            }
+
+            // Pad to exactly 3 so front layout never breaks.
+            while (count($localeCards) < 3) {
+                $localeCards[] = [
+                    'title' => '',
+                    'listLines' => [],
+                    'photo' => null,
+                    'activeImg' => null,
+                    'route' => null,
+                ];
+            }
+
+            $localePayload['cards'] = array_slice($localeCards, 0, 3);
+            $payload[$locale] = $localePayload;
+        }
+
+        return $payload;
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
-    private static function fillInterior(array $data, array $en, array $ru): array
+    private static function fillInterior(array $data): array
     {
-        $enTabs = is_array($en['tabs'] ?? null) ? $en['tabs'] : [];
-        $ruTabs = is_array($ru['tabs'] ?? null) ? $ru['tabs'] : [];
+        $localeTabs = [];
+
+        foreach (Locales::codes() as $locale) {
+            $localeTabs[$locale] = is_array($data[$locale]['tabs'] ?? null) ? $data[$locale]['tabs'] : [];
+        }
+
+        $enTabs = $localeTabs['en'];
 
         // Legacy: tabs were string labels only.
         if ($enTabs !== [] && is_string($enTabs[0] ?? null)) {
             $images = ['interior/slide-01.webp', 'interior/slide-02.webp', 'interior/slide-03.webp', 'interior/slide-04.webp'];
             $tabs = [];
+
             foreach ($enTabs as $i => $label) {
+                $labelMap = ['en' => (string) $label];
+
+                foreach (array_diff(Locales::codes(), ['en']) as $locale) {
+                    $labelMap[$locale] = (string) ($localeTabs[$locale][$i] ?? $label);
+                }
+
                 $tabs[] = [
-                    'label' => [
-                        'en' => (string) $label,
-                        'ru' => (string) ($ruTabs[$i] ?? $label),
-                    ],
+                    'label' => $labelMap,
                     'images' => $images,
                 ];
             }
+
             $data['tabs'] = $tabs;
 
             return $data;
         }
 
         $tabs = [];
-        $count = max(count($enTabs), count($ruTabs));
+        $count = max(array_map('count', $localeTabs));
 
         for ($i = 0; $i < $count; $i++) {
-            $e = is_array($enTabs[$i] ?? null) ? $enTabs[$i] : [];
-            $r = is_array($ruTabs[$i] ?? null) ? $ruTabs[$i] : [];
+            $labelMap = [];
+
+            foreach (Locales::codes() as $locale) {
+                $tab = is_array($localeTabs[$locale][$i] ?? null) ? $localeTabs[$locale][$i] : [];
+                $enTab = is_array($localeTabs['en'][$i] ?? null) ? $localeTabs['en'][$i] : [];
+
+                if ($locale === 'en') {
+                    $labelMap[$locale] = is_string($tab['label'] ?? null)
+                        ? $tab['label']
+                        : (string) ($tab['label']['en'] ?? '');
+                } else {
+                    $fallback = is_string($enTab['label'] ?? null)
+                        ? $enTab['label']
+                        : (string) ($enTab['label']['en'] ?? '');
+
+                    $labelMap[$locale] = is_string($tab['label'] ?? null)
+                        ? $tab['label']
+                        : (string) ($tab['label'][$locale] ?? $fallback);
+                }
+            }
+
             $tabs[] = [
-                'label' => [
-                    'en' => is_string($e['label'] ?? null) ? $e['label'] : (string) ($e['label']['en'] ?? ''),
-                    'ru' => is_string($r['label'] ?? null) ? $r['label'] : (string) ($r['label']['ru'] ?? $e['label'] ?? ''),
-                ],
-                'images' => array_values(array_filter(
-                    is_array($e['images'] ?? null) ? $e['images'] : (is_array($r['images'] ?? null) ? $r['images'] : [])
-                )),
+                'label' => $labelMap,
+                'images' => array_values(array_filter(self::firstNonEmptyTabImages($localeTabs, $i, []))),
             ];
         }
 
@@ -544,42 +633,60 @@ class HomeSectionState
     }
 
     /**
+     * @param  array<string, list<array<string, mixed>>>  $localeTabs
+     * @param  list<mixed>  $fallback
+     * @return list<mixed>
+     */
+    private static function firstNonEmptyTabImages(array $localeTabs, int $i, array $fallback): array
+    {
+        $order = array_merge(['en'], array_diff(Locales::codes(), ['en']));
+
+        foreach ($order as $locale) {
+            $tab = is_array($localeTabs[$locale][$i] ?? null) ? $localeTabs[$locale][$i] : [];
+            $images = is_array($tab['images'] ?? null) ? $tab['images'] : [];
+
+            if ($images !== []) {
+                return $images;
+            }
+        }
+
+        return $fallback;
+    }
+
+    /**
      * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private static function saveInterior(array $data): array
     {
-        $en = is_array($data['en'] ?? null) ? $data['en'] : [];
-        $ru = is_array($data['ru'] ?? null) ? $data['ru'] : [];
         $formTabs = is_array($data['tabs'] ?? null) ? $data['tabs'] : [];
+        $payload = [];
 
-        $enTabs = [];
-        $ruTabs = [];
+        foreach (Locales::codes() as $locale) {
+            $localePayload = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+            $localeTabs = [];
 
-        foreach ($formTabs as $tab) {
-            if (! is_array($tab)) {
-                continue;
+            foreach ($formTabs as $tab) {
+                if (! is_array($tab)) {
+                    continue;
+                }
+
+                $images = array_values(array_filter(is_array($tab['images'] ?? null) ? $tab['images'] : []));
+                if ($images === []) {
+                    continue;
+                }
+
+                $localeTabs[] = [
+                    'label' => data_get($tab, "label.{$locale}", ''),
+                    'images' => $images,
+                ];
             }
 
-            $images = array_values(array_filter(is_array($tab['images'] ?? null) ? $tab['images'] : []));
-            if ($images === []) {
-                continue;
-            }
-
-            $enTabs[] = [
-                'label' => data_get($tab, 'label.en', ''),
-                'images' => $images,
-            ];
-            $ruTabs[] = [
-                'label' => data_get($tab, 'label.ru', ''),
-                'images' => $images,
-            ];
+            $localePayload['tabs'] = $localeTabs;
+            $payload[$locale] = $localePayload;
         }
 
-        $en['tabs'] = $enTabs;
-        $ru['tabs'] = $ruTabs;
-
-        return ['en' => $en, 'ru' => $ru];
+        return $payload;
     }
 
     /**
@@ -610,7 +717,7 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private static function saveBlog(array $data): array
     {
@@ -618,10 +725,13 @@ class HomeSectionState
         $posts = array_values(array_unique($posts));
         $posts = array_slice($posts, 0, 4);
 
-        return [
-            'en' => ['posts' => $posts],
-            'ru' => ['posts' => $posts],
-        ];
+        $payload = [];
+
+        foreach (Locales::codes() as $locale) {
+            $payload[$locale] = ['posts' => $posts];
+        }
+
+        return $payload;
     }
 
     /**
@@ -638,17 +748,20 @@ class HomeSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private static function saveShop(array $data): array
     {
-        $en = is_array($data['en'] ?? null) ? $data['en'] : [];
-        $ru = is_array($data['ru'] ?? null) ? $data['ru'] : [];
         $bg = self::nullablePath($data['background_image'] ?? null);
-        $en['background_image'] = $bg;
-        $ru['background_image'] = $bg;
+        $payload = [];
 
-        return ['en' => $en, 'ru' => $ru];
+        foreach (Locales::codes() as $locale) {
+            $localePayload = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+            $localePayload['background_image'] = $bg;
+            $payload[$locale] = $localePayload;
+        }
+
+        return $payload;
     }
 
     /**
@@ -699,39 +812,60 @@ class HomeSectionState
         $foreignTitles = \App\Models\Villa::query()
             ->whereKeyNot($villa->id)
             ->get()
-            ->flatMap(fn (\App\Models\Villa $v) => [
-                trim($v->getTranslation('title_normal', 'en').' '.$v->getTranslation('title_italic', 'en')),
-                trim($v->getTranslation('title_normal', 'ru').' '.$v->getTranslation('title_italic', 'ru')),
-            ])
+            ->flatMap(fn (\App\Models\Villa $v) => collect(Locales::codes())->map(
+                fn (string $locale) => trim($v->getTranslation('title_normal', $locale).' '.$v->getTranslation('title_italic', $locale))
+            ))
             ->filter()
             ->all();
 
-        $enTitle = trim((string) data_get($slide, 'title_normal.en').' '.(string) data_get($slide, 'title_italic.en'));
-        $ruTitle = trim((string) data_get($slide, 'title_normal.ru').' '.(string) data_get($slide, 'title_italic.ru'));
+        $localeTitles = [];
+
+        foreach (Locales::codes() as $locale) {
+            $localeTitles[$locale] = trim((string) data_get($slide, "title_normal.{$locale}").' '.(string) data_get($slide, "title_italic.{$locale}"));
+        }
+
+        $enTitle = $localeTitles['en'] ?? '';
         $titlesForeign = $enTitle === '' || in_array($enTitle, $foreignTitles, true);
 
         if ($titlesForeign || $photoForeign) {
-            $slide['title_normal'] = [
-                'en' => $villa->getTranslation('title_normal', 'en'),
-                'ru' => $villa->getTranslation('title_normal', 'ru'),
-            ];
-            $slide['title_italic'] = [
-                'en' => $villa->getTranslation('title_italic', 'en'),
-                'ru' => $villa->getTranslation('title_italic', 'ru'),
-            ];
+            $slide['title_normal'] = [];
+            $slide['title_italic'] = [];
+
+            foreach (Locales::codes() as $locale) {
+                $slide['title_normal'][$locale] = $villa->getTranslation('title_normal', $locale);
+                $slide['title_italic'][$locale] = $villa->getTranslation('title_italic', $locale);
+            }
         }
 
-        if ($ruTitle === '' || in_array($ruTitle, $foreignTitles, true)) {
-            data_set($slide, 'title_normal.ru', $villa->getTranslation('title_normal', 'ru'));
-            data_set($slide, 'title_italic.ru', $villa->getTranslation('title_italic', 'ru'));
+        foreach (Locales::codes() as $locale) {
+            if ($locale === 'en' && ($titlesForeign || $photoForeign)) {
+                continue;
+            }
+
+            $title = $localeTitles[$locale] ?? '';
+
+            if ($title === '' || in_array($title, $foreignTitles, true)) {
+                data_set($slide, "title_normal.{$locale}", $villa->getTranslation('title_normal', $locale));
+                data_set($slide, "title_italic.{$locale}", $villa->getTranslation('title_italic', $locale));
+            }
         }
 
         foreach (['subtitle', 'subtitle_line1', 'subtitle_line2'] as $field) {
-            if (! filled(data_get($slide, "{$field}.en")) && ! filled(data_get($slide, "{$field}.ru"))) {
-                $slide[$field] = [
-                    'en' => $villa->getTranslation($field, 'en'),
-                    'ru' => $villa->getTranslation($field, 'ru'),
-                ];
+            $allEmpty = true;
+
+            foreach (Locales::codes() as $locale) {
+                if (filled(data_get($slide, "{$field}.{$locale}"))) {
+                    $allEmpty = false;
+                    break;
+                }
+            }
+
+            if ($allEmpty) {
+                $slide[$field] = [];
+
+                foreach (Locales::codes() as $locale) {
+                    $slide[$field][$locale] = $villa->getTranslation($field, $locale);
+                }
             }
         }
 

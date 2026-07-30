@@ -11,10 +11,10 @@
     --breakpoint-tab: 431px;
     --breakpoint-desk: 1024px;
 
-    --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
-    --font-serif: 'Vollkorn', ui-serif, Georgia, serif;
-    --font-script: 'Marck Script', cursive;
-    --font-villa-hand: 'Caveat', cursive;
+    --font-sans: 'Jost', 'Noto Sans SC', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Vollkorn', 'Noto Serif SC', ui-serif, Georgia, serif;
+    --font-script: 'Marck Script', 'Noto Serif SC', cursive;
+    --font-villa-hand: 'Caveat', 'Noto Sans SC', cursive;
 
     --color-lum-ivory: #fffddf;
     --color-lum-ivory-88: rgb(255 253 223 / 0.88);

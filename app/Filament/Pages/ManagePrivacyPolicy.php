@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Filament\Forms\Locales;
 use App\Models\SiteSetting;
+use App\Support\Locales as AppLocales;
 use App\Support\Site;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -42,14 +43,16 @@ class ManagePrivacyPolicy extends Page implements HasForms
         $settings = SiteSetting::current();
 
         $this->form->fill([
-            'privacy_title' => [
-                'en' => $settings->getTranslation('privacy_title', 'en', useFallbackLocale: false),
-                'ru' => $settings->getTranslation('privacy_title', 'ru', useFallbackLocale: false),
-            ],
-            'privacy_body' => [
-                'en' => $settings->getTranslation('privacy_body', 'en', useFallbackLocale: false),
-                'ru' => $settings->getTranslation('privacy_body', 'ru', useFallbackLocale: false),
-            ],
+            'privacy_title' => collect(AppLocales::codes())
+                ->mapWithKeys(fn (string $locale): array => [
+                    $locale => $settings->getTranslation('privacy_title', $locale, useFallbackLocale: false),
+                ])
+                ->all(),
+            'privacy_body' => collect(AppLocales::codes())
+                ->mapWithKeys(fn (string $locale): array => [
+                    $locale => $settings->getTranslation('privacy_body', $locale, useFallbackLocale: false),
+                ])
+                ->all(),
         ]);
     }
 
@@ -58,7 +61,7 @@ class ManagePrivacyPolicy extends Page implements HasForms
         return $schema
             ->components([
                 Section::make('Текст страницы /privacy')
-                    ->description('EN и RU. Пустая строка между абзацами = новый параграф на сайте.')
+                    ->description('EN, RU, 中文. Пустая строка между абзацами = новый параграф на сайте.')
                     ->schema([
                         Locales::text('privacy_title', 'Заголовок'),
                         Locales::text('privacy_body', 'Текст', textarea: true, rows: 20),

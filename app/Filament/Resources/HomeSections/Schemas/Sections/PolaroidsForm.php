@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HomeSections\Schemas\Sections;
 
 use App\Filament\Forms\LumImage;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -22,10 +23,10 @@ class PolaroidsForm
                 ->schema([
                     Tabs::make('locale')
                         ->contained(false)
-                        ->tabs([
-                            Tab::make('EN')->schema(self::localeFields('en')),
-                            Tab::make('RU')->schema(self::localeFields('ru')),
-                        ]),
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::localeFields($locale)),
+                            AppLocales::codes(),
+                        )),
                     TextInput::make('cta_url')
                         ->label('Ссылка кнопки')
                         ->nullable()

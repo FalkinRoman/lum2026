@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Excursions\Schemas;
 
 use App\Filament\Forms\Locales;
+use App\Support\Locales as AppLocales;
 use App\Filament\Forms\LumImage;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -121,19 +122,26 @@ class ExcursionForm
                             ->schema([
                                 Tabs::make('tab_locale')
                                     ->contained(false)
-                                    ->tabs([
-                                        Tab::make('EN')->schema([
-                                            TextInput::make('label.en')->label('Название таба')->required(),
+                                    ->tabs(array_map(
+                                        fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([
+                                            TextInput::make("label.{$locale}")
+                                                ->label('Название таба')
+                                                ->required($locale === 'en'),
                                         ]),
-                                        Tab::make('RU')->schema([
-                                            TextInput::make('label.ru')->label('Название таба')->required(),
-                                        ]),
-                                    ]),
+                                        AppLocales::codes(),
+                                    )),
                                 LumImage::many('images', 'Слайды таба', 'discover/detail/shared/impression', 12),
                             ])
-                            ->itemLabel(fn (array $state): ?string => data_get($state, 'label.en')
-                                ?: data_get($state, 'label.ru')
-                                ?: 'Таб')
+                            ->itemLabel(function (array $state): ?string {
+                                foreach (AppLocales::codes() as $locale) {
+                                    $label = data_get($state, "label.{$locale}");
+                                    if (filled($label)) {
+                                        return $label;
+                                    }
+                                }
+
+                                return 'Таб';
+                            })
                             ->columnSpanFull(),
                         Locales::text('impression_cta', 'Текст кнопки'),
                         Select::make('impression_cta_mode')

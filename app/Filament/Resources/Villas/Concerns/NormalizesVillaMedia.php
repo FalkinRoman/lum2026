@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Villas\Concerns;
 
+use App\Support\Locales as AppLocales;
+
 trait NormalizesVillaMedia
 {
     /**
@@ -49,11 +51,19 @@ trait NormalizesVillaMedia
                 }
 
                 $label = is_array($gallery['label'] ?? null) ? $gallery['label'] : [];
-                $en = is_string($label['en'] ?? null) ? trim($label['en']) : '';
-                $ru = is_string($label['ru'] ?? null) ? trim($label['ru']) : '';
+                $values = [];
+                foreach (AppLocales::codes() as $locale) {
+                    $values[$locale] = is_string($label[$locale] ?? null) ? trim($label[$locale]) : '';
+                }
 
-                if ($en === '' && $ru === '') {
+                if (collect($values)->every(fn (string $v): bool => $v === '')) {
                     return null;
+                }
+
+                $fallback = $values['en'] !== '' ? $values['en'] : collect($values)->first(fn (string $v): bool => $v !== '') ?? '';
+                $normalizedLabel = [];
+                foreach (AppLocales::codes() as $locale) {
+                    $normalizedLabel[$locale] = $values[$locale] !== '' ? $values[$locale] : $fallback;
                 }
 
                 $images = collect($gallery['images'] ?? [])
@@ -77,10 +87,7 @@ trait NormalizesVillaMedia
                 }
 
                 return [
-                    'label' => [
-                        'en' => $en !== '' ? $en : $ru,
-                        'ru' => $ru !== '' ? $ru : $en,
-                    ],
+                    'label' => $normalizedLabel,
                     'images' => $images,
                 ];
             })

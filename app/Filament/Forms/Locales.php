@@ -2,6 +2,7 @@
 
 namespace App\Filament\Forms;
 
+use App\Support\Locales as AppLocales;
 use Closure;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TagsInput;
@@ -11,10 +12,10 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 
 /**
- * Helpers for building EN/RU tabs on top of Spatie translatable attributes.
+ * Helpers for building locale tabs on top of Spatie translatable attributes.
  *
- * Every field is bound to a dotted state path like `title.en` / `title.ru`,
- * which Filament nests into `['title' => ['en' => ..., 'ru' => ...]]` when
+ * Every field is bound to a dotted state path like `title.en` / `title.ru` / `title.zh`,
+ * which Filament nests into `['title' => ['en' => ..., 'ru' => ..., 'zh' => ...]]` when
  * the form state is gathered. Assigning that array back onto the model
  * (via fill/create) is exactly what `Spatie\Translatable\HasTranslations`
  * expects, so no extra glue is needed on the resource/page side.
@@ -26,25 +27,25 @@ class Locales
      */
     public static function text(string $name, string $label, bool $textarea = false, bool $required = false, int $rows = 3): Tabs
     {
-        $en = $textarea
-            ? Textarea::make("{$name}.en")->label("{$label} (EN)")->rows($rows)
-            : TextInput::make("{$name}.en")->label("{$label} (EN)");
+        $tabs = [];
 
-        $ru = $textarea
-            ? Textarea::make("{$name}.ru")->label("{$label} (RU)")->rows($rows)
-            : TextInput::make("{$name}.ru")->label("{$label} (RU)");
+        foreach (AppLocales::codes() as $locale) {
+            $fieldLabel = "{$label} (".AppLocales::label($locale).')';
+            $field = $textarea
+                ? Textarea::make("{$name}.{$locale}")->label($fieldLabel)->rows($rows)
+                : TextInput::make("{$name}.{$locale}")->label($fieldLabel);
 
-        if ($required) {
-            $en->required();
+            if ($required && $locale === 'en') {
+                $field->required();
+            }
+
+            $tabs[] = Tab::make(AppLocales::label($locale))->schema([$field]);
         }
 
         return Tabs::make($name)
             ->label($label)
             ->contained(false)
-            ->tabs([
-                Tab::make('EN')->schema([$en]),
-                Tab::make('RU')->schema([$ru]),
-            ]);
+            ->tabs($tabs);
     }
 
     /**
@@ -53,22 +54,24 @@ class Locales
      */
     public static function tags(string $name, string $label): Tabs
     {
+        $tabs = [];
+
+        foreach (AppLocales::codes() as $locale) {
+            $tabs[] = Tab::make(AppLocales::label($locale))->schema([
+                TagsInput::make("{$name}.{$locale}")
+                    ->label("{$label} (".AppLocales::label($locale).')'),
+            ]);
+        }
+
         return Tabs::make($name)
             ->label($label)
             ->contained(false)
-            ->tabs([
-                Tab::make('EN')->schema([
-                    TagsInput::make("{$name}.en")->label("{$label} (EN)"),
-                ]),
-                Tab::make('RU')->schema([
-                    TagsInput::make("{$name}.ru")->label("{$label} (RU)"),
-                ]),
-            ]);
+            ->tabs($tabs);
     }
 
     /**
      * Translatable list of plain strings as addable blocks (not tags/chips).
-     * Stored as `['en' => ['…', '…'], 'ru' => [...]]`.
+     * Stored as `['en' => ['…', '…'], 'ru' => [...], 'zh' => [...]]`.
      */
     public static function stringList(
         string $name,
@@ -78,7 +81,7 @@ class Locales
     ): Tabs {
         $make = function (string $locale) use ($name, $label, $addActionLabel, $placeholder): Repeater {
             return Repeater::make("{$name}.{$locale}")
-                ->label("{$label} (".strtoupper($locale).')')
+                ->label("{$label} (".AppLocales::label($locale).')')
                 ->simple(
                     TextInput::make('text')
                         ->placeholder($placeholder)
@@ -93,15 +96,15 @@ class Locales
         return Tabs::make($name)
             ->label($label)
             ->contained(false)
-            ->tabs([
-                Tab::make('EN')->schema([$make('en')]),
-                Tab::make('RU')->schema([$make('ru')]),
-            ]);
+            ->tabs(array_map(
+                fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([$make($locale)]),
+                AppLocales::codes(),
+            ));
     }
 
     /**
      * Translatable list of objects as addable blocks.
-     * Stored as `['en' => [['title' => …], …], 'ru' => [...]]`.
+     * Stored as `['en' => [['title' => …], …], 'ru' => [...], 'zh' => [...]]`.
      *
      * @param  array<int, \Filament\Forms\Components\Component>  $itemSchema
      */
@@ -115,7 +118,7 @@ class Locales
     ): Tabs {
         $make = function (string $locale) use ($name, $label, $itemSchema, $itemLabel, $addActionLabel, $columns): Repeater {
             $repeater = Repeater::make("{$name}.{$locale}")
-                ->label("{$label} (".strtoupper($locale).')')
+                ->label("{$label} (".AppLocales::label($locale).')')
                 ->schema($itemSchema)
                 ->reorderable()
                 ->defaultItems(0)
@@ -133,10 +136,10 @@ class Locales
         return Tabs::make($name)
             ->label($label)
             ->contained(false)
-            ->tabs([
-                Tab::make('EN')->schema([$make('en')]),
-                Tab::make('RU')->schema([$make('ru')]),
-            ]);
+            ->tabs(array_map(
+                fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([$make($locale)]),
+                AppLocales::codes(),
+            ));
     }
 
     /**
@@ -150,26 +153,22 @@ class Locales
         $format = fn ($state) => is_array($state) ? json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : $state;
         $dehydrate = fn ($state) => json_decode((string) $state, true) ?? [];
 
+        $tabs = [];
+
+        foreach (AppLocales::codes() as $locale) {
+            $tabs[] = Tab::make(AppLocales::label($locale))->schema([
+                Textarea::make("{$name}.{$locale}")
+                    ->label("{$label} (".AppLocales::label($locale).')')
+                    ->rows(6)
+                    ->formatStateUsing($format)
+                    ->dehydrateStateUsing($dehydrate)
+                    ->helperText('JSON'),
+            ]);
+        }
+
         return Tabs::make($name)
             ->label($label)
             ->contained(false)
-            ->tabs([
-                Tab::make('EN')->schema([
-                    Textarea::make("{$name}.en")
-                        ->label("{$label} (EN)")
-                        ->rows(6)
-                        ->formatStateUsing($format)
-                        ->dehydrateStateUsing($dehydrate)
-                        ->helperText('JSON'),
-                ]),
-                Tab::make('RU')->schema([
-                    Textarea::make("{$name}.ru")
-                        ->label("{$label} (RU)")
-                        ->rows(6)
-                        ->formatStateUsing($format)
-                        ->dehydrateStateUsing($dehydrate)
-                        ->helperText('JSON'),
-                ]),
-            ]);
+            ->tabs($tabs);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Forms;
 
+use App\Support\Locales;
+
 /**
  * Flatten / rebuild PageSection payload for typed Filament forms.
  */
@@ -14,11 +16,12 @@ class PageSectionState
     public static function fill(string $page, string $key, array $data): array
     {
         $payload = is_array($data['payload'] ?? null) ? $data['payload'] : [];
-        $en = is_array($payload['en'] ?? null) ? $payload['en'] : [];
-        $ru = is_array($payload['ru'] ?? null) ? $payload['ru'] : [];
 
-        $data['en'] = $en;
-        $data['ru'] = $ru;
+        foreach (Locales::codes() as $locale) {
+            $data[$locale] = is_array($payload[$locale] ?? null) ? $payload[$locale] : [];
+        }
+
+        $en = $data['en'];
 
         return match ("{$page}.{$key}") {
             'stay.intro', 'dining.intro',
@@ -52,16 +55,16 @@ class PageSectionState
             'dining.quote', 'relax.quote' => self::localeOnly($data, [
                 'quote_line1', 'quote_line2', 'note_line1', 'note_line2',
             ]),
-            default => [
-                'en' => is_array($data['en'] ?? null) ? $data['en'] : [],
-                'ru' => is_array($data['ru'] ?? null) ? $data['ru'] : [],
-            ],
+            default => self::rawLocales($data),
         };
 
         $data['payload'] = $payload;
+
+        foreach (Locales::codes() as $locale) {
+            unset($data[$locale]);
+        }
+
         unset(
-            $data['en'],
-            $data['ru'],
             $data['hero_image'],
             $data['hero_image_mob'],
             $data['hero_image_tab'],
@@ -88,7 +91,7 @@ class PageSectionState
 
     /**
      * @param  array<string, mixed>  $data
-     * @return array{en: array<string, mixed>, ru: array<string, mixed>}
+     * @return array<string, array<string, mixed>>
      */
     private static function saveMedia(array $data): array
     {
@@ -99,28 +102,47 @@ class PageSectionState
             'oval_image' => self::nullablePath($data['oval_image'] ?? null),
         ], fn (mixed $v): bool => $v !== null);
 
-        return [
-            'en' => $shared,
-            'ru' => $shared,
-        ];
+        $out = [];
+        foreach (Locales::codes() as $locale) {
+            $out[$locale] = $shared;
+        }
+
+        return $out;
     }
 
     /**
      * @param  array<string, mixed>  $data
      * @param  list<string>  $fields
-     * @return array{en: array<string, mixed>, ru: array<string, mixed>}
+     * @return array<string, array<string, mixed>>
      */
     private static function localeOnly(array $data, array $fields): array
     {
-        $en = [];
-        $ru = [];
+        $out = [];
 
-        foreach ($fields as $field) {
-            $en[$field] = data_get($data, "en.{$field}", '');
-            $ru[$field] = data_get($data, "ru.{$field}", '');
+        foreach (Locales::codes() as $locale) {
+            $localeData = [];
+            foreach ($fields as $field) {
+                $localeData[$field] = data_get($data, "{$locale}.{$field}", '');
+            }
+            $out[$locale] = $localeData;
         }
 
-        return ['en' => $en, 'ru' => $ru];
+        return $out;
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, array<string, mixed>>
+     */
+    private static function rawLocales(array $data): array
+    {
+        $out = [];
+
+        foreach (Locales::codes() as $locale) {
+            $out[$locale] = is_array($data[$locale] ?? null) ? $data[$locale] : [];
+        }
+
+        return $out;
     }
 
     private static function nullablePath(mixed $value): ?string

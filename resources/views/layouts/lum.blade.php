@@ -26,6 +26,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Jost:ital,wght@0,400;0,500;0,800;1,400&family=Marck+Script&family=Vollkorn:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    @if (app()->getLocale() === 'zh')
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
     <script>

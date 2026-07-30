@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HomeSections\Schemas\Sections;
 
 use App\Filament\Forms\LumImage;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -22,16 +23,13 @@ class InteriorForm
                 ->schema([
                     Tabs::make('locale')
                         ->contained(false)
-                        ->tabs([
-                            Tab::make('EN')->schema([
-                                TextInput::make('en.title_normal')->label('Title normal'),
-                                TextInput::make('en.title_caps')->label('Title caps'),
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([
+                                TextInput::make("{$locale}.title_normal")->label('Title normal'),
+                                TextInput::make("{$locale}.title_caps")->label('Title caps'),
                             ]),
-                            Tab::make('RU')->schema([
-                                TextInput::make('ru.title_normal')->label('Title normal'),
-                                TextInput::make('ru.title_caps')->label('Title caps'),
-                            ]),
-                        ]),
+                            AppLocales::codes(),
+                        )),
                 ]),
 
             Section::make('Табы и галереи')
@@ -44,19 +42,24 @@ class InteriorForm
                         ->schema([
                             Tabs::make('tab_locale')
                                 ->contained(false)
-                                ->tabs([
-                                    Tab::make('EN')->schema([
-                                        TextInput::make('label.en')->label('Label')->required(),
+                                ->tabs(array_map(
+                                    fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([
+                                        TextInput::make("label.{$locale}")->label('Label')->required($locale === 'en'),
                                     ]),
-                                    Tab::make('RU')->schema([
-                                        TextInput::make('label.ru')->label('Label')->required(),
-                                    ]),
-                                ]),
+                                    AppLocales::codes(),
+                                )),
                             LumImage::many('images', 'Картинки галереи', 'interior', max: 12),
                         ])
-                        ->itemLabel(fn (array $state): ?string => data_get($state, 'label.en')
-                            ?: data_get($state, 'label.ru')
-                            ?: 'Таб'),
+                        ->itemLabel(function (array $state): ?string {
+                            foreach (AppLocales::codes() as $locale) {
+                                $label = data_get($state, "label.{$locale}");
+                                if (filled($label)) {
+                                    return $label;
+                                }
+                            }
+
+                            return 'Таб';
+                        }),
                 ]),
         ];
     }

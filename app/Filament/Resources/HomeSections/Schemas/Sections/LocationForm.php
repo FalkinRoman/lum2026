@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HomeSections\Schemas\Sections;
 
 use App\Filament\Forms\LumImage;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -25,10 +26,10 @@ class LocationForm
                 ->schema([
                     Tabs::make('locale')
                         ->contained(false)
-                        ->tabs([
-                            Tab::make('EN')->schema(self::localeFields('en')),
-                            Tab::make('RU')->schema(self::localeFields('ru')),
-                        ]),
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::localeFields($locale)),
+                            AppLocales::codes(),
+                        )),
                 ]),
 
             Section::make('Карточки')
@@ -47,16 +48,13 @@ class LocationForm
                             Hidden::make('_meta'),
                             Tabs::make('card_locale')
                                 ->contained(false)
-                                ->tabs([
-                                    Tab::make('EN')->schema([
-                                        TextInput::make('title.en')->label('Title'),
-                                        Textarea::make('list_lines.en')->label('Список (по строке)')->rows(3),
+                                ->tabs(array_map(
+                                    fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([
+                                        TextInput::make("title.{$locale}")->label('Title'),
+                                        Textarea::make("list_lines.{$locale}")->label('Список (по строке)')->rows(3),
                                     ]),
-                                    Tab::make('RU')->schema([
-                                        TextInput::make('title.ru')->label('Title'),
-                                        Textarea::make('list_lines.ru')->label('Список (по строке)')->rows(3),
-                                    ]),
-                                ]),
+                                    AppLocales::codes(),
+                                )),
                             Select::make('route')
                                 ->label('Route')
                                 ->options([
@@ -72,9 +70,16 @@ class LocationForm
                             LumImage::single('photo', 'Фото карточки', 'location', helperText: null),
                             LumImage::single('activeImg', 'Активная картинка', 'location', helperText: null),
                         ])
-                        ->itemLabel(fn (array $state): ?string => data_get($state, 'title.en')
-                            ?: data_get($state, 'title.ru')
-                            ?: 'Карточка'),
+                        ->itemLabel(function (array $state): ?string {
+                            foreach (AppLocales::codes() as $locale) {
+                                $title = data_get($state, "title.{$locale}");
+                                if (filled($title)) {
+                                    return $title;
+                                }
+                            }
+
+                            return 'Карточка';
+                        }),
                 ]),
         ];
     }

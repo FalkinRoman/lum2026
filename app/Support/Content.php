@@ -1371,7 +1371,7 @@ class Content
 
             if (! $replaced) {
                 $legal[] = [
-                    'label' => $locale === 'ru' ? 'Телефон' : 'Phone',
+                    'label' => \App\Support\Locales::phoneLabel($locale),
                     'value' => $s->phone_personal,
                 ];
             }

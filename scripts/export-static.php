@@ -128,14 +128,16 @@ function staticHrefFor(string $appPath, string $locale): string
         return $appPath === '/' ? '/' : $appPath.'/';
     }
 
-    return $appPath === '/' ? '/ru/' : '/ru'.$appPath.'/';
+    $prefix = '/'.$locale;
+
+    return $appPath === '/' ? $prefix.'/' : $prefix.$appPath.'/';
 }
 
 function filePathFor(string $outDir, string $appPath, string $locale): string
 {
     $href = rtrim(staticHrefFor($appPath, $locale), '/');
-    if ($href === '' || $href === '/ru') {
-        $dir = $locale === 'en' ? $outDir : $outDir.'/ru';
+    if ($href === '' || $href === '/'.$locale) {
+        $dir = $locale === 'en' ? $outDir : $outDir.'/'.$locale;
     } else {
         $dir = $outDir.$href;
     }
@@ -167,7 +169,7 @@ function rewriteHtml(string $html, string $appPath, string $locale, array $asset
                 return $attr.'='.$q.$path.$query.$fragment.$q;
             }
 
-            if (preg_match('#^/locale/(en|ru)/?$#', $path, $lm)) {
+            if (preg_match('#^/locale/(en|ru|zh)/?$#', $path, $lm)) {
                 $targetLocale = $lm[1];
                 $href = staticHrefFor($appPath, $targetLocale);
 
@@ -277,7 +279,7 @@ mkdir($outDir, 0755, true);
 
 echo "==> Rendering pages\n";
 foreach ($pages as $path) {
-    foreach (['en', 'ru'] as $locale) {
+    foreach (['en', 'ru', 'zh'] as $locale) {
         $html = renderPage($kernel, $path, $locale);
         $html = rewriteHtml($html, $path, $locale, $assetPrefixes);
         $file = filePathFor($outDir, $path, $locale);
@@ -306,16 +308,17 @@ file_put_contents($outDir.'/.nojekyll', "");
 $readme = <<<'MD'
 # Lum — static site
 
-Pixel-static export of the Lum Laravel front-end (EN + RU). No PHP required.
+Pixel-static export of the Lum Laravel front-end (EN + RU + ZH). No PHP required.
 
 ## Structure
 
 - `/` — English
 - `/ru/` — Russian
+- `/zh/` — Chinese
 - `/build/` — CSS/JS (Vite production)
 - `/images/` — all media
 
-Language switcher points to the twin page under `/` or `/ru/`.
+Language switcher points to the twin page under `/`, `/ru/`, or `/zh/`.
 
 ## Preview locally
 
@@ -324,6 +327,7 @@ cd static-site
 python3 -m http.server 8080
 # open http://localhost:8080/
 # RU: http://localhost:8080/ru/
+# ZH: http://localhost:8080/zh/
 ```
 
 Or:

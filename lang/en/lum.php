@@ -53,8 +53,10 @@ return [
         'close' => 'Close language menu',
         'russian' => 'Russian',
         'english' => 'English',
+        'chinese' => 'Chinese',
         'ru_short' => 'Ru',
         'en_short' => 'En',
+        'zh_short' => '中',
     ],
 
     'aria' => [

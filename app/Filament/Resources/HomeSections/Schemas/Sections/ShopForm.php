@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HomeSections\Schemas\Sections;
 
 use App\Filament\Forms\LumImage;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -21,10 +22,10 @@ class ShopForm
                 ->schema([
                     Tabs::make('locale')
                         ->contained(false)
-                        ->tabs([
-                            Tab::make('EN')->schema(self::localeFields('en')),
-                            Tab::make('RU')->schema(self::localeFields('ru')),
-                        ]),
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::localeFields($locale)),
+                            AppLocales::codes(),
+                        )),
                 ]),
 
             Section::make('Фон')

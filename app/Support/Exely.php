@@ -18,7 +18,7 @@ class Exely
     {
         $locale = app()->getLocale();
 
-        return in_array($locale, ['en', 'ru'], true) ? $locale : 'en';
+        return Locales::isSupported($locale) ? $locale : 'en';
     }
 
     public static function hotelContext(?string $hotelId): string

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HomeSections\Schemas\Sections;
 
 use App\Filament\Forms\LumImage;
 use App\Models\Villa;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -29,10 +30,10 @@ class VillasForm
                 ->schema([
                     Tabs::make('locale')
                         ->contained(false)
-                        ->tabs([
-                            Tab::make('EN')->schema(self::localeFields('en')),
-                            Tab::make('RU')->schema(self::localeFields('ru')),
-                        ]),
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::localeFields($locale)),
+                            AppLocales::codes(),
+                        )),
                 ]),
 
             Section::make('Карусель')
@@ -61,10 +62,10 @@ class VillasForm
                             Hidden::make('slug'),
                             Tabs::make('slide_locale')
                                 ->contained(false)
-                                ->tabs([
-                                    Tab::make('EN')->schema(self::slideLocaleFields('en')),
-                                    Tab::make('RU')->schema(self::slideLocaleFields('ru')),
-                                ]),
+                                ->tabs(array_map(
+                                    fn (string $locale) => Tab::make(AppLocales::label($locale))->schema(self::slideLocaleFields($locale)),
+                                    AppLocales::codes(),
+                                )),
                             LumImage::single(
                                 'photo',
                                 'Фото слайда',
@@ -165,16 +166,13 @@ class VillasForm
         $set('slug', $villa->slug);
         $set('photo', $villa->slide_photo);
         $set('oval', $villa->slide_oval);
-        $set('title_normal.en', $villa->getTranslation('title_normal', 'en'));
-        $set('title_normal.ru', $villa->getTranslation('title_normal', 'ru'));
-        $set('title_italic.en', $villa->getTranslation('title_italic', 'en'));
-        $set('title_italic.ru', $villa->getTranslation('title_italic', 'ru'));
-        $set('subtitle.en', $villa->getTranslation('subtitle', 'en'));
-        $set('subtitle.ru', $villa->getTranslation('subtitle', 'ru'));
-        $set('subtitle_line1.en', $villa->getTranslation('subtitle_line1', 'en'));
-        $set('subtitle_line1.ru', $villa->getTranslation('subtitle_line1', 'ru'));
-        $set('subtitle_line2.en', $villa->getTranslation('subtitle_line2', 'en'));
-        $set('subtitle_line2.ru', $villa->getTranslation('subtitle_line2', 'ru'));
+        foreach (AppLocales::codes() as $locale) {
+            $set("title_normal.{$locale}", $villa->getTranslation('title_normal', $locale));
+            $set("title_italic.{$locale}", $villa->getTranslation('title_italic', $locale));
+            $set("subtitle.{$locale}", $villa->getTranslation('subtitle', $locale));
+            $set("subtitle_line1.{$locale}", $villa->getTranslation('subtitle_line1', $locale));
+            $set("subtitle_line2.{$locale}", $villa->getTranslation('subtitle_line2', $locale));
+        }
     }
 
     /**

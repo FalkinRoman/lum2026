@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Locales;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -9,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
 {
-    private const SUPPORTED = ['en', 'ru'];
-
     public function handle(Request $request, Closure $next): Response
     {
         // Админка Filament — всегда RU (не зависит от языка публичного сайта).
@@ -24,7 +23,7 @@ class SetLocale
             ?? $request->cookie('lum_locale')
             ?? config('app.locale', 'en');
 
-        if (! in_array($locale, self::SUPPORTED, true)) {
+        if (! Locales::isSupported((string) $locale)) {
             $locale = 'en';
         }
 

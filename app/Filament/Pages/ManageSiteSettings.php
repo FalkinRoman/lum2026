@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Forms\Locales;
 use App\Filament\Forms\LumImage;
 use App\Models\SiteSetting;
+use App\Support\Locales as AppLocales;
 use App\Support\Site;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -57,14 +58,16 @@ class ManageSiteSettings extends Page implements HasForms
             'telegram_url' => $settings->telegram_url,
             'use_booking_page' => $settings->use_booking_page ?? true,
             'book_url' => $settings->book_url ?: $settings->take_a_break_url,
-            'address' => [
-                'en' => $settings->getTranslation('address', 'en', useFallbackLocale: false),
-                'ru' => $settings->getTranslation('address', 'ru', useFallbackLocale: false),
-            ],
-            'footer_address' => [
-                'en' => $settings->getTranslation('footer_address', 'en', useFallbackLocale: false) ?? [],
-                'ru' => $settings->getTranslation('footer_address', 'ru', useFallbackLocale: false) ?? [],
-            ],
+            'address' => collect(AppLocales::codes())
+                ->mapWithKeys(fn (string $locale): array => [
+                    $locale => $settings->getTranslation('address', $locale, useFallbackLocale: false),
+                ])
+                ->all(),
+            'footer_address' => collect(AppLocales::codes())
+                ->mapWithKeys(fn (string $locale): array => [
+                    $locale => $settings->getTranslation('footer_address', $locale, useFallbackLocale: false) ?? [],
+                ])
+                ->all(),
             'hours_editor' => $this->pairRowsToEditor($settings, 'hours'),
             'legal_editor' => $this->legalRowsWithoutPhone($settings),
         ]);
@@ -131,12 +134,14 @@ class ManageSiteSettings extends Page implements HasForms
                             ->reorderable(false)
                             ->default([])
                             ->schema([
-                                Grid::make(4)->schema([
-                                    TextInput::make('label_en')->label('Дни (EN)'),
-                                    TextInput::make('label_ru')->label('Дни (RU)'),
-                                    TextInput::make('value_en')->label('Время (EN)'),
-                                    TextInput::make('value_ru')->label('Время (RU)'),
-                                ]),
+                                Grid::make(count(AppLocales::codes()) * 2)->schema(
+                                    collect(AppLocales::codes())->flatMap(fn (string $locale): array => [
+                                        TextInput::make("label_{$locale}")
+                                            ->label('Дни ('.AppLocales::label($locale).')'),
+                                        TextInput::make("value_{$locale}")
+                                            ->label('Время ('.AppLocales::label($locale).')'),
+                                    ])->all()
+                                ),
                             ]),
                         Repeater::make('legal_editor')
                             ->label('Реквизиты')
@@ -145,12 +150,14 @@ class ManageSiteSettings extends Page implements HasForms
                             ->reorderable(false)
                             ->default([])
                             ->schema([
-                                Grid::make(4)->schema([
-                                    TextInput::make('label_en')->label('Подпись (EN)'),
-                                    TextInput::make('label_ru')->label('Подпись (RU)'),
-                                    TextInput::make('value_en')->label('Значение (EN)'),
-                                    TextInput::make('value_ru')->label('Значение (RU)'),
-                                ]),
+                                Grid::make(count(AppLocales::codes()) * 2)->schema(
+                                    collect(AppLocales::codes())->flatMap(fn (string $locale): array => [
+                                        TextInput::make("label_{$locale}")
+                                            ->label('Подпись ('.AppLocales::label($locale).')'),
+                                        TextInput::make("value_{$locale}")
+                                            ->label('Значение ('.AppLocales::label($locale).')'),
+                                    ])->all()
+                                ),
                             ]),
                     ]),
 
@@ -224,36 +231,52 @@ class ManageSiteSettings extends Page implements HasForms
      */
     protected function legalRowsWithoutPhone(SiteSetting $settings): array
     {
+        $phoneLabels = array_map(
+            fn (string $locale): string => mb_strtolower(AppLocales::phoneLabel($locale)),
+            AppLocales::codes(),
+        );
+        $phoneLabels[] = 'phone';
+
         return array_values(array_filter(
             $this->pairRowsToEditor($settings, 'legal'),
-            function (array $row): bool {
-                $en = mb_strtolower(trim((string) ($row['label_en'] ?? '')));
-                $ru = mb_strtolower(trim((string) ($row['label_ru'] ?? '')));
+            function (array $row) use ($phoneLabels): bool {
+                foreach (AppLocales::codes() as $locale) {
+                    $label = mb_strtolower(trim((string) ($row["label_{$locale}"] ?? '')));
+                    if (in_array($label, $phoneLabels, true)) {
+                        return false;
+                    }
+                }
 
-                return ! in_array($en, ['phone'], true) && ! in_array($ru, ['телефон', 'phone'], true);
+                return true;
             }
         ));
     }
 
     /**
-     * @param  array{en: list<array{label: string, value: string}>, ru: list<array{label: string, value: string}>}  $legal
-     * @return array{en: list<array{label: string, value: string}>, ru: list<array{label: string, value: string}>}
+     * @param  array<string, list<array{label: string, value: string}>>  $legal
+     * @return array<string, list<array{label: string, value: string}>>
      */
     protected function mergePersonalPhoneIntoLegal(array $legal, string $phonePersonal): array
     {
-        foreach (['en', 'ru'] as $locale) {
+        $phoneLabels = array_map(
+            fn (string $locale): string => mb_strtolower(AppLocales::phoneLabel($locale)),
+            AppLocales::codes(),
+        );
+        $phoneLabels[] = 'phone';
+
+        foreach (AppLocales::codes() as $locale) {
             $legal[$locale] = array_values(array_filter(
                 $legal[$locale] ?? [],
-                function (array $row): bool {
+                function (array $row) use ($phoneLabels): bool {
                     $label = mb_strtolower(trim((string) ($row['label'] ?? '')));
 
-                    return ! in_array($label, ['phone', 'телефон'], true);
+                    return ! in_array($label, $phoneLabels, true);
                 }
             ));
 
             if ($phonePersonal !== '') {
                 array_splice($legal[$locale], min(1, count($legal[$locale])), 0, [[
-                    'label' => $locale === 'ru' ? 'Телефон' : 'Phone',
+                    'label' => AppLocales::phoneLabel($locale),
                     'value' => $phonePersonal,
                 ]]);
             }
@@ -267,18 +290,20 @@ class ManageSiteSettings extends Page implements HasForms
      */
     protected function pairRowsToEditor(SiteSetting $settings, string $field): array
     {
-        $en = $settings->getTranslation($field, 'en', useFallbackLocale: false) ?? [];
-        $ru = $settings->getTranslation($field, 'ru', useFallbackLocale: false) ?? [];
-        $count = max(count($en), count($ru));
+        $byLocale = [];
+        foreach (AppLocales::codes() as $locale) {
+            $byLocale[$locale] = $settings->getTranslation($field, $locale, useFallbackLocale: false) ?? [];
+        }
+        $count = max(array_map('count', $byLocale));
         $rows = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $rows[] = [
-                'label_en' => $en[$i]['label'] ?? '',
-                'label_ru' => $ru[$i]['label'] ?? '',
-                'value_en' => $en[$i]['value'] ?? '',
-                'value_ru' => $ru[$i]['value'] ?? '',
-            ];
+            $row = [];
+            foreach (AppLocales::codes() as $locale) {
+                $row["label_{$locale}"] = $byLocale[$locale][$i]['label'] ?? '';
+                $row["value_{$locale}"] = $byLocale[$locale][$i]['value'] ?? '';
+            }
+            $rows[] = $row;
         }
 
         return $rows;
@@ -286,18 +311,21 @@ class ManageSiteSettings extends Page implements HasForms
 
     /**
      * @param  array<int, array<string, string>>  $rows
-     * @return array{en: list<array{label: string, value: string}>, ru: list<array{label: string, value: string}>}
+     * @return array<string, list<array{label: string, value: string}>>
      */
     protected function editorToPairRows(array $rows): array
     {
-        $en = [];
-        $ru = [];
+        $result = array_fill_keys(AppLocales::codes(), []);
 
         foreach ($rows as $row) {
-            $en[] = ['label' => $row['label_en'] ?? '', 'value' => $row['value_en'] ?? ''];
-            $ru[] = ['label' => $row['label_ru'] ?? '', 'value' => $row['value_ru'] ?? ''];
+            foreach (AppLocales::codes() as $locale) {
+                $result[$locale][] = [
+                    'label' => $row["label_{$locale}"] ?? '',
+                    'value' => $row["value_{$locale}"] ?? '',
+                ];
+            }
         }
 
-        return ['en' => $en, 'ru' => $ru];
+        return $result;
     }
 }
