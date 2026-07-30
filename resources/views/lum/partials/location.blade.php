@@ -59,7 +59,7 @@
                         @if (!empty($card['activeImgMobCenter']) && isset($activeImgMobTop) && !empty($layout['mobSize']))
                             <div class="absolute left-1/2 -translate-x-1/2" style="top: {{ $activeImgMobTop }}px">
                                 <img
-                                    src="{{ $img($card['activeImg']) }}"
+                                    src="{{ \App\Support\Content::mediaUrl($card['activeImg'] ?? null) }}"
                                     alt=""
                                     class="block object-contain"
                                     style="width: {{ $layout['mobSize'] }}px; height: {{ $layout['mobSize'] }}px; transform: rotate(-15deg)"
@@ -68,12 +68,12 @@
                         @else
                         <div @class(['absolute left-1/2 flex -translate-x-1/2 items-center justify-center', isset($activeImgMobTop) ? '' : 'top-1/2 -translate-y-1/2']) @if(isset($activeImgMobTop)) style="top: {{ $activeImgMobTop }}px" @endif>
                             <div class="-rotate-[15deg]">
-                                <img src="{{ $img($card['activeImg']) }}" alt="" @class([$card['activeImgClass'], empty($layout['mobSize']) ? $layout['mobImg'] : null]) @if(!empty($layout['mobSize'])) style="width: {{ $layout['mobSize'] }}px; height: {{ $layout['mobSize'] }}px" @endif>
+                                <img src="{{ \App\Support\Content::mediaUrl($card['activeImg'] ?? null) }}" alt="" @class([$card['activeImgClass'], empty($layout['mobSize']) ? $layout['mobImg'] : null]) @if(!empty($layout['mobSize'])) style="width: {{ $layout['mobSize'] }}px; height: {{ $layout['mobSize'] }}px" @endif>
                             </div>
                         </div>
                         @endif
                     @else
-                        <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }} {{ empty($layout['mobSize']) ? $layout['mobImg'] : '' }}" @if(!empty($layout['mobSize'])) style="width: {{ $layout['mobSize'] }}px; height: {{ $layout['mobSize'] }}px" @endif>
+                        <img src="{{ \App\Support\Content::mediaUrl($card['activeImg'] ?? null) }}" alt="" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }} {{ empty($layout['mobSize']) ? $layout['mobImg'] : '' }}" @if(!empty($layout['mobSize'])) style="width: {{ $layout['mobSize'] }}px; height: {{ $layout['mobSize'] }}px" @endif>
                     @endif
                     <h3 class="absolute left-1/2 top-[28px] -translate-x-1/2 font-serif text-[28px] leading-[28px] tracking-[-0.25px] text-lum-espresso">{{ $card['title'] }}</h3>
                     @include('lum.partials.location-card-tag', [
@@ -135,7 +135,7 @@
                 @php($layout = $cardLayout[$index])
                 <article @class(['lum-location-card group relative h-[740px]', $layout['width']]) data-lum-location-card data-filter-id="lum-location-filter-{{ $index }}">
                     <div class="lum-location-card__photo absolute inset-0 overflow-hidden">
-                        <img src="{{ $img($card['photo']) }}" alt="" class="lum-location-card__photo-img absolute inset-0 h-full w-full object-cover" data-lum-location-photo>
+                        <img src="{{ \App\Support\Content::mediaUrl($card['photo'] ?? null) }}" alt="" class="lum-location-card__photo-img absolute inset-0 h-full w-full object-cover" data-lum-location-photo>
                         <div class="absolute inset-0 {{ $card['photoGradient'] }}"></div>
                         <div class="lum-location-card__photo-overlay absolute inset-0">
                             <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lum-ivory">
@@ -157,11 +157,11 @@
                         @if ($card['activeImgRotate'])
                             <div class="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center" data-lum-reveal="1">
                                 <div class="-rotate-[15deg]">
-                                    <img src="{{ $img($card['activeImg']) }}" alt="" class="{{ $layout['deskImg'] }} {{ $card['activeImgClass'] }}">
+                                    <img src="{{ \App\Support\Content::mediaUrl($card['activeImg'] ?? null) }}" alt="" class="{{ $layout['deskImg'] }} {{ $card['activeImgClass'] }}">
                                 </div>
                             </div>
                         @else
-                            <img src="{{ $img($card['activeImg']) }}" alt="" class="absolute left-1/2 top-1/2 {{ $layout['deskImg'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}" data-lum-reveal="1">
+                            <img src="{{ \App\Support\Content::mediaUrl($card['activeImg'] ?? null) }}" alt="" class="absolute left-1/2 top-1/2 {{ $layout['deskImg'] }} -translate-x-1/2 -translate-y-1/2 {{ $card['activeImgClass'] }}" data-lum-reveal="1">
                         @endif
                         <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso" data-lum-reveal="2">{{ $card['title'] }}</h3>
                         @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag'], 'reveal' => 3])

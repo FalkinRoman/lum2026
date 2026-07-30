@@ -1,7 +1,11 @@
 @php $shopTeaser = \App\Support\Content::homeLocale('shop_teaser') ?? []; @endphp
 <section class="lum-container lum-shop relative h-[675px] overflow-hidden tab:h-[455px] desk:h-[768px]" data-lum-shop-parallax>
     <div class="lum-shop__bg absolute inset-0 overflow-hidden" aria-hidden="true">
-        <img src="{{ $img($shopTeaser['background_image'] ?? 'shop/bg.jpg') }}" alt="" class="lum-shop__bg-img absolute" width="1920" height="768" data-lum-shop-parallax-bg>
+        @if (\App\Support\Content::hasMedia($shopTeaser['background_image'] ?? null))
+            <img src="{{ $img($shopTeaser['background_image']) }}" alt="" class="lum-shop__bg-img absolute" width="1920" height="768" data-lum-shop-parallax-bg>
+        @else
+            <div class="lum-shop__bg-img absolute inset-0 bg-lum-espresso" data-lum-shop-parallax-bg></div>
+        @endif
     </div>
     <div class="absolute inset-0 bg-black/32"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(22,5,5,0.48)]"></div>

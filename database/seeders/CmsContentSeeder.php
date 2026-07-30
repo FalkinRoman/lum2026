@@ -15,6 +15,7 @@ use App\Models\Villa;
 use App\Support\Site;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -492,8 +493,18 @@ TXT,
         $ru = $this->ru;
 
         HomeSection::put('hero', [
-            'en' => array_merge($en['hero'], ['video_poster' => 'hero/video-poster.png']),
-            'ru' => array_merge($ru['hero'], ['video_poster' => 'hero/video-poster.png']),
+            'en' => array_merge($en['hero'], [
+                'video' => 'hero/video.mp4',
+                'video_poster' => 'hero/video-poster.png',
+                'video_position' => 'center',
+                'cta_url' => 'stay',
+            ]),
+            'ru' => array_merge($ru['hero'], [
+                'video' => 'hero/video.mp4',
+                'video_poster' => 'hero/video-poster.png',
+                'video_position' => 'center',
+                'cta_url' => 'stay',
+            ]),
         ]);
 
         $polaroidPhotos = [
@@ -502,8 +513,16 @@ TXT,
             'polaroids/photo-3.jpg',
         ];
         HomeSection::put('polaroids', [
-            'en' => array_merge($en['polaroids'], ['photos' => $polaroidPhotos]),
-            'ru' => array_merge($ru['polaroids'], ['photos' => $polaroidPhotos]),
+            'en' => array_merge($en['polaroids'], [
+                'photos' => $polaroidPhotos,
+                'cta' => $en['hero']['cta'],
+                'cta_url' => 'stay',
+            ]),
+            'ru' => array_merge($ru['polaroids'], [
+                'photos' => $polaroidPhotos,
+                'cta' => $ru['hero']['cta'],
+                'cta_url' => 'stay',
+            ]),
         ]);
 
         HomeSection::put('location', [
@@ -523,9 +542,48 @@ TXT,
             ],
         ]);
 
+        $defaultInteriorImages = [
+            'interior/slide-01.webp',
+            'interior/slide-02.webp',
+            'interior/slide-03.webp',
+            'interior/slide-04.webp',
+        ];
+        $enInteriorTabs = [];
+        $ruInteriorTabs = [];
+        foreach ($en['interior']['tabs'] as $i => $label) {
+            $enInteriorTabs[] = [
+                'label' => $label,
+                'images' => $defaultInteriorImages,
+            ];
+            $ruInteriorTabs[] = [
+                'label' => $ru['interior']['tabs'][$i] ?? $label,
+                'images' => $defaultInteriorImages,
+            ];
+        }
+
         HomeSection::put('interior', [
-            'en' => $en['interior'],
-            'ru' => $ru['interior'],
+            'en' => [
+                'title_normal' => $en['interior']['title_normal'],
+                'title_caps' => $en['interior']['title_caps'],
+                'tabs' => $enInteriorTabs,
+            ],
+            'ru' => [
+                'title_normal' => $ru['interior']['title_normal'],
+                'title_caps' => $ru['interior']['title_caps'],
+                'tabs' => $ruInteriorTabs,
+            ],
+        ]);
+
+        $blogSlugs = collect($en['blog']['posts'] ?? [])
+            ->pluck('slug')
+            ->filter()
+            ->take(4)
+            ->values()
+            ->all();
+
+        HomeSection::put('blog', [
+            'en' => ['posts' => $blogSlugs],
+            'ru' => ['posts' => $blogSlugs],
         ]);
 
         HomeSection::put('shop_teaser', [
@@ -545,9 +603,69 @@ TXT,
             ],
         ]);
 
+        $villasBySlug = Villa::query()->get()->keyBy('slug');
+        $enSlides = [];
+        $ruSlides = [];
+
+        foreach ($en['villas']['slides'] as $i => $enSlide) {
+            $slug = $enSlide['slug'] ?? null;
+            $ruSlide = $ru['villas']['slides'][$i] ?? $enSlide;
+            $villa = $slug ? $villasBySlug->get($slug) : null;
+            $photo = $villa?->slide_photo ?: ('villas/' . ($enSlide['photo'] ?? sprintf('slide-%02d', $i + 1)) . '.webp');
+            $oval = $villa?->slide_oval ?: ('villas/' . ($enSlide['oval'] ?? sprintf('oval-%02d', $i + 1)) . '.webp');
+
+            $shared = [
+                'villa_id' => $villa?->id,
+                'slug' => $slug,
+                'photo' => $photo,
+                'oval' => $oval,
+            ];
+
+            $enSlides[] = array_merge($shared, [
+                'title_normal' => $enSlide['titleNormal'] ?? '',
+                'title_italic' => $enSlide['titleItalic'] ?? '',
+                'title_mobile_normal' => $enSlide['titleMobileNormal'] ?? ($enSlide['titleNormal'] ?? ''),
+                'title_mobile_italic' => $enSlide['titleMobileItalic'] ?? ($enSlide['titleItalic'] ?? ''),
+                'subtitle' => $enSlide['subtitle'] ?? ($en['villas']['subtitle'] ?? ''),
+                'subtitle_line1' => $enSlide['subtitleLine1'] ?? ($en['villas']['subtitle_line1'] ?? ''),
+                'subtitle_line2' => $enSlide['subtitleLine2'] ?? ($en['villas']['subtitle_line2'] ?? ''),
+                'titleNormal' => $enSlide['titleNormal'] ?? '',
+                'titleItalic' => $enSlide['titleItalic'] ?? '',
+                'subtitleLine1' => $enSlide['subtitleLine1'] ?? ($en['villas']['subtitle_line1'] ?? ''),
+                'subtitleLine2' => $enSlide['subtitleLine2'] ?? ($en['villas']['subtitle_line2'] ?? ''),
+            ]);
+
+            $ruSlides[] = array_merge($shared, [
+                'title_normal' => $ruSlide['titleNormal'] ?? '',
+                'title_italic' => $ruSlide['titleItalic'] ?? '',
+                'title_mobile_normal' => $ruSlide['titleMobileNormal'] ?? ($ruSlide['titleNormal'] ?? ''),
+                'title_mobile_italic' => $ruSlide['titleMobileItalic'] ?? ($ruSlide['titleItalic'] ?? ''),
+                'subtitle' => $ruSlide['subtitle'] ?? ($ru['villas']['subtitle'] ?? ''),
+                'subtitle_line1' => $ruSlide['subtitleLine1'] ?? ($ru['villas']['subtitle_line1'] ?? ''),
+                'subtitle_line2' => $ruSlide['subtitleLine2'] ?? ($ru['villas']['subtitle_line2'] ?? ''),
+                'titleNormal' => $ruSlide['titleNormal'] ?? '',
+                'titleItalic' => $ruSlide['titleItalic'] ?? '',
+                'subtitleLine1' => $ruSlide['subtitleLine1'] ?? ($ru['villas']['subtitle_line1'] ?? ''),
+                'subtitleLine2' => $ruSlide['subtitleLine2'] ?? ($ru['villas']['subtitle_line2'] ?? ''),
+            ]);
+        }
+
+        $villasIntroKeys = [
+            'eyebrow', 'lifestyle', 'view',
+            'intro_mobile_1', 'intro_mobile_2', 'intro_mobile_3', 'intro_mobile_4', 'intro_mobile_5',
+            'intro_tablet', 'intro_tablet_2', 'intro_tablet_3',
+            'intro_desk_1', 'intro_desk_2', 'intro_desk_3', 'intro_desk_4',
+            'subtitle', 'subtitle_line1', 'subtitle_line2',
+        ];
+
+        $enVillas = Arr::only($en['villas'], $villasIntroKeys);
+        $ruVillas = Arr::only($ru['villas'], $villasIntroKeys);
+        $enVillas['slides'] = $enSlides;
+        $ruVillas['slides'] = $ruSlides;
+
         HomeSection::put('villas_intro', [
-            'en' => $en['villas'],
-            'ru' => $ru['villas'],
+            'en' => $enVillas,
+            'ru' => $ruVillas,
         ]);
     }
 

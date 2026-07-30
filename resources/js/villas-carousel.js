@@ -7,7 +7,45 @@ function padSlideNumber(value) {
 }
 
 function buildSrc(base, name, suffix = '') {
+    if (! name) {
+        return 'data:image/svg+xml,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect fill="#2C1810" width="8" height="8"/></svg>',
+        );
+    }
+
+    if (
+        typeof name === 'string'
+        && (name.startsWith('http://')
+            || name.startsWith('https://')
+            || name.startsWith('data:')
+            || name.startsWith('/'))
+    ) {
+        return name;
+    }
+
     return `${base}/${name}${suffix}.webp`;
+}
+
+function slideMediaSrc(slide, kind, base, suffix = '') {
+    if (! slide) {
+        return buildSrc(base, null, suffix);
+    }
+
+    if (suffix === '-sm') {
+        const smKey = `${kind}SrcSm`;
+
+        if (slide[smKey]) {
+            return slide[smKey];
+        }
+    }
+
+    const srcKey = `${kind}Src`;
+
+    if (slide[srcKey]) {
+        return slide[srcKey];
+    }
+
+    return buildSrc(base, slide[kind], suffix);
 }
 
 const imageLoadCache = new Map();
@@ -43,8 +81,8 @@ function preloadImage(src) {
 
 function preloadSlideAssets(slides, base, suffix = '') {
     return Promise.all(slides.flatMap((slide) => [
-        preloadImage(buildSrc(base, slide.photo, suffix)),
-        preloadImage(buildSrc(base, slide.oval, suffix)),
+        preloadImage(slideMediaSrc(slide, 'photo', base, suffix)),
+        preloadImage(slideMediaSrc(slide, 'oval', base, suffix)),
     ]));
 }
 
@@ -216,7 +254,7 @@ function fillPhoto(inner, slideData, base, suffix) {
         inner.appendChild(img);
     }
 
-    img.src = buildSrc(base, slideData.photo, suffix);
+    img.src = slideMediaSrc(slideData, 'photo', base, suffix);
 }
 
 function fillOval(inner, slideData, base, suffix) {
@@ -230,7 +268,7 @@ function fillOval(inner, slideData, base, suffix) {
         inner.appendChild(img);
     }
 
-    img.src = buildSrc(base, slideData.oval, suffix);
+    img.src = slideMediaSrc(slideData, 'oval', base, suffix);
 }
 
 function fillTitle(content, slideData, suffix) {
@@ -689,7 +727,7 @@ function setupPanelTracks(panel, base) {
         tracks.push({
             ...photoTrack,
             fill: (slideData, inner) => fillPhoto(inner, slideData, base, suffix),
-            preload: (slideData) => preloadImage(buildSrc(base, slideData.photo, suffix)),
+            preload: (slideData) => preloadImage(slideMediaSrc(slideData, 'photo', base, suffix)),
         });
     }
 
@@ -700,7 +738,7 @@ function setupPanelTracks(panel, base) {
         tracks.push({
             ...ovalTrack,
             fill: (slideData, inner) => fillOval(inner, slideData, base, suffix),
-            preload: (slideData) => preloadImage(buildSrc(base, slideData.oval, suffix)),
+            preload: (slideData) => preloadImage(slideMediaSrc(slideData, 'oval', base, suffix)),
         });
     }
 
@@ -752,12 +790,12 @@ function syncCounter(panels, slides, index, base) {
         }
 
         const suffix = panel.dataset.lumVillasSuffix || '';
-        preloadImage(buildSrc(base, slides[(index + 1) % slides.length].photo, suffix));
-        preloadImage(buildSrc(base, slides[(index - 1 + slides.length) % slides.length].photo, suffix));
-        preloadImage(buildSrc(base, slides[(index + 1) % slides.length].oval, suffix));
-        preloadImage(buildSrc(base, slides[(index - 1 + slides.length) % slides.length].oval, suffix));
-        preloadImage(buildSrc(base, slides[index].photo, suffix));
-        preloadImage(buildSrc(base, slides[index].oval, suffix));
+        preloadImage(slideMediaSrc(slides[(index + 1) % slides.length], 'photo', base, suffix));
+        preloadImage(slideMediaSrc(slides[(index - 1 + slides.length) % slides.length], 'photo', base, suffix));
+        preloadImage(slideMediaSrc(slides[(index + 1) % slides.length], 'oval', base, suffix));
+        preloadImage(slideMediaSrc(slides[(index - 1 + slides.length) % slides.length], 'oval', base, suffix));
+        preloadImage(slideMediaSrc(slides[index], 'photo', base, suffix));
+        preloadImage(slideMediaSrc(slides[index], 'oval', base, suffix));
     });
 }
 

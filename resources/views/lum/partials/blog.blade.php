@@ -1,5 +1,5 @@
 @php
-    $blogPosts = collect($blogPosts ?? \App\Support\Content::blogPosts());
+    $blogPosts = \App\Support\Content::homeBlogPosts(4);
     $isRu = app()->getLocale() === 'ru';
 @endphp
 <section @class([
@@ -126,7 +126,7 @@
                 <div class="lum-blog-card flex w-[396px] shrink-0 flex-col">
                     <a href="{{ $postHref }}" class="block">
                         <div class="relative h-[396px] w-[396px] overflow-hidden">
-                            <img src="{{ $img('blog/' . $post['image']) }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="396" height="396">
+                            <img src="{{ \App\Support\Content::mediaUrl(filled($post['image'] ?? null) ? 'blog/' . $post['image'] : null) }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="396" height="396">
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(57,54,46,0.74)]"></div>
                         </div>
                     </a>

@@ -20,24 +20,80 @@
         default => 'h-[827px] tab:h-[1317px] desk:h-[1527px]',
     };
 
-    $tabLabels = trans($titleKey . '.tabs');
-    $tabs = [];
-    foreach ($tabLabels as $i => $label) {
-        $tabs[($i === 0 ? '✓' : '') . $label] = $i === 0;
+    $homeInterior = ($titleKey === 'lum.interior' && $imgBase === 'interior')
+        ? \App\Support\Content::homeInterior()
+        : null;
+
+    $tabGalleries = [];
+    if ($homeInterior) {
+        $titleNormal = $homeInterior['title_normal'];
+        $titleCaps = $homeInterior['title_caps'];
+        $tabGalleries = $homeInterior['tabs'];
+        $slides = $tabGalleries[0]['slides'] ?? [];
+        if ($slides === []) {
+            $slides = [null];
+        }
+        $total = max(count($slides), 1);
+        $progressTotal = max(
+            $total,
+            ...(array_map(fn (array $g) => max(count($g['slides'] ?? []), 1), $tabGalleries) ?: [1]),
+        );
+        $tabs = [];
+        foreach ($tabGalleries as $i => $gallery) {
+            $tabs[] = [
+                'label' => ($i === 0 ? '✓' : '') . $gallery['label'],
+                'active' => $i === 0,
+                'index' => $i,
+            ];
+        }
+        if ($tabs === []) {
+            $showTabs = false;
+        }
+        $mobileTabRows = [
+            array_slice($tabs, 0, 2),
+            array_slice($tabs, 2, 3),
+            array_slice($tabs, 5),
+        ];
+    } else {
+        $titleNormal = __($titleKey . '.title_normal');
+        $titleCaps = __($titleKey . '.title_caps');
+        $tabLabels = trans($titleKey . '.tabs');
+        $tabs = [];
+        foreach ($tabLabels as $i => $label) {
+            $tabs[] = [
+                'label' => ($i === 0 ? '✓' : '') . $label,
+                'active' => $i === 0,
+                'index' => $i,
+            ];
+        }
+        $mobileTabRows = [
+            array_slice($tabs, 0, 2),
+            array_slice($tabs, 2, 3),
+            array_slice($tabs, 5),
+        ];
+        $slides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+        $total = 7;
+        $progressTotal = $total;
     }
-    $mobileTabRows = [
-        array_slice($tabs, 0, 2, true),
-        array_slice($tabs, 2, 3, true),
-        array_slice($tabs, 5, 1, true),
-    ];
-    $slides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
-    $total = 7;
+
+    $firstSlide = $slides[0] ?? null;
+    $secondSlide = $slides[1] ?? $firstSlide;
+    $firstSlideSrcSm = \App\Support\Content::hasMedia($firstSlide)
+        ? $img($imgBase . '/' . $firstSlide . '-sm.webp')
+        : \App\Support\Content::mediaStubUrl();
+    $firstSlideSrc = \App\Support\Content::hasMedia($firstSlide)
+        ? $img($imgBase . '/' . $firstSlide . '.webp')
+        : \App\Support\Content::mediaStubUrl();
+    $secondSlideSrc = \App\Support\Content::hasMedia($secondSlide)
+        ? $img($imgBase . '/' . $secondSlide . '.webp')
+        : \App\Support\Content::mediaStubUrl();
 @endphp
 
 <section
     class="lum-container relative bg-lum-ivory {{ $sectionHeights }}"
     data-lum-interior-carousel
     data-slides='@json($slides)'
+    @if ($tabGalleries !== []) data-tab-galleries='@json(collect($tabGalleries)->pluck('slides')->values())' @endif
     data-img-base="{{ asset('images/lum/' . $imgBase) }}"
     data-total="{{ $total }}"
     data-start="{{ $startIndex }}"
@@ -49,15 +105,15 @@
             <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[45px] size-[32px] -translate-x-1/2" width="32" height="32">
         @endif
         <div @class(['absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso', 'top-[107px]' => $showLogomark, 'top-[60px]' => ! $showLogomark]) data-lum-scroll-reveal>
-            <p class="font-serif text-[36px] font-medium italic leading-[45px] tracking-[-0.72px]">{{ __($titleKey . '.title_normal') }}</p>
-            <p class="font-serif text-[36px] leading-[45px] tracking-[-0.72px]">{{ __($titleKey . '.title_caps') }}</p>
+            <p class="font-serif text-[36px] font-medium italic leading-[45px] tracking-[-0.72px]">{{ $titleNormal }}</p>
+            <p class="font-serif text-[36px] leading-[45px] tracking-[-0.72px]">{{ $titleCaps }}</p>
         </div>
         <div @class(['absolute left-1/2 h-[41px] w-[201px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]', 'top-[172px]' => $showLogomark, 'top-[124px]' => ! $showLogomark])></div>
         <div @class(['absolute left-0 z-20 flex w-full flex-col items-center gap-[8px]', 'top-[252px]' => $showLogomark, 'top-[205px]' => ! $showLogomark])>
             @foreach ($mobileTabRows as $row)
                 <div class="flex items-center justify-center gap-[8px]">
-                    @foreach ($row as $label => $active)
-                        <button type="button" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
+                    @foreach ($row as $tab)
+                        <button type="button" data-lum-interior-tab="{{ $tab['index'] }}" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $tab['active'], 'lum-tab--inactive' => ! $tab['active']])>{{ $tab['label'] }}</button>
                     @endforeach
                 </div>
             @endforeach
@@ -68,7 +124,7 @@
                 class="relative z-0 h-[260px] w-full overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
             >
                 <img
-                    src="{{ $img($imgBase . '/slide-01-sm.webp') }}"
+                    src="{{ $firstSlideSrcSm }}"
                     alt=""
                     class="h-full w-full object-cover"
                     width="375"
@@ -86,9 +142,9 @@
         </div>
         <div @class(['absolute left-1/2 flex w-[280px] -translate-x-1/2 flex-col items-center', 'top-[692px]' => $showLogomark, 'top-[645px]' => ! $showLogomark])>
             <div class="flex w-full flex-col items-center gap-[16px]">
-                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[33px]', 'gapClass' => 'gap-[8px]'])
+                @include('lum.partials.interior-progress', ['total' => $progressTotal, 'startIndex' => $startIndex, 'itemClass' => 'w-[33px]', 'gapClass' => 'gap-[8px]'])
                 <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
-                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ <span data-lum-interior-total>{{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span></span>
                 </p>
             </div>
             @if ($showCta)
@@ -98,8 +154,8 @@
         @else
         {{-- MOBILE excursion — Figma 103:907 --}}
         <div class="absolute left-1/2 top-[60px] -translate-x-1/2 text-center text-lum-espresso" data-lum-scroll-reveal>
-            <p class="font-serif text-[42px] font-medium italic leading-[45px] tracking-[-0.84px]">{{ __($titleKey . '.title_normal') }}</p>
-            <p class="font-serif text-[42px] leading-[45px] tracking-[-0.84px]">{{ __($titleKey . '.title_caps') }}</p>
+            <p class="font-serif text-[42px] font-medium italic leading-[45px] tracking-[-0.84px]">{{ $titleNormal }}</p>
+            <p class="font-serif text-[42px] leading-[45px] tracking-[-0.84px]">{{ $titleCaps }}</p>
         </div>
         <div class="absolute left-1/2 top-[119px] h-[36px] w-[260px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[1.33px_1.33px_0_rgba(0,0,0,0.25)]"></div>
         <div
@@ -107,7 +163,7 @@
             class="absolute left-0 top-[205px] z-0 h-[260px] w-full overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]"
         >
             <img
-                src="{{ $img($imgBase . '/slide-01-sm.webp') }}"
+                src="{{ $firstSlideSrcSm }}"
                 alt=""
                 class="h-full w-full object-cover"
                 width="375"
@@ -124,9 +180,9 @@
         </div>
         <div class="absolute left-[48px] top-[509px] flex w-[280px] flex-col items-center">
             <div class="flex w-full flex-col items-center gap-[16px]">
-                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'flex-1', 'gapClass' => 'gap-[8px]'])
+                @include('lum.partials.interior-progress', ['total' => $progressTotal, 'startIndex' => $startIndex, 'itemClass' => 'flex-1', 'gapClass' => 'gap-[8px]'])
                 <p class="font-serif text-[16px] font-medium leading-[20px] tracking-[-0.16px] text-lum-espresso">
-                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ <span data-lum-interior-total>{{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span></span>
                 </p>
             </div>
             @if ($showCta)
@@ -142,14 +198,14 @@
             <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[61px] size-[40px] -translate-x-1/2" width="40" height="40">
         @endif
         <div @class(['absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso', 'top-[145px]' => $showLogomark && $showTabs, 'top-[80px]' => ! $showLogomark || ! $showTabs]) data-lum-scroll-reveal>
-            <p class="font-serif text-[52px] font-medium italic leading-[52px] tracking-[-1.04px]">{{ __($titleKey . '.title_normal') }}</p>
-            <p class="font-serif text-[52px] leading-[52px] tracking-[-1.04px]">{{ __($titleKey . '.title_caps') }}</p>
+            <p class="font-serif text-[52px] font-medium italic leading-[52px] tracking-[-1.04px]">{{ $titleNormal }}</p>
+            <p class="font-serif text-[52px] leading-[52px] tracking-[-1.04px]">{{ $titleCaps }}</p>
         </div>
         <div @class(['absolute left-1/2 h-[71px] w-[281px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]', 'top-[217px]' => $showLogomark && $showTabs, 'top-[151px]' => ! $showLogomark && $showTabs, 'top-[144px]' => ! $showTabs])></div>
         @if ($showTabs)
         <div @class(['absolute flex flex-nowrap items-center gap-[10px]', 'left-[127px] top-[325px]' => $showLogomark, 'left-[127px] top-[260px]' => ! $showLogomark])>
-            @foreach ($tabs as $label => $active)
-                <button type="button" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
+            @foreach ($tabs as $tab)
+                <button type="button" data-lum-interior-tab="{{ $tab['index'] }}" @class(['lum-tab lum-tab--s', 'lum-tab--active' => $tab['active'], 'lum-tab--inactive' => ! $tab['active']])>{{ $tab['label'] }}</button>
             @endforeach
         </div>
         @endif
@@ -158,7 +214,7 @@
             @class(['absolute left-0 h-[641px] w-full overflow-hidden shadow-[3px_3px_0_rgba(0,0,0,0.25)]', 'top-[421px]' => $showLogomark && $showTabs, 'top-[356px]' => ! $showLogomark && $showTabs, 'top-[260px]' => ! $showTabs])
         >
             <img
-                src="{{ $img($imgBase . '/slide-01.webp') }}"
+                src="{{ $firstSlideSrc }}"
                 alt=""
                 class="h-full w-full object-cover"
                 width="960"
@@ -184,9 +240,9 @@
         @endif
         <div @class(['absolute left-1/2 flex w-[378px] -translate-x-1/2 flex-col items-center', 'top-[1134px]' => $showLogomark && $showTabs, 'top-[1069px]' => ! $showLogomark && $showTabs, 'top-[973px]' => ! $showTabs])>
             <div class="flex w-full flex-col items-center gap-[24px]">
-                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
+                @include('lum.partials.interior-progress', ['total' => $progressTotal, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
                 <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
-                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ <span data-lum-interior-total>{{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span></span>
                 </p>
             </div>
             @if ($showCta)
@@ -201,14 +257,14 @@
             <img src="{{ $img('interior/logomark.svg') }}" alt="" class="absolute left-1/2 top-[80px] size-[64px] -translate-x-1/2" width="64" height="64">
         @endif
         <div @class(['absolute left-1/2 -translate-x-1/2 text-center text-lum-espresso', 'top-[208px]' => $showLogomark && $showTabs, 'top-[160px]' => ! $showLogomark || ! $showTabs]) data-lum-scroll-reveal>
-            <p class="lum-heading-1 font-medium italic tracking-[-1.76px]">{{ __($titleKey . '.title_normal') }}</p>
-            <p class="lum-heading-1 font-normal tracking-[-1.76px]">{{ __($titleKey . '.title_caps') }}</p>
+            <p class="lum-heading-1 font-medium italic tracking-[-1.76px]">{{ $titleNormal }}</p>
+            <p class="lum-heading-1 font-normal tracking-[-1.76px]">{{ $titleCaps }}</p>
         </div>
         <div @class(['absolute left-1/2 h-[80px] w-[440px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-orange opacity-56 shadow-[3px_3px_0_rgba(0,0,0,0.25)]', 'top-[328.64px]' => $showLogomark && $showTabs, 'top-[292px]' => ! $showLogomark && $showTabs, 'top-[279px]' => ! $showTabs])></div>
         @if ($showTabs)
         <div @class(['absolute left-1/2 flex -translate-x-1/2 flex-nowrap items-center gap-[10px]', 'top-[484px]' => $showLogomark, 'top-[436px]' => ! $showLogomark])>
-            @foreach ($tabs as $label => $active)
-                <button type="button" @class(['lum-tab lum-tab--l', 'lum-tab--active' => $active, 'lum-tab--inactive' => ! $active])>{{ $label }}</button>
+            @foreach ($tabs as $tab)
+                <button type="button" data-lum-interior-tab="{{ $tab['index'] }}" @class(['lum-tab lum-tab--l', 'lum-tab--active' => $tab['active'], 'lum-tab--inactive' => ! $tab['active']])>{{ $tab['label'] }}</button>
             @endforeach
         </div>
         @endif
@@ -217,7 +273,7 @@
             data-lum-interior-left
         >
             <img
-                src="{{ $img($imgBase . '/slide-01.webp') }}"
+                src="{{ $firstSlideSrc }}"
                 alt=""
                 class="h-full w-full object-cover"
                 width="928"
@@ -229,7 +285,7 @@
             data-lum-interior-right
         >
             <img
-                src="{{ $img($imgBase . '/slide-02.webp') }}"
+                src="{{ $secondSlideSrc }}"
                 alt=""
                 class="h-full w-full object-cover"
                 width="928"
@@ -245,9 +301,9 @@
         </button>
         <div @class(['absolute left-[771px] flex w-[378px] flex-col items-center', 'top-[1300px]' => $showLogomark && $showTabs, 'top-[1252px]' => ! $showLogomark && $showTabs, 'top-[1189px]' => ! $showTabs])>
             <div class="flex w-full flex-col items-center gap-[24px]">
-                @include('lum.partials.interior-progress', ['total' => $total, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
+                @include('lum.partials.interior-progress', ['total' => $progressTotal, 'startIndex' => $startIndex, 'itemClass' => 'w-[42px]', 'gapClass' => 'gap-[14px]'])
                 <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-lum-espresso">
-                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ {{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="lum-interior-counter" data-lum-interior-current><span class="lum-interior-counter__viewport"><span class="lum-interior-counter__text" data-lum-interior-current-text>{{ str_pad($startIndex + 1, 2, '0', STR_PAD_LEFT) }}</span></span></span> <span class="text-lum-espresso-40">/ <span data-lum-interior-total>{{ str_pad($total, 2, '0', STR_PAD_LEFT) }}</span></span>
                 </p>
             </div>
             @if ($showCta)

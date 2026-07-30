@@ -1,14 +1,23 @@
 @php
     $hero = \App\Support\Content::homeLocale('hero') ?? [];
-    $heroPoster = $hero['video_poster'] ?? 'hero/video-poster.png';
+    $heroPoster = filled($hero['video_poster'] ?? null) ? $hero['video_poster'] : null;
+    $heroVideo = filled($hero['video'] ?? null) ? $hero['video'] : null;
+    $heroPosition = $hero['video_position'] ?? 'center';
+    $heroObjectPosition = match ($heroPosition) {
+        'top' => 'object-top',
+        'bottom' => 'object-bottom',
+        default => 'object-center',
+    };
+    $heroVideoType = $heroVideo && str_ends_with(strtolower((string) $heroVideo), '.webm')
+        ? 'video/webm'
+        : 'video/mp4';
+    $heroCtaHref = \App\Support\Content::link($hero['cta_url'] ?? null);
 @endphp
 <section class="lum-container relative h-[680px] tab:h-[1080px] desk:h-[1242px] bg-lum-cream">
     {{-- MOBILE --}}
     <div class="relative h-[680px] tab:hidden">
         <div class="absolute inset-0 overflow-hidden">
-            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img($heroPoster) }}" data-lum-hero-video data-lum-bp="mobile">
-                <source data-src="{{ $img('hero/video.mp4') }}" type="video/mp4">
-            </video>
+            @include('lum.partials.hero-media', ['bp' => 'mobile', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
@@ -32,16 +41,14 @@
             <div class="lum-hero-scroll-hint flex h-[48px] w-[48px] shrink-0 items-center justify-center">
                 <img src="{{ $img('hero/scroll-arrow-375.svg') }}" alt="" class="w-[48px] rotate-90" width="49" height="7">
             </div>
-            <a href="{{ route('stay') }}" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
+            <a href="{{ $heroCtaHref }}" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
         </div>
     </div>
 
     {{-- TABLET --}}
     <div class="relative hidden h-[1080px] tab:block desk:hidden">
         <div class="absolute inset-0 overflow-hidden">
-            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img($heroPoster) }}" data-lum-hero-video data-lum-bp="tablet">
-                <source data-src="{{ $img('hero/video.mp4') }}" type="video/mp4">
-            </video>
+            @include('lum.partials.hero-media', ['bp' => 'tablet', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
@@ -65,16 +72,14 @@
             <div class="lum-hero-scroll-hint flex h-[48px] w-[48px] shrink-0 items-center justify-center">
                 <img src="{{ $img('hero/scroll-arrow-960.svg') }}" alt="" class="w-[48px] rotate-90" width="49" height="7">
             </div>
-            <a href="{{ route('stay') }}" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
+            <a href="{{ $heroCtaHref }}" class="lum-btn-outline-ivory px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
         </div>
     </div>
 
     {{-- DESKTOP --}}
     <div class="relative hidden h-[1242px] desk:block">
         <div class="absolute inset-0 h-[1242px] overflow-hidden">
-            <video class="h-full w-full object-cover object-center" autoplay muted loop playsinline preload="none" poster="{{ $img($heroPoster) }}" data-lum-hero-video data-lum-bp="desktop">
-                <source data-src="{{ $img('hero/video.mp4') }}" type="video/mp4">
-            </video>
+            @include('lum.partials.hero-media', ['bp' => 'desktop', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
             <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
@@ -103,6 +108,6 @@
             <img src="{{ $img('hero/scroll-arrow.svg') }}" alt="" class="w-[86px] rotate-90" width="87" height="7">
         </div>
 
-        <a href="{{ route('stay') }}" class="lum-btn-outline-ivory absolute left-1/2 top-[1018px] z-20 -translate-x-1/2" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
+        <a href="{{ $heroCtaHref }}" class="lum-btn-outline-ivory absolute left-1/2 top-[1018px] z-20 -translate-x-1/2" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
     </div>
 </section>

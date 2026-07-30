@@ -5,7 +5,7 @@
     $href = $post
         ? route('blog.show', array_filter(['slug' => $post['slug'], 'from' => $from]))
         : route('blog');
-    $image = $post ? 'blog/' . $post['image'] : 'blog/surfing.jpg';
+    $image = $post && filled($post['image'] ?? null) ? 'blog/' . $post['image'] : null;
     $category = $post['tags'][0] ?? __('lum.blog.category');
     $title = $post['title'] ?? null;
 @endphp
@@ -23,7 +23,7 @@
             'h-[240px] w-[240px]' => $variant === 'mobile',
             'h-[450px] w-[450px]' => $variant === 'tablet',
         ])>
-            <img src="{{ $img($image) }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="{{ $variant === 'mobile' ? 240 : 450 }}" height="{{ $variant === 'mobile' ? 240 : 450 }}">
+            <img src="{{ \App\Support\Content::mediaUrl($image) }}" alt="" class="lum-blog-card__img h-full w-full object-cover" width="{{ $variant === 'mobile' ? 240 : 450 }}" height="{{ $variant === 'mobile' ? 240 : 450 }}">
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(57,54,46,0.74)]"></div>
         </div>
     </a>

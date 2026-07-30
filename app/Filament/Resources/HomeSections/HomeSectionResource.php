@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\HomeSections;
 
-use App\Filament\Resources\HomeSections\Pages\CreateHomeSection;
 use App\Filament\Resources\HomeSections\Pages\EditHomeSection;
 use App\Filament\Resources\HomeSections\Pages\ListHomeSections;
 use App\Filament\Resources\HomeSections\Schemas\HomeSectionForm;
@@ -13,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class HomeSectionResource extends Resource
@@ -33,6 +33,11 @@ class HomeSectionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'key';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return HomeSectionForm::configure($schema);
@@ -43,18 +48,20 @@ class HomeSectionResource extends Resource
         return HomeSectionsTable::configure($table);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->ordered();
+    }
+
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => ListHomeSections::route('/'),
-            'create' => CreateHomeSection::route('/create'),
             'edit' => EditHomeSection::route('/{record}/edit'),
         ];
     }

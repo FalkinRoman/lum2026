@@ -16,6 +16,12 @@ function slideName(slides, index) {
 }
 
 function buildSrc(base, name, suffix = '') {
+    if (! name) {
+        return 'data:image/svg+xml,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect fill="#2C1810" width="8" height="8"/></svg>',
+        );
+    }
+
     return `${base}/${name}${suffix}.webp`;
 }
 
@@ -284,23 +290,37 @@ function animateDamaiSlot(frame, host, nextSrc, direction, reducedMotion) {
 
 export function initInteriorCarousel() {
     document.querySelectorAll('[data-lum-interior-carousel]').forEach((root) => {
-        const slides = JSON.parse(root.dataset.slides || '[]');
+        let slides = JSON.parse(root.dataset.slides || '[]');
+        const tabGalleries = JSON.parse(root.dataset.tabGalleries || '[]');
         const base = root.dataset.imgBase || '';
-        const total = Number.parseInt(root.dataset.total || `${DEFAULT_TOTAL}`, 10);
+        let total = Number.parseInt(root.dataset.total || `${DEFAULT_TOTAL}`, 10);
         let index = Number.parseInt(root.dataset.start || `${DEFAULT_START}`, 10);
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let isAnimating = false;
         let progressTween = null;
         let autoplayEnabled = ! reducedMotion;
+        let activeTab = 0;
 
         const panels = [...root.querySelectorAll('[data-lum-interior-panel]')];
         const prevButtons = root.querySelectorAll('[data-lum-interior-prev]');
         const nextButtons = root.querySelectorAll('[data-lum-interior-next]');
         const counters = root.querySelectorAll('[data-lum-interior-current]');
         const progressRows = root.querySelectorAll('[data-lum-interior-progress]');
+        const tabButtons = root.querySelectorAll('[data-lum-interior-tab]');
+        const totalLabels = root.querySelectorAll('[data-lum-interior-total]');
 
-        if (! slides.length || ! panels.length) {
+        if (! panels.length) {
             return;
+        }
+
+        if (Array.isArray(tabGalleries) && tabGalleries[0]?.length) {
+            slides = tabGalleries[0];
+            total = slides.length;
+        }
+
+        if (! slides.length) {
+            slides = [null];
+            total = 1;
         }
 
         const getSources = (panel) => {
@@ -326,7 +346,10 @@ export function initInteriorCarousel() {
                     const itemIndex = Number.parseInt(item.dataset.index || '0', 10);
                     const fill = item.querySelector('[data-lum-interior-progress-fill]');
                     const dot = item.querySelector('[data-lum-interior-progress-dot]');
-                    const active = itemIndex === index;
+                    const inRange = itemIndex < total;
+                    const active = inRange && itemIndex === index;
+
+                    item.style.display = inRange ? '' : 'none';
 
                     if (fill) {
                         gsap.killTweensOf(fill);
@@ -352,6 +375,50 @@ export function initInteriorCarousel() {
                     }
                 });
             });
+        };
+
+        const syncTotalLabels = () => {
+            const label = padSlideNumber(total);
+
+            totalLabels.forEach((node) => {
+                node.textContent = label;
+            });
+        };
+
+        const syncTabButtons = () => {
+            tabButtons.forEach((button) => {
+                const tabIndex = Number.parseInt(button.dataset.lumInteriorTab || '0', 10);
+                const active = tabIndex === activeTab;
+                const raw = (button.textContent || '').replace(/^✓/, '').trim();
+
+                button.textContent = (active ? '✓' : '') + raw;
+                button.classList.toggle('lum-tab--active', active);
+                button.classList.toggle('lum-tab--inactive', ! active);
+            });
+        };
+
+        const applyGallery = (tabIndex) => {
+            if (! Array.isArray(tabGalleries) || tabGalleries[tabIndex] === undefined) {
+                return;
+            }
+
+            const next = tabGalleries[tabIndex]?.length ? tabGalleries[tabIndex] : [null];
+
+            if (tabIndex === activeTab && slides === next) {
+                return;
+            }
+
+            killProgress();
+            activeTab = tabIndex;
+            slides = next;
+            total = slides.length;
+            index = 0;
+            root.dataset.slides = JSON.stringify(slides);
+            root.dataset.total = String(total);
+            syncTabButtons();
+            syncTotalLabels();
+            setStateSync();
+            startProgress();
         };
 
         const syncCountersInstant = () => {
@@ -553,6 +620,18 @@ export function initInteriorCarousel() {
             button.addEventListener('click', () => {
                 killProgress();
                 go('next');
+            });
+        });
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const tabIndex = Number.parseInt(button.dataset.lumInteriorTab || '0', 10);
+
+                if (Number.isNaN(tabIndex) || isAnimating) {
+                    return;
+                }
+
+                applyGallery(tabIndex);
             });
         });
 

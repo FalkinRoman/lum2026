@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\HomeSections\Pages;
 
 use App\Filament\Resources\HomeSections\HomeSectionResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListHomeSections extends ListRecords
@@ -12,8 +11,6 @@ class ListHomeSections extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            CreateAction::make(),
-        ];
+        return [];
     }
 }

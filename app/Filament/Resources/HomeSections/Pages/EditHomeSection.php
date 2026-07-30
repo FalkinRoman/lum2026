@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\HomeSections\Pages;
 
-use App\Filament\Forms\HomeSectionImages;
+use App\Filament\Forms\HomeSectionState;
 use App\Filament\Resources\HomeSections\HomeSectionResource;
-use Filament\Actions\DeleteAction;
+use App\Filament\Resources\HomeSections\Schemas\Sections\BlogForm;
 use Filament\Resources\Pages\EditRecord;
 
 class EditHomeSection extends EditRecord
@@ -13,9 +13,14 @@ class EditHomeSection extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            DeleteAction::make(),
-        ];
+        return [];
+    }
+
+    public function getTitle(): string
+    {
+        $key = (string) ($this->record->key ?? '');
+
+        return \App\Models\HomeSection::LABELS[$key] ?? parent::getTitle();
     }
 
     /**
@@ -24,11 +29,9 @@ class EditHomeSection extends EditRecord
      */
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $payload = is_array($data['payload'] ?? null) ? $data['payload'] : [];
-        $key = (string) ($data['key'] ?? '');
-        $data['images'] = HomeSectionImages::extract($key, $payload);
+        $key = (string) ($data['key'] ?? $this->record->key ?? '');
 
-        return $data;
+        return HomeSectionState::fill($key, $data);
     }
 
     /**
@@ -37,13 +40,12 @@ class EditHomeSection extends EditRecord
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $payload = is_array($data['payload'] ?? null) ? $data['payload'] : [];
-        $images = is_array($data['images'] ?? null) ? $data['images'] : [];
         $key = (string) ($data['key'] ?? $this->record->key ?? '');
 
-        $data['payload'] = HomeSectionImages::merge($key, $payload, $images);
-        unset($data['images']);
+        if ($key === 'blog') {
+            BlogForm::assertUniquePosts($data);
+        }
 
-        return $data;
+        return HomeSectionState::save($key, $data);
     }
 }

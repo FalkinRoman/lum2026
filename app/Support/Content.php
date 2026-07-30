@@ -28,12 +28,265 @@ class Content
         return $path;
     }
 
+    /**
+     * URL for CMS-managed media. Empty path → espresso stub (no seed asset fallback).
+     */
+    public static function mediaUrl(?string $path): string
+    {
+        $path = is_string($path) ? trim($path) : '';
+
+        if ($path === '') {
+            return self::mediaStubUrl();
+        }
+
+        return asset('images/lum/'.ltrim($path, '/'));
+    }
+
+    public static function mediaStubUrl(): string
+    {
+        static $url = null;
+
+        return $url ??= 'data:image/svg+xml,'.rawurlencode(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect fill="#2C1810" width="8" height="8"/></svg>'
+        );
+    }
+
+    public static function hasMedia(mixed $path): bool
+    {
+        return is_string($path) && trim($path) !== '';
+    }
+
+    /**
+     * CMS CTA href. Absolute URL / path / named route; empty → fallback route.
+     */
+    public static function link(?string $url, string $fallbackRoute = 'stay'): string
+    {
+        $url = is_string($url) ? trim($url) : '';
+
+        if ($url === '') {
+            return route($fallbackRoute);
+        }
+
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, '//') || str_starts_with($url, '/')) {
+            return $url;
+        }
+
+        if (\Illuminate\Support\Facades\Route::has($url)) {
+            return route($url);
+        }
+
+        return url($url);
+    }
+
     public static function slideStem(?string $path): string
     {
         $path = self::stripPrefix((string) $path, 'villas/');
-        $path = preg_replace('/\.webp$/i', '', $path) ?? $path;
+        $path = preg_replace('/\.(webp|jpe?g|png)$/i', '', $path) ?? $path;
 
         return $path;
+    }
+
+    /**
+     * Resolve villa carousel image for JS/blade.
+     * Legacy slide-01 / oval-02 → stem + -sm.webp variants.
+     * CMS upload (hash.jpg etc.) → absolute URL, same for all breakpoints.
+     *
+     * @return array{stem: ?string, src: string, srcSm: string}
+     */
+    public static function villaCarouselMedia(?string $path): array
+    {
+        if (! self::hasMedia($path)) {
+            $stub = self::mediaStubUrl();
+
+            return ['stem' => null, 'src' => $stub, 'srcSm' => $stub];
+        }
+
+        $relative = str_contains($path, '/') ? $path : 'villas/'.$path;
+        $stem = self::slideStem($relative);
+
+        if (preg_match('/^(slide|oval)-\d{2}$/', $stem) === 1) {
+            $base = asset('images/lum/villas');
+
+            return [
+                'stem' => $stem,
+                'src' => $base.'/'.$stem.'.webp',
+                'srcSm' => $base.'/'.$stem.'-sm.webp',
+            ];
+        }
+
+        $url = self::mediaUrl($relative);
+
+        return ['stem' => null, 'src' => $url, 'srcSm' => $url];
+    }
+
+    public static function interiorStem(?string $path): string
+    {
+        $path = self::stripPrefix((string) $path, 'interior/');
+        $path = preg_replace('/\.(webp|jpe?g|png)$/i', '', $path) ?? $path;
+        $path = preg_replace('/-sm$/i', '', $path) ?? $path;
+
+        return $path;
+    }
+
+    /**
+     * Home blog carousel: CMS picks, else first published posts.
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public static function homeBlogPosts(int $limit = 4): Collection
+    {
+        $picks = self::homeLocale('blog')['posts'] ?? null;
+        $all = self::blogPosts()->keyBy('slug');
+
+        if (is_array($picks) && $picks !== []) {
+            $resolved = collect($picks)
+                ->filter(fn ($slug) => filled($slug) && $all->has($slug))
+                ->map(fn ($slug) => $all->get($slug))
+                ->values();
+
+            if ($resolved->isNotEmpty()) {
+                $themes = BlogPost::THEME_CYCLE;
+
+                return $resolved
+                    ->take($limit)
+                    ->values()
+                    ->map(fn (array $post, int $index) => array_merge($post, [
+                        'theme' => $themes[$index % count($themes)],
+                    ]));
+            }
+        }
+
+        return self::blogPosts()->take($limit)->values();
+    }
+
+    /**
+     * Home villas carousel slides from CMS (fallback to Villa models).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public static function homeVillaSlides(): array
+    {
+        $intro = self::homeLocale('villas_intro') ?? [];
+        $cmsSlides = is_array($intro['slides'] ?? null) ? $intro['slides'] : [];
+
+        if ($cmsSlides !== []) {
+            return collect($cmsSlides)->map(function (array $slide) use ($intro) {
+                $slug = $slide['slug'] ?? null;
+                if (! $slug && ! empty($slide['villa_id'])) {
+                    $slug = Villa::query()->whereKey($slide['villa_id'])->value('slug');
+                }
+
+                $slug = $slug ?: 'villas';
+
+                $photo = self::villaCarouselMedia($slide['photo'] ?? null);
+                $oval = self::villaCarouselMedia($slide['oval'] ?? null);
+
+                return [
+                    'slug' => $slug,
+                    'href' => route('villa.show', $slug),
+                    'photo' => $photo['stem'],
+                    'oval' => $oval['stem'],
+                    'photoSrc' => $photo['src'],
+                    'photoSrcSm' => $photo['srcSm'],
+                    'ovalSrc' => $oval['src'],
+                    'ovalSrcSm' => $oval['srcSm'],
+                    'titleNormal' => $slide['title_normal'] ?? $slide['titleNormal'] ?? '',
+                    'titleItalic' => $slide['title_italic'] ?? $slide['titleItalic'] ?? '',
+                    'titleMobileNormal' => $slide['title_mobile_normal'] ?? $slide['titleMobileNormal'] ?? ($slide['title_normal'] ?? $slide['titleNormal'] ?? ''),
+                    'titleMobileItalic' => $slide['title_mobile_italic'] ?? $slide['titleMobileItalic'] ?? ($slide['title_italic'] ?? $slide['titleItalic'] ?? ''),
+                    'subtitle' => $slide['subtitle'] ?? ($intro['subtitle'] ?? __('lum.villas.subtitle')),
+                    'subtitleLine1' => $slide['subtitle_line1'] ?? $slide['subtitleLine1'] ?? ($intro['subtitle_line1'] ?? __('lum.villas.subtitle_line1')),
+                    'subtitleLine2' => $slide['subtitle_line2'] ?? $slide['subtitleLine2'] ?? ($intro['subtitle_line2'] ?? __('lum.villas.subtitle_line2')),
+                ];
+            })->values()->all();
+        }
+
+        return self::villas()->map(function ($slide) use ($intro) {
+            $photo = self::villaCarouselMedia(
+                isset($slide['photo']) ? 'villas/'.$slide['photo'].'.webp' : null
+            );
+            $oval = self::villaCarouselMedia(
+                isset($slide['oval']) ? 'villas/'.$slide['oval'].'.webp' : null
+            );
+
+            return array_merge($slide, [
+                'photo' => $photo['stem'] ?? ($slide['photo'] ?? null),
+                'oval' => $oval['stem'] ?? ($slide['oval'] ?? null),
+                'photoSrc' => $photo['src'],
+                'photoSrcSm' => $photo['srcSm'],
+                'ovalSrc' => $oval['src'],
+                'ovalSrcSm' => $oval['srcSm'],
+                'subtitle' => $slide['subtitle'] ?? ($intro['subtitle'] ?? __('lum.villas.subtitle')),
+                'subtitleLine1' => $slide['subtitleLine1'] ?? ($intro['subtitle_line1'] ?? __('lum.villas.subtitle_line1')),
+                'subtitleLine2' => $slide['subtitleLine2'] ?? ($intro['subtitle_line2'] ?? __('lum.villas.subtitle_line2')),
+                'href' => route('villa.show', $slide['slug']),
+            ]);
+        })->values()->all();
+    }
+
+    /**
+     * Home interior tabs+galleries from CMS.
+     *
+     * @return array{title_normal: string, title_caps: string, tabs: list<array{label: string, slides: list<string>}>}|null
+     */
+    public static function homeInterior(): ?array
+    {
+        $data = self::homeLocale('interior');
+        if (! is_array($data)) {
+            return null;
+        }
+
+        $rawTabs = is_array($data['tabs'] ?? null) ? $data['tabs'] : [];
+        $tabs = [];
+
+        foreach ($rawTabs as $tab) {
+            if (is_string($tab)) {
+                $tabs[] = [
+                    'label' => $tab,
+                    'slides' => ['slide-01', 'slide-02', 'slide-03', 'slide-04'],
+                ];
+
+                continue;
+            }
+
+            if (! is_array($tab)) {
+                continue;
+            }
+
+            $images = is_array($tab['images'] ?? null) ? $tab['images'] : [];
+            $slides = array_values(array_filter(array_map(
+                fn ($img) => self::interiorStem(is_string($img) ? $img : null),
+                $images,
+            )));
+
+            if ($slides === []) {
+                continue;
+            }
+
+            $label = is_string($tab['label'] ?? null) ? $tab['label'] : '';
+            if ($label === '') {
+                continue;
+            }
+
+            $tabs[] = [
+                'label' => $label,
+                'slides' => $slides,
+            ];
+        }
+
+        if ($tabs === []) {
+            return [
+                'title_normal' => $data['title_normal'] ?? __('lum.interior.title_normal'),
+                'title_caps' => $data['title_caps'] ?? __('lum.interior.title_caps'),
+                'tabs' => [],
+            ];
+        }
+
+        return [
+            'title_normal' => $data['title_normal'] ?? __('lum.interior.title_normal'),
+            'title_caps' => $data['title_caps'] ?? __('lum.interior.title_caps'),
+            'tabs' => $tabs,
+        ];
     }
 
     public const BLOG_PER_PAGE = 6;

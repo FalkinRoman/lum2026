@@ -1,18 +1,66 @@
 @php
     $villasIntro = \App\Support\Content::homeLocale('villas_intro') ?? [];
-    $villasSlides = collect(\App\Support\Content::villas())->map(fn ($slide) => array_merge($slide, [
-        'subtitle' => $slide['subtitle'] ?? ($villasIntro['subtitle'] ?? __('lum.villas.subtitle')),
-        'subtitleLine1' => $slide['subtitleLine1'] ?? ($villasIntro['subtitle_line1'] ?? __('lum.villas.subtitle_line1')),
-        'subtitleLine2' => $slide['subtitleLine2'] ?? ($villasIntro['subtitle_line2'] ?? __('lum.villas.subtitle_line2')),
-        'href' => route('villa.show', $slide['slug']),
-    ]))->values()->all();
+    $villasSlides = \App\Support\Content::homeVillaSlides();
     $isRu = app()->getLocale() === 'ru';
     $lifestyle = $villasIntro['lifestyle'] ?? __('lum.villas.lifestyle');
     $villasLifestyle = '<span class="lum-script text-[24px] text-lum-green">' . e($lifestyle) . ' </span>';
     $villasLifestyleTab = '<span class="lum-script text-[26px] text-lum-green">' . e($lifestyle) . '</span>';
     $villasLifestyleDesk = '<span class="lum-script text-[28px] text-lum-green">' . e($lifestyle) . '</span>';
+
+    $introLines = function (string $key, array $legacyKeys = []) use ($villasIntro): array {
+        if (filled($villasIntro[$key] ?? null)) {
+            return array_values(array_filter(array_map(
+                'trim',
+                preg_split('/\r\n|\r|\n/', (string) $villasIntro[$key]) ?: [],
+            )));
+        }
+
+        $lines = [];
+        foreach ($legacyKeys as $legacyKey) {
+            $value = $villasIntro[$legacyKey] ?? null;
+            if ($value === null || $value === '') {
+                $value = __("lum.villas.{$legacyKey}");
+            }
+            if (is_string($value) && trim($value) !== '') {
+                $lines[] = $value;
+            }
+        }
+
+        return $lines;
+    };
+
+    $renderIntro = function (string $line, string $lifestyleHtml): string {
+        if (! str_contains($line, ':lifestyle')) {
+            return e($line);
+        }
+
+        $parts = explode(':lifestyle', $line);
+        $out = e(array_shift($parts) ?? '');
+        foreach ($parts as $part) {
+            $out .= $lifestyleHtml.e($part);
+        }
+
+        return $out;
+    };
+
+    $introMobile = $introLines('intro_mobile', [
+        'intro_mobile_1', 'intro_mobile_2', 'intro_mobile_3', 'intro_mobile_4', 'intro_mobile_5',
+    ]);
+    // Legacy mobile: lifestyle was prepended to line 2 in the markup, not stored in line 1.
+    if (! filled($villasIntro['intro_mobile'] ?? null) && isset($introMobile[1]) && ! str_contains($introMobile[1], ':lifestyle')) {
+        $introMobile[1] = ':lifestyle '.$introMobile[1];
+    }
+
+    $introTablet = $introLines('intro_tablet', ['intro_tablet', 'intro_tablet_2', 'intro_tablet_3']);
+    $introDesk = $introLines('intro_desk', ['intro_desk_1', 'intro_desk_2', 'intro_desk_3', 'intro_desk_4']);
+
     $villasStart = 0;
-    $villasTotal = str_pad(count($villasSlides), 2, '0', STR_PAD_LEFT);
+    $villasTotal = str_pad(max(count($villasSlides), 1), 2, '0', STR_PAD_LEFT);
+    $first = $villasSlides[$villasStart] ?? null;
+    $firstPhotoSrc = $first['photoSrcSm'] ?? \App\Support\Content::mediaStubUrl();
+    $firstPhotoDeskSrc = $first['photoSrc'] ?? \App\Support\Content::mediaStubUrl();
+    $firstOvalSmSrc = $first['ovalSrcSm'] ?? \App\Support\Content::mediaStubUrl();
+    $firstOvalSrc = $first['ovalSrc'] ?? \App\Support\Content::mediaStubUrl();
 @endphp
 
 <section
@@ -29,17 +77,15 @@
             <p class="lum-text-3 font-medium uppercase text-lum-espresso">{{ $villasIntro['eyebrow'] ?? __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="335" height="1">
             <div @class(['text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso', '[&_p]:whitespace-nowrap' => $isRu])>
-                <p>{{ __('lum.villas.intro_mobile_1') }}</p>
-                <p>{!! $villasLifestyle !!}{{ __('lum.villas.intro_mobile_2') }}</p>
-                <p>{{ __('lum.villas.intro_mobile_3') }}</p>
-                <p>{{ __('lum.villas.intro_mobile_4') }}</p>
-                <p>{{ __('lum.villas.intro_mobile_5') }}</p>
+                @foreach ($introMobile as $line)
+                    <p>{!! $renderIntro($line, $villasLifestyle) !!}</p>
+                @endforeach
             </div>
         </div>
 
         <div class="absolute left-0 top-[269px] h-[670px] w-full">
             <div class="relative h-[550px] w-full overflow-hidden" data-lum-villas-slider>
-                <img src="{{ $img('villas/slide-01-sm.webp') }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="375" height="550">
+                <img src="{{ $firstPhotoSrc }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="375" height="550">
                 <div class="absolute inset-0 bg-black/32"></div>
                 <div class="absolute inset-y-0 left-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
                 <div class="absolute inset-y-0 right-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
@@ -58,19 +104,19 @@
                 >
                     <div class="relative w-full" data-lum-villas-mobile-subtitle-stage>
                         <div class="w-full text-center" data-lum-villas-mobile-subtitle-content>
-                            <p class="m-0">{{ $villasSlides[$villasStart]['subtitleLine1'] }}</p>
-                            <p class="m-0">{{ $villasSlides[$villasStart]['subtitleLine2'] }}</p>
+                            <p class="m-0">{{ $first['subtitleLine1'] ?? '' }}</p>
+                            <p class="m-0">{{ $first['subtitleLine2'] ?? '' }}</p>
                         </div>
                     </div>
                 </div>
 
                 <h2 class="absolute left-1/2 top-[275px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[56px] leading-[56px] text-lum-ivory">
-                    <span data-lum-villas-title-normal class="font-normal">Lum</span><span data-lum-villas-title-italic class="font-medium italic"> Villas</span>
+                    <span data-lum-villas-title-normal class="font-normal">{{ $first['titleMobileNormal'] ?? $first['titleNormal'] ?? 'Lum' }}</span><span data-lum-villas-title-italic class="font-medium italic">{{ $first['titleMobileItalic'] ?? $first['titleItalic'] ?? ' Villas' }}</span>
                 </h2>
             </div>
 
             <div class="absolute left-[118px] top-[422px] z-20 h-[188px] w-[140px] overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
-                <img src="{{ $img('villas/oval-01-sm.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="140" height="188">
+                <img src="{{ $firstOvalSmSrc }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="140" height="188">
             </div>
 
             <button type="button" data-lum-villas-prev class="absolute left-[58px] top-[530px] z-20 lum-icon-btn lum-icon-btn--green-filled lum-icon-btn--carousel-40" aria-label="{{ __('lum.aria.previous') }}">
@@ -94,14 +140,14 @@
             <p class="lum-text-2 font-medium uppercase text-lum-espresso">{{ $villasIntro['eyebrow'] ?? __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-px w-full" width="640" height="1">
             <div @class(['lum-text-2 text-lum-espresso', '[&_p]:whitespace-nowrap' => $isRu])>
-                <p>{!! __('lum.villas.intro_tablet', ['lifestyle' => $villasLifestyleTab]) !!}</p>
-                <p>{{ __('lum.villas.intro_tablet_2') }}</p>
-                <p>{{ __('lum.villas.intro_tablet_3') }}</p>
+                @foreach ($introTablet as $line)
+                    <p>{!! $renderIntro($line, $villasLifestyleTab) !!}</p>
+                @endforeach
             </div>
         </div>
 
         <div class="absolute left-0 top-[255px] h-[755px] w-full overflow-hidden" data-lum-villas-slider>
-            <img src="{{ $img('villas/slide-01.webp') }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="960" height="755">
+            <img src="{{ $firstPhotoDeskSrc }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="960" height="755">
             <div class="absolute inset-0 bg-black/32"></div>
             <div class="absolute inset-y-0 left-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
             <div class="absolute inset-y-0 right-0 w-[20px] backdrop-blur-[20px] bg-lum-ivory-40"></div>
@@ -116,15 +162,15 @@
         </div>
 
         <p data-lum-villas-subtitle class="absolute left-1/2 top-[523px] -translate-x-1/2 whitespace-nowrap lum-text-2 text-lum-ivory-88">
-            {{ __('lum.villas.subtitle') }}
+            {{ $first['subtitle'] ?? ($villasIntro['subtitle'] ?? __('lum.villas.subtitle')) }}
         </p>
 
         <h2 class="absolute left-1/2 top-[calc(50%+91px)] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[80px] leading-[80px] text-lum-ivory">
-            <span data-lum-villas-title-normal class="font-normal">Lum </span><span data-lum-villas-title-italic class="font-medium italic">Villas</span>
+            <span data-lum-villas-title-normal class="font-normal">{{ $first['titleNormal'] ?? 'Lum ' }}</span><span data-lum-villas-title-italic class="font-medium italic">{{ $first['titleItalic'] ?? 'Villas' }}</span>
         </h2>
 
         <div class="absolute left-1/2 top-[842px] z-20 h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
-            <img src="{{ $img('villas/oval-01.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="180" height="240">
+            <img src="{{ $firstOvalSrc }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="180" height="240">
         </div>
 
         <button type="button" data-lum-villas-prev class="absolute left-[20px] top-[calc(50%+91px)] z-20 lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-56 -translate-y-1/2" aria-label="{{ __('lum.aria.previous') }}">
@@ -147,10 +193,9 @@
             <p class="lum-eyebrow text-lum-espresso">{{ $villasIntro['eyebrow'] ?? __('lum.villas.eyebrow') }}</p>
             <img src="{{ $img('villas/divider.svg') }}" alt="" class="h-[2px] w-full" width="530" height="2">
             <div @class(['lum-body text-lum-espresso', '[&_p]:whitespace-nowrap' => $isRu])>
-                <p>{!! __('lum.villas.intro_desk_1', ['lifestyle' => $villasLifestyleDesk]) !!}</p>
-                <p>{{ __('lum.villas.intro_desk_2') }}</p>
-                <p>{{ __('lum.villas.intro_desk_3') }}</p>
-                <p>{{ __('lum.villas.intro_desk_4') }}</p>
+                @foreach ($introDesk as $line)
+                    <p>{!! $renderIntro($line, $villasLifestyleDesk) !!}</p>
+                @endforeach
             </div>
         </div>
 
@@ -163,7 +208,7 @@
             data-lum-villas-view-safe-top="48"
             data-lum-villas-view-safe-bottom="48"
         >
-            <img src="{{ $img('villas/slide-01.webp') }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="1920" height="1080">
+            <img src="{{ $firstPhotoDeskSrc }}" alt="" data-lum-villas-photo class="h-full w-full object-cover" width="1920" height="1080">
             <div class="pointer-events-none absolute inset-0 bg-black/32"></div>
             <div class="absolute inset-y-0 left-0 w-[32px] overflow-hidden pointer-events-none">
                 <img src="{{ $img('villas/side-gradient.webp') }}" alt="" class="pointer-events-none absolute top-0 left-[-123px] h-full w-[617px] max-w-none object-cover" width="617" height="1080">
@@ -175,7 +220,7 @@
                 data-lum-villas-view-cursor
                 class="lum-villas-view-cursor pointer-events-none absolute left-0 top-0 z-30 flex size-[88px] items-center justify-center rounded-full bg-lum-ivory px-[10px] text-center text-[16px] font-extrabold leading-none tracking-[3.2px] text-lum-espresso uppercase opacity-0"
                 aria-hidden="true"
-            ><span class="lum-villas-view-cursor__text">{{ __('lum.villas.view') }}</span></div>
+            ><span class="lum-villas-view-cursor__text">{{ $villasIntro['view'] ?? __('lum.villas.view') }}</span></div>
         </div>
 
         <div class="pointer-events-none absolute left-1/2 top-[413px] flex -translate-x-1/2 items-center gap-[16px] text-lum-ivory">
@@ -187,15 +232,15 @@
         </div>
 
         <p data-lum-villas-subtitle class="pointer-events-none absolute left-1/2 top-[698px] -translate-x-1/2 whitespace-nowrap lum-body text-lum-ivory-88">
-            {{ __('lum.villas.subtitle') }}
+            {{ $first['subtitle'] ?? ($villasIntro['subtitle'] ?? __('lum.villas.subtitle')) }}
         </p>
 
         <h2 class="pointer-events-none absolute left-1/2 top-[873px] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center font-serif text-[164px] leading-[170px] text-lum-ivory">
-            <span data-lum-villas-title-normal class="font-normal">Lum </span><span data-lum-villas-title-italic class="font-medium italic">Villas</span>
+            <span data-lum-villas-title-normal class="font-normal">{{ $first['titleNormal'] ?? 'Lum ' }}</span><span data-lum-villas-title-italic class="font-medium italic">{{ $first['titleItalic'] ?? 'Villas' }}</span>
         </h2>
 
         <div class="absolute left-1/2 top-[1143px] z-20 h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
-            <img src="{{ $img('villas/oval-01.webp') }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="320" height="430">
+            <img src="{{ $firstOvalSrc }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="320" height="430">
         </div>
 
         <button type="button" data-lum-villas-prev class="absolute left-[72px] top-[calc(50%+166.5px)] z-20 lum-icon-btn lum-icon-btn--ivory-filled lum-icon-btn--carousel-64 -translate-y-1/2" aria-label="{{ __('lum.aria.previous') }}">
@@ -205,6 +250,6 @@
             <img src="{{ $img('ui/carousel-arrow-right.svg') }}" alt="" class="size-[32px]" width="32" height="32">
         </button>
 
-        <a href="{{ route('villa.show', 'villas') }}" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-full bg-lum-ivory px-[10px] text-center text-[16px] font-extrabold leading-none tracking-[3.2px] text-lum-espresso uppercase"><span class="lum-villas-view-cursor__text">{{ __('lum.villas.view') }}</span></a>
+        <a href="{{ $first['href'] ?? route('villa.show', 'villas') }}" data-lum-villas-view-fixed class="absolute left-[1467px] top-[1129px] z-20 flex size-[88px] items-center justify-center rounded-full bg-lum-ivory px-[10px] text-center text-[16px] font-extrabold leading-none tracking-[3.2px] text-lum-espresso uppercase"><span class="lum-villas-view-cursor__text">{{ $villasIntro['view'] ?? __('lum.villas.view') }}</span></a>
     </div>
 </section>

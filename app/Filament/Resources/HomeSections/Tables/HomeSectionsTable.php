@@ -2,8 +2,7 @@
 
 namespace App\Filament\Resources\HomeSections\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use App\Models\HomeSection;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -15,21 +14,18 @@ class HomeSectionsTable
         return $table
             ->columns([
                 TextColumn::make('key')
+                    ->label('Секция')
+                    ->formatStateUsing(fn (string $state): string => HomeSection::LABELS[$state] ?? $state)
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(false),
                 TextColumn::make('updated_at')
                     ->label('Обновлено')
                     ->dateTime()
                     ->sortable(),
             ])
-            ->defaultSort('key')
             ->recordActions([
                 EditAction::make(),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->toolbarActions([]);
     }
 }
