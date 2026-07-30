@@ -638,14 +638,111 @@ class Content
             return null;
         }
 
+        $assetBase = 'dining/detail/'.$slug;
+        $defaultPolaroidDates = ['06.08.2023', '06.01.2024', '07.03.2023'];
+        $defaultPolaroidPaths = [
+            $assetBase.'/gallery-01.webp',
+            $assetBase.'/gallery-02.webp',
+            $assetBase.'/gallery-03.webp',
+        ];
+
+        $polaroids = [];
+        $rawGallery = is_array($r->gallery_images) ? array_values($r->gallery_images) : [];
+        for ($i = 0; $i < 3; $i++) {
+            $item = $rawGallery[$i] ?? null;
+            $path = null;
+            $date = $defaultPolaroidDates[$i] ?? '';
+
+            if (is_string($item) && trim($item) !== '') {
+                $path = ltrim($item, '/');
+            } elseif (is_array($item)) {
+                $path = is_string($item['path'] ?? null) ? ltrim($item['path'], '/') : null;
+                if (is_string($item['date'] ?? null) && trim($item['date']) !== '') {
+                    $date = trim($item['date']);
+                }
+            }
+
+            if ($path === null || $path === '') {
+                $path = $defaultPolaroidPaths[$i];
+            }
+
+            $polaroids[] = [
+                'path' => $path,
+                'date' => $date,
+            ];
+        }
+
+        $impressionPrefix = 'dining/detail/shared/impression/';
+        $defaultImpressionSlides = ['slide-01', 'slide-02', 'slide-03', 'slide-04'];
+        $locale = app()->getLocale();
+        $impressionTabs = [];
+        $rawGalleries = is_array($r->impression_galleries) ? $r->impression_galleries : [];
+
+        foreach ($rawGalleries as $gallery) {
+            if (! is_array($gallery)) {
+                continue;
+            }
+
+            $labelData = is_array($gallery['label'] ?? null) ? $gallery['label'] : [];
+            $label = (string) ($labelData[$locale] ?? $labelData['en'] ?? $labelData['ru'] ?? '');
+            if (trim($label) === '') {
+                continue;
+            }
+
+            $images = is_array($gallery['images'] ?? null) ? $gallery['images'] : [];
+            $slides = array_values(array_filter(array_map(
+                function ($img) use ($impressionPrefix) {
+                    if (! is_string($img) || trim($img) === '') {
+                        return null;
+                    }
+                    $stem = self::stripPrefix(ltrim($img, '/'), $impressionPrefix);
+                    $stem = preg_replace('/\.(webp|jpe?g|png)$/i', '', $stem) ?? $stem;
+                    $stem = preg_replace('/-sm$/i', '', $stem) ?? $stem;
+
+                    return $stem !== '' ? $stem : null;
+                },
+                $images,
+            )));
+
+            if ($slides === []) {
+                continue;
+            }
+
+            $impressionTabs[] = [
+                'label' => $label,
+                'slides' => $slides,
+            ];
+        }
+
+        if ($impressionTabs === []) {
+            $legacyTabs = trans('lum.restaurant.impression.tabs');
+            $legacyTabs = is_array($legacyTabs) ? $legacyTabs : [];
+            foreach ($legacyTabs as $label) {
+                if (! is_string($label) || trim($label) === '') {
+                    continue;
+                }
+                $impressionTabs[] = [
+                    'label' => $label,
+                    'slides' => $defaultImpressionSlides,
+                ];
+            }
+        }
+
+        if ($impressionTabs === []) {
+            $impressionTabs[] = [
+                'label' => 'GALLERY',
+                'slides' => $defaultImpressionSlides,
+            ];
+        }
+
         return [
             'meta_title' => $r->meta_title,
             'hero' => [
                 'eyebrow' => $r->hero_eyebrow,
                 'title_normal' => $r->hero_title_normal,
                 'title_italic' => $r->hero_title_italic,
-                'image' => $r->hero_image,
-                'oval' => $r->oval_image,
+                'image' => filled($r->hero_image) ? $r->hero_image : $assetBase.'/hero.webp',
+                'oval' => filled($r->oval_image) ? $r->oval_image : $assetBase.'/oval.webp',
             ],
             'gallery' => [
                 'eyebrow' => $r->gallery_eyebrow,
@@ -653,17 +750,61 @@ class Content
                 'title_italic' => $r->gallery_title_italic,
                 'body' => $r->gallery_body,
                 'body_bottom' => $r->gallery_body_bottom ?? '',
-                'images' => $r->gallery_images ?? [],
+                'polaroids' => $polaroids,
+            ],
+            'menu' => [
+                'eyebrow' => filled($r->menu_eyebrow)
+                    ? $r->menu_eyebrow
+                    : __('lum.restaurant.menu_eyebrow'),
+                'title_normal' => filled($r->menu_title_normal)
+                    ? $r->menu_title_normal
+                    : __('lum.restaurant.menu_title_normal'),
+                'title_italic' => filled($r->menu_title_italic)
+                    ? $r->menu_title_italic
+                    : __('lum.restaurant.menu_title_italic'),
+            ],
+            'impression' => [
+                'title_normal' => filled($r->impression_title_normal)
+                    ? $r->impression_title_normal
+                    : __('lum.restaurant.impression.title_normal'),
+                'title_caps' => filled($r->impression_title_caps)
+                    ? $r->impression_title_caps
+                    : __('lum.restaurant.impression.title_caps'),
+                'tabs' => $impressionTabs,
+                'slides' => $impressionTabs[0]['slides'] ?? $defaultImpressionSlides,
+                'img_base' => 'dining/detail/shared/impression',
+                'cta' => filled($r->impression_cta)
+                    ? $r->impression_cta
+                    : __('lum.restaurant.book_table'),
+                'cta_href' => self::restaurantImpressionCtaHref($r),
             ],
             'quote' => [
                 'line1' => $r->quote_line1,
                 'line2' => $r->quote_line2,
                 'note_line1' => $r->quote_note_line1,
                 'note_line2' => $r->quote_note_line2,
+                'hero_image' => filled($r->quote_hero_image)
+                    ? $r->quote_hero_image
+                    : 'dining/detail/shared/quote-hero.webp',
+                'oval_image' => filled($r->quote_oval_image)
+                    ? $r->quote_oval_image
+                    : 'dining/detail/shared/quote-oval.webp',
             ],
             'book_url' => $r->book_url ?: Site::bookUrl(),
             'slug' => $r->slug,
+            'id' => $r->id,
         ];
+    }
+
+    public static function restaurantImpressionCtaHref(Restaurant $restaurant): string
+    {
+        $mode = $restaurant->impression_cta_mode ?: 'restaurant';
+
+        return match ($mode) {
+            'site' => Site::takeABreakUrl(),
+            'custom' => self::link($restaurant->impression_cta_url, 'dining'),
+            default => $restaurant->book_url ?: Site::bookUrl(),
+        };
     }
 
     public static function menuCategories(): Collection
@@ -679,6 +820,34 @@ class Content
                 'photo' => $i->image ?: 'dining/detail/shared/menu-item.webp',
             ])->all(),
         ]);
+    }
+
+    public static function menuCategoriesForRestaurant(int|string $restaurantIdOrSlug): Collection
+    {
+        $restaurantId = is_numeric($restaurantIdOrSlug)
+            ? (int) $restaurantIdOrSlug
+            : Restaurant::query()->where('slug', $restaurantIdOrSlug)->value('id');
+
+        if (! $restaurantId) {
+            return collect();
+        }
+
+        return MenuCategory::query()
+            ->forRestaurant($restaurantId)
+            ->with('items')
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn (MenuCategory $c) => [
+                'key' => $c->key,
+                'label' => $c->label,
+                'items' => $c->items->map(fn ($i) => [
+                    'name' => $i->name,
+                    'description' => $i->description,
+                    'price' => $i->price,
+                    'image' => $i->image,
+                    'photo' => $i->image ?: 'dining/detail/shared/menu-item.webp',
+                ])->all(),
+            ]);
     }
 
     public static function activities(): Collection

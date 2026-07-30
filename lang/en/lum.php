@@ -920,6 +920,9 @@ return [
         'menu_eyebrow' => 'tropical, local and good',
         'menu_title_normal' => 'our ',
         'menu_title_italic' => 'menu',
+        'menu_pagination_label' => 'Menu pages',
+        'menu_pagination_prev' => 'Previous menu page',
+        'menu_pagination_next' => 'Next menu page',
         'menu_categories' => [
             ['key' => 'starters', 'label' => 'Starters'],
             ['key' => 'mains', 'label' => 'Mains'],

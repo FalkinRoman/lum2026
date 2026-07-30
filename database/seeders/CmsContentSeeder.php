@@ -314,6 +314,32 @@ TXT,
         $enVenues = $this->en['dining']['venues'];
         $ruVenues = collect($this->ru['dining']['venues'])->keyBy('slug');
         $whatsapp = $this->en['shop']['social_whatsapp_url'];
+        $enImpression = $this->en['restaurant']['impression'] ?? [];
+        $ruImpression = $this->ru['restaurant']['impression'] ?? [];
+        $enTabs = is_array($enImpression['tabs'] ?? null) ? $enImpression['tabs'] : [];
+        $ruTabs = is_array($ruImpression['tabs'] ?? null) ? $ruImpression['tabs'] : [];
+        $impressionImages = [
+            'dining/detail/shared/impression/slide-01.webp',
+            'dining/detail/shared/impression/slide-02.webp',
+            'dining/detail/shared/impression/slide-03.webp',
+            'dining/detail/shared/impression/slide-04.webp',
+        ];
+        $impressionGalleries = [];
+        $tabCount = max(count($enTabs), count($ruTabs));
+        for ($ti = 0; $ti < $tabCount; $ti++) {
+            $enLabel = is_string($enTabs[$ti] ?? null) ? $enTabs[$ti] : '';
+            $ruLabel = is_string($ruTabs[$ti] ?? null) ? $ruTabs[$ti] : '';
+            if ($enLabel === '' && $ruLabel === '') {
+                continue;
+            }
+            $impressionGalleries[] = [
+                'label' => [
+                    'en' => $enLabel !== '' ? $enLabel : $ruLabel,
+                    'ru' => $ruLabel !== '' ? $ruLabel : $enLabel,
+                ],
+                'images' => $impressionImages,
+            ];
+        }
 
         foreach ($enVenues as $index => $enVenue) {
             $slug = $enVenue['slug'];
@@ -331,7 +357,15 @@ TXT,
                     'listing_image' => 'dining/'.$enVenue['image'],
                     'hero_image' => $assetBase.'/hero.webp',
                     'oval_image' => $assetBase.'/oval.webp',
-                    'gallery_images' => [$assetBase.'/gallery-01.webp', $assetBase.'/gallery-02.webp'],
+                    'gallery_images' => [
+                        ['path' => $assetBase.'/gallery-01.webp', 'date' => '06.08.2023'],
+                        ['path' => $assetBase.'/gallery-02.webp', 'date' => '06.01.2024'],
+                        ['path' => $assetBase.'/gallery-03.webp', 'date' => '07.03.2023'],
+                    ],
+                    'impression_cta_mode' => 'restaurant',
+                    'impression_galleries' => $impressionGalleries,
+                    'quote_hero_image' => 'dining/detail/shared/quote-hero.webp',
+                    'quote_oval_image' => 'dining/detail/shared/quote-oval.webp',
                     'book_url' => $whatsapp,
                 ]
             );
@@ -350,6 +384,30 @@ TXT,
                 'gallery_title_italic' => ['en' => $enDetail['gallery']['title_italic'] ?? '', 'ru' => $ruDetail['gallery']['title_italic'] ?? ''],
                 'gallery_body' => ['en' => $enDetail['gallery']['body'] ?? '', 'ru' => $ruDetail['gallery']['body'] ?? ''],
                 'gallery_body_bottom' => ['en' => $enDetail['gallery']['body_bottom'] ?? '', 'ru' => $ruDetail['gallery']['body_bottom'] ?? ''],
+                'menu_eyebrow' => [
+                    'en' => $this->en['restaurant']['menu_eyebrow'] ?? '',
+                    'ru' => $this->ru['restaurant']['menu_eyebrow'] ?? '',
+                ],
+                'menu_title_normal' => [
+                    'en' => $this->en['restaurant']['menu_title_normal'] ?? '',
+                    'ru' => $this->ru['restaurant']['menu_title_normal'] ?? '',
+                ],
+                'menu_title_italic' => [
+                    'en' => $this->en['restaurant']['menu_title_italic'] ?? '',
+                    'ru' => $this->ru['restaurant']['menu_title_italic'] ?? '',
+                ],
+                'impression_title_normal' => [
+                    'en' => $enImpression['title_normal'] ?? '',
+                    'ru' => $ruImpression['title_normal'] ?? '',
+                ],
+                'impression_title_caps' => [
+                    'en' => $enImpression['title_caps'] ?? '',
+                    'ru' => $ruImpression['title_caps'] ?? '',
+                ],
+                'impression_cta' => [
+                    'en' => $this->en['restaurant']['book_table'] ?? 'book a table',
+                    'ru' => $this->ru['restaurant']['book_table'] ?? 'забронировать стол',
+                ],
                 'quote_line1' => ['en' => $enDetail['quote']['line1'] ?? '', 'ru' => $ruDetail['quote']['line1'] ?? ''],
                 'quote_line2' => ['en' => $enDetail['quote']['line2'] ?? '', 'ru' => $ruDetail['quote']['line2'] ?? ''],
                 'quote_note_line1' => ['en' => $enDetail['quote']['note_line1'] ?? '', 'ru' => $ruDetail['quote']['note_line1'] ?? ''],
@@ -365,38 +423,48 @@ TXT,
         $enItems = $this->en['restaurant']['menu_items'];
         $ruItems = $this->ru['restaurant']['menu_items'];
 
-        foreach ($enCategories as $index => $enCategory) {
-            $key = $enCategory['key'];
-            $ruCategory = $ruCategories->get($key, $enCategory);
+        $restaurants = Restaurant::query()->orderBy('id')->get();
+        if ($restaurants->isEmpty()) {
+            return;
+        }
 
-            $category = MenuCategory::query()->updateOrCreate(
-                ['key' => $key],
-                ['sort_order' => $index + 1]
-            );
+        foreach ($restaurants as $restaurant) {
+            foreach ($enCategories as $index => $enCategory) {
+                $key = $enCategory['key'];
+                $ruCategory = $ruCategories->get($key, $enCategory);
 
-            $this->setTranslations($category, [
-                'label' => ['en' => $enCategory['label'], 'ru' => $ruCategory['label']],
-            ]);
+                $category = MenuCategory::query()->updateOrCreate(
+                    [
+                        'restaurant_id' => $restaurant->id,
+                        'key' => $key,
+                    ],
+                    ['sort_order' => $index + 1]
+                );
 
-            // Menu items have no natural unique key, so re-create them per category on every run.
-            $category->items()->delete();
-
-            $enCategoryItems = $enItems[$key] ?? [];
-            $ruCategoryItems = $ruItems[$key] ?? [];
-
-            foreach ($enCategoryItems as $itemIndex => $enItem) {
-                $ruItem = $ruCategoryItems[$itemIndex] ?? $enItem;
-
-                $menuItem = MenuItem::query()->create([
-                    'menu_category_id' => $category->id,
-                    'sort_order' => $itemIndex + 1,
+                $this->setTranslations($category, [
+                    'label' => ['en' => $enCategory['label'], 'ru' => $ruCategory['label']],
                 ]);
 
-                $this->setTranslations($menuItem, [
-                    'name' => ['en' => $enItem['name'], 'ru' => $ruItem['name']],
-                    'description' => ['en' => $enItem['description'], 'ru' => $ruItem['description']],
-                    'price' => ['en' => $enItem['price'], 'ru' => $ruItem['price']],
-                ]);
+                $category->items()->delete();
+
+                $enCategoryItems = $enItems[$key] ?? [];
+                $ruCategoryItems = $ruItems[$key] ?? [];
+
+                foreach ($enCategoryItems as $itemIndex => $enItem) {
+                    $ruItem = $ruCategoryItems[$itemIndex] ?? $enItem;
+
+                    $menuItem = MenuItem::query()->create([
+                        'menu_category_id' => $category->id,
+                        'sort_order' => $itemIndex + 1,
+                        'image' => 'dining/detail/shared/menu-item.webp',
+                    ]);
+
+                    $this->setTranslations($menuItem, [
+                        'name' => ['en' => $enItem['name'], 'ru' => $ruItem['name']],
+                        'description' => ['en' => $enItem['description'], 'ru' => $ruItem['description']],
+                        'price' => ['en' => $enItem['price'], 'ru' => $ruItem['price']],
+                    ]);
+                }
             }
         }
     }

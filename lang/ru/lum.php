@@ -920,6 +920,9 @@ return [
         'menu_eyebrow' => 'тропическое, местное и вкусное',
         'menu_title_normal' => 'наше ',
         'menu_title_italic' => 'меню',
+        'menu_pagination_label' => 'Страницы меню',
+        'menu_pagination_prev' => 'Предыдущая страница меню',
+        'menu_pagination_next' => 'Следующая страница меню',
         'menu_categories' => [
             ['key' => 'starters', 'label' => 'Закуски'],
             ['key' => 'mains', 'label' => 'Основные'],

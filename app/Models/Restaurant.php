@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
 class Restaurant extends Model
@@ -16,13 +17,19 @@ class Restaurant extends Model
         'eyebrow', 'subtitle', 'title_normal', 'title_italic', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
         'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body', 'gallery_body_bottom',
-        'quote_line1', 'quote_line2', 'quote_note_line1', 'quote_note_line2', 'book_url',
+        'menu_eyebrow', 'menu_title_normal', 'menu_title_italic',
+        'impression_title_normal', 'impression_title_caps', 'impression_galleries',
+        'impression_cta', 'impression_cta_mode', 'impression_cta_url',
+        'quote_line1', 'quote_line2', 'quote_note_line1', 'quote_note_line2',
+        'quote_hero_image', 'quote_oval_image', 'book_url',
     ];
 
     public array $translatable = [
         'eyebrow', 'subtitle', 'title_normal', 'title_italic', 'meta_title',
         'hero_eyebrow', 'hero_title_normal', 'hero_title_italic',
         'gallery_eyebrow', 'gallery_title_normal', 'gallery_title_italic', 'gallery_body', 'gallery_body_bottom',
+        'menu_eyebrow', 'menu_title_normal', 'menu_title_italic',
+        'impression_title_normal', 'impression_title_caps', 'impression_cta',
         'quote_line1', 'quote_line2', 'quote_note_line1', 'quote_note_line2',
     ];
 
@@ -32,7 +39,13 @@ class Restaurant extends Model
             'is_published' => 'boolean',
             'opening_soon' => 'boolean',
             'gallery_images' => 'array',
+            'impression_galleries' => 'array',
         ];
+    }
+
+    public function menuCategories(): HasMany
+    {
+        return $this->hasMany(MenuCategory::class)->orderBy('sort_order');
     }
 
     public function scopePublished(Builder $query): Builder

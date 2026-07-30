@@ -73,6 +73,8 @@ class MenuItemsRelationManager extends RelationManager
                     ->sortable(),
             ])
             ->defaultSort('sort_order')
+            ->reorderable('sort_order')
+            ->paginated([10, 25, 50])
             ->headerActions([
                 CreateAction::make(),
             ])

@@ -28,6 +28,8 @@ class MenuCategoryResource extends Resource
 
     protected static ?int $navigationSort = 31;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $modelLabel = 'Категория меню';
 
     protected static ?string $pluralModelLabel = 'Категории меню';

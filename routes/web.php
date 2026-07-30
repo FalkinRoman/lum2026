@@ -61,7 +61,7 @@ Route::get('/dining/{slug}', function (string $slug) {
         abort(404);
     }
 
-    $menuCategories = Content::menuCategories();
+    $menuCategories = Content::menuCategoriesForRestaurant($restaurant['id'] ?? $slug);
 
     return view('restaurant', compact('slug', 'restaurant', 'menuCategories'));
 })->name('restaurant.show');

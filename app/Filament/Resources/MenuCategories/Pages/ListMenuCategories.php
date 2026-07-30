@@ -3,17 +3,20 @@
 namespace App\Filament\Resources\MenuCategories\Pages;
 
 use App\Filament\Resources\MenuCategories\MenuCategoryResource;
-use Filament\Actions\CreateAction;
+use App\Filament\Resources\Restaurants\RestaurantResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListMenuCategories extends ListRecords
 {
     protected static string $resource = MenuCategoryResource::class;
 
-    protected function getHeaderActions(): array
+    public static function canAccess(array $parameters = []): bool
     {
-        return [
-            CreateAction::make(),
-        ];
+        return false;
+    }
+
+    public function mount(): void
+    {
+        $this->redirect(RestaurantResource::getUrl('index'), navigate: false);
     }
 }

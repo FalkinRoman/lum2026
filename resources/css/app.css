@@ -1248,6 +1248,29 @@
         padding-top: 24px;
     }
 
+    .lum-menu-pagination {
+        padding-top: 0;
+        width: max-content;
+        max-width: calc(100% - 40px);
+    }
+
+    .lum-menu-pagination .lum-blog-pagination__page,
+    .lum-menu-pagination .lum-blog-pagination__arrow {
+        cursor: pointer;
+        background: transparent;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    .lum-menu-pagination .lum-blog-pagination__page.is-active {
+        cursor: default;
+    }
+
+    .lum-menu-pagination[hidden] {
+        display: none !important;
+        margin-top: 0 !important;
+    }
+
     .lum-blog-pagination__pages {
         display: flex;
         flex-wrap: wrap;
