@@ -17,8 +17,25 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if ($url = config('app.url')) {
+        $url = (string) config('app.url');
+        $host = (string) config('app.host');
+        $port = (string) config('app.port');
+        $scheme = (string) config('app.scheme', 'http');
+
+        // Prefer explicit host:port so Filament redirects keep :8080 even when
+        // the request hits nginx inside the container on port 80.
+        if ($host !== '') {
+            $url = in_array($port, ['', '80', '443'], true)
+                ? sprintf('%s://%s', $scheme, $host)
+                : sprintf('%s://%s:%s', $scheme, $host, $port);
+        }
+
+        if ($url !== '') {
             URL::forceRootUrl(rtrim($url, '/'));
+        }
+
+        if ($scheme === 'https') {
+            URL::forceScheme('https');
         }
 
         View::composer(['lum.partials.*', 'components.lum.*', 'layouts.lum'], function ($view) {

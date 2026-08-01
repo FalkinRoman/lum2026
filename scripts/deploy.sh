@@ -35,7 +35,7 @@ fi
 WEB_PORT="$(grep -E '^WEB_PORT=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
 WEB_PORT="${WEB_PORT:-8080}"
 APP_HOST="$(grep -E '^APP_HOST=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
-APP_HOST="${APP_HOST:-94.103.2.95}"
+APP_HOST="${APP_HOST:-45.151.62.114}"
 
 if grep -q '^APP_HOST=' .env; then
     sed -i.bak "s|^APP_HOST=.*|APP_HOST=${APP_HOST}|" .env

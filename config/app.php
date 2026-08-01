@@ -60,6 +60,14 @@ return [
     ),
 
     /*
+    | Public host parts — used to force absolute URLs when the app sits
+    | behind docker/nginx on :80 while the browser hits :8080.
+    */
+    'scheme' => env('APP_SCHEME', 'http'),
+    'host' => env('APP_HOST', 'localhost'),
+    'port' => env('APP_PORT', '8080'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------

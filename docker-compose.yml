@@ -30,9 +30,9 @@ services:
       APP_ENV: production
       APP_DEBUG: "false"
       APP_SCHEME: http
-      APP_HOST: ${APP_HOST:-94.103.2.95}
+      APP_HOST: ${APP_HOST:-45.151.62.114}
       APP_PORT: ${WEB_PORT:-8080}
-      APP_URL: http://${APP_HOST:-94.103.2.95}:${WEB_PORT:-8080}
+      APP_URL: http://${APP_HOST:-45.151.62.114}:${WEB_PORT:-8080}
       DB_CONNECTION: sqlite
       # Keep sqlite under storage so the named volume does not hide
       # database/migrations + database/seeders from the image.
