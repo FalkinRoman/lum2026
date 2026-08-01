@@ -9,33 +9,36 @@
     $heroPosterUrl = $heroPoster ? $img($heroPoster) : null;
 @endphp
 @if ($heroVideoUrl)
-    <div class="absolute inset-0 overflow-hidden" data-lum-hero-media data-lum-bp="{{ $bp }}">
+    {{-- Poster first; video src injected by JS for active breakpoint only --}}
+    <div class="lum-hero-media absolute inset-0 overflow-hidden" data-lum-hero-media data-lum-bp="{{ $bp }}">
         @if ($heroPosterUrl)
             <img
                 src="{{ $heroPosterUrl }}"
                 alt=""
-                class="absolute inset-0 h-full w-full object-cover {{ $heroObjectPosition }}"
+                class="lum-hero-media__poster absolute inset-0 h-full w-full object-cover {{ $heroObjectPosition }}"
+                width="1920"
+                height="1080"
+                decoding="async"
+                fetchpriority="{{ $bp === 'mobile' ? 'high' : 'auto' }}"
                 aria-hidden="true"
             >
+        @else
+            <div class="absolute inset-0 bg-lum-espresso" aria-hidden="true"></div>
         @endif
-        {{--
-            src in HTML (not data-src): iOS/Telegram need muted+autoplay before JS.
-            Hidden until `playing` so native play chrome never flashes.
-        --}}
         <video
-            class="absolute inset-0 h-full w-full object-cover {{ $heroObjectPosition }} opacity-0"
-            src="{{ $heroVideoUrl }}"
+            class="lum-hero-media__video absolute inset-0 h-full w-full object-cover {{ $heroObjectPosition }}"
             @if ($heroPosterUrl) poster="{{ $heroPosterUrl }}" @endif
-            autoplay
             muted
             loop
             playsinline
             webkit-playsinline
             disablepictureinpicture
             disableremoteplayback
-            preload="auto"
+            preload="none"
             data-lum-hero-video
             data-lum-bp="{{ $bp }}"
+            data-src="{{ $heroVideoUrl }}"
+            data-type="{{ $heroVideoType }}"
         ></video>
     </div>
 @elseif ($heroPosterUrl)
@@ -43,6 +46,9 @@
         src="{{ $heroPosterUrl }}"
         alt=""
         class="h-full w-full object-cover {{ $heroObjectPosition }}"
+        width="1920"
+        height="1080"
+        decoding="async"
     >
 @else
     <div class="h-full w-full bg-lum-espresso" aria-hidden="true"></div>

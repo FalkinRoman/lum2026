@@ -84,37 +84,42 @@
         transition: opacity 0.2s ease;
     }
 
-    /* Hero video: never show native play chrome; stay invisible until playing */
-    [data-lum-hero-video] {
-        pointer-events: none !important;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        user-select: none;
+    /* Hero: poster first, video fades in when playing — never cover UI */
+    .lum-hero-media {
+        z-index: 0;
     }
 
-    [data-lum-hero-video]::-webkit-media-controls,
-    [data-lum-hero-video]::-webkit-media-controls-enclosure,
-    [data-lum-hero-video]::-webkit-media-controls-panel,
-    [data-lum-hero-video]::-webkit-media-controls-start-playback-button,
-    [data-lum-hero-video]::-webkit-media-controls-overlay-play-button,
-    [data-lum-hero-video]::-webkit-media-controls-play-button {
+    .lum-hero-media__video {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none !important;
+        -webkit-touch-callout: none;
+        transition: opacity 0.7s ease;
+    }
+
+    .lum-hero-media.is-playing .lum-hero-media__video,
+    .lum-hero-media__video.is-playing {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .lum-hero-media__video::-webkit-media-controls,
+    .lum-hero-media__video::-webkit-media-controls-enclosure,
+    .lum-hero-media__video::-webkit-media-controls-panel,
+    .lum-hero-media__video::-webkit-media-controls-start-playback-button,
+    .lum-hero-media__video::-webkit-media-controls-overlay-play-button,
+    .lum-hero-media__video::-webkit-media-controls-play-button {
         display: none !important;
         -webkit-appearance: none !important;
         appearance: none !important;
         opacity: 0 !important;
         visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
         pointer-events: none !important;
     }
 
-    [data-lum-hero-media] > video.opacity-0 {
-        visibility: hidden;
-    }
-
-    [data-lum-hero-media] > video.opacity-100 {
-        visibility: visible;
-        opacity: 1;
+    .lum-hero-ui {
+        position: relative;
+        z-index: 10;
     }
 
     button,

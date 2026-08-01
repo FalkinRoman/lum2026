@@ -17,27 +17,12 @@ function harden(video) {
     video.defaultMuted = true;
     video.volume = 0;
     video.playsInline = true;
-    video.autoplay = true;
     video.loop = true;
     video.controls = false;
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', '');
-    video.setAttribute('autoplay', '');
     video.removeAttribute('controls');
-}
-
-function revealWhenPlaying(video) {
-    const show = () => {
-        video.classList.remove('opacity-0');
-        video.classList.add('opacity-100');
-    };
-
-    if (! video.paused && video.readyState >= 2) {
-        show();
-    }
-
-    video.addEventListener('playing', show);
 }
 
 function tryPlay(video) {
@@ -55,8 +40,61 @@ function tryPlay(video) {
         run();
     } else {
         video.addEventListener('canplay', run, { once: true });
-        video.addEventListener('loadeddata', run, { once: true });
         run();
+    }
+}
+
+function markPlaying(video) {
+    video.classList.add('is-playing');
+    const media = video.closest('[data-lum-hero-media]');
+
+    if (media) {
+        media.classList.add('is-playing');
+    }
+}
+
+function ensureSource(video) {
+    const src = video.dataset.src;
+
+    if (! src) {
+        return false;
+    }
+
+    if (video.getAttribute('src') === src) {
+        return true;
+    }
+
+    video.setAttribute('src', src);
+    video.load();
+
+    return true;
+}
+
+function activateVideo(video) {
+    harden(video);
+
+    if (! ensureSource(video)) {
+        return;
+    }
+
+    video.addEventListener('playing', () => markPlaying(video), { once: true });
+    tryPlay(video);
+}
+
+function deactivateVideo(video) {
+    video.pause();
+    video.classList.remove('is-playing');
+
+    const media = video.closest('[data-lum-hero-media]');
+
+    if (media) {
+        media.classList.remove('is-playing');
+    }
+
+    // Drop source so hidden breakpoints don't keep buffering.
+    if (video.hasAttribute('src')) {
+        video.removeAttribute('src');
+        video.load();
     }
 }
 
@@ -67,22 +105,17 @@ export function initHeroVideo() {
         return;
     }
 
-    videos.forEach((video) => {
-        harden(video);
-        revealWhenPlaying(video);
-    });
-
     let activeBreakpoint = null;
 
-    const sync = (force = false) => {
+    const sync = () => {
         const breakpoint = getActiveBreakpoint();
 
-        if (! force && breakpoint === activeBreakpoint) {
-            videos.forEach((video) => {
-                if (video.dataset.lumBp === breakpoint) {
-                    tryPlay(video);
-                }
-            });
+        if (breakpoint === activeBreakpoint) {
+            const active = videos.find((v) => v.dataset.lumBp === breakpoint);
+
+            if (active) {
+                tryPlay(active);
+            }
 
             return;
         }
@@ -90,40 +123,32 @@ export function initHeroVideo() {
         activeBreakpoint = breakpoint;
 
         videos.forEach((video) => {
-            const active = video.dataset.lumBp === breakpoint;
-
-            if (active) {
-                tryPlay(video);
+            if (video.dataset.lumBp === breakpoint) {
+                activateVideo(video);
             } else {
-                video.pause();
-                video.classList.add('opacity-0');
-                video.classList.remove('opacity-100');
+                deactivateVideo(video);
             }
         });
     };
 
     const playActive = () => {
-        videos.forEach((video) => {
-            if (video.dataset.lumBp === activeBreakpoint) {
-                tryPlay(video);
-            }
-        });
+        const active = videos.find((v) => v.dataset.lumBp === activeBreakpoint);
+
+        if (active) {
+            tryPlay(active);
+        }
     };
 
-    sync(true);
+    // Poster paints first; start video after first paint so LCP stays snappy.
+    const start = () => sync();
 
-    // Keep hammering play briefly — Telegram WebView often unlocks a tick late.
-    let ticks = 0;
-    const boot = window.setInterval(() => {
-        playActive();
-        ticks += 1;
+    if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(start, { timeout: 400 });
+    } else {
+        window.setTimeout(start, 100);
+    }
 
-        if (ticks >= 20) {
-            window.clearInterval(boot);
-        }
-    }, 250);
-
-    window.addEventListener('resize', () => sync(false), { passive: true });
+    window.addEventListener('resize', sync, { passive: true });
     document.addEventListener('visibilitychange', () => {
         if (! document.hidden) {
             playActive();
@@ -133,7 +158,5 @@ export function initHeroVideo() {
 
     const unlock = () => playActive();
     document.addEventListener('touchstart', unlock, { capture: true, passive: true });
-    document.addEventListener('touchend', unlock, { capture: true, passive: true });
     document.addEventListener('click', unlock, { capture: true });
-    document.addEventListener('scroll', unlock, { capture: true, passive: true });
 }

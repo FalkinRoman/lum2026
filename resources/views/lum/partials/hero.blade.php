@@ -16,14 +16,14 @@
 <section class="lum-container relative h-[680px] tab:h-[1080px] desk:h-[1242px] bg-lum-cream">
     {{-- MOBILE --}}
     <div class="relative h-[680px] tab:hidden">
-        <div class="absolute inset-0 overflow-hidden">
+        <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             @include('lum.partials.hero-media', ['bp' => 'mobile', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
-            <div class="pointer-events-none absolute inset-0 z-[1] bg-black/24"></div>
+            <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
         @include('lum.partials.header-mobile', ['homeHero' => true])
 
-        <div class="absolute bottom-[80px] left-[20px] flex w-[335px] flex-col items-center gap-[36px]">
+        <div class="lum-hero-ui absolute bottom-[80px] left-[20px] flex w-[335px] flex-col items-center gap-[36px]">
             <div class="flex w-full flex-col items-center gap-[30px]">
                 <img src="{{ $img('hero/logomark.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                 <div class="flex w-full flex-col items-center gap-[24px]">
@@ -47,14 +47,14 @@
 
     {{-- TABLET --}}
     <div class="relative hidden h-[1080px] tab:block desk:hidden">
-        <div class="absolute inset-0 overflow-hidden">
+        <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
             @include('lum.partials.hero-media', ['bp' => 'tablet', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
-            <div class="pointer-events-none absolute inset-0 z-[1] bg-black/24"></div>
+            <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
         @include('lum.partials.header-tablet', ['homeHero' => true])
 
-        <div class="absolute bottom-[231px] left-1/2 flex w-[920px] -translate-x-1/2 flex-col items-center gap-[36px]">
+        <div class="lum-hero-ui absolute bottom-[231px] left-1/2 flex w-[920px] -translate-x-1/2 flex-col items-center gap-[36px]">
             <div class="flex w-full flex-col items-center gap-[30px]">
                 <img src="{{ $img('hero/logomark.svg') }}" alt="" class="size-[40px]" width="40" height="40">
                 <div class="flex w-full flex-col items-center gap-[24px]">
@@ -78,14 +78,14 @@
 
     {{-- DESKTOP --}}
     <div class="relative hidden h-[1242px] desk:block">
-        <div class="absolute inset-0 h-[1242px] overflow-hidden">
+        <div class="pointer-events-none absolute inset-0 z-0 h-[1242px] overflow-hidden">
             @include('lum.partials.hero-media', ['bp' => 'desktop', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
-            <div class="pointer-events-none absolute inset-0 z-[1] bg-black/24"></div>
+            <div class="absolute inset-0 bg-black/24"></div>
         </div>
 
         @include('lum.partials.header', ['homeHero' => true])
 
-        <div class="absolute left-[80px] top-[520px] flex w-[1760px] flex-col items-center gap-[44px]">
+        <div class="lum-hero-ui absolute left-[80px] top-[520px] flex w-[1760px] flex-col items-center gap-[44px]">
             <img src="{{ $img('hero/logomark.svg') }}" alt="" class="size-[64px]" width="64" height="64">
             <div class="flex w-full flex-col items-center gap-[38px]">
                 <p class="lum-eyebrow text-center text-lum-ivory">{{ $hero['eyebrow_lower'] ?? __('lum.hero.eyebrow_lower') }}</p>
