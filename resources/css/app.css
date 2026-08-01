@@ -84,22 +84,29 @@
         transition: opacity 0.2s ease;
     }
 
-    /* Hero: poster first; video swaps in only when actually playing (no fade) */
+    /*
+     * Hero: video must stay layout-visible (no visibility:hidden / display:none).
+     * iOS/WebKit blocks muted autoplay on non-visible media — that is why play
+     * only started after touch/scroll (gesture unlock). Poster sits on top until playing.
+     */
     .lum-hero-media {
         z-index: 0;
     }
 
     .lum-hero-media__video {
-        opacity: 0;
-        visibility: hidden;
+        z-index: 0;
         pointer-events: none !important;
         -webkit-touch-callout: none;
     }
 
-    .lum-hero-media.is-playing .lum-hero-media__video,
-    .lum-hero-media__video.is-playing {
-        opacity: 1;
-        visibility: visible;
+    .lum-hero-media__poster {
+        z-index: 1;
+        transition: opacity 0s;
+    }
+
+    .lum-hero-media.is-playing .lum-hero-media__poster {
+        opacity: 0;
+        pointer-events: none;
     }
 
     .lum-hero-media__video::-webkit-media-controls,

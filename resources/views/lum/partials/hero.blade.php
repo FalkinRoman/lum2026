@@ -114,7 +114,7 @@
 @if ($heroVideo)
 <script>
 (() => {
-    // Early boot (before deferred Vite module): poster stays, buffer+play as soon as canplay.
+    // Early boot before deferred Vite: set src + play ASAP for the active breakpoint only.
     const bp = document.documentElement.dataset.lumBp
         || (innerWidth <= 430 ? 'mobile' : innerWidth <= 1023 ? 'tablet' : 'desktop');
     const video = document.querySelector('[data-lum-hero-video][data-lum-bp="' + bp + '"]');
@@ -131,12 +131,16 @@
         video.defaultMuted = true;
         video.volume = 0;
         video.playsInline = true;
+        video.autoplay = true;
         video.setAttribute('muted', '');
         video.setAttribute('playsinline', '');
         video.setAttribute('webkit-playsinline', '');
         video.setAttribute('autoplay', '');
         const p = video.play();
-        if (p && p.catch) p.catch(() => {});
+        if (p && typeof p.then === 'function') {
+            p.then(reveal).catch(function () {});
+        }
+        if (!video.paused && video.readyState >= 2) reveal();
     };
 
     video.addEventListener('playing', reveal);
@@ -151,7 +155,7 @@
     video.src = video.dataset.src;
     kick();
 
-    // Keep trying while buffering — don't wait for a scroll gesture.
+    // Retry until buffered — and again when page leaves lum-is-loading (opacity:0 blocks some WebKits).
     let n = 0;
     const timer = setInterval(() => {
         if (!video.paused && video.readyState >= 2) {
@@ -160,8 +164,23 @@
             return;
         }
         kick();
-        if (++n >= 40) clearInterval(timer);
-    }, 200);
+        if (++n >= 50) clearInterval(timer);
+    }, 160);
+
+    const onReady = () => {
+        kick();
+        requestAnimationFrame(kick);
+    };
+
+    if (document.documentElement.classList.contains('lum-is-loading')) {
+        const mo = new MutationObserver(() => {
+            if (!document.documentElement.classList.contains('lum-is-loading')) {
+                mo.disconnect();
+                onReady();
+            }
+        });
+        mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    }
 
     window.__lumHeroEarlyBp = bp;
 })();

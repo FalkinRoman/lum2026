@@ -17,6 +17,7 @@ function harden(video) {
     video.defaultMuted = true;
     video.volume = 0;
     video.playsInline = true;
+    video.autoplay = true;
     video.loop = true;
     video.controls = false;
     video.setAttribute('muted', '');
@@ -40,8 +41,8 @@ function tryPlay(video) {
 
     const p = video.play();
 
-    if (p && typeof p.catch === 'function') {
-        p.catch(() => {});
+    if (p && typeof p.then === 'function') {
+        p.then(() => markPlaying(video)).catch(() => {});
     }
 
     if (! video.paused && video.readyState >= 2) {
@@ -56,7 +57,7 @@ function ensureSource(video) {
         return false;
     }
 
-    if (video.getAttribute('src') === src || video.currentSrc.includes(src.split('/').pop())) {
+    if (video.getAttribute('src') === src || (video.currentSrc && video.currentSrc.includes(src.split('/').pop()))) {
         return true;
     }
 
@@ -150,8 +151,30 @@ export function initHeroVideo() {
         }
     };
 
-    // Immediate — no idle delay (that made iPhone/Telegram wait until scroll).
     sync();
+
+    // Page starts with opacity:0 (lum-is-loading). Retry once it becomes visible —
+    // WebKit often rejects play() while ancestors are effectively invisible.
+    const onVisible = () => {
+        playActive();
+        requestAnimationFrame(playActive);
+    };
+
+    if (document.documentElement.classList.contains('lum-is-loading')) {
+        const observer = new MutationObserver(() => {
+            if (! document.documentElement.classList.contains('lum-is-loading')) {
+                observer.disconnect();
+                onVisible();
+            }
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+    } else {
+        onVisible();
+    }
 
     window.addEventListener('resize', sync, { passive: true });
     document.addEventListener('visibilitychange', () => {
@@ -160,11 +183,13 @@ export function initHeroVideo() {
         }
     });
     window.addEventListener('pageshow', playActive);
+    window.addEventListener('load', playActive, { once: true });
 
-    // Fallback only if WebView still blocks muted autoplay until a gesture.
+    // Last-resort unlock (Low Power Mode / some WebViews still need a gesture).
     const unlock = () => playActive();
     document.addEventListener('touchstart', unlock, { capture: true, passive: true });
     document.addEventListener('touchend', unlock, { capture: true, passive: true });
     document.addEventListener('pointerdown', unlock, { capture: true });
     document.addEventListener('click', unlock, { capture: true });
+    document.addEventListener('scroll', unlock, { capture: true, passive: true });
 }
