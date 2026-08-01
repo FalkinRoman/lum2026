@@ -2,18 +2,21 @@
 
 namespace App\Providers;
 
+use App\Support\LivewireSignedUploadUrl;
 use App\Support\Site;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // Relative signed upload URLs — survive Docker host:8080 ↔ nginx:80 mismatch.
+        $this->app->singleton(GenerateSignedUploadUrl::class, LivewireSignedUploadUrl::class);
     }
 
     public function boot(): void

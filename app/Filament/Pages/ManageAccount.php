@@ -63,18 +63,10 @@ class ManageAccount extends Page implements HasForms
                             ->disk('lum')
                             ->directory('avatars')
                             ->visibility('public')
-                            // avatar() already crops/resizes to 500² — skip imageEditor
-                            // (editor + GD pipeline was throwing opaque "undefined: undefined").
                             ->avatar()
-                            ->loadingIndicatorPosition('center')
-                            ->uploadProgressIndicatorPosition('center')
-                            ->removeUploadedFileButtonPosition('center bottom')
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
-                            ->nullable()
-                            ->extraFieldWrapperAttributes([
-                                'class' => 'lum-admin-avatar-field',
-                            ]),
+                            ->nullable(),
                         TextInput::make('name')->label('Имя')->required(),
                         TextInput::make('email')->label('Email')->email()->required(),
                     ]),

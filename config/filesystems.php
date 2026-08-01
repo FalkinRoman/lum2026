@@ -34,8 +34,9 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/private'),
             'serve' => true,
-            'throw' => false,
-            'report' => false,
+            // Livewire temp uploads need real exceptions, not silent false.
+            'throw' => true,
+            'report' => true,
         ],
 
         'public' => [
@@ -56,7 +57,7 @@ return [
             'root' => public_path('images/lum'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/images/lum',
             'visibility' => 'public',
-            'throw' => false,
+            'throw' => true,
             'report' => true,
         ],
 
