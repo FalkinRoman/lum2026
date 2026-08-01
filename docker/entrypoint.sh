@@ -58,7 +58,8 @@ persist_lum_dir() {
     ln -sfn "/var/www/html/storage/app/lum-writable/${name}" "${target}"
 }
 
-mkdir -p public/images/lum storage/app/lum-writable
+mkdir -p public/images/lum storage/app/lum-writable storage/logs storage/app/private/livewire-tmp
+touch storage/logs/laravel.log
 for dir in avatars uploads menu hero shop villas interior location polaroids stay dining relax discover blog activity excursion restaurant villa; do
     persist_lum_dir "${dir}"
 done

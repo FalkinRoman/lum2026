@@ -72,6 +72,19 @@ docker compose --profile production build web
 echo "Starting production container..."
 docker compose --profile production up -d web
 
+echo "Waiting for HTTP on :${WEB_PORT}..."
+for i in $(seq 1 30); do
+    code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 2 "http://127.0.0.1:${WEB_PORT}/" || true)"
+    if [ "$code" = "200" ] || [ "$code" = "302" ]; then
+        echo "Ready (HTTP ${code}) after ${i}s"
+        break
+    fi
+    if [ "$i" = "30" ]; then
+        echo "Still not ready (last HTTP ${code:-000}). Check: docker compose --profile production logs --tail=50 web" >&2
+    fi
+    sleep 1
+done
+
 echo "Done."
 docker compose --profile production ps
 echo "Site: http://${APP_HOST}:${WEB_PORT} (container port ${WEB_PORT})"
