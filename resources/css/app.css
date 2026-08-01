@@ -84,7 +84,7 @@
         transition: opacity 0.2s ease;
     }
 
-    /* Hero: poster first, video fades in when playing — never cover UI */
+    /* Hero: poster first; video swaps in only when actually playing (no fade) */
     .lum-hero-media {
         z-index: 0;
     }
@@ -94,7 +94,6 @@
         visibility: hidden;
         pointer-events: none !important;
         -webkit-touch-callout: none;
-        transition: opacity 0.7s ease;
     }
 
     .lum-hero-media.is-playing .lum-hero-media__video,
