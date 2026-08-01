@@ -84,22 +84,37 @@
         transition: opacity 0.2s ease;
     }
 
-    /* Hide iOS/Telegram native play overlay on muted hero autoplay videos */
+    /* Hero video: never show native play chrome; stay invisible until playing */
     [data-lum-hero-video] {
-        pointer-events: none;
+        pointer-events: none !important;
         -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
     }
 
     [data-lum-hero-video]::-webkit-media-controls,
     [data-lum-hero-video]::-webkit-media-controls-enclosure,
+    [data-lum-hero-video]::-webkit-media-controls-panel,
     [data-lum-hero-video]::-webkit-media-controls-start-playback-button,
-    [data-lum-hero-video]::-webkit-media-controls-overlay-play-button {
+    [data-lum-hero-video]::-webkit-media-controls-overlay-play-button,
+    [data-lum-hero-video]::-webkit-media-controls-play-button {
         display: none !important;
         -webkit-appearance: none !important;
+        appearance: none !important;
         opacity: 0 !important;
+        visibility: hidden !important;
         width: 0 !important;
         height: 0 !important;
         pointer-events: none !important;
+    }
+
+    [data-lum-hero-media] > video.opacity-0 {
+        visibility: hidden;
+    }
+
+    [data-lum-hero-media] > video.opacity-100 {
+        visibility: visible;
+        opacity: 1;
     }
 
     button,

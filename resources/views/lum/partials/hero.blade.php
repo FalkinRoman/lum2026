@@ -18,7 +18,7 @@
     <div class="relative h-[680px] tab:hidden">
         <div class="absolute inset-0 overflow-hidden">
             @include('lum.partials.hero-media', ['bp' => 'mobile', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
-            <div class="absolute inset-0 bg-black/24"></div>
+            <div class="pointer-events-none absolute inset-0 z-[1] bg-black/24"></div>
         </div>
 
         @include('lum.partials.header-mobile', ['homeHero' => true])
@@ -49,7 +49,7 @@
     <div class="relative hidden h-[1080px] tab:block desk:hidden">
         <div class="absolute inset-0 overflow-hidden">
             @include('lum.partials.hero-media', ['bp' => 'tablet', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
-            <div class="absolute inset-0 bg-black/24"></div>
+            <div class="pointer-events-none absolute inset-0 z-[1] bg-black/24"></div>
         </div>
 
         @include('lum.partials.header-tablet', ['homeHero' => true])
@@ -80,7 +80,7 @@
     <div class="relative hidden h-[1242px] desk:block">
         <div class="absolute inset-0 h-[1242px] overflow-hidden">
             @include('lum.partials.hero-media', ['bp' => 'desktop', 'img' => $img, 'heroVideo' => $heroVideo, 'heroPoster' => $heroPoster, 'heroObjectPosition' => $heroObjectPosition, 'heroVideoType' => $heroVideoType])
-            <div class="absolute inset-0 bg-black/24"></div>
+            <div class="pointer-events-none absolute inset-0 z-[1] bg-black/24"></div>
         </div>
 
         @include('lum.partials.header', ['homeHero' => true])
