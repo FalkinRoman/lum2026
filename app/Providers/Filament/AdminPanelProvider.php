@@ -73,6 +73,17 @@ class AdminPanelProvider extends PanelProvider
                     .fi-simple-layout .lum-admin-brand__logo {
                         height: 2.35rem;
                     }
+
+                    /*
+                     * FilePond centers [data-align*=center] with left:calc(50% - .8125em)
+                     * (half of 1.625em action buttons). Progress spinner is only 1.25em,
+                     * so it sits ~0.1875em left of true center. Translate fixes all uploads.
+                     */
+                    .fi-fo-file-upload .filepond--file .filepond--progress-indicator[data-align*='center'] {
+                        left: 50% !important;
+                        margin-left: 0 !important;
+                        transform: translateX(-50%);
+                    }
                 </style>
                 HTML
         );
