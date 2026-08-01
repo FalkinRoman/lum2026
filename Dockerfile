@@ -11,8 +11,13 @@ RUN apt-get update \
         libzip-dev \
         libicu-dev \
         libonig-dev \
+        libpng-dev \
+        libjpeg62-turbo-dev \
+        libfreetype6-dev \
+        libwebp-dev \
     && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install \
         pdo_sqlite \
         zip \
@@ -20,6 +25,7 @@ RUN apt-get update \
         mbstring \
         bcmath \
         exif \
+        gd \
     && curl -sS https://getcomposer.org/installer \
         | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/lib/apt/lists/*
@@ -81,11 +87,17 @@ RUN apt-get update \
         libzip-dev \
         libicu-dev \
         libonig-dev \
+        libpng-dev \
+        libjpeg62-turbo-dev \
+        libfreetype6-dev \
+        libwebp-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install \
         zip \
         intl \
         mbstring \
         exif \
+        gd \
     && curl -sS https://getcomposer.org/installer \
         | php -- --install-dir=/usr/local/bin --filename=composer \
     && rm -rf /var/lib/apt/lists/*
@@ -111,10 +123,16 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         nginx \
         supervisor \
+        sqlite3 \
         libsqlite3-dev \
         libzip-dev \
         libicu-dev \
         libonig-dev \
+        libpng-dev \
+        libjpeg62-turbo-dev \
+        libfreetype6-dev \
+        libwebp-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install \
         pdo_sqlite \
         zip \
@@ -122,6 +140,7 @@ RUN apt-get update \
         mbstring \
         bcmath \
         exif \
+        gd \
         opcache \
     && rm -rf /var/lib/apt/lists/*
 

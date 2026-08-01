@@ -66,7 +66,12 @@ class ManageAccount extends Page implements HasForms
                             ->avatar()
                             ->imageEditor()
                             ->circleCropper()
-                            ->maxSize(4096)
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('1:1')
+                            ->imageResizeTargetWidth(512)
+                            ->imageResizeTargetHeight(512)
+                            ->imageResizeUpscale(false)
+                            ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                             ->nullable()
                             ->extraFieldWrapperAttributes([

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Support\Site;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +37,16 @@ class AppServiceProvider extends ServiceProvider
 
         if ($scheme === 'https') {
             URL::forceScheme('https');
+        }
+
+        if (config('database.default') === 'sqlite') {
+            try {
+                DB::statement('PRAGMA journal_mode=WAL;');
+                DB::statement('PRAGMA synchronous=NORMAL;');
+                DB::statement('PRAGMA foreign_keys=ON;');
+            } catch (\Throwable) {
+                // DB may not be ready during early boot / package discovery.
+            }
         }
 
         View::composer(['lum.partials.*', 'components.lum.*', 'layouts.lum'], function ($view) {

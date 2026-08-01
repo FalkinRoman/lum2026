@@ -30,7 +30,12 @@ class LumImage
                 'image/gif',
                 'image/svg+xml',
             ])
-            ->maxSize(12288)
+            // Keep originals usable on retina, but avoid multi‑MB CMS payloads.
+            ->imageResizeMode('max')
+            ->imageResizeTargetWidth(2000)
+            ->imageResizeTargetHeight(2000)
+            ->imageResizeUpscale(false)
+            ->maxSize(8192)
             ->imagePreviewHeight('180')
             ->panelLayout('integrated')
             ->uploadProgressIndicatorPosition('center')
@@ -71,7 +76,11 @@ class LumImage
                 'image/gif',
                 'image/svg+xml',
             ])
-            ->maxSize(12288)
+            ->imageResizeMode('max')
+            ->imageResizeTargetWidth(2000)
+            ->imageResizeTargetHeight(2000)
+            ->imageResizeUpscale(false)
+            ->maxSize(8192)
             ->multiple()
             ->reorderable()
             ->maxFiles($max)

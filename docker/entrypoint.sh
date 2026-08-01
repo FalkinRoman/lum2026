@@ -34,7 +34,7 @@ fi
 php artisan migrate --force
 
 # Livewire temporary uploads (must be on the writable storage volume).
-mkdir -p storage/app/livewire-tmp storage/app/private storage/app/public
+mkdir -p storage/app/livewire-tmp storage/app/private/livewire-tmp storage/app/public
 
 # Filament disk `lum` points at public/images/lum (baked into the image).
 # Persist writable upload dirs on the storage volume so www-data can write
@@ -63,10 +63,16 @@ for dir in avatars uploads menu hero shop villas interior location polaroids sta
     persist_lum_dir "${dir}"
 done
 
+# SQLite: faster concurrent reads/writes for admin uploads + CMS.
+if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ] && [ -f "$DB_FILE" ]; then
+    sqlite3 "$DB_FILE" "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL;" >/dev/null 2>&1 || true
+fi
+
 if [ "$APP_ENV" = "production" ]; then
     php artisan config:cache
     php artisan route:cache
     php artisan view:cache
+    php artisan event:cache 2>/dev/null || true
 fi
 
 chmod -R 775 storage bootstrap/cache database public/images/lum 2>/dev/null || true

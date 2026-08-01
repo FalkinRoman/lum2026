@@ -57,7 +57,7 @@ return [
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/images/lum',
             'visibility' => 'public',
             'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
         's3' => [
