@@ -12,6 +12,31 @@ function getActiveBreakpoint() {
     return 'desktop';
 }
 
+function hardenAutoplayAttrs(video) {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.autoplay = true;
+    video.loop = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.setAttribute('autoplay', '');
+    video.removeAttribute('controls');
+}
+
+function tryPlay(video) {
+    hardenAutoplayAttrs(video);
+
+    const attempt = video.play();
+
+    if (attempt && typeof attempt.then === 'function') {
+        attempt.catch(() => {
+            // Autoplay blocked (Telegram/iOS) — retry on next gesture / canplay.
+        });
+    }
+}
+
 function setVideoSource(video, shouldPlay) {
     const source = video.querySelector('source');
 
@@ -25,13 +50,24 @@ function setVideoSource(video, shouldPlay) {
         return;
     }
 
+    hardenAutoplayAttrs(video);
+
     if (shouldPlay) {
         if (source.getAttribute('src') !== src) {
             source.setAttribute('src', src);
             video.load();
         }
 
-        video.play().catch(() => {});
+        const kick = () => tryPlay(video);
+
+        if (video.readyState >= 2) {
+            kick();
+        } else {
+            video.addEventListener('loadeddata', kick, { once: true });
+            video.addEventListener('canplay', kick, { once: true });
+            kick();
+        }
+
         return;
     }
 
@@ -52,10 +88,10 @@ export function initHeroVideo() {
 
     let activeBreakpoint = null;
 
-    const sync = () => {
+    const sync = (force = false) => {
         const breakpoint = getActiveBreakpoint();
 
-        if (breakpoint === activeBreakpoint) {
+        if (! force && breakpoint === activeBreakpoint) {
             return;
         }
 
@@ -66,6 +102,33 @@ export function initHeroVideo() {
         });
     };
 
-    sync();
-    window.addEventListener('resize', sync, { passive: true });
+    const playActive = () => {
+        videos.forEach((video) => {
+            if (video.dataset.lumBp === activeBreakpoint) {
+                tryPlay(video);
+            }
+        });
+    };
+
+    sync(true);
+
+    window.addEventListener('resize', () => sync(false), { passive: true });
+    document.addEventListener('visibilitychange', () => {
+        if (! document.hidden) {
+            playActive();
+        }
+    });
+    window.addEventListener('pageshow', playActive);
+
+    // Telegram / iOS WebViews often need one user gesture — unlock without showing UI.
+    const unlock = () => {
+        playActive();
+        document.removeEventListener('touchstart', unlock, true);
+        document.removeEventListener('click', unlock, true);
+        document.removeEventListener('scroll', unlock, true);
+    };
+
+    document.addEventListener('touchstart', unlock, { capture: true, passive: true });
+    document.addEventListener('click', unlock, { capture: true });
+    document.addEventListener('scroll', unlock, { capture: true, passive: true });
 }

@@ -13,7 +13,10 @@
         muted
         loop
         playsinline
-        preload="none"
+        webkit-playsinline
+        disablepictureinpicture
+        disableremoteplayback
+        preload="auto"
         @if ($heroPoster) poster="{{ $img($heroPoster) }}" @endif
         data-lum-hero-video
         data-lum-bp="{{ $bp }}"
