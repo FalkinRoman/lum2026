@@ -33,16 +33,46 @@ fi
 
 php artisan migrate --force
 
+# Livewire temporary uploads (must be on the writable storage volume).
+mkdir -p storage/app/livewire-tmp storage/app/private storage/app/public
+
+# Filament disk `lum` points at public/images/lum (baked into the image).
+# Persist writable upload dirs on the storage volume so www-data can write
+# and files survive image rebuilds, without hiding stock assets forever.
+persist_lum_dir() {
+    name="$1"
+    target="public/images/lum/${name}"
+    persist="storage/app/lum-writable/${name}"
+
+    mkdir -p "${persist}"
+
+    if [ -L "${target}" ]; then
+        return 0
+    fi
+
+    if [ -d "${target}" ]; then
+        cp -a "${target}/." "${persist}/" 2>/dev/null || true
+        rm -rf "${target}"
+    fi
+
+    ln -sfn "/var/www/html/storage/app/lum-writable/${name}" "${target}"
+}
+
+mkdir -p public/images/lum storage/app/lum-writable
+for dir in avatars uploads menu hero shop villas interior location polaroids stay dining relax discover blog activity excursion restaurant villa; do
+    persist_lum_dir "${dir}"
+done
+
 if [ "$APP_ENV" = "production" ]; then
     php artisan config:cache
     php artisan route:cache
     php artisan view:cache
 fi
 
-chmod -R 775 storage bootstrap/cache database 2>/dev/null || true
+chmod -R 775 storage bootstrap/cache database public/images/lum 2>/dev/null || true
 
 if [ "$(id -u)" = "0" ] && id www-data >/dev/null 2>&1; then
-    chown -R www-data:www-data storage bootstrap/cache database 2>/dev/null || true
+    chown -R www-data:www-data storage bootstrap/cache database public/images/lum 2>/dev/null || true
 fi
 
 exec "$@"

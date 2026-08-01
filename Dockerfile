@@ -140,9 +140,9 @@ RUN chmod +x /usr/local/bin/entrypoint \
 COPY --from=vendor /app /var/www/html
 COPY --from=assets /app/public/build /var/www/html/public/build
 
-RUN mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache database \
+RUN mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache database public/images/lum/avatars \
     && touch database/database.sqlite \
-    && chown -R www-data:www-data storage bootstrap/cache database
+    && chown -R www-data:www-data storage bootstrap/cache database public/images/lum
 
 EXPOSE 80
 
