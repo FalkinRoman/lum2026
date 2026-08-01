@@ -111,3 +111,59 @@
         <a href="{{ $heroCtaHref }}" class="lum-btn-outline-ivory absolute left-1/2 top-[1018px] z-20 -translate-x-1/2" data-lum-sticky-trigger>{{ $hero['cta'] ?? __('lum.hero.cta') }}</a>
     </div>
 </section>
+@if ($heroVideo)
+<script>
+(() => {
+    // Early boot (before deferred Vite module): poster stays, buffer+play as soon as canplay.
+    const bp = document.documentElement.dataset.lumBp
+        || (innerWidth <= 430 ? 'mobile' : innerWidth <= 1023 ? 'tablet' : 'desktop');
+    const video = document.querySelector('[data-lum-hero-video][data-lum-bp="' + bp + '"]');
+    if (!video || !video.dataset.src) return;
+
+    const reveal = () => {
+        video.classList.add('is-playing');
+        const media = video.closest('[data-lum-hero-media]');
+        if (media) media.classList.add('is-playing');
+    };
+
+    const kick = () => {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.volume = 0;
+        video.playsInline = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('autoplay', '');
+        const p = video.play();
+        if (p && p.catch) p.catch(() => {});
+    };
+
+    video.addEventListener('playing', reveal);
+    video.addEventListener('canplay', kick);
+    video.addEventListener('loadeddata', kick);
+    video.addEventListener('canplaythrough', kick);
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    video.src = video.dataset.src;
+    kick();
+
+    // Keep trying while buffering — don't wait for a scroll gesture.
+    let n = 0;
+    const timer = setInterval(() => {
+        if (!video.paused && video.readyState >= 2) {
+            reveal();
+            clearInterval(timer);
+            return;
+        }
+        kick();
+        if (++n >= 40) clearInterval(timer);
+    }, 200);
+
+    window.__lumHeroEarlyBp = bp;
+})();
+</script>
+@endif

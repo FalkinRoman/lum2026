@@ -22,26 +22,8 @@ function harden(video) {
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
     video.setAttribute('webkit-playsinline', '');
+    video.setAttribute('autoplay', '');
     video.removeAttribute('controls');
-}
-
-function tryPlay(video) {
-    harden(video);
-
-    const run = () => {
-        const p = video.play();
-
-        if (p && typeof p.catch === 'function') {
-            p.catch(() => {});
-        }
-    };
-
-    if (video.readyState >= 2) {
-        run();
-    } else {
-        video.addEventListener('canplay', run, { once: true });
-        run();
-    }
 }
 
 function markPlaying(video) {
@@ -53,6 +35,20 @@ function markPlaying(video) {
     }
 }
 
+function tryPlay(video) {
+    harden(video);
+
+    const p = video.play();
+
+    if (p && typeof p.catch === 'function') {
+        p.catch(() => {});
+    }
+
+    if (! video.paused && video.readyState >= 2) {
+        markPlaying(video);
+    }
+}
+
 function ensureSource(video) {
     const src = video.dataset.src;
 
@@ -60,24 +56,40 @@ function ensureSource(video) {
         return false;
     }
 
-    if (video.getAttribute('src') === src) {
+    if (video.getAttribute('src') === src || video.currentSrc.includes(src.split('/').pop())) {
         return true;
     }
 
+    video.preload = 'auto';
     video.setAttribute('src', src);
     video.load();
 
     return true;
 }
 
+function bindReadyPlay(video) {
+    if (video.dataset.lumPlayBound === '1') {
+        return;
+    }
+
+    video.dataset.lumPlayBound = '1';
+
+    const onReady = () => tryPlay(video);
+
+    video.addEventListener('loadeddata', onReady);
+    video.addEventListener('canplay', onReady);
+    video.addEventListener('canplaythrough', onReady);
+    video.addEventListener('playing', () => markPlaying(video));
+}
+
 function activateVideo(video) {
     harden(video);
+    bindReadyPlay(video);
 
     if (! ensureSource(video)) {
         return;
     }
 
-    video.addEventListener('playing', () => markPlaying(video), { once: true });
     tryPlay(video);
 }
 
@@ -91,8 +103,7 @@ function deactivateVideo(video) {
         media.classList.remove('is-playing');
     }
 
-    // Drop source so hidden breakpoints don't keep buffering.
-    if (video.hasAttribute('src')) {
+    if (video.hasAttribute('src') && video.dataset.lumBp !== window.__lumHeroEarlyBp) {
         video.removeAttribute('src');
         video.load();
     }
@@ -139,14 +150,8 @@ export function initHeroVideo() {
         }
     };
 
-    // Poster paints first; start video after first paint so LCP stays snappy.
-    const start = () => sync();
-
-    if (typeof window.requestIdleCallback === 'function') {
-        window.requestIdleCallback(start, { timeout: 400 });
-    } else {
-        window.setTimeout(start, 100);
-    }
+    // Immediate — no idle delay (that made iPhone/Telegram wait until scroll).
+    sync();
 
     window.addEventListener('resize', sync, { passive: true });
     document.addEventListener('visibilitychange', () => {
@@ -156,7 +161,10 @@ export function initHeroVideo() {
     });
     window.addEventListener('pageshow', playActive);
 
+    // Fallback only if WebView still blocks muted autoplay until a gesture.
     const unlock = () => playActive();
     document.addEventListener('touchstart', unlock, { capture: true, passive: true });
+    document.addEventListener('touchend', unlock, { capture: true, passive: true });
+    document.addEventListener('pointerdown', unlock, { capture: true });
     document.addEventListener('click', unlock, { capture: true });
 }
