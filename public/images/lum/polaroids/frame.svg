@@ -1,6 +1,6 @@
 <svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 271.978 406.111" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Union" filter="url(#filter0_d_0_7)">
-<path d="M22.4053 0.000976562H270.916V405.342H0.00488281V405.341H0V0H22.4053V0.000976562ZM22.4053 37.8955V304.713H248.511V37.8955H22.4053Z" fill="var(--fill-0, #FFF7D3)"/>
+<path fill-rule="evenodd" d="M22.4053 0.000976562H270.916V405.342H0.00488281V405.341H0V0H22.4053V0.000976562ZM22.4053 37.8955V304.713H248.511V37.8955H22.4053Z" fill="var(--fill-0, #FFF7D3)"/>
 </g>
 <defs>
 <filter id="filter0_d_0_7" x="0" y="0" width="271.978" height="406.111" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
