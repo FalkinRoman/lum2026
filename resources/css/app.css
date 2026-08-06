@@ -2246,7 +2246,8 @@
 
     .lum-polaroid__photo {
         position: absolute;
-        z-index: 1;
+        /* Above frame fill (frame SVG hole is unreliable across browsers). */
+        z-index: 2;
         left: 8.238%;
         top: 9.331%;
         width: 83.134%;
