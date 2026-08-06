@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Http\Responses\FilamentLoginResponse;
 use App\Support\LivewireSignedUploadUrl;
 use App\Support\Site;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse as FilamentLoginResponseContract;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -17,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Relative signed upload URLs — survive Docker host:8080 ↔ nginx:80 mismatch.
         $this->app->singleton(GenerateSignedUploadUrl::class, LivewireSignedUploadUrl::class);
+
+        // Path-only post-login redirect so the browser keeps :8080.
+        $this->app->singleton(FilamentLoginResponseContract::class, FilamentLoginResponse::class);
     }
 
     public function boot(): void

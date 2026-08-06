@@ -96,7 +96,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn (): \Illuminate\Contracts\View\View => view('filament.brand', ['dark' => false]))
             ->darkModeBrandLogo(fn (): \Illuminate\Contracts\View\View => view('filament.brand', ['dark' => true]))
             ->brandLogoHeight('2.75rem')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->defaultAvatarProvider(UserSilhouetteAvatarProvider::class)
             ->colors([
                 'primary' => Color::Amber,
