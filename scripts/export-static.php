@@ -303,6 +303,47 @@ function rewriteHtml(string $html, string $appPath, string $locale, array $asset
         $html
     );
 
+    // Carousel JS reads data-img-base + JSON *Src fields — must include --base too.
+    // Without this, first HTML <img> works, then setStateSync() swaps to /images/... → 404.
+    if ($basePath !== '') {
+        $html = prefixRootAssetPaths($html, $basePath);
+    }
+
+    return $html;
+}
+
+/**
+ * Prefix carousel asset bases / JSON media URLs with $basePath for GitHub Pages.
+ */
+function prefixRootAssetPaths(string $html, string $basePath): string
+{
+    $html = preg_replace_callback(
+        '/\b(data-img-base)=(["\'])(\/(?:images|build)[^"\']*)\2/i',
+        function (array $m) use ($basePath) {
+            $path = $m[3];
+            if (str_starts_with($path, $basePath.'/')) {
+                return $m[0];
+            }
+
+            return $m[1].'='.$m[2].withBase($path, $basePath).$m[2];
+        },
+        $html
+    ) ?? $html;
+
+    // data-slides JSON: "photoSrc":"\/images\/lum\/villas\/..."
+    $html = preg_replace_callback(
+        '/"(photoSrc|photoSrcSm|ovalSrc|ovalSrcSm)":"((?:\\\\\/|\/)(?:images|build)[^"]*)"/',
+        function (array $m) use ($basePath) {
+            $path = stripcslashes($m[2]);
+            if (str_starts_with($path, $basePath.'/')) {
+                return $m[0];
+            }
+
+            return '"'.$m[1].'":"'.str_replace('/', '\\/', withBase($path, $basePath)).'"';
+        },
+        $html
+    ) ?? $html;
+
     return $html;
 }
 
