@@ -2231,7 +2231,7 @@
 
     /* Photo window from polaroids/frame.svg viewBox hole (22.4,37.9 → 248.5,304.7) */
     .lum-polaroid__frame {
-        @apply pointer-events-none absolute inset-0 z-[2] h-full w-full;
+        @apply pointer-events-none absolute inset-0 z-[1] h-full w-full;
     }
 
     /*
@@ -2246,7 +2246,6 @@
 
     .lum-polaroid__photo {
         position: absolute;
-        /* Above frame fill (frame SVG hole is unreliable across browsers). */
         z-index: 2;
         left: 8.238%;
         top: 9.331%;
