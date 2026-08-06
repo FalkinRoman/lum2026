@@ -1,0 +1,6 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 42 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="slider">
+<rect id="line" width="42" height="1" fill="var(--fill-0, #F58931)"/>
+<circle id="point" cx="21" cy="16" r="3" fill="var(--fill-0, #F58931)"/>
+</g>
+</svg>

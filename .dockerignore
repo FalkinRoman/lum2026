@@ -19,6 +19,10 @@ public/build
 public/hot
 public/fonts-manifest.dev.json
 
+# Static GH Pages export — not needed in production image
+docs
+static-site
+
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*

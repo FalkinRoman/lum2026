@@ -6,9 +6,18 @@
  *
  * Usage:
  *   php scripts/export-static.php
- *   php scripts/export-static.php --out=/absolute/or/relative/path
+ *   php scripts/export-static.php --out=docs --base=/lum2026
  *
- * Output default: ./static-site
+ * Defaults:
+ *   --out=static-site
+ *   --base=          (empty = site at domain root)
+ *
+ * For this repo on GitHub Pages (project site):
+ *   npm run export:pages
+ *   → writes ./docs with asset/page URLs prefixed by /lum2026
+ *
+ * Laravel / Docker / server deploy are untouched. Keep /docs out of the
+ * production image via .dockerignore.
  */
 
 declare(strict_types=1);
@@ -24,9 +33,13 @@ chdir($root);
 require $root.'/vendor/autoload.php';
 
 $outArg = null;
+$baseArg = '';
 foreach ($argv as $arg) {
     if (str_starts_with($arg, '--out=')) {
         $outArg = substr($arg, 6);
+    }
+    if (str_starts_with($arg, '--base=')) {
+        $baseArg = substr($arg, 7);
     }
 }
 
@@ -34,12 +47,22 @@ $outDir = $outArg
     ? (str_starts_with($outArg, '/') ? $outArg : $root.'/'.$outArg)
     : $root.'/static-site';
 
+// Normalize base: "" or "/lum2026" (no trailing slash)
+$basePath = trim($baseArg);
+if ($basePath !== '') {
+    $basePath = '/'.trim($basePath, '/');
+}
+
 echo "==> Building Vite production assets\n";
 $hotFile = $root.'/public/hot';
 $hotBackup = $root.'/public/hot.bak.export';
 $hadHot = is_file($hotFile);
 if ($hadHot) {
     rename($hotFile, $hotBackup);
+}
+// Belt-and-suspenders: Vite hot must not exist during render.
+if (is_file($hotFile)) {
+    unlink($hotFile);
 }
 
 try {
@@ -55,6 +78,13 @@ $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 /** @var Kernel $kernel */
 $kernel = $app->make(Kernel::class);
 
+// Neutralize local .env APP_URL / ForcePublicRootUrl so asset() stays root-relative-friendly.
+config([
+    'app.url' => 'http://lum.static',
+    'app.host' => 'lum.static',
+    'app.port' => '',
+    'app.scheme' => 'http',
+]);
 URL::forceRootUrl('http://lum.static');
 URL::forceScheme('http');
 
@@ -115,27 +145,40 @@ function normalizeAppPath(string $path): string
         return '/';
     }
 
-    $path = '/'.trim($path, '/');
-
-    return $path;
+    return '/'.trim($path, '/');
 }
 
-function staticHrefFor(string $appPath, string $locale): string
+function withBase(string $href, string $basePath): string
+{
+    if ($basePath === '') {
+        return $href;
+    }
+
+    if ($href === '/') {
+        return $basePath.'/';
+    }
+
+    return $basePath.$href;
+}
+
+function staticHrefFor(string $appPath, string $locale, string $basePath = ''): string
 {
     $appPath = normalizeAppPath($appPath);
 
     if ($locale === 'en') {
-        return $appPath === '/' ? '/' : $appPath.'/';
+        $href = $appPath === '/' ? '/' : $appPath.'/';
+    } else {
+        $prefix = '/'.$locale;
+        $href = $appPath === '/' ? $prefix.'/' : $prefix.$appPath.'/';
     }
 
-    $prefix = '/'.$locale;
-
-    return $appPath === '/' ? $prefix.'/' : $prefix.$appPath.'/';
+    return withBase($href, $basePath);
 }
 
 function filePathFor(string $outDir, string $appPath, string $locale): string
 {
-    $href = rtrim(staticHrefFor($appPath, $locale), '/');
+    // Filesystem layout ignores --base (GH Pages serves /docs as site root of /lum2026/)
+    $href = rtrim(staticHrefFor($appPath, $locale, ''), '/');
     if ($href === '' || $href === '/'.$locale) {
         $dir = $locale === 'en' ? $outDir : $outDir.'/'.$locale;
     } else {
@@ -145,18 +188,62 @@ function filePathFor(string $outDir, string $appPath, string $locale): string
     return $dir.'/index.html';
 }
 
-function rewriteHtml(string $html, string $appPath, string $locale, array $assetPrefixes): string
+function isAppPagePath(string $path): bool
 {
-    $html = str_replace(['http://lum.static', 'http:\\/\\/lum.static'], ['', ''], $html);
+    return $path === '/'
+        || (bool) preg_match('#^/(stay|dining|relax|discover|blog|contacts|shop|privacy|terms)(/|$)#', $path);
+}
+
+function rewriteHtml(string $html, string $appPath, string $locale, array $assetPrefixes, string $basePath): string
+{
+    // Collapse absolute local/dev origins to root-relative paths, then apply --base.
+    $html = preg_replace(
+        '#https?:\\\\?/\\\\?/(?:lum\.static|localhost|127\.0\.0\.1)(?::\d+)?#i',
+        '',
+        $html
+    ) ?? $html;
+    $html = preg_replace(
+        '#https?://(?:lum\.static|localhost|127\.0\.0\.1)(?::\d+)?#i',
+        '',
+        $html
+    ) ?? $html;
 
     $html = preg_replace_callback(
-        '/\b(href|action)=(["\'])([^"\']+)\2/i',
-        function (array $m) use ($appPath, $locale, $assetPrefixes) {
-            $attr = $m[1];
+        '/\b(href|action|src|srcset)=(["\'])([^"\']+)\2/i',
+        function (array $m) use ($appPath, $locale, $assetPrefixes, $basePath) {
+            $attr = strtolower($m[1]);
             $q = $m[2];
             $url = html_entity_decode($m[3], ENT_QUOTES | ENT_HTML5);
 
-            if ($url === '' || str_starts_with($url, '#') || str_starts_with($url, 'mailto:') || str_starts_with($url, 'tel:') || str_starts_with($url, 'javascript:') || preg_match('#^https?://#i', $url)) {
+            if ($attr === 'srcset') {
+                $parts = array_map('trim', explode(',', $url));
+                $rewritten = [];
+                foreach ($parts as $part) {
+                    if ($part === '') {
+                        continue;
+                    }
+                    if (! preg_match('/^(\S+)(\s+.*)?$/', $part, $pm)) {
+                        $rewritten[] = $part;
+                        continue;
+                    }
+                    $u = $pm[1];
+                    $rest = $pm[2] ?? '';
+                    if ($u === '' || str_starts_with($u, 'data:') || preg_match('#^https?://#i', $u) || str_starts_with($u, '//')) {
+                        $rewritten[] = $part;
+                        continue;
+                    }
+                    $path = parse_url($u, PHP_URL_PATH) ?: $u;
+                    if (is_string($path) && str_starts_with($path, '/')) {
+                        $rewritten[] = withBase($path, $basePath).$rest;
+                    } else {
+                        $rewritten[] = $part;
+                    }
+                }
+
+                return $attr.'='.$q.implode(', ', $rewritten).$q;
+            }
+
+            if ($url === '' || str_starts_with($url, '#') || str_starts_with($url, 'mailto:') || str_starts_with($url, 'tel:') || str_starts_with($url, 'javascript:') || str_starts_with($url, 'data:') || preg_match('#^https?://#i', $url) || str_starts_with($url, '//')) {
                 return $m[0];
             }
 
@@ -165,35 +252,51 @@ function rewriteHtml(string $html, string $appPath, string $locale, array $asset
             $query = isset($parts['query']) ? '?'.$parts['query'] : '';
             $fragment = isset($parts['fragment']) ? '#'.$parts['fragment'] : '';
 
+            if (! is_string($path) || ! str_starts_with($path, '/')) {
+                return $m[0];
+            }
+
             if (isAssetPath($path, $assetPrefixes)) {
-                return $attr.'='.$q.$path.$query.$fragment.$q;
+                return $attr.'='.$q.withBase($path, $basePath).$query.$fragment.$q;
+            }
+
+            if ($attr === 'src') {
+                return $attr.'='.$q.withBase($path, $basePath).$query.$fragment.$q;
             }
 
             if (preg_match('#^/locale/(en|ru|zh)/?$#', $path, $lm)) {
                 $targetLocale = $lm[1];
-                $href = staticHrefFor($appPath, $targetLocale);
+                $href = staticHrefFor($appPath, $targetLocale, $basePath);
 
                 return $attr.'='.$q.$href.$q;
             }
 
-            $known = preg_match('#^/(stay|dining|relax|discover|blog|contacts|shop)(/|$)#', $path) || $path === '/';
-            if (! $known) {
-                return $attr.'='.$q.$path.$query.$fragment.$q;
+            if (! isAppPagePath($path)) {
+                return $attr.'='.$q.withBase($path, $basePath).$query.$fragment.$q;
             }
 
-            $href = staticHrefFor($path, $locale);
+            $href = staticHrefFor($path, $locale, $basePath);
 
             return $attr.'='.$q.$href.$query.$fragment.$q;
         },
         $html
     );
 
+    // url(...) in inline style / CSS fragments inside HTML
+    $html = preg_replace_callback(
+        '/url\((["\']?)(\/[^)"\']+)\1\)/i',
+        function (array $m) use ($basePath) {
+            return 'url('.$m[1].withBase($m[2], $basePath).$m[1].')';
+        },
+        $html
+    );
+
     // JSON / data-* payloads (e.g. villas slider hrefs)
     $html = preg_replace_callback(
-        '/"href":"((?:\\\\\/|\/)(?:stay|dining|relax|discover|blog|contacts|shop)(?:\\\\\/|\/)?[^"]*)"/',
-        function (array $m) use ($locale) {
+        '/"href":"((?:\\\\\/|\/)(?:stay|dining|relax|discover|blog|contacts|shop|privacy|terms)(?:\\\\\/|\/)?[^"]*)"/',
+        function (array $m) use ($locale, $basePath) {
             $path = stripcslashes($m[1]);
-            $href = staticHrefFor($path, $locale);
+            $href = staticHrefFor($path, $locale, $basePath);
 
             return '"href":"'.str_replace('/', '\\/', $href).'"';
         },
@@ -205,10 +308,13 @@ function rewriteHtml(string $html, string $appPath, string $locale, array $asset
 
 function renderPage(Kernel $kernel, string $path, string $locale): string
 {
-    $request = Request::create($path, 'GET');
+    // Keep ForcePublicRootUrl on lum.static (no port → no APP_PORT injection).
+    $request = Request::create('http://lum.static'.$path, 'GET');
     $request->headers->set('HOST', 'lum.static');
+    $request->server->set('HTTP_HOST', 'lum.static');
+    $request->server->set('SERVER_NAME', 'lum.static');
+    $request->server->set('SERVER_PORT', '80');
 
-    // Start session and force locale (cookies are encrypted in Laravel).
     /** @var \Illuminate\Session\SessionManager $sessionManager */
     $sessionManager = app('session');
     $session = $sessionManager->driver();
@@ -271,7 +377,7 @@ function copyTree(string $src, string $dst): void
     }
 }
 
-echo "==> Preparing {$outDir}\n";
+echo '==> Preparing '.$outDir.($basePath !== '' ? " (base {$basePath})" : '')."\n";
 if (is_dir($outDir)) {
     rrmdir($outDir);
 }
@@ -281,7 +387,7 @@ echo "==> Rendering pages\n";
 foreach ($pages as $path) {
     foreach (['en', 'ru', 'zh'] as $locale) {
         $html = renderPage($kernel, $path, $locale);
-        $html = rewriteHtml($html, $path, $locale, $assetPrefixes);
+        $html = rewriteHtml($html, $path, $locale, $assetPrefixes, $basePath);
         $file = filePathFor($outDir, $path, $locale);
         $dir = dirname($file);
         if (! is_dir($dir)) {
@@ -302,13 +408,43 @@ foreach (['favicon.ico', 'favicon.png', 'favicon.svg', 'robots.txt'] as $file) {
     }
 }
 
-// GitHub Pages: disable Jekyll so _* / build paths stay intact
-file_put_contents($outDir.'/.nojekyll', "");
+// Rewrite root-absolute urls inside built CSS (e.g. url(/images/...grain.svg))
+if ($basePath !== '' && is_dir($outDir.'/build')) {
+    $cssIt = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($outDir.'/build', FilesystemIterator::SKIP_DOTS)
+    );
+    foreach ($cssIt as $cssFile) {
+        if (! $cssFile->isFile() || ! str_ends_with(strtolower($cssFile->getFilename()), '.css')) {
+            continue;
+        }
+        $css = file_get_contents($cssFile->getPathname());
+        if ($css === false || ! str_contains($css, 'url(/')) {
+            continue;
+        }
+        $css = preg_replace_callback(
+            '/url\((["\']?)(\/[^)"\']+)\1\)/i',
+            fn (array $m): string => 'url('.$m[1].withBase($m[2], $basePath).$m[1].')',
+            $css
+        ) ?? $css;
+        file_put_contents($cssFile->getPathname(), $css);
+    }
+}
 
-$readme = <<<'MD'
+// GitHub Pages: disable Jekyll so _* / build paths stay intact
+file_put_contents($outDir.'/.nojekyll', '');
+
+$pagesUrl = $basePath !== ''
+    ? 'https://falkinroman.github.io'.$basePath.'/'
+    : '(set --base=/lum2026 for GitHub Pages project URL)';
+
+$readme = <<<MD
 # Lum — static site
 
 Pixel-static export of the Lum Laravel front-end (EN + RU + ZH). No PHP required.
+
+## Live (GitHub Pages)
+
+{$pagesUrl}
 
 ## Structure
 
@@ -318,51 +454,26 @@ Pixel-static export of the Lum Laravel front-end (EN + RU + ZH). No PHP required
 - `/build/` — CSS/JS (Vite production)
 - `/images/` — all media
 
-Language switcher points to the twin page under `/`, `/ru/`, or `/zh/`.
-
 ## Preview locally
 
 ```bash
-cd static-site
+cd docs   # or static-site
 python3 -m http.server 8080
-# open http://localhost:8080/
-# RU: http://localhost:8080/ru/
-# ZH: http://localhost:8080/zh/
 ```
 
-Or:
-
-```bash
-npx serve .
-```
-
-## Deploy
-
-### Any static host / VPS / nginx
-
-Upload the **contents** of this folder to the web root.
-
-### GitHub Pages
-
-1. Create a new repo (or `gh-pages` branch).
-2. Push this folder as the repo root (include `.nojekyll`).
-3. Settings → Pages → Deploy from branch.
-
-**Project site** (`username.github.io/repo/`): either
-
-- set repo to deploy from `/docs` and keep paths, **or**
-- use a user/org site / custom domain so root-relative `/build` and `/images` resolve, **or**
-- open `index.html` rewrite with a `<base href="/repo-name/">` if you must host under a subpath.
-
-Root-relative URLs (`/stay/`, `/images/...`) assume the site is served from domain root.
+For a project-base export (`--base=/lum2026`), preview with a path prefix or just open via Pages.
 
 ## Re-export from Laravel project
 
 ```bash
+# local folder (root-relative URLs)
 php scripts/export-static.php
-# custom out:
-php scripts/export-static.php --out=../lum-static
+
+# GitHub Pages for this repo
+npm run export:pages
 ```
+
+Laravel app, Docker, and server deploy are separate — this folder is display-only.
 MD;
 
 file_put_contents($outDir.'/README.md', $readme);
@@ -373,6 +484,9 @@ if ($hadHot && is_file($hotBackup)) {
 
 $count = iterator_count(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($outDir, FilesystemIterator::SKIP_DOTS)));
 echo "==> Done: {$outDir} ({$count} files)\n";
+if ($basePath !== '') {
+    echo "==> GitHub Pages URL: https://falkinroman.github.io{$basePath}/\n";
+}
 } catch (Throwable $e) {
     if ($hadHot && is_file($hotBackup) && ! is_file($hotFile)) {
         rename($hotBackup, $hotFile);

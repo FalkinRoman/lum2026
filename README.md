@@ -56,4 +56,16 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
 # lum2026
+
+- **Production (Laravel/Docker):** `http://45.151.62.114:8080`
+- **Static preview (GitHub Pages):** https://falkinroman.github.io/lum2026/
+
+Static site lives in [`docs/`](docs/) (EN/RU/ZH HTML + assets). Server deploy is unchanged.
+
+```bash
+# refresh GitHub Pages export after front-end changes
+npm run export:pages
+git add docs && git commit -m "Update static Pages export" && git push
+```

@@ -5,7 +5,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "export:static": "php scripts/export-static.php"
+        "export:static": "php scripts/export-static.php",
+        "export:pages": "php scripts/export-static.php --out=docs --base=/lum2026"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
