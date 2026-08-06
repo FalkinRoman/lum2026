@@ -123,6 +123,18 @@
         pointer-events: none !important;
     }
 
+    /* Compact desktop: nav would hit centered LUM → show tablet shells + scale as 960 */
+    @media (min-width: 1024px) {
+        html[data-lum-header-mode='compact'] .desk\:block {
+            display: none !important;
+        }
+
+        html[data-lum-header-mode='compact'] .hidden.tab\:block.desk\:hidden,
+        html[data-lum-header-mode='compact'] .tab\:block.desk\:hidden {
+            display: block !important;
+        }
+    }
+
     .lum-hero-ui {
         position: relative;
         z-index: 10;

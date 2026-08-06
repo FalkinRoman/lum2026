@@ -5,6 +5,7 @@ import { initBlogSlider } from './blog-slider';
 import { initBlogTabs } from './blog-tabs';
 import { initHeroTitle } from './hero-title';
 import { initHeroVideo } from './hero-video';
+import { getHeaderForcedBreakpoint, syncHeaderFitMode } from './header-fit';
 import { initShopParallax, refreshScrollTriggers } from './shop-parallax';
 import { initSmoothScroll, getLenis } from './smooth-scroll';
 import { initShopPage } from './shop-page';
@@ -32,15 +33,17 @@ const LUM_BREAKPOINTS = {
 function getLumBreakpoint() {
     const viewportWidth = window.innerWidth;
 
+    let breakpoint;
+
     if (viewportWidth <= LUM_VIEWPORT.mobileMax) {
-        return 'mobile';
+        breakpoint = 'mobile';
+    } else if (viewportWidth <= LUM_VIEWPORT.tabletMax) {
+        breakpoint = 'tablet';
+    } else {
+        breakpoint = 'desktop';
     }
 
-    if (viewportWidth <= LUM_VIEWPORT.tabletMax) {
-        return 'tablet';
-    }
-
-    return 'desktop';
+    return getHeaderForcedBreakpoint(breakpoint);
 }
 
 function getLumScale() {
@@ -161,10 +164,20 @@ let lastLayoutBreakpoint = getLumBreakpoint();
 
 function applyLumLayout({ forceRefresh = false } = {}) {
     const width = window.innerWidth;
-    const breakpoint = getLumBreakpoint();
-    const layoutChanged = width !== lastLayoutWidth || breakpoint !== lastLayoutBreakpoint;
 
     scaleLumPage();
+
+    // Nav↔logo collision → compact (tablet chrome). May need a second pass.
+    if (syncHeaderFitMode()) {
+        scaleLumPage();
+
+        if (syncHeaderFitMode()) {
+            scaleLumPage();
+        }
+    }
+
+    const breakpoint = getLumBreakpoint();
+    const layoutChanged = width !== lastLayoutWidth || breakpoint !== lastLayoutBreakpoint;
 
     if (layoutChanged || forceRefresh) {
         lastLayoutWidth = width;
@@ -530,6 +543,13 @@ function initBackToTop() {
 }
 
 applyLumLayout({ forceRefresh: true });
+
+if (document.fonts?.ready) {
+    document.fonts.ready.then(() => {
+        applyLumLayout({ forceRefresh: true });
+    });
+}
+
 initSmoothScroll();
 initExelyScrollBridge();
 initMobileZoomGuard();

@@ -6,7 +6,9 @@
     $homeHero = $homeHero ?? false;
     $stayHref = route('stay');
 @endphp
-<header @class([
+<header
+    data-lum-desk-header
+    @class([
     'absolute left-[72px] top-0 z-50 h-[132px] w-[1776px] border-b',
     'border-lum-ivory-40' => ! $isEspresso,
     'border-lum-espresso/16' => $isEspresso,
@@ -21,12 +23,14 @@
     </button>
 
     <div @class([
-        'absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2',
+        'lum-header-nav-rule absolute left-[112px] top-1/2 h-[18px] w-px -translate-y-1/2',
         'bg-lum-ivory-40' => ! $isEspresso,
         'bg-lum-espresso/16' => $isEspresso,
     ])></div>
 
-    <nav @class([
+    <nav
+        data-lum-header-nav
+        @class([
         'lum-nav absolute left-[153px] top-[54px] flex items-start gap-[40px] overflow-visible lum-text-2 font-medium',
         'text-lum-ivory' => ! $isEspresso,
         'text-lum-espresso' => $isEspresso,
@@ -42,11 +46,11 @@
         ])
     </nav>
 
-    <a href="/" class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
+    <a href="/" data-lum-header-logo class="absolute left-1/2 top-1/2 h-[40px] w-[105px] -translate-x-1/2 -translate-y-1/2">
         <img src="{{ asset($isEspresso ? 'images/lum/menu/logo-lum-espresso.svg' : 'images/lum/hero/logo-lum-cream.svg') }}" alt="Lum" class="h-[40px] w-[105px]" width="105" height="40">
     </a>
 
-    <div class="absolute right-0 top-[48px] flex items-center gap-[10px]">
+    <div data-lum-header-right class="absolute right-0 top-[48px] flex items-center gap-[10px]">
         <div class="relative z-[5100]">
             <button
                 type="button"

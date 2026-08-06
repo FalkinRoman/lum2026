@@ -29,6 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 | Request::HEADER_X_FORWARDED_AWS_ELB,
         );
 
+        $middleware->web(prepend: [
+            \App\Http\Middleware\ForcePublicRootUrl::class,
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
