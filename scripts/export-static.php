@@ -118,6 +118,7 @@ $pages = [
     '/privacy',
     '/terms',
     '/shop',
+    '/booking',
 ];
 
 $assetPrefixes = [
@@ -191,7 +192,7 @@ function filePathFor(string $outDir, string $appPath, string $locale): string
 function isAppPagePath(string $path): bool
 {
     return $path === '/'
-        || (bool) preg_match('#^/(stay|dining|relax|discover|blog|contacts|shop|privacy|terms)(/|$)#', $path);
+        || (bool) preg_match('#^/(stay|dining|relax|discover|blog|contacts|shop|privacy|terms|booking)(/|$)#', $path);
 }
 
 function rewriteHtml(string $html, string $appPath, string $locale, array $assetPrefixes, string $basePath): string
@@ -293,7 +294,7 @@ function rewriteHtml(string $html, string $appPath, string $locale, array $asset
 
     // JSON / data-* payloads (e.g. villas slider hrefs)
     $html = preg_replace_callback(
-        '/"href":"((?:\\\\\/|\/)(?:stay|dining|relax|discover|blog|contacts|shop|privacy|terms)(?:\\\\\/|\/)?[^"]*)"/',
+        '/"href":"((?:\\\\\/|\/)(?:stay|dining|relax|discover|blog|contacts|shop|privacy|terms|booking)(?:\\\\\/|\/)?[^"]*)"/',
         function (array $m) use ($locale, $basePath) {
             $path = stripcslashes($m[1]);
             $href = staticHrefFor($path, $locale, $basePath);
