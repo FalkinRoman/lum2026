@@ -12,6 +12,16 @@
 
 @if (\App\Support\Exely::enabled())
 <style>
+    .lum-exely-search.is-freed {
+        box-sizing: border-box;
+        background: #fffddf;
+    }
+
+    .lum-exely-placeholder {
+        pointer-events: none;
+        visibility: hidden;
+    }
+
     .lum-exely-search {
         box-sizing: border-box;
         width: 100%;

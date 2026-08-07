@@ -18,6 +18,7 @@ import { initRestaurantMenu } from './restaurant-menu';
 import { initInteriorCarousel } from './interior-carousel';
 import { initVillasCarousel } from './villas-carousel';
 import { initExelyScrollBridge } from './exely-scroll-bridge';
+import { initExelyUnscale, syncExelyUnscale } from './exely-unscale';
 
 const LUM_VIEWPORT = {
     mobileMax: 430,   // телефоны в портрете, до iPhone Pro Max
@@ -73,15 +74,18 @@ function scaleLumPage() {
 
     // Exely iframe ломает layout под CSS transform:scale — на booking
     // оставляем нативный viewport, иначе форма рисует «пустышку» слева.
+    // Villa/Stay: search вынимается из scale в exely-unscale.js (Find room).
     const noScale = page.hasAttribute('data-lum-no-scale')
         || Boolean(document.querySelector('[data-lum-no-scale]'));
 
     const footer = page.querySelector('footer');
 
+    // Сброс zoom на случай старого бага (page-level zoom → дыра под футером).
+    page.style.removeProperty('zoom');
+
     if (noScale) {
         page.style.width = '100%';
         page.style.maxWidth = '100%';
-        page.style.zoom = '';
         page.style.transform = 'none';
         page.style.transformOrigin = '';
         page.style.marginBottom = '';
@@ -97,11 +101,15 @@ function scaleLumPage() {
             footer.style.maxWidth = `${width}px`;
             footer.style.transformOrigin = 'top left';
             footer.style.transform = `scale(${scale})`;
-            footer.style.marginBottom = `${Math.ceil(footer.offsetHeight * (scale - 1))}px`;
+            const syncFooterGap = () => {
+                footer.style.marginBottom = `${Math.ceil(footer.offsetHeight * (scale - 1))}px`;
+            };
+            syncFooterGap();
+            requestAnimationFrame(syncFooterGap);
         }
     } else {
         page.style.width = `${width}px`;
-        page.style.zoom = 'normal';
+        page.style.maxWidth = '';
         page.style.transform = `scale(${scale})`;
         page.style.transformOrigin = 'top left';
         page.style.marginBottom = '0';
@@ -145,6 +153,7 @@ function scaleLumPage() {
     }
 
     document.dispatchEvent(new CustomEvent('lum:layout-change'));
+    syncExelyUnscale();
 }
 
 function debounce(fn, wait) {
@@ -552,6 +561,7 @@ if (document.fonts?.ready) {
 
 initSmoothScroll();
 initExelyScrollBridge();
+initExelyUnscale();
 initMobileZoomGuard();
 initLanguageSwitcher();
 initBackToTop();
