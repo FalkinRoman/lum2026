@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { withSitePrefix } from './public-base';
 
 const DEFAULT_TOTAL = 7;
 const DEFAULT_START = 0;
@@ -22,7 +23,7 @@ function buildSrc(base, name, suffix = '') {
         );
     }
 
-    return `${base}/${name}${suffix}.webp`;
+    return withSitePrefix(`${base}/${name}${suffix}.webp`);
 }
 
 function preloadImage(src) {
@@ -136,13 +137,14 @@ function assignHostSrc(host, src) {
         return false;
     }
 
-    const normalized = normalizeSrc(src);
+    const resolved = withSitePrefix(src);
+    const normalized = normalizeSrc(resolved);
 
     if (img.dataset.currentSrc === normalized) {
         return false;
     }
 
-    img.src = src;
+    img.src = resolved;
     img.dataset.currentSrc = normalized;
 
     return true;
@@ -220,23 +222,24 @@ function animateDamaiSlot(frame, host, nextSrc, direction, reducedMotion) {
         return Promise.resolve();
     }
 
+    const resolvedNext = withSitePrefix(nextSrc);
     const img = host.querySelector('img');
     const current = normalizeSrc(img?.dataset.currentSrc || img?.src);
-    const next = normalizeSrc(nextSrc);
+    const next = normalizeSrc(resolvedNext);
 
     if (current === next) {
         return Promise.resolve();
     }
 
     if (reducedMotion) {
-        fillHost(host, nextSrc);
+        fillHost(host, resolvedNext);
 
         return Promise.resolve();
     }
 
     const dir = direction === 'next' ? 1 : -1;
 
-    return ensureImageLoaded(nextSrc).then(() => new Promise((resolve) => {
+    return ensureImageLoaded(resolvedNext).then(() => new Promise((resolve) => {
         const outgoingSlide = document.createElement('div');
         outgoingSlide.className = 'lum-interior-slide absolute inset-0 z-[2] overflow-hidden';
         const outgoingInner = document.createElement('div');
@@ -254,7 +257,7 @@ function animateDamaiSlot(frame, host, nextSrc, direction, reducedMotion) {
         const incomingImg = incomingInner.querySelector('img');
 
         if (incomingImg) {
-            incomingImg.src = nextSrc;
+            incomingImg.src = resolvedNext;
             incomingImg.dataset.currentSrc = next;
         }
 
@@ -271,7 +274,7 @@ function animateDamaiSlot(frame, host, nextSrc, direction, reducedMotion) {
         gsap.timeline({
             defaults: { duration: SLIDE_DURATION, ease: 'power2.inOut' },
             onComplete: () => {
-                fillHost(host, nextSrc);
+                fillHost(host, resolvedNext);
                 host.style.visibility = '';
                 outgoingSlide.remove();
                 incomingSlide.remove();

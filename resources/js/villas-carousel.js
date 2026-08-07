@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { withSitePrefix } from './public-base';
 
 const AUTOPLAY_DURATION = 5;
 
@@ -20,10 +21,10 @@ function buildSrc(base, name, suffix = '') {
             || name.startsWith('data:')
             || name.startsWith('/'))
     ) {
-        return name;
+        return withSitePrefix(name);
     }
 
-    return `${base}/${name}${suffix}.webp`;
+    return withSitePrefix(`${base}/${name}${suffix}.webp`);
 }
 
 function slideMediaSrc(slide, kind, base, suffix = '') {
@@ -35,14 +36,14 @@ function slideMediaSrc(slide, kind, base, suffix = '') {
         const smKey = `${kind}SrcSm`;
 
         if (slide[smKey]) {
-            return slide[smKey];
+            return withSitePrefix(slide[smKey]);
         }
     }
 
     const srcKey = `${kind}Src`;
 
     if (slide[srcKey]) {
-        return slide[srcKey];
+        return withSitePrefix(slide[srcKey]);
     }
 
     return buildSrc(base, slide[kind], suffix);
