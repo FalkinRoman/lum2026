@@ -5,16 +5,18 @@
     $homeHero = $homeHero ?? false;
     $stayHref = route('stay');
 @endphp
-<header @class([
+<header
+    data-lum-tab-header
+    @class([
     'absolute left-[20px] top-0 z-50 h-[80px] w-[920px] border-b',
     'border-lum-ivory-40' => ! $isEspresso,
     'border-lum-espresso/16' => $isEspresso,
 ])>
-    <a href="/" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
+    <a href="/" data-lum-header-logo class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
         <img src="{{ asset($isEspresso ? 'images/lum/menu/logo-lum-espresso.svg' : 'images/lum/hero/logo-lum-cream.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
     </a>
 
-    <div class="absolute right-0 top-[24px] flex items-center gap-[10px]">
+    <div data-lum-header-actions class="absolute right-0 top-[24px] flex items-center gap-[10px]">
         <div class="relative z-[5100]">
             <button
                 type="button"

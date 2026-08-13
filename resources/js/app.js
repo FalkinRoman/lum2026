@@ -176,7 +176,8 @@ function applyLumLayout({ forceRefresh = false } = {}) {
 
     scaleLumPage();
 
-    // Nav↔logo collision → compact (tablet chrome). May need a second pass.
+    // Nav/CTA↔logo collision → compact/mobile chrome. May need a second pass
+    // (desktop→tablet→mobile).
     if (syncHeaderFitMode()) {
         scaleLumPage();
 

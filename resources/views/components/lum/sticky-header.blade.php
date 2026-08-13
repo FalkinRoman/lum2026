@@ -39,12 +39,12 @@
 
             {{-- TABLET --}}
             <div class="relative hidden h-[80px] w-full border-b border-lum-espresso/16 bg-lum-ivory tab:block desk:hidden" data-lum-shell="tablet">
-                <div class="absolute left-[20px] top-0 h-[80px] w-[920px]">
-                    <a href="{{ route('home') }}" class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
+                <div data-lum-tab-header class="absolute left-[20px] top-0 h-[80px] w-[920px]">
+                    <a href="{{ route('home') }}" data-lum-header-logo class="absolute left-0 top-1/2 h-[32px] w-[84px] -translate-y-1/2">
                         <img src="{{ asset('images/lum/menu/logo-lum-espresso.svg') }}" alt="Lum" class="h-full w-full object-contain object-left" width="84" height="32">
                     </a>
 
-                    <div class="absolute right-0 top-[24px] flex items-center gap-[10px]">
+                    <div data-lum-header-actions class="absolute right-0 top-[24px] flex items-center gap-[10px]">
                         <div class="relative z-[5100]">
                             <button
                                 type="button"

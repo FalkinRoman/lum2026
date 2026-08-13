@@ -135,6 +135,25 @@
         }
     }
 
+    /* Tablet CTA/actions would hit logo → force mobile chrome + scale as 375 */
+    @media (min-width: 431px) {
+        html[data-lum-header-mode='mobile'] .tab\:block,
+        html[data-lum-header-mode='mobile'] .tab\:flex,
+        html[data-lum-header-mode='mobile'] .desk\:block,
+        html[data-lum-header-mode='mobile'] .desk\:flex {
+            display: none !important;
+        }
+
+        html[data-lum-header-mode='mobile'] .tab\:hidden {
+            display: block !important;
+        }
+
+        html[data-lum-header-mode='mobile'] .flex.tab\:hidden,
+        html[data-lum-header-mode='mobile'] .tab\:hidden.flex {
+            display: flex !important;
+        }
+    }
+
     .lum-hero-ui {
         position: relative;
         z-index: 10;

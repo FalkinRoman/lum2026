@@ -1,20 +1,35 @@
 /**
- * If desktop nav would collide with centered LUM logo, force tablet (burger) chrome.
- * Uses hysteresis so it doesn't flicker at the threshold.
+ * Header chrome fit:
+ * - desktop nav↔logo collision → force tablet (`compact`)
+ * - tablet CTA/actions↔logo collision → force mobile (`mobile`)
+ * Hysteresis avoids flicker at the threshold.
  */
 
 const MIN_GAP_PX = 28;
 const EXIT_HYSTERESIS_PX = 96;
+const MOBILE_MAX_PX = 430;
+const DESKTOP_MIN_PX = 1024;
 
 let compactExitWidth = 0;
+let mobileExitWidth = 0;
+
+function isLaidOut(el) {
+    const style = window.getComputedStyle(el);
+
+    if (style.display === 'none' || style.visibility === 'hidden') {
+        return false;
+    }
+
+    const box = el.getBoundingClientRect();
+
+    return box.width >= 1 && box.height >= 1;
+}
 
 function measureDesktopNavGap() {
     const headers = document.querySelectorAll('[data-lum-desk-header]');
 
     for (const header of headers) {
-        const style = window.getComputedStyle(header);
-
-        if (style.display === 'none' || style.visibility === 'hidden') {
+        if (! isLaidOut(header)) {
             continue;
         }
 
@@ -22,17 +37,13 @@ function measureDesktopNavGap() {
         const logo = header.querySelector('[data-lum-header-logo]');
         const right = header.querySelector('[data-lum-header-right]');
 
-        if (! nav || ! logo) {
+        if (! nav || ! logo || ! isLaidOut(nav) || ! isLaidOut(logo)) {
             continue;
         }
 
         const navBox = nav.getBoundingClientRect();
         const logoBox = logo.getBoundingClientRect();
-        const rightBox = right?.getBoundingClientRect();
-
-        if (navBox.width < 1 || logoBox.width < 1) {
-            continue;
-        }
+        const rightBox = right && isLaidOut(right) ? right.getBoundingClientRect() : null;
 
         const leftGap = logoBox.left - navBox.right;
         const rightGap = rightBox ? rightBox.left - logoBox.right : MIN_GAP_PX;
@@ -43,55 +54,119 @@ function measureDesktopNavGap() {
     return null;
 }
 
+function measureTabletHeaderGap() {
+    const headers = document.querySelectorAll('[data-lum-tab-header]');
+
+    for (const header of headers) {
+        if (! isLaidOut(header)) {
+            continue;
+        }
+
+        const logo = header.querySelector('[data-lum-header-logo]');
+        const actions = header.querySelector('[data-lum-header-actions]');
+
+        if (! logo || ! actions || ! isLaidOut(logo) || ! isLaidOut(actions)) {
+            continue;
+        }
+
+        const logoBox = logo.getBoundingClientRect();
+        const actionsBox = actions.getBoundingClientRect();
+
+        return actionsBox.left - logoBox.right;
+    }
+
+    return null;
+}
+
+function setMode(mode) {
+    const root = document.documentElement;
+    const prev = root.dataset.lumHeaderMode || 'full';
+
+    if (prev === mode) {
+        return false;
+    }
+
+    root.dataset.lumHeaderMode = mode;
+
+    return true;
+}
+
 export function syncHeaderFitMode() {
     const root = document.documentElement;
     const width = window.innerWidth;
 
-    if (width <= 1023) {
+    if (width <= MOBILE_MAX_PX) {
         if (root.dataset.lumHeaderMode !== 'full') {
-            root.dataset.lumHeaderMode = 'full';
             compactExitWidth = 0;
+            mobileExitWidth = 0;
 
-            return true;
+            return setMode('full');
         }
 
         return false;
     }
 
-    const mode = root.dataset.lumHeaderMode || 'full';
+    let mode = root.dataset.lumHeaderMode || 'full';
+    let changed = false;
 
-    if (mode === 'compact') {
-        if (width < compactExitWidth) {
+    // Exit forced modes only after growing past hysteresis, then re-probe.
+    if (mode === 'mobile') {
+        if (width < mobileExitWidth) {
             return false;
         }
 
-        // Wide enough to re-probe desktop.
-        root.dataset.lumHeaderMode = 'full';
+        changed = setMode('full') || changed;
+        mode = 'full';
+    }
+
+    if (mode === 'compact') {
+        if (width < compactExitWidth) {
+            const tabGap = measureTabletHeaderGap();
+
+            if (tabGap !== null && tabGap < MIN_GAP_PX) {
+                mobileExitWidth = width + EXIT_HYSTERESIS_PX;
+
+                return setMode('mobile');
+            }
+
+            return changed;
+        }
+
+        changed = setMode('full') || changed;
+        mode = 'full';
+    }
+
+    if (width >= DESKTOP_MIN_PX) {
+        const deskGap = measureDesktopNavGap();
+
+        if (deskGap !== null && deskGap < MIN_GAP_PX) {
+            compactExitWidth = width + EXIT_HYSTERESIS_PX;
+            changed = setMode('compact') || changed;
+
+            return true;
+        }
+    }
+
+    const tabGap = measureTabletHeaderGap();
+
+    if (tabGap !== null && tabGap < MIN_GAP_PX) {
+        mobileExitWidth = width + EXIT_HYSTERESIS_PX;
+        changed = setMode('mobile') || changed;
 
         return true;
     }
 
-    const gap = measureDesktopNavGap();
-
-    if (gap === null) {
-        return false;
-    }
-
-    if (gap < MIN_GAP_PX) {
-        compactExitWidth = width + EXIT_HYSTERESIS_PX;
-        root.dataset.lumHeaderMode = 'compact';
-
-        return true;
-    }
-
-    return false;
+    return changed;
 }
 
 export function getHeaderForcedBreakpoint(viewportBreakpoint) {
-    if (
-        viewportBreakpoint === 'desktop'
-        && document.documentElement.dataset.lumHeaderMode === 'compact'
-    ) {
+    const mode = document.documentElement.dataset.lumHeaderMode;
+
+    if (mode === 'mobile') {
+        return 'mobile';
+    }
+
+    if (viewportBreakpoint === 'desktop' && mode === 'compact') {
         return 'tablet';
     }
 
