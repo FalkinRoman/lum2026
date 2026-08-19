@@ -23,6 +23,13 @@ function buildSrc(base, name, suffix = '') {
         );
     }
 
+    const token = String(name).trim();
+
+    // CMS uploads keep real extension (jpg/png/webp) — use exact file.
+    if (/\.(webp|jpe?g|png|gif|svg)$/i.test(token)) {
+        return withSitePrefix(`${base}/${token}`);
+    }
+
     return withSitePrefix(`${base}/${name}${suffix}.webp`);
 }
 

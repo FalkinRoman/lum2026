@@ -139,15 +139,24 @@
 
     $firstSlide = $slides[0] ?? null;
     $secondSlide = $slides[1] ?? $firstSlide;
-    $firstSlideSrcSm = \App\Support\Content::hasMedia($firstSlide)
-        ? $img($imgBase . '/' . $firstSlide . '-sm.webp')
-        : \App\Support\Content::mediaStubUrl();
-    $firstSlideSrc = \App\Support\Content::hasMedia($firstSlide)
-        ? $img($imgBase . '/' . $firstSlide . '.webp')
-        : \App\Support\Content::mediaStubUrl();
-    $secondSlideSrc = \App\Support\Content::hasMedia($secondSlide)
-        ? $img($imgBase . '/' . $secondSlide . '.webp')
-        : \App\Support\Content::mediaStubUrl();
+
+    $resolveInteriorSrc = static function (?string $slide, bool $mobile = false) use ($img, $imgBase): string {
+        if (! \App\Support\Content::hasMedia($slide)) {
+            return \App\Support\Content::mediaStubUrl();
+        }
+
+        $slide = ltrim((string) $slide, '/');
+
+        if (preg_match('/\.(webp|jpe?g|png|gif|svg)$/i', $slide) === 1) {
+            return $img($imgBase . '/' . $slide);
+        }
+
+        return $img($imgBase . '/' . $slide . ($mobile ? '-sm.webp' : '.webp'));
+    };
+
+    $firstSlideSrcSm = $resolveInteriorSrc($firstSlide, true);
+    $firstSlideSrc = $resolveInteriorSrc($firstSlide, false);
+    $secondSlideSrc = $resolveInteriorSrc($secondSlide, false);
 @endphp
 
 <section

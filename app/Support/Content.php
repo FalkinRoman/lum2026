@@ -130,6 +130,27 @@ class Content
     }
 
     /**
+     * Interior slide token:
+     * - legacy seeded assets keep short stem (`slide-01`) for -sm/.webp variants
+     * - CMS uploads keep filename with extension (`01ABC.jpg`) so front uses real file
+     */
+    public static function interiorSlideToken(?string $path): ?string
+    {
+        if (! is_string($path) || trim($path) === '') {
+            return null;
+        }
+
+        $path = ltrim(trim($path), '/');
+        $relative = self::stripPrefix($path, 'interior/');
+
+        if (preg_match('/\.(webp|jpe?g|png|gif|svg)$/i', $relative) === 1) {
+            return $relative;
+        }
+
+        return self::interiorStem($relative);
+    }
+
+    /**
      * Home blog carousel: CMS picks, else first published posts.
      *
      * @return Collection<int, array<string, mixed>>
@@ -256,7 +277,7 @@ class Content
 
             $images = is_array($tab['images'] ?? null) ? $tab['images'] : [];
             $slides = array_values(array_filter(array_map(
-                fn ($img) => self::interiorStem(is_string($img) ? $img : null),
+                fn ($img) => self::interiorSlideToken(is_string($img) ? $img : null),
                 $images,
             )));
 
@@ -435,19 +456,12 @@ class Content
             return null;
         }
 
-        $defaultPolaroidDates = ['06.08.2023', '06.01.2024', '07.03.2023'];
-        $defaultPolaroidPaths = [
-            'villa/gallery-01.webp',
-            'villa/gallery-02.webp',
-            'villa/gallery-03.webp',
-        ];
-
         $polaroids = [];
         $rawGallery = is_array($v->gallery_images) ? array_values($v->gallery_images) : [];
-        for ($i = 0; $i < 3; $i++) {
-            $item = $rawGallery[$i] ?? null;
+
+        foreach (array_slice($rawGallery, 0, 3) as $item) {
             $path = null;
-            $date = $defaultPolaroidDates[$i] ?? '';
+            $date = '';
 
             if (is_string($item) && trim($item) !== '') {
                 $path = ltrim($item, '/');
@@ -459,7 +473,7 @@ class Content
             }
 
             if ($path === null || $path === '') {
-                $path = $defaultPolaroidPaths[$i];
+                continue;
             }
 
             $polaroids[] = [
@@ -469,7 +483,7 @@ class Content
         }
 
         $impressionSlides = collect($v->impression_slides ?? [])
-            ->map(fn ($path) => self::impressionStem(is_string($path) ? $path : null))
+            ->map(fn ($path) => self::impressionSlideToken(is_string($path) ? $path : null, 'villa/impression/'))
             ->filter()
             ->values()
             ->all();
@@ -495,7 +509,7 @@ class Content
 
             $images = is_array($gallery['images'] ?? null) ? $gallery['images'] : [];
             $slides = array_values(array_filter(array_map(
-                fn ($img) => self::impressionStem(is_string($img) ? $img : null),
+                fn ($img) => self::impressionSlideToken(is_string($img) ? $img : null, 'villa/impression/'),
                 $images,
             )));
 
@@ -618,12 +632,36 @@ class Content
     }
 
     /**
+     * Impression slide token:
+     * - legacy assets stay as short stem (`slide-01`) for .webp/-sm.webp flow
+     * - CMS uploads keep filename with extension (`hash.jpg`) for direct render
+     */
+    public static function impressionSlideToken(?string $path, string $prefix = 'villa/impression/'): ?string
+    {
+        if (! is_string($path) || trim($path) === '') {
+            return null;
+        }
+
+        $path = ltrim(trim($path), '/');
+        $relative = self::stripPrefix($path, $prefix);
+
+        if (preg_match('/\.(webp|jpe?g|png|gif|svg)$/i', $relative) === 1) {
+            return $relative;
+        }
+
+        $stem = preg_replace('/\.(webp|jpe?g|png)$/i', '', $relative) ?? $relative;
+        $stem = preg_replace('/-sm$/i', '', $stem) ?? $stem;
+
+        return $stem !== '' ? $stem : null;
+    }
+
+    /**
      * @param  list<string|array{path?:string,date?:string}|null>  $rawGallery
      * @param  list<string>  $defaultPaths
      * @param  list<string>  $defaultDates
      * @return list<array{path:string,date:string}>
      */
-    public static function galleryPolaroids(array $rawGallery, array $defaultPaths, array $defaultDates): array
+    public static function galleryPolaroids(array $rawGallery, array $defaultPaths, array $defaultDates, bool $fillDefaults = true): array
     {
         $polaroids = [];
         $raw = array_values($rawGallery);
@@ -643,7 +681,15 @@ class Content
             }
 
             if ($path === null || $path === '') {
+                if (! $fillDefaults) {
+                    continue;
+                }
+
                 $path = $defaultPaths[$i] ?? '';
+            }
+
+            if ($path === '') {
+                continue;
             }
 
             $polaroids[] = [
@@ -682,14 +728,7 @@ class Content
             $images = is_array($gallery['images'] ?? null) ? $gallery['images'] : [];
             $slides = array_values(array_filter(array_map(
                 function ($img) use ($prefix) {
-                    if (! is_string($img) || trim($img) === '') {
-                        return null;
-                    }
-                    $stem = self::stripPrefix(ltrim($img, '/'), $prefix);
-                    $stem = preg_replace('/\.(webp|jpe?g|png)$/i', '', $stem) ?? $stem;
-                    $stem = preg_replace('/-sm$/i', '', $stem) ?? $stem;
-
-                    return $stem !== '' ? $stem : null;
+                    return self::impressionSlideToken(is_string($img) ? $img : null, $prefix);
                 },
                 $images,
             )));
@@ -750,19 +789,11 @@ class Content
         }
 
         $assetBase = 'dining/detail/'.$slug;
-        $defaultPolaroidDates = ['06.08.2023', '06.01.2024', '07.03.2023'];
-        $defaultPolaroidPaths = [
-            $assetBase.'/gallery-01.webp',
-            $assetBase.'/gallery-02.webp',
-            $assetBase.'/gallery-03.webp',
-        ];
-
         $polaroids = [];
         $rawGallery = is_array($r->gallery_images) ? array_values($r->gallery_images) : [];
-        for ($i = 0; $i < 3; $i++) {
-            $item = $rawGallery[$i] ?? null;
+        foreach (array_slice($rawGallery, 0, 3) as $item) {
             $path = null;
-            $date = $defaultPolaroidDates[$i] ?? '';
+            $date = '';
 
             if (is_string($item) && trim($item) !== '') {
                 $path = ltrim($item, '/');
@@ -774,7 +805,7 @@ class Content
             }
 
             if ($path === null || $path === '') {
-                $path = $defaultPolaroidPaths[$i];
+                continue;
             }
 
             $polaroids[] = [
@@ -803,14 +834,7 @@ class Content
             $images = is_array($gallery['images'] ?? null) ? $gallery['images'] : [];
             $slides = array_values(array_filter(array_map(
                 function ($img) use ($impressionPrefix) {
-                    if (! is_string($img) || trim($img) === '') {
-                        return null;
-                    }
-                    $stem = self::stripPrefix(ltrim($img, '/'), $impressionPrefix);
-                    $stem = preg_replace('/\.(webp|jpe?g|png)$/i', '', $stem) ?? $stem;
-                    $stem = preg_replace('/-sm$/i', '', $stem) ?? $stem;
-
-                    return $stem !== '' ? $stem : null;
+                    return self::impressionSlideToken(is_string($img) ? $img : null, $impressionPrefix);
                 },
                 $images,
             )));
@@ -992,6 +1016,7 @@ class Content
             is_array($a->gallery_images) ? $a->gallery_images : [],
             $defaultPaths,
             $defaultDates,
+            false,
         );
 
         $impressionPrefix = 'dining/detail/shared/impression/';
@@ -1115,6 +1140,7 @@ class Content
             is_array($e->gallery_images) ? $e->gallery_images : [],
             $defaultPaths,
             $defaultDates,
+            false,
         );
 
         $packageImages = is_array($e->package_images) ? array_values(array_filter($e->package_images, 'is_string')) : [];

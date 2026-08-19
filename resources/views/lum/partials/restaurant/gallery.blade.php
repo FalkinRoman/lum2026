@@ -1,41 +1,84 @@
 @php
-    $slug = $restaurant['slug'] ?? '';
-    $assetBase = 'dining/detail/'.$slug;
-    $cmsPolaroids = $restaurant['gallery']['polaroids'] ?? [];
-    $pick = function (int $i, string $fallbackPhoto, string $fallbackDate) use ($cmsPolaroids, $assetBase): array {
-        $item = $cmsPolaroids[$i] ?? null;
+    $rawPolaroids = is_array($restaurant['gallery']['polaroids'] ?? null) ? $restaurant['gallery']['polaroids'] : [];
+    $cmsPolaroids = [];
+
+    foreach (array_slice($rawPolaroids, 0, 3) as $item) {
         $path = is_array($item) && filled($item['path'] ?? null)
             ? (string) $item['path']
-            : $assetBase.'/'.$fallbackPhoto;
-        $date = is_array($item) && filled($item['date'] ?? null)
-            ? (string) $item['date']
-            : $fallbackDate;
+            : null;
 
-        return ['path' => $path, 'date' => $date];
-    };
+        if (! $path) {
+            continue;
+        }
 
-    $p0 = $pick(0, 'gallery-01.webp', '06.08.2023');
-    $p1 = $pick(1, 'gallery-02.webp', '06.01.2024');
-    $p2 = $pick(2, 'gallery-03.webp', '07.03.2023');
+        $cmsPolaroids[] = [
+            'path' => $path,
+            'date' => is_array($item) && filled($item['date'] ?? null) ? (string) $item['date'] : '',
+        ];
+    }
 
-    $galleryPolaroids = [
+    $polaroidCount = count($cmsPolaroids);
+    $hasPolaroids = $polaroidCount > 0;
+
+    $slots = [
         'mob' => [
-            ['left' => '20px', 'top' => '458px', 'rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'path' => $p0['path'], 'date' => $p0['date']],
-            ['left' => '195px', 'top' => '458px', 'rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'path' => $p1['path'], 'date' => $p1['date']],
+            1 => [['left' => '108px', 'top' => '458px', 'rotate' => '5deg']],
+            2 => [
+                ['left' => '20px', 'top' => '458px', 'rotate' => '8deg'],
+                ['left' => '195px', 'top' => '458px', 'rotate' => '-6deg'],
+            ],
         ],
         'tab' => [
-            ['left' => '20px', 'top' => '430px', 'rotate' => '6deg', 'fw' => 450, 'fh' => 635, 'px' => 37, 'py' => 59, 'pw' => 374, 'ph' => 418, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'path' => $p0['path'], 'date' => $p0['date']],
-            ['left' => '490px', 'top' => '430px', 'rotate' => '-4deg', 'fw' => 450, 'fh' => 635, 'px' => 37, 'py' => 59, 'pw' => 374, 'ph' => 418, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'path' => $p1['path'], 'date' => $p1['date']],
+            1 => [['left' => '255px', 'top' => '430px', 'rotate' => '4deg']],
+            2 => [
+                ['left' => '20px', 'top' => '430px', 'rotate' => '6deg'],
+                ['left' => '490px', 'top' => '430px', 'rotate' => '-4deg'],
+            ],
         ],
         'desk' => [
-            ['left' => '72px', 'top' => '695px', 'rotate' => '5deg', 'fw' => 549, 'fh' => 775, 'px' => 45, 'py' => 72, 'pw' => 456, 'ph' => 509, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p0['path'], 'date' => $p0['date']],
-            ['left' => '685px', 'top' => '695px', 'rotate' => '-3deg', 'fw' => 549, 'fh' => 775, 'px' => 45, 'py' => 72, 'pw' => 456, 'ph' => 509, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p1['path'], 'date' => $p1['date']],
-            ['left' => '1299px', 'top' => '695px', 'rotate' => '7deg', 'fw' => 549, 'fh' => 775, 'px' => 45, 'py' => 72, 'pw' => 456, 'ph' => 509, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p2['path'], 'date' => $p2['date']],
+            1 => [['left' => '685px', 'top' => '695px', 'rotate' => '3deg']],
+            2 => [
+                ['left' => '372px', 'top' => '695px', 'rotate' => '4deg'],
+                ['left' => '999px', 'top' => '695px', 'rotate' => '-3deg'],
+            ],
+            3 => [
+                ['left' => '72px', 'top' => '695px', 'rotate' => '5deg'],
+                ['left' => '685px', 'top' => '695px', 'rotate' => '-3deg'],
+                ['left' => '1299px', 'top' => '695px', 'rotate' => '7deg'],
+            ],
         ],
     ];
+
+    $countMob = min($polaroidCount, 2);
+    $countTab = min($polaroidCount, 2);
+    $countDesk = min($polaroidCount, 3);
+
+    $galleryPolaroids = ['mob' => [], 'tab' => [], 'desk' => []];
+
+    if ($countMob > 0) {
+        foreach (array_slice($cmsPolaroids, 0, $countMob) as $i => $item) {
+            $galleryPolaroids['mob'][] = array_merge($slots['mob'][$countMob][$i], ['fw' => 160, 'fh' => 226, 'px' => 13, 'py' => 21, 'pw' => 133, 'ph' => 141, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22], $item);
+        }
+    }
+
+    if ($countTab > 0) {
+        foreach (array_slice($cmsPolaroids, 0, $countTab) as $i => $item) {
+            $galleryPolaroids['tab'][] = array_merge($slots['tab'][$countTab][$i], ['fw' => 450, 'fh' => 635, 'px' => 37, 'py' => 59, 'pw' => 374, 'ph' => 418, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92], $item);
+        }
+    }
+
+    if ($countDesk > 0) {
+        foreach (array_slice($cmsPolaroids, 0, $countDesk) as $i => $item) {
+            $galleryPolaroids['desk'][] = array_merge($slots['desk'][$countDesk][$i], ['fw' => 549, 'fh' => 775, 'px' => 45, 'py' => 72, 'pw' => 456, 'ph' => 509, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106], $item);
+        }
+    }
 @endphp
 
-<section class="lum-container relative overflow-visible bg-lum-ivory h-[980px] tab:h-[1403px] desk:h-[1890px] desk:w-[1920px]" data-lum-villa-panel>
+<section @class([
+    'lum-container relative overflow-visible bg-lum-ivory desk:w-[1920px]',
+    'h-[980px] tab:h-[1403px] desk:h-[1890px]' => $hasPolaroids,
+    'h-[730px] tab:h-[980px] desk:h-[1330px]' => ! $hasPolaroids,
+]) data-lum-villa-panel>
     {{-- Ovals live in hero (mob/tab/desk) so they stack above the hero media --}}
 
     {{-- MOBILE — Figma 186:698 --}}
@@ -63,7 +106,11 @@
             </div>
         @endforeach
 
-        <p class="absolute left-[43px] top-[748px] w-[290px] text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $restaurant['gallery']['body_bottom'] }}</p>
+        <p @class([
+            'absolute left-[43px] w-[290px] text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso',
+            'top-[748px]' => $hasPolaroids,
+            'top-[470px]' => ! $hasPolaroids,
+        ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $restaurant['gallery']['body_bottom'] }}</p>
 
         <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" class="absolute bottom-0 left-[20px] h-[31px] w-[335px]" width="335" height="31">
     </div>
@@ -93,7 +140,11 @@
             </div>
         @endforeach
 
-        <p class="absolute left-1/2 top-[1184px] w-[560px] -translate-x-1/2 text-center lum-text-2 text-lum-espresso" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $restaurant['gallery']['body_bottom'] }}</p>
+        <p @class([
+            'absolute left-1/2 w-[560px] -translate-x-1/2 text-center lum-text-2 text-lum-espresso',
+            'top-[1184px]' => $hasPolaroids,
+            'top-[760px]' => ! $hasPolaroids,
+        ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $restaurant['gallery']['body_bottom'] }}</p>
 
         <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" class="absolute bottom-0 left-[20px] h-[39px] w-[920px]" width="920" height="39">
     </div>
@@ -123,7 +174,11 @@
             </div>
         @endforeach
 
-        <p class="absolute left-1/2 top-[1630px] w-[856px] -translate-x-1/2 text-center lum-body text-lum-espresso" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $restaurant['gallery']['body_bottom'] }}</p>
+        <p @class([
+            'absolute left-1/2 w-[856px] -translate-x-1/2 text-center lum-body text-lum-espresso',
+            'top-[1630px]' => $hasPolaroids,
+            'top-[1020px]' => ! $hasPolaroids,
+        ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $restaurant['gallery']['body_bottom'] }}</p>
 
         <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="absolute bottom-0 left-[72px] h-[63px] w-[1776px]" width="1776" height="63">
     </div>

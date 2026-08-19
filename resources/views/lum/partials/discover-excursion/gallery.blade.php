@@ -1,39 +1,54 @@
 @php
     $gallery = $excursion['gallery'];
-    $slug = $excursion['slug'] ?? '';
-    $assetBase = 'discover/detail/'.$slug;
-    $cmsPolaroids = $gallery['polaroids'] ?? [];
-    $pick = function (int $i, string $fallbackPhoto, string $fallbackDate) use ($cmsPolaroids, $assetBase): array {
-        $item = $cmsPolaroids[$i] ?? null;
+    $rawPolaroids = is_array($gallery['polaroids'] ?? null) ? $gallery['polaroids'] : [];
+    $cmsPolaroids = [];
+
+    foreach (array_slice($rawPolaroids, 0, 3) as $item) {
         $path = is_array($item) && filled($item['path'] ?? null)
             ? (string) $item['path']
-            : $assetBase.'/'.$fallbackPhoto;
-        $date = is_array($item) && filled($item['date'] ?? null)
-            ? (string) $item['date']
-            : $fallbackDate;
+            : null;
 
-        return ['path' => $path, 'date' => $date];
-    };
+        if (! $path) {
+            continue;
+        }
 
-    $p0 = $pick(0, 'gallery-01.webp', '06.08.2023');
-    $p1 = $pick(1, 'gallery-02.webp', '06.01.2024');
-    $p2 = $pick(2, 'gallery-03.webp', '07.03.2023');
+        $cmsPolaroids[] = [
+            'path' => $path,
+            'date' => is_array($item) && filled($item['date'] ?? null) ? (string) $item['date'] : '',
+        ];
+    }
 
-    $galleryPolaroids = [
-        'mob' => [
-            ['rotate' => '8deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'path' => $p0['path'], 'date' => $p0['date']],
-            ['rotate' => '-6deg', 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22, 'path' => $p1['path'], 'date' => $p1['date']],
-        ],
-        'tab' => [
-            ['rotate' => '6deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'path' => $p0['path'], 'date' => $p0['date']],
-            ['rotate' => '-4deg', 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92, 'path' => $p1['path'], 'date' => $p1['date']],
-        ],
-        'desk' => [
-            ['rotate' => '5deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p0['path'], 'date' => $p0['date']],
-            ['rotate' => '-3deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p1['path'], 'date' => $p1['date']],
-            ['rotate' => '7deg', 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106, 'path' => $p2['path'], 'date' => $p2['date']],
-        ],
+    $polaroidCount = count($cmsPolaroids);
+    $hasPolaroids = $polaroidCount > 0;
+
+    $rotations = [
+        'mob' => [1 => ['5deg'], 2 => ['8deg', '-6deg']],
+        'tab' => [1 => ['4deg'], 2 => ['6deg', '-4deg']],
+        'desk' => [1 => ['3deg'], 2 => ['4deg', '-3deg'], 3 => ['5deg', '-3deg', '7deg']],
     ];
+
+    $galleryPolaroids = ['mob' => [], 'tab' => [], 'desk' => []];
+    $countMob = min($polaroidCount, 2);
+    $countTab = min($polaroidCount, 2);
+    $countDesk = min($polaroidCount, 3);
+
+    if ($countMob > 0) {
+        foreach (array_slice($cmsPolaroids, 0, $countMob) as $i => $item) {
+            $galleryPolaroids['mob'][] = array_merge(['rotate' => $rotations['mob'][$countMob][$i], 'fw' => 160, 'fh' => 226, 'dateSize' => 10, 'shareSize' => 9, 'dateTop' => 8, 'shareBottom' => 22], $item);
+        }
+    }
+
+    if ($countTab > 0) {
+        foreach (array_slice($cmsPolaroids, 0, $countTab) as $i => $item) {
+            $galleryPolaroids['tab'][] = array_merge(['rotate' => $rotations['tab'][$countTab][$i], 'fw' => 450, 'fh' => 635, 'dateSize' => 13, 'shareSize' => 17, 'dateTop' => 34, 'shareBottom' => 92], $item);
+        }
+    }
+
+    if ($countDesk > 0) {
+        foreach (array_slice($cmsPolaroids, 0, $countDesk) as $i => $item) {
+            $galleryPolaroids['desk'][] = array_merge(['rotate' => $rotations['desk'][$countDesk][$i], 'fw' => 549, 'fh' => 775, 'dateSize' => 16, 'shareSize' => 23, 'dateTop' => 42, 'shareBottom' => 106], $item);
+        }
+    }
 @endphp
 
 <section class="lum-container relative bg-lum-ivory desk:w-[1920px]" data-lum-villa-panel>
@@ -50,7 +65,11 @@
                 <p class="text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply">{{ $gallery['body'] }}</p>
             </div>
 
-            <div class="mt-[40px] flex w-full items-start justify-center gap-[15px]">
+            <div @class([
+                'flex w-full items-start justify-center gap-[15px]',
+                'mt-[40px]' => $hasPolaroids,
+                'mt-[12px]' => ! $hasPolaroids,
+            ])>
                 @foreach ($galleryPolaroids['mob'] as $polaroid)
                     <div class="relative shrink-0" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                         <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
@@ -61,9 +80,17 @@
                 @endforeach
             </div>
 
-            <p class="mt-[64px] w-[335px] text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
+            <p @class([
+                'w-[335px] text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply',
+                'mt-[64px]' => $hasPolaroids,
+                'mt-[40px]' => ! $hasPolaroids,
+            ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
 
-            <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" class="mt-[69px] h-[31px] w-[335px]" width="335" height="31">
+            <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" @class([
+                'h-[31px] w-[335px]',
+                'mt-[69px]' => $hasPolaroids,
+                'mt-[44px]' => ! $hasPolaroids,
+            ]) width="335" height="31">
         </div>
     </div>
 
@@ -80,7 +107,11 @@
                 <p class="max-w-[560px] lum-text-2 text-lum-espresso mix-blend-multiply">{{ $gallery['body'] }}</p>
             </div>
 
-            <div class="mt-[81px] flex w-full items-start justify-center gap-[20px]">
+            <div @class([
+                'flex w-full items-start justify-center gap-[20px]',
+                'mt-[81px]' => $hasPolaroids,
+                'mt-[20px]' => ! $hasPolaroids,
+            ])>
                 @foreach ($galleryPolaroids['tab'] as $polaroid)
                     <div class="relative shrink-0" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                         <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
@@ -91,9 +122,17 @@
                 @endforeach
             </div>
 
-            <p class="mt-[119px] w-[560px] text-center lum-text-2 text-lum-espresso mix-blend-multiply" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
+            <p @class([
+                'w-[560px] text-center lum-text-2 text-lum-espresso mix-blend-multiply',
+                'mt-[119px]' => $hasPolaroids,
+                'mt-[60px]' => ! $hasPolaroids,
+            ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
 
-            <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" class="mt-[121px] h-[39px] w-[920px]" width="920" height="39">
+            <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" @class([
+                'h-[39px] w-[920px]',
+                'mt-[121px]' => $hasPolaroids,
+                'mt-[80px]' => ! $hasPolaroids,
+            ]) width="920" height="39">
         </div>
     </div>
 
@@ -110,7 +149,11 @@
                 <p class="lum-body text-lum-espresso mix-blend-multiply">{{ $gallery['body'] }}</p>
             </div>
 
-            <div class="mt-[120px] flex w-full items-start justify-center gap-[64px]">
+            <div @class([
+                'flex w-full items-start justify-center gap-[64px]',
+                'mt-[120px]' => $hasPolaroids,
+                'mt-[32px]' => ! $hasPolaroids,
+            ])>
                 @foreach ($galleryPolaroids['desk'] as $polaroid)
                     <div class="relative shrink-0" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
                         <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
@@ -121,9 +164,17 @@
                 @endforeach
             </div>
 
-            <p class="mt-[160px] w-[856px] text-center lum-body text-lum-espresso mix-blend-multiply" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
+            <p @class([
+                'w-[856px] text-center lum-body text-lum-espresso mix-blend-multiply',
+                'mt-[160px]' => $hasPolaroids,
+                'mt-[80px]' => ! $hasPolaroids,
+            ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
 
-            <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="mt-[120px] h-[63px] w-[1776px]" width="1776" height="63">
+            <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" @class([
+                'h-[63px] w-[1776px]',
+                'mt-[120px]' => $hasPolaroids,
+                'mt-[88px]' => ! $hasPolaroids,
+            ]) width="1776" height="63">
         </div>
     </div>
 </section>
