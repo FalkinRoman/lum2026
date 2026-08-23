@@ -12,22 +12,23 @@ function isVisibleElement(element) {
 }
 
 function initVillaEyebrow(node) {
+    // y/transform, not marginTop — margin thrashing during Lenis scroll = рывок
     gsap.fromTo(
         node,
-        { marginTop: 20, opacity: 0 },
+        { y: 20, opacity: 0 },
         {
-            marginTop: 0,
+            y: 0,
             opacity: 1,
             duration: 0.9,
             ease: INTRO_EASE,
+            force3D: true,
             scrollTrigger: {
                 trigger: node,
                 start: 'top 92%',
                 once: true,
-                invalidateOnRefresh: true,
             },
             onComplete: () => {
-                gsap.set(node, { clearProps: 'marginTop,opacity' });
+                gsap.set(node, { clearProps: 'transform,opacity' });
             },
         },
     );
@@ -91,6 +92,7 @@ function initVillaPolaroid(node, index) {
             duration: 1.1,
             delay: index * 0.1,
             ease: INTRO_EASE,
+            force3D: true,
             onUpdate() {
                 const y = gsap.getProperty(node, 'y') || 0;
                 node.style.transform = `${rotate} translateY(${y}px)`.trim();
@@ -102,30 +104,28 @@ function initVillaPolaroid(node, index) {
                 trigger: node,
                 start: 'top 92%',
                 once: true,
-                invalidateOnRefresh: true,
             },
         },
     );
 }
 
 function initVillaCard(card, index) {
+    // Fade-only on media with box-shadow: translating shadowed <img> forces expensive paint
     gsap.fromTo(
         card,
-        { y: 28, opacity: 0 },
+        { opacity: 0 },
         {
-            y: 0,
             opacity: 1,
-            duration: 0.95,
-            delay: index * 0.08,
+            duration: 0.85,
+            delay: index * 0.06,
             ease: INTRO_EASE,
             scrollTrigger: {
                 trigger: card,
                 start: 'top 88%',
                 once: true,
-                invalidateOnRefresh: true,
             },
             onComplete: () => {
-                gsap.set(card, { clearProps: 'y,opacity' });
+                gsap.set(card, { clearProps: 'opacity' });
             },
         },
     );
