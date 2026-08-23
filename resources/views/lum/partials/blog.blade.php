@@ -134,7 +134,7 @@
                         <a href="{{ $postHref }}" class="flex w-full max-w-[322px] shrink-0 flex-col items-center gap-[24px] text-inherit no-underline">
                             <div class="flex shrink-0 flex-col items-center gap-[12px]">
                                 <img src="{{ $img('ui/dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
-                                <p class="lum-text-2 font-medium uppercase">{{ $post['tags'][0] }}</p>
+                                <p class="lum-text-2 font-medium uppercase">{{ $post['tags'][0] ?? __('lum.blog.category') }}</p>
                             </div>
                             <p class="line-clamp-4 w-full overflow-hidden lum-heading-3 text-lum-espresso">{{ $post['title'] }}</p>
                         </a>
