@@ -87,16 +87,17 @@
     }
 @endphp
 
+{{-- No scroll-hide: opacity:0 + heavy CMS polaroids = pause then pop --}}
 <section @class([
     'lum-container relative bg-lum-ivory desk:w-[1920px]',
     'h-[952px] tab:h-[1400px] desk:h-[1756px]' => $hasPolaroids,
     'h-[700px] tab:h-[930px] desk:h-[1180px]' => ! $hasPolaroids,
-]) data-lum-villa-panel>
+]) data-lum-villa-panel data-lum-gallery>
     {{-- MOBILE — Figma 78:738 --}}
     <div class="relative h-full tab:hidden">
-        <p class="lum-script absolute inset-x-0 top-[60px] whitespace-nowrap text-center text-[24px] leading-none tracking-[1.2px] text-lum-espresso" data-lum-villa-eyebrow>{{ $villa['gallery']['eyebrow'] }}</p>
+        <p class="lum-script absolute inset-x-0 top-[60px] whitespace-nowrap text-center text-[24px] leading-none tracking-[1.2px] text-lum-espresso">{{ $villa['gallery']['eyebrow'] }}</p>
 
-        <div class="absolute left-[20px] top-[144px] flex w-[335px] flex-col items-center gap-[22px] text-center" data-lum-scroll-reveal>
+        <div class="absolute left-[20px] top-[144px] flex w-[335px] flex-col items-center gap-[22px] text-center">
             <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[6px]" width="6" height="6">
             <h2 class="font-serif text-[36px] leading-[45px] text-lum-espresso">
                 {{ $villa['gallery']['title_normal'] }}<br><span class="font-medium italic">{{ $villa['gallery']['title_italic'] }}</span>
@@ -105,11 +106,11 @@
         </div>
 
         @foreach ($galleryPolaroids['mob'] as $polaroid)
-            <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
+            <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px;">
-                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
+                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425" decoding="async">
                     <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.23px;">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo">
+                    <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo" width="{{ $polaroid['pw'] }}" height="{{ $polaroid['ph'] }}" loading="lazy" decoding="async" data-lum-warm-img>
                     <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[4px] text-center leading-[1]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 0.2px;">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -119,7 +120,7 @@
             'absolute left-[20px] w-[335px] text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso',
             'top-[720px]' => $hasPolaroids,
             'top-[430px]' => ! $hasPolaroids,
-        ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $villa['gallery']['body_bottom'] }}</p>
+        ])>{{ $villa['gallery']['body_bottom'] }}</p>
 
         <div class="absolute bottom-[31px] left-[20px] flex w-[335px] items-center gap-[22px]">
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
@@ -130,9 +131,9 @@
 
     {{-- TABLET — Figma 78:566 --}}
     <div class="relative hidden h-full tab:block desk:hidden">
-        <p class="lum-script absolute inset-x-0 top-0 whitespace-nowrap text-center text-[28px] leading-none tracking-[1.4px] text-lum-espresso" data-lum-villa-eyebrow>{{ $villa['gallery']['eyebrow'] }}</p>
+        <p class="lum-script absolute inset-x-0 top-0 whitespace-nowrap text-center text-[28px] leading-none tracking-[1.4px] text-lum-espresso">{{ $villa['gallery']['eyebrow'] }}</p>
 
-        <div class="absolute left-1/2 top-[101px] flex w-[800px] -translate-x-1/2 flex-col items-center gap-[20px] text-center" data-lum-scroll-reveal>
+        <div class="absolute left-1/2 top-[101px] flex w-[800px] -translate-x-1/2 flex-col items-center gap-[20px] text-center">
             <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[8px]" width="8" height="8">
             <h2 class="font-serif text-[52px] leading-[52px] text-lum-espresso">
                 {{ $villa['gallery']['title_normal'] }}<br><span class="font-medium italic">{{ $villa['gallery']['title_italic'] }}</span>
@@ -141,11 +142,11 @@
         </div>
 
         @foreach ($galleryPolaroids['tab'] as $polaroid)
-            <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
+            <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px;">
-                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
+                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425" decoding="async">
                     <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.4px;">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo">
+                    <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo" width="{{ $polaroid['pw'] }}" height="{{ $polaroid['ph'] }}" loading="lazy" decoding="async" data-lum-warm-img>
                     <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[10px] text-center leading-[1.05]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 0.5px;">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -155,7 +156,7 @@
             'absolute left-1/2 w-[560px] -translate-x-1/2 text-center lum-text-2 text-lum-espresso',
             'top-[1140px]' => $hasPolaroids,
             'top-[690px]' => ! $hasPolaroids,
-        ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $villa['gallery']['body_bottom'] }}</p>
+        ])>{{ $villa['gallery']['body_bottom'] }}</p>
 
         <div class="absolute bottom-[39px] left-[20px] flex w-[920px] items-center gap-[22px]">
             <div class="h-px flex-1 bg-lum-espresso/40"></div>
@@ -166,9 +167,9 @@
 
     {{-- DESKTOP — Figma 78:376 --}}
     <div class="relative hidden h-full desk:block">
-        <p class="lum-script absolute inset-x-0 top-[105px] whitespace-nowrap text-center text-[32px] leading-none tracking-[1.6px] text-lum-espresso" data-lum-villa-eyebrow>{{ $villa['gallery']['eyebrow'] }}</p>
+        <p class="lum-script absolute inset-x-0 top-[105px] whitespace-nowrap text-center text-[32px] leading-none tracking-[1.6px] text-lum-espresso">{{ $villa['gallery']['eyebrow'] }}</p>
 
-        <div class="absolute left-1/2 top-[188px] flex w-[856px] -translate-x-1/2 flex-col items-center gap-[24px] text-center" data-lum-scroll-reveal>
+        <div class="absolute left-1/2 top-[188px] flex w-[856px] -translate-x-1/2 flex-col items-center gap-[24px] text-center">
             <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">
             <h2 class="font-serif text-[88px] leading-[94px] text-lum-espresso">
                 {{ $villa['gallery']['title_normal'] }}<br><span class="font-medium italic">{{ $villa['gallery']['title_italic'] }}</span>
@@ -177,11 +178,11 @@
         </div>
 
         @foreach ($galleryPolaroids['desk'] as $polaroid)
-            <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});" data-lum-villa-polaroid>
+            <div class="absolute" style="left: {{ $polaroid['left'] }}; top: {{ $polaroid['top'] }}; transform: rotate({{ $polaroid['rotate'] }});">
                 <div class="relative" style="width: {{ $polaroid['fw'] }}px; height: {{ $polaroid['fh'] }}px;">
-                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425">
+                    <img src="{{ $img('polaroids/frame.svg') }}" alt="" class="lum-polaroid__frame drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]" width="301" height="425" decoding="async">
                     <p class="lum-villa-polaroid__script absolute left-0 right-0 z-[3] text-center leading-none" style="top: {{ $polaroid['dateTop'] }}px; font-size: {{ $polaroid['dateSize'] }}px; letter-spacing: 0.79px;">{{ $polaroid['date'] }}</p>
-                    <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo">
+                    <img src="{{ $img($polaroid['path']) }}" alt="" class="lum-polaroid__photo" width="{{ $polaroid['pw'] }}" height="{{ $polaroid['ph'] }}" loading="lazy" decoding="async" data-lum-warm-img>
                     <p class="lum-villa-polaroid__script lum-villa-polaroid__share absolute left-0 right-0 z-[3] px-[12px] text-center leading-[1.05]" style="bottom: {{ $polaroid['shareBottom'] }}px; font-size: {{ $polaroid['shareSize'] }}px; letter-spacing: 1.14px;">{{ __('lum.polaroids.share') }}</p>
                 </div>
             </div>
@@ -191,7 +192,7 @@
             'absolute left-1/2 w-[856px] -translate-x-1/2 text-center lum-body text-lum-espresso',
             'top-[1495px]' => $hasPolaroids,
             'top-[870px]' => ! $hasPolaroids,
-        ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $villa['gallery']['body_bottom'] }}</p>
+        ])>{{ $villa['gallery']['body_bottom'] }}</p>
 
         <div class="absolute bottom-[62px] left-[72px] flex w-[1776px] items-center gap-[22px]">
             <div class="h-px flex-1 bg-lum-espresso/40"></div>

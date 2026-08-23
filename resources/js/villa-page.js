@@ -12,7 +12,11 @@ function isVisibleElement(element) {
 }
 
 function initVillaEyebrow(node) {
-    // y/transform, not marginTop — margin thrashing during Lenis scroll = рывок
+    // Skip media-heavy villa panels that opt out of hide-until-reveal.
+    if (node.closest('[data-lum-gallery], [data-lum-facilities]')) {
+        return;
+    }
+
     gsap.fromTo(
         node,
         { y: 20, opacity: 0 },
@@ -80,69 +84,79 @@ function initVillaIntro(root) {
     play(marginItems, true);
 }
 
-function initVillaPolaroid(node, index) {
-    const rotate = node.style.transform || '';
+function whenImageReady(img) {
+    if (! (img instanceof HTMLImageElement)) {
+        return Promise.resolve();
+    }
 
-    gsap.fromTo(
-        node,
-        { y: 48, opacity: 0 },
-        {
-            y: 0,
-            opacity: 1,
-            duration: 1.1,
-            delay: index * 0.1,
-            ease: INTRO_EASE,
-            force3D: true,
-            onUpdate() {
-                const y = gsap.getProperty(node, 'y') || 0;
-                node.style.transform = `${rotate} translateY(${y}px)`.trim();
-            },
-            onComplete() {
-                node.style.transform = rotate;
-            },
-            scrollTrigger: {
-                trigger: node,
-                start: 'top 92%',
-                once: true,
-            },
-        },
-    );
+    const loaded = () => {
+        if (typeof img.decode === 'function') {
+            return img.decode().catch(() => undefined);
+        }
+
+        return Promise.resolve();
+    };
+
+    if (img.complete && img.naturalWidth > 0) {
+        return loaded();
+    }
+
+    return new Promise((resolve) => {
+        img.addEventListener('load', () => resolve(loaded()), { once: true });
+        img.addEventListener('error', () => resolve(), { once: true });
+    }).then((result) => result);
 }
 
 function initVillaCard(card, index) {
-    // Fade-only on media with box-shadow: translating shadowed <img> forces expensive paint
-    gsap.fromTo(
-        card,
-        { opacity: 0 },
-        {
-            opacity: 1,
-            duration: 0.85,
-            delay: index * 0.06,
-            ease: INTRO_EASE,
-            scrollTrigger: {
-                trigger: card,
-                start: 'top 88%',
-                once: true,
+    const play = () => {
+        gsap.fromTo(
+            card,
+            { opacity: 0 },
+            {
+                opacity: 1,
+                duration: 0.7,
+                delay: index * 0.05,
+                ease: INTRO_EASE,
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 90%',
+                    once: true,
+                },
+                onComplete: () => {
+                    gsap.set(card, { clearProps: 'opacity' });
+                },
             },
-            onComplete: () => {
-                gsap.set(card, { clearProps: 'opacity' });
-            },
-        },
-    );
+        );
+    };
+
+    // Never fade an undecoded bitmap — pause→pop.
+    if (card instanceof HTMLImageElement) {
+        whenImageReady(card).then(play);
+
+        return;
+    }
+
+    const img = card.querySelector('img');
+
+    if (img instanceof HTMLImageElement) {
+        whenImageReady(img).then(play);
+
+        return;
+    }
+
+    play();
 }
 
-/** Prefetch facilities src into HTTP cache before lazy <img> hits viewport (avoids decode pop). */
-function warmFacilitiesImages() {
-    const panel = document.querySelector('[data-lum-facilities]');
-
-    if (! panel || typeof IntersectionObserver !== 'function') {
+/** Prefetch warm targets into HTTP cache before lazy imgs hit the viewport. */
+function warmMediaPanels() {
+    if (typeof IntersectionObserver !== 'function') {
         return;
     }
 
     const warmed = new Set();
 
-    const warm = () => {
-        panel.querySelectorAll('[data-lum-facilities-img]').forEach((img) => {
+    const warmPanel = (panel) => {
+        panel.querySelectorAll('[data-lum-warm-img], [data-lum-facilities-img]').forEach((img) => {
             if (! (img instanceof HTMLImageElement)) {
                 return;
             }
@@ -160,23 +174,25 @@ function warmFacilitiesImages() {
         });
     };
 
-    const io = new IntersectionObserver(
-        (entries) => {
-            if (! entries.some((entry) => entry.isIntersecting)) {
-                return;
-            }
+    document.querySelectorAll('[data-lum-gallery], [data-lum-facilities]').forEach((panel) => {
+        const io = new IntersectionObserver(
+            (entries) => {
+                if (! entries.some((entry) => entry.isIntersecting)) {
+                    return;
+                }
 
-            io.disconnect();
-            warm();
-        },
-        { rootMargin: '120% 0px' },
-    );
+                io.disconnect();
+                warmPanel(panel);
+            },
+            { rootMargin: '140% 0px' },
+        );
 
-    io.observe(panel);
+        io.observe(panel);
+    });
 }
 
 export function initVillaPage() {
-    warmFacilitiesImages();
+    warmMediaPanels();
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return;
@@ -192,11 +208,7 @@ export function initVillaPage() {
         }
     });
 
-    document.querySelectorAll('[data-lum-villa-polaroid]').forEach((node, index) => {
-        if (isVisibleElement(node)) {
-            initVillaPolaroid(node, index);
-        }
-    });
+    // Polaroids: no opacity:0 / transform thrash — media stays visible; warm handles decode.
 
     document.querySelectorAll('[data-lum-villa-card]').forEach((card, index) => {
         if (isVisibleElement(card)) {

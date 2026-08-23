@@ -5,7 +5,7 @@
 <section class="lum-container lum-shop relative h-[675px] overflow-hidden tab:h-[455px] desk:h-[768px]" data-lum-shop-parallax>
     <div class="lum-shop__bg absolute inset-0 overflow-hidden" aria-hidden="true">
         @if (\App\Support\Content::hasMedia($shopTeaser['background_image'] ?? null))
-            <img src="{{ $img($shopTeaser['background_image']) }}" alt="" class="lum-shop__bg-img absolute" width="1920" height="768" data-lum-shop-parallax-bg>
+            <img src="{{ $img($shopTeaser['background_image']) }}" alt="" class="lum-shop__bg-img absolute" width="1920" height="768" loading="lazy" decoding="async" data-lum-shop-parallax-bg>
         @else
             <div class="lum-shop__bg-img absolute inset-0 bg-lum-espresso" data-lum-shop-parallax-bg></div>
         @endif

@@ -59,7 +59,7 @@ function ensureImageLoaded(src) {
     return Promise.race([
         loaded,
         new Promise((resolve) => {
-            window.setTimeout(resolve, 400);
+            window.setTimeout(resolve, 2200);
         }),
     ]);
 }

@@ -23,11 +23,13 @@ function revealMotionProps(element, travel, fadeOnly) {
         return { from: {}, to: {}, clearProps: 'opacity' };
     }
 
+    // Centered (-translate-x-*) : fade only — marginTop thrash under Lenis + page scale.
     if (isCenteredElement(element)) {
         return {
-            from: { marginTop: travel, opacity: 0 },
-            to: { marginTop: 0, opacity: 1 },
-            clearProps: 'marginTop,opacity',
+            from: { opacity: 0 },
+            to: { opacity: 1 },
+            clearProps: 'opacity',
+            fadeOnly: true,
         };
     }
 
@@ -43,26 +45,31 @@ function revealElement(element) {
         return;
     }
 
-    const fadeOnly = element.hasAttribute('data-lum-scroll-fade');
+    // Heavy media sections opt out (gallery/facilities) — no hide-until-trigger.
+    if (element.closest('[data-lum-gallery], [data-lum-facilities]')) {
+        return;
+    }
+
+    const fadeOnly = element.hasAttribute('data-lum-scroll-fade') || isCenteredElement(element);
     const travel = fadeOnly ? 0 : (Number(element.dataset.lumScrollRevealY) || 48);
     const delay = Number(element.dataset.lumScrollRevealDelay) || 0;
     const motion = revealMotionProps(element, travel, fadeOnly);
+    const useFade = fadeOnly || motion.fadeOnly;
 
     gsap.fromTo(
         element,
-        fadeOnly ? { opacity: 0 } : motion.from,
+        useFade ? { opacity: 0 } : motion.from,
         {
             opacity: 1,
-            ...(fadeOnly ? {} : motion.to),
+            ...(useFade ? {} : motion.to),
             duration: REVEAL_DURATION,
             delay,
             ease: REVEAL_EASE,
-            force3D: ! fadeOnly && ! isCenteredElement(element),
+            force3D: ! useFade,
             scrollTrigger: {
                 trigger: element,
                 start: parseStart(element),
                 once: true,
-                invalidateOnRefresh: true,
             },
             onComplete: () => {
                 gsap.set(element, { clearProps: motion.clearProps });

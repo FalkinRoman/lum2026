@@ -2,7 +2,7 @@
     {{-- MOBILE --}}
     <div class="relative h-full tab:hidden" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="375" height="680" loading="eager">
+            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="375" height="680" loading="lazy" decoding="async" fetchpriority="high">
             <div class="absolute inset-0 bg-black/48"></div>
         </div>
 
@@ -30,7 +30,7 @@
     {{-- TABLET --}}
     <div class="relative hidden h-full tab:block desk:hidden" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="960" height="1080" loading="eager">
+            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="960" height="1080" loading="lazy" decoding="async">
             <div class="absolute inset-0 bg-black/48"></div>
         </div>
 
@@ -57,7 +57,7 @@
     {{-- DESKTOP --}}
     <div class="relative hidden h-full desk:block" data-lum-villa-panel>
         <div class="absolute inset-0 overflow-hidden">
-            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="1920" height="1080" loading="eager">
+            <img src="{{ $img($villa['hero']['image'] ?? 'villa/hero.webp') }}" alt="" class="h-full w-full object-cover object-center" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="high">
             <div class="absolute inset-0 bg-black/48"></div>
         </div>
 

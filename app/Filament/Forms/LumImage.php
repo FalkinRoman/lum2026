@@ -2,11 +2,15 @@
 
 namespace App\Filament\Forms;
 
+use App\Support\LumImageOptimizer;
+use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\FileUpload;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 /**
  * Professional image fields for Lum CMS.
  * Stores relative paths under public/images/lum (disk: lum).
+ * Raster uploads are resized ≤1600px and encoded as WebP.
  */
 class LumImage
 {
@@ -14,7 +18,7 @@ class LumImage
         string $name,
         string $label,
         string $directory = 'uploads',
-        ?string $helperText = 'Пусто = изображение не задано. Загрузите файл — появится миниатюра.',
+        ?string $helperText = 'Пусто = изображение не задано. Загрузите файл — появится миниатюра. Сохранится WebP ≤1600px.',
         bool $editor = false,
     ): FileUpload {
         $field = FileUpload::make($name)
@@ -30,12 +34,11 @@ class LumImage
                 'image/gif',
                 'image/svg+xml',
             ])
-            // Keep originals usable on retina, but avoid multi‑MB CMS payloads.
             ->imageResizeMode('max')
-            ->imageResizeTargetWidth(2000)
-            ->imageResizeTargetHeight(2000)
+            ->imageResizeTargetWidth(LumImageOptimizer::MAX_EDGE)
+            ->imageResizeTargetHeight(LumImageOptimizer::MAX_EDGE)
             ->imageResizeUpscale(false)
-            ->maxSize(8192)
+            ->maxSize(2048)
             ->imagePreviewHeight('180')
             ->panelLayout('integrated')
             ->uploadProgressIndicatorPosition('center')
@@ -45,6 +48,8 @@ class LumImage
             ->openable()
             ->downloadable()
             ->nullable();
+
+        self::applyOptimizer($field);
 
         if ($helperText !== null) {
             $field->helperText($helperText);
@@ -63,7 +68,7 @@ class LumImage
         string $directory = 'uploads',
         int $max = 16,
     ): FileUpload {
-        return FileUpload::make($name)
+        $field = FileUpload::make($name)
             ->label($label)
             ->disk('lum')
             ->directory($directory)
@@ -77,10 +82,10 @@ class LumImage
                 'image/svg+xml',
             ])
             ->imageResizeMode('max')
-            ->imageResizeTargetWidth(2000)
-            ->imageResizeTargetHeight(2000)
+            ->imageResizeTargetWidth(LumImageOptimizer::MAX_EDGE)
+            ->imageResizeTargetHeight(LumImageOptimizer::MAX_EDGE)
             ->imageResizeUpscale(false)
-            ->maxSize(8192)
+            ->maxSize(2048)
             ->multiple()
             ->reorderable()
             ->maxFiles($max)
@@ -88,9 +93,26 @@ class LumImage
             ->panelLayout('grid')
             ->uploadProgressIndicatorPosition('center')
             ->loadingIndicatorPosition('center')
-            ->openable()
-            ->downloadable()
-            ->nullable()
-            ->helperText('Можно несколько. Пустой список = нет изображений. Перетаскивайте для порядка.');
+            ->helperText('Каждый файл → WebP ≤1600px (удобно для скролла).');
+
+        self::applyOptimizer($field);
+
+        return $field;
+    }
+
+    private static function applyOptimizer(FileUpload $field): void
+    {
+        $field->saveUploadedFileUsing(static function (BaseFileUpload $component, TemporaryUploadedFile $file): ?string {
+            $directory = trim((string) $component->getDirectory(), '/');
+            $disk = $component->getDiskName();
+
+            $path = LumImageOptimizer::store($file, $directory, $disk);
+
+            if ($path && $component->getVisibility() === 'public') {
+                rescue(fn () => $component->getDisk()->setVisibility($path, 'public'), report: false);
+            }
+
+            return $path;
+        });
     }
 }
