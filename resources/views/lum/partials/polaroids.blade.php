@@ -1,7 +1,8 @@
 @php
     $polaroids = \App\Support\Content::homeLocale('polaroids') ?? [];
-    $polaroidPhotos = collect([0, 1, 2])->map(function (int $i) use ($polaroids) {
-        $raw = $polaroids['photos'][$i] ?? null;
+    $polaroidPhotosRaw = is_array($polaroids['photos'] ?? null) ? $polaroids['photos'] : [];
+    $polaroidPhotos = collect([0, 1, 2])->map(function (int $i) use ($polaroidPhotosRaw) {
+        $raw = $polaroidPhotosRaw[$i] ?? null;
         if (! \App\Support\Content::hasMedia($raw)) {
             return null;
         }

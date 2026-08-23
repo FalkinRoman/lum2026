@@ -1,6 +1,39 @@
 @php
     $location = \App\Support\Content::homeLocale('location') ?? [];
-    $cards = $location['cards'] ?? trans('lum.location.cards');
+    $fallbackCards = trans('lum.location.cards');
+    $fallbackCards = is_array($fallbackCards) ? array_values($fallbackCards) : [];
+    $rawCards = is_array($location['cards'] ?? null) ? array_values($location['cards']) : $fallbackCards;
+
+    // CMS cards must keep layout meta (tagTop/listTop/…). If admin wipe left holes — merge defaults.
+    $cards = [];
+    for ($i = 0; $i < 3; $i++) {
+        $fallback = is_array($fallbackCards[$i] ?? null) ? $fallbackCards[$i] : [];
+        $card = is_array($rawCards[$i] ?? null) ? $rawCards[$i] : [];
+        $card = array_replace_recursive($fallback, array_filter($card, static fn ($v) => $v !== null && $v !== ''));
+
+        if (! is_array($card['tagTop'] ?? null)) {
+            $card['tagTop'] = $fallback['tagTop'] ?? ['mob' => 56, 'tab' => 80, 'desk' => 128];
+        }
+        if (! is_array($card['listTop'] ?? null)) {
+            $card['listTop'] = $fallback['listTop'] ?? ['mob' => 292, 'tab' => 492, 'desk' => 566];
+        }
+        if (! is_array($card['listLines'] ?? null)) {
+            $card['listLines'] = $fallback['listLines'] ?? [];
+        }
+        if (! is_array($card['photoLines'] ?? null)) {
+            $card['photoLines'] = $fallback['photoLines'] ?? [];
+        }
+
+        $card['activeImgRotate'] = (bool) ($card['activeImgRotate'] ?? $fallback['activeImgRotate'] ?? false);
+        $card['activeImgClass'] = $card['activeImgClass'] ?? ($fallback['activeImgClass'] ?? 'object-cover');
+        $card['tag'] = $card['tag'] ?? ($fallback['tag'] ?? '');
+        $card['photoGradient'] = $card['photoGradient'] ?? ($fallback['photoGradient'] ?? '');
+        $card['photoLabel'] = $card['photoLabel'] ?? ($fallback['photoLabel'] ?? '');
+        $card['href'] = \App\Support\Content::link($card['route'] ?? null, $fallback['route'] ?? 'stay');
+
+        $cards[] = $card;
+    }
+
     $cardLayout = [
         [
             'width' => 'w-[550px]',
@@ -82,7 +115,7 @@
                         'padding' => app()->getLocale() === 'ru' ? 'px-[16px] py-[4px]' : 'px-[24px] py-[4px]',
                     ])
                     @include('lum.partials.location-card-list', ['top' => $card['listTop']['mob'], 'lines' => $card['listLines'], 'class' => 'text-[14px] leading-[22px] tracking-[0.1px]'])
-                    <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['more_info'] ?? __('lum.location.more_info') }}</a>
+                    <a href="{{ $card['href'] }}" class="lum-btn lum-btn-info absolute left-1/2 top-[360px] -translate-x-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ $location['more_info'] ?? __('lum.location.more_info') }}</a>
                 </article>
             @endforeach
         </div>
@@ -166,7 +199,7 @@
                         <h3 class="lum-heading-2 absolute left-1/2 top-[64px] -translate-x-1/2 text-lum-espresso" data-lum-reveal="2">{{ $card['title'] }}</h3>
                         @include('lum.partials.location-card-tag', ['top' => $card['tagTop']['desk'], 'tag' => $card['tag'], 'reveal' => 3])
                         @include('lum.partials.location-card-list', ['top' => $card['listTop']['desk'], 'lines' => $card['listLines'], 'reveal' => 4])
-                        <a href="{{ ! empty($card['route']) ? route($card['route']) : '#' }}" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">{{ $location['more_info'] ?? __('lum.location.more_info') }}</a>
+                        <a href="{{ $card['href'] }}" class="lum-btn lum-btn-info absolute left-1/2 top-[640px] -translate-x-1/2" data-lum-reveal="5">{{ $location['more_info'] ?? __('lum.location.more_info') }}</a>
                     </div>
                 </article>
             @endforeach
