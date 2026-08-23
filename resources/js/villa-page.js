@@ -131,7 +131,53 @@ function initVillaCard(card, index) {
     );
 }
 
+/** Prefetch facilities src into HTTP cache before lazy <img> hits viewport (avoids decode pop). */
+function warmFacilitiesImages() {
+    const panel = document.querySelector('[data-lum-facilities]');
+
+    if (! panel || typeof IntersectionObserver !== 'function') {
+        return;
+    }
+
+    const warmed = new Set();
+
+    const warm = () => {
+        panel.querySelectorAll('[data-lum-facilities-img]').forEach((img) => {
+            if (! (img instanceof HTMLImageElement)) {
+                return;
+            }
+
+            const url = img.currentSrc || img.src;
+
+            if (! url || warmed.has(url)) {
+                return;
+            }
+
+            warmed.add(url);
+            const probe = new Image();
+            probe.decoding = 'async';
+            probe.src = url;
+        });
+    };
+
+    const io = new IntersectionObserver(
+        (entries) => {
+            if (! entries.some((entry) => entry.isIntersecting)) {
+                return;
+            }
+
+            io.disconnect();
+            warm();
+        },
+        { rootMargin: '120% 0px' },
+    );
+
+    io.observe(panel);
+}
+
 export function initVillaPage() {
+    warmFacilitiesImages();
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return;
     }
