@@ -32,7 +32,7 @@
         @include('lum.partials.quote-choice', [
             'img' => $img,
             'heroImage' => $restaurant['quote']['hero_image'] ?? 'dining/detail/shared/quote-hero.webp',
-            'ovalImage' => $restaurant['quote']['oval_image'] ?? 'dining/detail/shared/quote-oval.webp',
+            'ovalImage' => $restaurant['quote']['oval_image'] ?? null,
             'quoteLine1' => $restaurant['quote']['line1'],
             'quoteLine2' => $restaurant['quote']['line2'],
             'noteLine1' => $restaurant['quote']['note_line1'],

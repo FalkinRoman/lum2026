@@ -1,5 +1,15 @@
 @php
     $blogPosts = \App\Support\Content::homeBlogPosts(4);
+    $blogCms = \App\Support\Content::homeLocale('blog') ?? [];
+    $blogTitleLine1 = filled($blogCms['title_line1'] ?? null)
+        ? (string) $blogCms['title_line1']
+        : __('lum.blog.title_line1');
+    $blogTitleLine2 = filled($blogCms['title_line2'] ?? null)
+        ? (string) $blogCms['title_line2']
+        : __('lum.blog.title_line2');
+    $blogTitleSingle = filled($blogCms['title_single'] ?? null)
+        ? (string) $blogCms['title_single']
+        : __('lum.blog.title_single');
     $isRu = app()->getLocale() === 'ru';
 @endphp
 <section @class([
@@ -18,8 +28,8 @@
             ])
             data-lum-scroll-reveal
         >
-            <p @class(['whitespace-nowrap' => ! $isRu])>{{ __('lum.blog.title_line1') }}</p>
-            <p>{{ __('lum.blog.title_line2') }}</p>
+            <p @class(['whitespace-nowrap' => ! $isRu])>{{ $blogTitleLine1 }}</p>
+            <p>{{ $blogTitleLine2 }}</p>
         </div>
         {{-- Full-bleed left: cards slide into the left edge; ivory mask hides previous peek in the 20px gutter --}}
         <div
@@ -71,7 +81,7 @@
                     'text-[44px] leading-[48px]' => $isRu,
                     'text-[52px] leading-[52px]' => ! $isRu,
                 ])
-            >{{ __('lum.blog.title_single') }}</h2>
+            >{{ $blogTitleSingle }}</h2>
             <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[72px] shrink-0" width="72" height="2">
         </div>
         <div class="absolute left-1/2 top-[180px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-espresso px-[24px] py-[10px]">
@@ -112,7 +122,7 @@
                     'font-serif text-[72px] leading-[78px]' => $isRu,
                     'lum-heading-1' => ! $isRu,
                 ])
-            >{{ __('lum.blog.title_single') }}</h2>
+            >{{ $blogTitleSingle }}</h2>
             <img src="{{ $img('blog/deco-right.svg') }}" alt="" class="w-[108px] shrink-0" width="108" height="2">
         </div>
         <div class="absolute left-1/2 top-[276px] -translate-x-1/2 -rotate-[1.4deg] bg-lum-espresso px-[32px] py-[12px]">

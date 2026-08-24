@@ -29,7 +29,7 @@ function buildSrc(base, name, suffix = '') {
 
 function slideMediaSrc(slide, kind, base, suffix = '') {
     if (! slide) {
-        return buildSrc(base, null, suffix);
+        return kind === 'oval' ? null : buildSrc(base, null, suffix);
     }
 
     if (suffix === '-sm') {
@@ -44,6 +44,10 @@ function slideMediaSrc(slide, kind, base, suffix = '') {
 
     if (slide[srcKey]) {
         return withSitePrefix(slide[srcKey]);
+    }
+
+    if (kind === 'oval' && ! slide.oval) {
+        return null;
     }
 
     return buildSrc(base, slide[kind], suffix);
@@ -81,10 +85,16 @@ function preloadImage(src) {
 }
 
 function preloadSlideAssets(slides, base, suffix = '') {
-    return Promise.all(slides.flatMap((slide) => [
-        preloadImage(slideMediaSrc(slide, 'photo', base, suffix)),
-        preloadImage(slideMediaSrc(slide, 'oval', base, suffix)),
-    ]));
+    return Promise.all(slides.flatMap((slide) => {
+        const jobs = [preloadImage(slideMediaSrc(slide, 'photo', base, suffix))];
+        const ovalSrc = slideMediaSrc(slide, 'oval', base, suffix);
+
+        if (ovalSrc) {
+            jobs.push(preloadImage(ovalSrc));
+        }
+
+        return jobs;
+    }));
 }
 
 function getMultilineTextWidth(track, inner) {
@@ -258,7 +268,22 @@ function fillPhoto(inner, slideData, base, suffix) {
     img.src = slideMediaSrc(slideData, 'photo', base, suffix);
 }
 
-function fillOval(inner, slideData, base, suffix) {
+function fillOval(inner, slideData, base, suffix, ovalHit = null) {
+    const hit = ovalHit ?? inner.closest('[data-lum-villas-oval-hit]');
+    const src = slideMediaSrc(slideData, 'oval', base, suffix);
+
+    if (! src) {
+        if (hit) {
+            hit.hidden = true;
+        }
+
+        return;
+    }
+
+    if (hit) {
+        hit.hidden = false;
+    }
+
     let img = inner.querySelector('[data-lum-villas-oval], img');
 
     if (! img) {
@@ -269,7 +294,7 @@ function fillOval(inner, slideData, base, suffix) {
         inner.appendChild(img);
     }
 
-    img.src = slideMediaSrc(slideData, 'oval', base, suffix);
+    img.src = src;
 }
 
 function fillTitle(content, slideData, suffix) {
@@ -738,7 +763,7 @@ function setupPanelTracks(panel, base) {
     if (ovalTrack) {
         tracks.push({
             ...ovalTrack,
-            fill: (slideData, inner) => fillOval(inner, slideData, base, suffix),
+            fill: (slideData, inner) => fillOval(inner, slideData, base, suffix, ovalHit),
             preload: (slideData) => preloadImage(slideMediaSrc(slideData, 'oval', base, suffix)),
         });
     }

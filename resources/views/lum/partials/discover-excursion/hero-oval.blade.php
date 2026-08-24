@@ -33,9 +33,11 @@
 
     {{-- DESKTOP — Figma 103:593 --}}
     <div class="relative hidden h-[1150px] desk:block">
-        <div class="absolute left-1/2 top-[80px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
-            <img src="{{ $img($excursion['oval'] ?? ('discover/detail/'.($excursion['slug'] ?? '').'/oval.webp')) }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
-        </div>
+        @if (filled($excursion['oval'] ?? null))
+            <div class="absolute left-1/2 top-[80px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
+                <img src="{{ $img($excursion['oval']) }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+            </div>
+        @endif
         <div class="absolute inset-x-0 top-[330px] h-[820px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $img($excursion['wellness_hero'] ?? ('discover/detail/'.($excursion['slug'] ?? '').'/wellness-hero.webp')) }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
         </div>

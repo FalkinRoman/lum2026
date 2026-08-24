@@ -7,7 +7,7 @@
     $note1 = Content::pageText('stay', 'quote', 'note_line1');
     $note2 = Content::pageText('stay', 'quote', 'note_line2');
     $heroUrl = Content::pageMediaUrl('stay', 'media', 'hero_image', 'stay/wellness-hero.webp');
-    $ovalUrl = Content::pageMediaUrl('stay', 'media', 'oval_image', 'stay/wellness-oval.webp');
+    $ovalUrl = Content::pageOptionalMediaUrl('stay', 'media', 'oval_image', 'stay/wellness-oval.webp');
 @endphp
 
 <section class="lum-container relative bg-lum-ivory" data-lum-stay-wellness>
@@ -17,9 +17,11 @@
             <img src="{{ $heroUrl }}" alt="" class="h-full w-full object-cover" width="375" height="660" loading="lazy">
         </div>
 
-        <div class="pointer-events-none absolute left-1/2 z-[3] h-[188px] w-[140px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 513px" data-lum-stay-wellness-oval>
-            <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="140" height="188" loading="lazy">
-        </div>
+        @if ($ovalUrl)
+            <div class="pointer-events-none absolute left-1/2 z-[3] h-[188px] w-[140px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 513px" data-lum-stay-wellness-oval>
+                <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="140" height="188" loading="lazy">
+            </div>
+        @endif
 
         <div class="relative z-[2] -mt-[64px] h-[563px] w-full bg-lum-ivory">
             <div class="absolute left-1/2 top-[128px] flex w-[335px] -translate-x-1/2 flex-col items-center gap-[16px] text-center" data-lum-scroll-reveal>
@@ -49,9 +51,11 @@
             <img src="{{ $heroUrl }}" alt="" class="h-full w-full object-cover" width="960" height="660" loading="lazy">
         </div>
 
-        <div class="pointer-events-none absolute left-1/2 z-[3] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 473px" data-lum-stay-wellness-oval>
-            <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="180" height="240" loading="lazy">
-        </div>
+        @if ($ovalUrl)
+            <div class="pointer-events-none absolute left-1/2 z-[3] h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" style="top: 473px" data-lum-stay-wellness-oval>
+                <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="180" height="240" loading="lazy">
+            </div>
+        @endif
 
         <div @class(['relative z-[2] -mt-[64px] w-full bg-lum-ivory', 'h-[692px]' => $isRu, 'h-[588px]' => ! $isRu])>
             <div class="absolute left-1/2 top-[152px] flex -translate-x-1/2 flex-col items-center gap-[12px] text-center" data-lum-scroll-reveal>
@@ -81,9 +85,11 @@
             <img src="{{ $heroUrl }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
         </div>
 
-        <div class="absolute left-1/2 top-[550px] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
-            <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
-        </div>
+        @if ($ovalUrl)
+            <div class="absolute left-1/2 top-[550px] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
+                <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+            </div>
+        @endif
 
         <div class="absolute left-1/2 top-[1140px] flex -translate-x-1/2 flex-col items-center gap-[24px] text-center" data-lum-scroll-reveal>
             <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">

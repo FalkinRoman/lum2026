@@ -15,7 +15,7 @@
                 <h1 class="w-full font-serif text-[42px] leading-[45px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="1">{{ $intro['title'] }}</h1>
             </div>
             <p class="mt-[32px] w-[295px] text-center text-[14px] leading-[22px] tracking-[0.1px] text-lum-espresso mix-blend-multiply" data-lum-stay-intro-item data-lum-stay-intro-order="2">{{ $intro['body'] }}</p>
-            <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" class="mt-[60px] h-[31px] w-[335px]" width="335" height="31" data-lum-stay-intro-item data-lum-stay-intro-order="3">
+            @include('lum.partials.divider-logomark', ['img' => $img, 'size' => 'mob', 'class' => 'mt-[60px]', 'attrs' => 'data-lum-stay-intro-item data-lum-stay-intro-order="3"'])
         </div>
     </div>
 
@@ -30,7 +30,7 @@
                 <h1 class="whitespace-nowrap font-serif text-[52px] leading-[52px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="1">{{ $intro['title'] }}</h1>
             </div>
             <p class="mt-[44px] w-[580px] text-center lum-text-2 text-lum-espresso mix-blend-multiply" data-lum-stay-intro-item data-lum-stay-intro-order="2">{{ $intro['body'] }}</p>
-            <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" class="mt-[80px] h-[39px] w-[920px]" width="920" height="39" data-lum-stay-intro-item data-lum-stay-intro-order="3">
+            @include('lum.partials.divider-logomark', ['img' => $img, 'size' => 'tab', 'class' => 'mt-[80px]', 'attrs' => 'data-lum-stay-intro-item data-lum-stay-intro-order="3"'])
         </div>
     </div>
 
@@ -46,7 +46,7 @@
                 <h1 class="w-full font-serif text-[88px] leading-[94px] text-lum-espresso" data-lum-stay-intro-item data-lum-stay-intro-order="1">{{ $intro['title'] }}</h1>
             </div>
             <p class="mt-[44px] w-[856px] text-center lum-body text-lum-espresso mix-blend-multiply" data-lum-stay-intro-item data-lum-stay-intro-order="2">{{ $intro['body'] }}</p>
-            <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="mt-[151px] h-[63px] w-[1776px]" width="1776" height="63" data-lum-stay-intro-item data-lum-stay-intro-order="3">
+            @include('lum.partials.divider-logomark', ['img' => $img, 'size' => 'desk', 'class' => 'mt-[151px]', 'attrs' => 'data-lum-stay-intro-item data-lum-stay-intro-order="3"'])
         </div>
     </div>
 </section>

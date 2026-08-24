@@ -25,13 +25,19 @@ function buildSrc(base, name, suffix = '') {
 
     const token = String(name).trim();
 
-    // CMS uploads keep real extension — prefer scroll-safe WebP derivative when present.
-    if (/\.(webp|jpe?g|png|gif|svg)$/i.test(token)) {
-        if (/\.(svg|gif)$/i.test(token)) {
-            return joinLumBase(base, token);
-        }
+    // Absolute / site-prefixed / data URLs from blade — use as-is.
+    if (
+        token.startsWith('http://')
+        || token.startsWith('https://')
+        || token.startsWith('data:')
+        || token.startsWith('/')
+    ) {
+        return withSitePrefix(token);
+    }
 
-        return toDerivedWebp(base, token) || joinLumBase(base, token);
+    // CMS uploads keep real extension — never invent missing .derived paths (404 → empty carousel).
+    if (/\.(webp|jpe?g|png|gif|svg)$/i.test(token)) {
+        return joinLumBase(base, token);
     }
 
     return joinLumBase(base, `${name}${suffix}.webp`);
@@ -44,30 +50,6 @@ function joinLumBase(base, file) {
     return path.startsWith('http://') || path.startsWith('https://')
         ? path
         : withSitePrefix(path);
-}
-
-/** /images/lum/villa/impression + file.jpg → /images/lum/.derived/1600/villa/impression/file.webp */
-function toDerivedWebp(base, token) {
-    const stem = token.replace(/\.[^.]+$/, '');
-    const marker = '/images/lum/';
-    let pathname = '';
-
-    try {
-        pathname = new URL(base, window.location.origin).pathname;
-    } catch {
-        pathname = String(base);
-    }
-
-    const idx = pathname.indexOf(marker);
-
-    if (idx === -1) {
-        return null;
-    }
-
-    const relDir = pathname.slice(idx + marker.length).replace(/^\/+|\/+$/g, '');
-    const derived = `${marker}.derived/1600/${relDir ? `${relDir}/` : ''}${stem}.webp`;
-
-    return withSitePrefix(derived);
 }
 
 function preloadImage(src) {

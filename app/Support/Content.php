@@ -95,11 +95,15 @@ class Content
      * Legacy slide-01 / oval-02 → stem + -sm.webp variants.
      * CMS upload (hash.jpg etc.) → absolute URL, same for all breakpoints.
      *
-     * @return array{stem: ?string, src: string, srcSm: string}
+     * @return array{stem: ?string, src: ?string, srcSm: ?string}
      */
-    public static function villaCarouselMedia(?string $path): array
+    public static function villaCarouselMedia(?string $path, bool $stubIfMissing = true): array
     {
         if (! self::hasMedia($path)) {
+            if (! $stubIfMissing) {
+                return ['stem' => null, 'src' => null, 'srcSm' => null];
+            }
+
             $stub = self::mediaStubUrl();
 
             return ['stem' => null, 'src' => $stub, 'srcSm' => $stub];
@@ -204,7 +208,7 @@ class Content
                 $slug = $slug ?: 'villas';
 
                 $photo = self::villaCarouselMedia($slide['photo'] ?? null);
-                $oval = self::villaCarouselMedia($slide['oval'] ?? null);
+                $oval = self::villaCarouselMedia($slide['oval'] ?? null, stubIfMissing: false);
 
                 return [
                     'slug' => $slug,
@@ -231,7 +235,8 @@ class Content
                 isset($slide['photo']) ? 'villas/'.$slide['photo'].'.webp' : null
             );
             $oval = self::villaCarouselMedia(
-                isset($slide['oval']) ? 'villas/'.$slide['oval'].'.webp' : null
+                isset($slide['oval']) ? 'villas/'.$slide['oval'].'.webp' : null,
+                stubIfMissing: false,
             );
 
             return array_merge($slide, [
@@ -880,7 +885,7 @@ class Content
                 'title_normal' => $r->hero_title_normal,
                 'title_italic' => $r->hero_title_italic,
                 'image' => filled($r->hero_image) ? $r->hero_image : $assetBase.'/hero.webp',
-                'oval' => filled($r->oval_image) ? $r->oval_image : $assetBase.'/oval.webp',
+                'oval' => filled($r->oval_image) ? $r->oval_image : null,
             ],
             'gallery' => [
                 'eyebrow' => $r->gallery_eyebrow,
@@ -924,9 +929,7 @@ class Content
                 'hero_image' => filled($r->quote_hero_image)
                     ? $r->quote_hero_image
                     : 'dining/detail/shared/quote-hero.webp',
-                'oval_image' => filled($r->quote_oval_image)
-                    ? $r->quote_oval_image
-                    : 'dining/detail/shared/quote-oval.webp',
+                'oval_image' => filled($r->quote_oval_image) ? $r->quote_oval_image : null,
             ],
             'book_url' => $r->book_url ?: Site::bookUrl(),
             'slug' => $r->slug,
@@ -1040,7 +1043,7 @@ class Content
                 'title_normal' => $a->hero_title_normal,
                 'title_italic' => $a->hero_title_italic,
                 'image' => filled($a->hero_image) ? $a->hero_image : $assetBase.'/hero.webp',
-                'oval' => filled($a->oval_image) ? $a->oval_image : $assetBase.'/oval.webp',
+                'oval' => filled($a->oval_image) ? $a->oval_image : null,
             ],
             'gallery' => [
                 'eyebrow' => $a->gallery_eyebrow,
@@ -1059,9 +1062,7 @@ class Content
                 'hero_image' => filled($a->quote_hero_image)
                     ? $a->quote_hero_image
                     : 'dining/detail/shared/quote-hero.webp',
-                'oval_image' => filled($a->quote_oval_image)
-                    ? $a->quote_oval_image
-                    : 'dining/detail/shared/quote-oval.webp',
+                'oval_image' => filled($a->quote_oval_image) ? $a->quote_oval_image : null,
             ],
             'pricing' => [
                 'eyebrow' => $a->pricing_eyebrow,
@@ -1182,7 +1183,7 @@ class Content
                 'cost' => $e->package_cost,
                 'images' => $packageImages,
             ],
-            'oval' => filled($e->oval_image) ? $e->oval_image : $assetBase.'/oval.webp',
+            'oval' => filled($e->oval_image) ? $e->oval_image : null,
             'wellness_hero' => filled($e->wellness_hero) ? $e->wellness_hero : $assetBase.'/wellness-hero.webp',
             'book_url' => $e->book_url ?: Site::bookUrl(),
             'impression' => [
@@ -1377,6 +1378,28 @@ class Content
         }
 
         return self::hasMedia($path) ? self::mediaUrl($path) : self::mediaStubUrl();
+    }
+
+    /**
+     * Optional page media (ovals): missing CMS row → default asset; cleared/empty → null (hide UI).
+     */
+    public static function pageOptionalMediaUrl(string $page, string $key, string $field, ?string $defaultAsset = null): ?string
+    {
+        $payload = PageSection::get($page, $key);
+
+        if (! is_array($payload)) {
+            return $defaultAsset
+                ? asset('images/lum/'.ltrim($defaultAsset, '/'))
+                : null;
+        }
+
+        $path = self::pageMedia($page, $key, $field);
+
+        if ($path === null || ! self::hasMedia($path)) {
+            return null;
+        }
+
+        return self::mediaUrl($path);
     }
 
     public static function contact(): array

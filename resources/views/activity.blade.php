@@ -28,7 +28,7 @@
         @include('lum.partials.quote-choice', [
             'img' => $img,
             'heroImage' => $activity['quote']['hero_image'] ?? 'dining/detail/shared/quote-hero.webp',
-            'ovalImage' => $activity['quote']['oval_image'] ?? 'dining/detail/shared/quote-oval.webp',
+            'ovalImage' => $activity['quote']['oval_image'] ?? null,
             'quoteLine1' => $activity['quote']['line1'],
             'quoteLine2' => $activity['quote']['line2'],
             'noteLine1' => $activity['quote']['note_line1'],

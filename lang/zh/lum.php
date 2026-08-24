@@ -270,9 +270,9 @@ return [
     ],
 
     'blog' => [
-        'title_line1' => '探索。灵感。',
-        'title_line2' => '远行。',
-        'title_single' => '探索。灵感。远行',
+        'title_line1' => '你的旅程',
+        'title_line2' => '从这里开始',
+        'title_single' => '你的旅程从这里开始',
         'label' => '博客',
         'category' => '冲浪',
         'card_line1' => '我们的餐厅与酒吧每日营业',

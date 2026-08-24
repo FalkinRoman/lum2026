@@ -59,8 +59,9 @@
     $first = $villasSlides[$villasStart] ?? null;
     $firstPhotoSrc = $first['photoSrcSm'] ?? \App\Support\Content::mediaStubUrl();
     $firstPhotoDeskSrc = $first['photoSrc'] ?? \App\Support\Content::mediaStubUrl();
-    $firstOvalSmSrc = $first['ovalSrcSm'] ?? \App\Support\Content::mediaStubUrl();
-    $firstOvalSrc = $first['ovalSrc'] ?? \App\Support\Content::mediaStubUrl();
+    $firstOvalSmSrc = $first['ovalSrcSm'] ?? null;
+    $firstOvalSrc = $first['ovalSrc'] ?? null;
+    $hasFirstOval = filled($firstOvalSrc) || filled($firstOvalSmSrc);
 @endphp
 
 <section
@@ -115,7 +116,7 @@
                 </h2>
             </div>
 
-            <div class="absolute left-[118px] top-[422px] z-20 h-[188px] w-[140px] overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
+            <div class="absolute left-[118px] top-[422px] z-20 h-[188px] w-[140px] overflow-hidden rounded-[50%]" data-lum-villas-oval-hit @if (! $hasFirstOval) hidden @endif>
                 <img src="{{ $firstOvalSmSrc }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="140" height="188">
             </div>
 
@@ -169,7 +170,7 @@
             <span data-lum-villas-title-normal class="font-normal">{{ $first['titleNormal'] ?? 'Lum ' }}</span><span data-lum-villas-title-italic class="font-medium italic">{{ $first['titleItalic'] ?? 'Villas' }}</span>
         </h2>
 
-        <div class="absolute left-1/2 top-[842px] z-20 h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
+        <div class="absolute left-1/2 top-[842px] z-20 h-[240px] w-[180px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit @if (! $hasFirstOval) hidden @endif>
             <img src="{{ $firstOvalSrc }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="180" height="240">
         </div>
 
@@ -239,7 +240,7 @@
             <span data-lum-villas-title-normal class="font-normal">{{ $first['titleNormal'] ?? 'Lum ' }}</span><span data-lum-villas-title-italic class="font-medium italic">{{ $first['titleItalic'] ?? 'Villas' }}</span>
         </h2>
 
-        <div class="absolute left-1/2 top-[1143px] z-20 h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit>
+        <div class="absolute left-1/2 top-[1143px] z-20 h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-villas-oval-hit @if (! $hasFirstOval) hidden @endif>
             <img src="{{ $firstOvalSrc }}" alt="" data-lum-villas-oval class="h-full w-full object-cover" width="320" height="430">
         </div>
 

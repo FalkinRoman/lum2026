@@ -270,9 +270,9 @@ return [
     ],
 
     'blog' => [
-        'title_line1' => 'explore. inspire.',
-        'title_line2' => 'escape.',
-        'title_single' => 'explore. inspire. escape',
+        'title_line1' => 'Your journey',
+        'title_line2' => 'starts here',
+        'title_single' => 'Your journey starts here',
         'label' => 'BLOG',
         'category' => 'SURFING',
         'card_line1' => 'our restaurant & bar is open daily from',

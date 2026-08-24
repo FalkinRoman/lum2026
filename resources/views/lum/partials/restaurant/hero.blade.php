@@ -1,6 +1,6 @@
 @php
     $heroImage = $restaurant['hero']['image'] ?? ('dining/detail/'.$restaurant['slug'].'/hero.webp');
-    $ovalImage = $restaurant['hero']['oval'] ?? ('dining/detail/'.$restaurant['slug'].'/oval.webp');
+    $ovalImage = $restaurant['hero']['oval'] ?? null;
 @endphp
 
 <section class="lum-container relative z-[1] overflow-visible h-[680px] tab:h-[1080px] desk:h-[1080px]">
@@ -31,9 +31,11 @@
             </div>
         </div>
 
-        <div class="pointer-events-none absolute z-[20] h-[188px] w-[140px] overflow-hidden rounded-[50%]" style="top: 536px; left: 118px">
-            <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="140" height="188">
-        </div>
+        @if (filled($ovalImage))
+            <div class="pointer-events-none absolute z-[20] h-[188px] w-[140px] overflow-hidden rounded-[50%]" style="top: 536px; left: 118px">
+                <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="140" height="188">
+            </div>
+        @endif
 
         <img src="{{ $img('hero/torn-edge-375.svg') }}" alt="" class="pointer-events-none absolute bottom-[-28px] left-0 z-10 w-full rotate-180 scale-x-[-1]" width="375" height="54">
     </div>
@@ -64,9 +66,11 @@
             </div>
         </div>
 
-        <div class="pointer-events-none absolute z-[20] h-[240px] w-[180px] overflow-hidden rounded-[50%]" style="top: 840px; left: 390px">
-            <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="180" height="240">
-        </div>
+        @if (filled($ovalImage))
+            <div class="pointer-events-none absolute z-[20] h-[240px] w-[180px] overflow-hidden rounded-[50%]" style="top: 840px; left: 390px">
+                <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="180" height="240">
+            </div>
+        @endif
 
         <img src="{{ $img('hero/torn-edge-960.svg') }}" alt="" class="pointer-events-none absolute bottom-[-44px] left-0 z-10 h-[135px] w-[960px] max-w-none rotate-180 scale-x-[-1]" width="960" height="135">
     </div>
@@ -102,9 +106,11 @@
             </div>
         </div>
 
-        <div class="pointer-events-none absolute z-[20] h-[430px] w-[320px] overflow-hidden rounded-[50%]" style="top: 770px; left: 800px">
-            <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="320" height="430">
-        </div>
+        @if (filled($ovalImage))
+            <div class="pointer-events-none absolute z-[20] h-[430px] w-[320px] overflow-hidden rounded-[50%]" style="top: 770px; left: 800px">
+                <img src="{{ $img($ovalImage) }}" alt="" class="h-full w-full object-cover" width="320" height="430">
+            </div>
+        @endif
 
         <img src="{{ $img('hero/torn-edge.svg') }}" alt="" class="pointer-events-none absolute bottom-[-109px] left-1/2 z-10 h-[269px] w-[1920px] max-w-none -translate-x-1/2 rotate-180 scale-x-[-1]" width="1920" height="269">
     </div>

@@ -111,27 +111,12 @@ final class LumImageOptimizer
         $derivedRel = '.derived/'.$maxEdge.'/'.$stem.'.webp';
         $derivedAbs = $root.str_replace('/', DIRECTORY_SEPARATOR, $derivedRel);
 
+        // Only serve a warm derivative — never encode on the request path (that hung the site).
         if (is_file($derivedAbs) && filemtime($derivedAbs) >= filemtime($source)) {
             return $derivedRel;
         }
 
-        $binary = @file_get_contents($source);
-
-        if ($binary === false) {
-            return $relative;
-        }
-
-        $image = @imagecreatefromstring($binary);
-
-        if ($image === false) {
-            return $relative;
-        }
-
-        if (! self::writeImage($image, $derivedAbs, $maxEdge)) {
-            return $relative;
-        }
-
-        return $derivedRel;
+        return $relative;
     }
 
     /**
@@ -171,18 +156,88 @@ final class LumImageOptimizer
             }
 
             $stats['scanned']++;
-            $before = self::displayRelative($relative, $maxEdge);
 
-            if ($before === $relative) {
-                $stats['skipped']++;
-            } elseif (str_starts_with($before, '.derived/')) {
-                $stats['built']++;
-            } else {
+            try {
+                $built = self::ensureDerivative($relative, $maxEdge);
+
+                if ($built === null) {
+                    $stats['skipped']++;
+                } elseif ($built === true) {
+                    $stats['built']++;
+                } else {
+                    $stats['failed']++;
+                }
+            } catch (Throwable) {
                 $stats['failed']++;
             }
         }
 
         return $stats;
+    }
+
+    /**
+     * Build derivative if needed. null = skipped (already small / exists), true = built, false = failed.
+     */
+    public static function ensureDerivative(string $relative, int $maxEdge = self::MAX_EDGE): ?bool
+    {
+        $relative = ltrim(str_replace('\\', '/', $relative), '/');
+
+        if ($relative === '' || str_contains($relative, '..') || str_starts_with($relative, '.derived/')) {
+            return null;
+        }
+
+        $extension = strtolower((string) pathinfo($relative, PATHINFO_EXTENSION));
+
+        if ($extension === '' || in_array($extension, ['svg', 'gif'], true)) {
+            return null;
+        }
+
+        $root = rtrim(Storage::disk('lum')->path(''), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        $source = $root.str_replace('/', DIRECTORY_SEPARATOR, $relative);
+
+        if (! is_file($source)) {
+            return false;
+        }
+
+        $size = @getimagesize($source);
+        $bytes = (int) @filesize($source);
+        $edge = is_array($size) ? max((int) ($size[0] ?? 0), (int) ($size[1] ?? 0)) : 0;
+
+        if (
+            $extension === 'webp'
+            && $edge > 0
+            && $edge <= $maxEdge
+            && $bytes > 0
+            && $bytes <= self::SMALL_WEBP_BYTES
+        ) {
+            return null;
+        }
+
+        if ($edge > 0 && $edge <= $maxEdge && $bytes > 0 && $bytes <= self::SMALL_WEBP_BYTES && $extension === 'jpg') {
+            return null;
+        }
+
+        $stem = preg_replace('/\.[^.]+$/', '', $relative) ?: $relative;
+        $derivedRel = '.derived/'.$maxEdge.'/'.$stem.'.webp';
+        $derivedAbs = $root.str_replace('/', DIRECTORY_SEPARATOR, $derivedRel);
+
+        if (is_file($derivedAbs) && filemtime($derivedAbs) >= filemtime($source)) {
+            return null;
+        }
+
+        $binary = @file_get_contents($source);
+
+        if ($binary === false) {
+            return false;
+        }
+
+        $image = @imagecreatefromstring($binary);
+
+        if ($image === false) {
+            return false;
+        }
+
+        return self::writeImage($image, $derivedAbs, $maxEdge) ? true : false;
     }
 
     private static function storeOriginal(

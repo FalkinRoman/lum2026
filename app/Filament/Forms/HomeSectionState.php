@@ -712,6 +712,14 @@ class HomeSectionState
             $data['posts'] = [null];
         }
 
+        foreach (['title_line1', 'title_line2', 'title_single'] as $field) {
+            $map = [];
+            foreach (Locales::codes() as $locale) {
+                $map[$locale] = (string) ($data[$locale][$field] ?? '');
+            }
+            $data[$field] = $map;
+        }
+
         return $data;
     }
 
@@ -728,7 +736,12 @@ class HomeSectionState
         $payload = [];
 
         foreach (Locales::codes() as $locale) {
-            $payload[$locale] = ['posts' => $posts];
+            $payload[$locale] = [
+                'posts' => $posts,
+                'title_line1' => trim((string) data_get($data, "title_line1.{$locale}", '')),
+                'title_line2' => trim((string) data_get($data, "title_line2.{$locale}", '')),
+                'title_single' => trim((string) data_get($data, "title_single.{$locale}", '')),
+            ];
         }
 
         return $payload;

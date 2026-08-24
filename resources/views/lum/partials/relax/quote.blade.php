@@ -17,7 +17,7 @@
         : (Content::pageMedia('relax', 'media', 'hero_image')
             ? $heroDeskUrl
             : Content::pageMediaUrl('relax', 'media', 'hero_image_tab', 'relax/wellness-hero-tab.webp'));
-    $ovalUrl = Content::pageMediaUrl('relax', 'media', 'oval_image', 'relax/wellness-oval.webp');
+    $ovalUrl = Content::pageOptionalMediaUrl('relax', 'media', 'oval_image', 'relax/wellness-oval.webp');
 @endphp
 
 <section class="lum-container relative overflow-visible bg-lum-ivory" data-lum-stay-wellness>
@@ -86,9 +86,11 @@
     <div class="relative hidden h-[1931px] desk:block">
         <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="absolute left-[72px] top-0 h-[63px] w-[1776px]" width="1776" height="63">
 
-        <div class="absolute left-1/2 top-[183px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
-            <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
-        </div>
+        @if ($ovalUrl)
+            <div class="absolute left-1/2 top-[183px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
+                <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+            </div>
+        @endif
 
         <div class="absolute left-0 top-[433px] z-[1] h-[820px] w-full overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $heroDeskUrl }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">

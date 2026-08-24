@@ -86,11 +86,11 @@
                 'mt-[40px]' => ! $hasPolaroids,
             ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
 
-            <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" @class([
-                'h-[31px] w-[335px]',
-                'mt-[69px]' => $hasPolaroids,
-                'mt-[44px]' => ! $hasPolaroids,
-            ]) width="335" height="31">
+            @include('lum.partials.divider-logomark', [
+                'img' => $img,
+                'size' => 'mob',
+                'class' => $hasPolaroids ? 'mt-[69px]' : 'mt-[44px]',
+            ])
         </div>
     </div>
 
@@ -128,11 +128,11 @@
                 'mt-[60px]' => ! $hasPolaroids,
             ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
 
-            <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" @class([
-                'h-[39px] w-[920px]',
-                'mt-[121px]' => $hasPolaroids,
-                'mt-[80px]' => ! $hasPolaroids,
-            ]) width="920" height="39">
+            @include('lum.partials.divider-logomark', [
+                'img' => $img,
+                'size' => 'tab',
+                'class' => $hasPolaroids ? 'mt-[121px]' : 'mt-[80px]',
+            ])
         </div>
     </div>
 
@@ -170,11 +170,11 @@
                 'mt-[80px]' => ! $hasPolaroids,
             ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $gallery['body_bottom'] }}</p>
 
-            <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" @class([
-                'h-[63px] w-[1776px]',
-                'mt-[120px]' => $hasPolaroids,
-                'mt-[88px]' => ! $hasPolaroids,
-            ]) width="1776" height="63">
+            @include('lum.partials.divider-logomark', [
+                'img' => $img,
+                'size' => 'desk',
+                'class' => $hasPolaroids ? 'mt-[120px]' : 'mt-[88px]',
+            ])
         </div>
     </div>
 </section>

@@ -3,9 +3,13 @@
 namespace App\Filament\Resources\HomeSections\Schemas\Sections;
 
 use App\Models\BlogPost;
+use App\Support\Locales as AppLocales;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Validation\ValidationException;
@@ -25,6 +29,28 @@ class BlogForm
             ->all();
 
         return [
+            Section::make('Заголовок секции')
+                ->description('Пусто = дефолт из lang (RU: «Твое путешествие начинается здесь»).')
+                ->columnSpanFull()
+                ->schema([
+                    Tabs::make('locale')
+                        ->contained(false)
+                        ->tabs(array_map(
+                            fn (string $locale) => Tab::make(AppLocales::label($locale))->schema([
+                                TextInput::make("title_line1.{$locale}")
+                                    ->label('Строка 1 (mobile)')
+                                    ->maxLength(120),
+                                TextInput::make("title_line2.{$locale}")
+                                    ->label('Строка 2 (mobile)')
+                                    ->maxLength(120),
+                                TextInput::make("title_single.{$locale}")
+                                    ->label('Одна строка (tablet / desktop)')
+                                    ->maxLength(160),
+                            ]),
+                            AppLocales::codes(),
+                        )),
+                ]),
+
             Section::make('Посты на главной')
                 ->description('До 4 постов. Порядок = как на главной (перетащи ручку). Дубль в селекте — слоты меняются местами.')
                 ->columnSpanFull()
