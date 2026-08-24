@@ -31,6 +31,7 @@ class Content
 
     /**
      * URL for CMS-managed media. Empty path → espresso stub (no seed asset fallback).
+     * Oversized legacy uploads are served via WebP display derivatives.
      */
     public static function mediaUrl(?string $path): string
     {
@@ -40,7 +41,9 @@ class Content
             return self::mediaStubUrl();
         }
 
-        return asset('images/lum/'.ltrim($path, '/'));
+        $relative = LumImageOptimizer::displayRelative(ltrim($path, '/'));
+
+        return asset('images/lum/'.$relative);
     }
 
     public static function mediaStubUrl(): string

@@ -25,12 +25,49 @@ function buildSrc(base, name, suffix = '') {
 
     const token = String(name).trim();
 
-    // CMS uploads keep real extension (jpg/png/webp) — use exact file.
+    // CMS uploads keep real extension — prefer scroll-safe WebP derivative when present.
     if (/\.(webp|jpe?g|png|gif|svg)$/i.test(token)) {
-        return withSitePrefix(`${base}/${token}`);
+        if (/\.(svg|gif)$/i.test(token)) {
+            return joinLumBase(base, token);
+        }
+
+        return toDerivedWebp(base, token) || joinLumBase(base, token);
     }
 
-    return withSitePrefix(`${base}/${name}${suffix}.webp`);
+    return joinLumBase(base, `${name}${suffix}.webp`);
+}
+
+function joinLumBase(base, file) {
+    const trimmed = String(base).replace(/\/$/, '');
+    const path = `${trimmed}/${file}`;
+
+    return path.startsWith('http://') || path.startsWith('https://')
+        ? path
+        : withSitePrefix(path);
+}
+
+/** /images/lum/villa/impression + file.jpg → /images/lum/.derived/1600/villa/impression/file.webp */
+function toDerivedWebp(base, token) {
+    const stem = token.replace(/\.[^.]+$/, '');
+    const marker = '/images/lum/';
+    let pathname = '';
+
+    try {
+        pathname = new URL(base, window.location.origin).pathname;
+    } catch {
+        pathname = String(base);
+    }
+
+    const idx = pathname.indexOf(marker);
+
+    if (idx === -1) {
+        return null;
+    }
+
+    const relDir = pathname.slice(idx + marker.length).replace(/^\/+|\/+$/g, '');
+    const derived = `${marker}.derived/1600/${relDir ? `${relDir}/` : ''}${stem}.webp`;
+
+    return withSitePrefix(derived);
 }
 
 function preloadImage(src) {

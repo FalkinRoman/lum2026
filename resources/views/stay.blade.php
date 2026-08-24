@@ -8,7 +8,7 @@
 
 @section('content')
 @php
-    $img = fn (string $path) => asset('images/lum/' . $path);
+    $img = fn (string $path) => \App\Support\Content::mediaUrl($path);
 @endphp
 
 <div class="lum-viewport">

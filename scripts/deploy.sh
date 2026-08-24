@@ -85,6 +85,9 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
+echo "Warming image derivatives (legacy CMS uploads)..."
+docker compose --profile production exec -T web php artisan lum:optimize-images || echo "optimize-images skipped (non-fatal)"
+
 echo "Done."
 docker compose --profile production ps
 echo "Site: http://${APP_HOST}:${WEB_PORT} (container port ${WEB_PORT})"

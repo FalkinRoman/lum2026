@@ -1,3 +1,4 @@
+/public/images/lum/.derived
 *.log
 .DS_Store
 .env

@@ -8,7 +8,7 @@
 
 @section('content')
 @php
-    $img = fn (string $path) => asset('images/lum/' . $path);
+    $img = fn (string $path) => \App\Support\Content::mediaUrl($path);
     $hotelId = \App\Support\Exely::hotelIdForVilla(
         $villa['slug'] ?? null,
         $villa['exely_hotel_id'] ?? null,

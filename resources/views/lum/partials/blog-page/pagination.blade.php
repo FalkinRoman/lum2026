@@ -4,7 +4,7 @@
 
 @if ($paginator->hasPages())
     @php
-        $img = $img ?? fn (string $path) => asset('images/lum/'.$path);
+        $img = $img ?? fn (string $path) => \App\Support\Content::mediaUrl($path);
     @endphp
 
     <nav class="lum-blog-pagination" aria-label="{{ __('lum.blog.pagination_label') }}">
