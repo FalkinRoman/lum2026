@@ -585,8 +585,7 @@ class Content
                 'title_italic' => filled($v->facilities_title_italic)
                     ? $v->facilities_title_italic
                     : __('lum.villa.facilities.title_italic'),
-                'items_left' => $v->facilities_left ?? [],
-                'items_right' => $v->facilities_right ?? [],
+                'items' => self::villaFacilityItems($v),
                 'image_left' => filled($v->facilities_image_left)
                     ? $v->facilities_image_left
                     : 'villa/facilities-left.webp',
@@ -628,6 +627,42 @@ class Content
                 $hotelId ?? Exely::hotelIdForVilla($villa->slug, $villa->exely_hotel_id),
             ),
         };
+    }
+
+    /**
+     * Single facilities list: left ∪ right (legacy split) with lang fallback.
+     *
+     * @return list<string>
+     */
+    public static function villaFacilityItems(Villa $v): array
+    {
+        $left = is_array($v->facilities_left) ? $v->facilities_left : [];
+        $right = is_array($v->facilities_right) ? $v->facilities_right : [];
+
+        $items = array_values(array_filter(
+            array_merge($left, $right),
+            fn ($item) => is_string($item) && filled($item),
+        ));
+
+        if ($items !== []) {
+            return $items;
+        }
+
+        $fallback = __('lum.villa.facilities.items');
+        if (is_array($fallback) && $fallback !== []) {
+            return array_values(array_filter($fallback, fn ($item) => is_string($item) && filled($item)));
+        }
+
+        $legacyLeft = __('lum.villa.facilities.items_left');
+        $legacyRight = __('lum.villa.facilities.items_right');
+
+        return array_values(array_filter(
+            array_merge(
+                is_array($legacyLeft) ? $legacyLeft : [],
+                is_array($legacyRight) ? $legacyRight : [],
+            ),
+            fn ($item) => is_string($item) && filled($item),
+        ));
     }
 
     public static function impressionStem(?string $path): string

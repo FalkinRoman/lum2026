@@ -1093,14 +1093,12 @@ return [
             'eyebrow' => 'facilities',
             'title_normal' => 'The villa is',
             'title_italic' => 'equipped with',
-            'items_left' => [
+            'items' => [
                 'Air conditioning',
                 'Satellite TV and dvd player',
                 'Safety Box',
                 'WIFI',
                 'Hair Dryer',
-            ],
-            'items_right' => [
                 'Bathrobes and slippers',
                 'Organic Toiletries',
                 'Bathroom with open-air shower',

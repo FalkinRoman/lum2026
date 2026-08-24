@@ -58,29 +58,31 @@
         <a href="{{ $pricing['cta_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info absolute left-1/2 top-[883px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
     </div>
 
-    {{-- DESKTOP — Figma 190:461 (2×2) --}}
-    <div class="relative hidden h-[916px] desk:block">
-        <p class="lum-script absolute left-1/2 top-[120px] -translate-x-1/2 whitespace-nowrap text-center text-[28px] leading-none tracking-[1.4px] text-[#752a23]">{{ $pricing['eyebrow'] }}</p>
-        <h2 class="absolute left-1/2 top-[192px] w-[856px] -translate-x-1/2 text-center font-serif text-[88px] leading-[94px] text-lum-espresso">
-            {{ $pricing['title_normal'] }}<span class="font-medium italic">{{ $pricing['title_italic'] }}</span>
-        </h2>
+    {{-- DESKTOP — single centered column (same as tablet list) --}}
+    <div class="relative hidden desk:block">
+        <div class="flex flex-col items-center px-[72px] pb-[120px] pt-[120px]">
+            <p class="lum-script whitespace-nowrap text-center text-[28px] leading-none tracking-[1.4px] text-[#752a23]">{{ $pricing['eyebrow'] }}</p>
+            <h2 class="mt-[44px] w-[856px] text-center font-serif text-[88px] leading-[94px] text-lum-espresso">
+                {{ $pricing['title_normal'] }}<span class="font-medium italic">{{ $pricing['title_italic'] }}</span>
+            </h2>
 
-        <div class="absolute left-[72px] top-[366px] grid w-[1776px] grid-cols-2 gap-x-[64px]">
-            @foreach ($deskItems as $item)
-                <div class="flex flex-col items-center border-t border-lum-espresso/16 pt-[21px] pb-[63px] text-center">
-                    <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-[#752a23]">{{ $item['title'] }}</p>
-                    <p class="mt-[16px] max-w-[471px] text-[18px] leading-[26px] tracking-[0.1px] text-lum-espresso">{{ $item['description'] }}</p>
-                    <div class="mt-[12px] flex items-center gap-[20px]">
-                        <p class="text-[18px] font-medium uppercase leading-[18px] tracking-[1.8px] text-lum-espresso">{{ $item['price'] }}</p>
-                        <div class="flex items-center gap-[6px]">
-                            <img src="{{ $img('relax/detail/shared/clock.svg') }}" alt="" class="size-[24px]" width="24" height="24">
-                            <p class="text-[18px] leading-[26px] tracking-[0.1px] text-lum-espresso/40">{{ $item['duration'] }}</p>
+            <div class="mt-[80px] flex w-[856px] flex-col">
+                @foreach ($deskItems as $item)
+                    <div class="flex flex-col items-center border-t border-lum-espresso/16 pt-[21px] pb-[63px] text-center last:pb-0">
+                        <p class="font-serif text-[20px] font-medium leading-[24px] tracking-[-0.4px] text-[#752a23]">{{ $item['title'] }}</p>
+                        <p class="mt-[16px] max-w-[471px] text-[18px] leading-[26px] tracking-[0.1px] text-lum-espresso">{{ $item['description'] }}</p>
+                        <div class="mt-[12px] flex items-center gap-[20px]">
+                            <p class="text-[18px] font-medium uppercase leading-[18px] tracking-[1.8px] text-lum-espresso">{{ $item['price'] }}</p>
+                            <div class="flex items-center gap-[6px]">
+                                <img src="{{ $img('relax/detail/shared/clock.svg') }}" alt="" class="size-[24px]" width="24" height="24">
+                                <p class="text-[18px] leading-[26px] tracking-[0.1px] text-lum-espresso/40">{{ $item['duration'] }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-        <a href="{{ $pricing['cta_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info absolute left-1/2 top-[760px] -translate-x-1/2 whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
+            <a href="{{ $pricing['cta_url'] ?? \App\Support\Site::bookUrl() }}" class="lum-btn lum-btn-info mt-[64px] whitespace-nowrap px-[34px] pt-[6px] pb-[5px] text-[16px] font-extrabold leading-[25px] tracking-[3.2px]">{{ $pricing['cta'] }}</a>
+        </div>
     </div>
 </section>

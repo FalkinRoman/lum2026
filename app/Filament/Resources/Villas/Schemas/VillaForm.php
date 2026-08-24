@@ -101,15 +101,14 @@ class VillaForm
                     ]),
 
                 Section::make('5. Удобства')
-                    ->description('Как блок Facilities на detail.')
+                    ->description('Один общий список тегов — на сайте в одну колонку по центру (как includes в Discover).')
                     ->schema([
                         Locales::text('facilities_eyebrow', 'Надзаголовок'),
                         Locales::text('facilities_title_normal', 'Заголовок'),
                         Locales::text('facilities_title_italic', 'Заголовок (курсив)'),
                         LumImage::single('facilities_image_left', 'Фото слева', 'villa'),
                         LumImage::single('facilities_image_right', 'Фото справа', 'villa'),
-                        Locales::tags('facilities_left', 'Список слева'),
-                        Locales::tags('facilities_right', 'Список справа'),
+                        Locales::tags('facilities_left', 'Список удобств'),
                     ]),
 
                 Section::make('6. Impression')

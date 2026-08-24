@@ -1093,14 +1093,12 @@ return [
             'eyebrow' => '设施',
             'title_normal' => '别墅',
             'title_italic' => '配备有',
-            'items_left' => [
+            'items' => [
                 '空调',
                 '卫星电视与 DVD 播放器',
                 '保险箱',
                 '无线网络',
                 '吹风机',
-            ],
-            'items_right' => [
                 '浴袍与拖鞋',
                 '有机洗护用品',
                 '带露天淋浴的浴室',
