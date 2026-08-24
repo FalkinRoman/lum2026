@@ -44,7 +44,15 @@ class Site
 
     public static function mapUrl(): string
     {
-        return self::settings()->map_url ?: '#';
+        $url = trim((string) (self::settings()->map_url ?: ''));
+
+        // Official Lum Residence pin (Plus Code X9J3+929). Avoid free-text road queries —
+        // Google often drops a pin a couple km north of Kabalana/Walhengoda.
+        if ($url === '' || $url === '#') {
+            return 'https://maps.app.goo.gl/LahetBJYtE8oXsci8';
+        }
+
+        return $url;
     }
 
     /**

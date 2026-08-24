@@ -185,7 +185,7 @@ class CmsContentSeeder extends Seeder
                 'phone' => $en['contact']['phone'],
                 'phone_personal' => '+7 (916) 934-11-44',
                 'email' => $en['contact']['email'],
-                'map_url' => 'https://maps.google.com/?q=Thiththagalla+road,+Ahangama,+Sri+Lanka',
+                'map_url' => 'https://maps.app.goo.gl/LahetBJYtE8oXsci8',
                 'whatsapp_url' => $en['shop']['social_whatsapp_url'],
                 'instagram_url' => $en['shop']['social_instagram_url'],
                 'telegram_url' => 'https://t.me/ivantaskayev',

@@ -91,7 +91,8 @@ class ManageSiteSettings extends Page implements HasForms
                             ->required(),
                         TextInput::make('map_url')
                             ->label('URL карты')
-                            ->url(),
+                            ->url()
+                            ->helperText('Короткая ссылка Google Maps на точку Lum Residence (не текстовый адрес — Google часто ставит пин мимо). Пример: https://maps.app.goo.gl/LahetBJYtE8oXsci8'),
                         LumImage::single(
                             'menu_image',
                             'Картинка в меню (хедер)',
