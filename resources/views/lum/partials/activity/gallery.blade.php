@@ -110,7 +110,11 @@
             'top-[470px]' => ! $hasPolaroids,
         ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $activity['gallery']['body_bottom'] }}</p>
 
-        <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" class="absolute bottom-0 left-[20px] h-[31px] w-[335px]" width="335" height="31">
+        @include('lum.partials.divider-logomark', [
+            'img' => $img,
+            'size' => 'mob',
+            'class' => 'absolute bottom-0 left-[20px]',
+        ])
     </div>
 
     {{-- TABLET — Figma 190:581 --}}
@@ -144,7 +148,11 @@
             'top-[760px]' => ! $hasPolaroids,
         ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $activity['gallery']['body_bottom'] }}</p>
 
-        <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" class="absolute bottom-0 left-[20px] h-[39px] w-[920px]" width="920" height="39">
+        @include('lum.partials.divider-logomark', [
+            'img' => $img,
+            'size' => 'tab',
+            'class' => 'absolute bottom-0 left-[20px]',
+        ])
     </div>
 
     {{-- DESKTOP — Figma 190:402 --}}
@@ -178,6 +186,10 @@
             'top-[1020px]' => ! $hasPolaroids,
         ]) data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.1">{{ $activity['gallery']['body_bottom'] }}</p>
 
-        <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="absolute bottom-0 left-[72px] h-[63px] w-[1776px]" width="1776" height="63">
+        @include('lum.partials.divider-logomark', [
+            'img' => $img,
+            'size' => 'desk',
+            'class' => 'absolute bottom-0 left-[72px]',
+        ])
     </div>
 </section>

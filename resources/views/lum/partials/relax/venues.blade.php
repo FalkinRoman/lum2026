@@ -64,7 +64,11 @@
             </a>
         @endforeach
 
-        <img src="{{ $img('dining/detail/shared/divider-mob.svg') }}" alt="" class="absolute left-[20px] top-[1870px] h-[31px] w-[335px]" width="335" height="31">
+        @include('lum.partials.divider-logomark', [
+            'img' => $img,
+            'size' => 'mob',
+            'class' => 'absolute left-[20px] top-[1870px]',
+        ])
     </div>
 
     {{-- TABLET — Figma 101:486 --}}
@@ -108,7 +112,11 @@
             </a>
         @endforeach
 
-        <img src="{{ $img('dining/detail/shared/divider-tab.svg') }}" alt="" class="absolute left-[20px] top-[1798px] h-[39px] w-[920px]" width="920" height="39">
+        @include('lum.partials.divider-logomark', [
+            'img' => $img,
+            'size' => 'tab',
+            'class' => 'absolute left-[20px] top-[1798px]',
+        ])
     </div>
 
     {{-- DESKTOP — Figma 101:387 --}}
