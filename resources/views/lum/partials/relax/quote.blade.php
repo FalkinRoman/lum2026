@@ -84,7 +84,11 @@
 
     {{-- DESKTOP — Figma 101:421 --}}
     <div class="relative hidden h-[1931px] desk:block">
-        <img src="{{ $img('dining/detail/shared/divider.svg') }}" alt="" class="absolute left-[72px] top-0 h-[63px] w-[1776px]" width="1776" height="63">
+        @include('lum.partials.divider-logomark', [
+            'img' => $img,
+            'size' => 'desk',
+            'class' => 'absolute left-[72px] top-0',
+        ])
 
         @if ($ovalUrl)
             <div class="absolute left-1/2 top-[183px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
