@@ -71,7 +71,7 @@
         <a href="{{ \App\Support\Site::takeABreakUrl() }}" @class([
             'lum-btn-outline-ivory' => ! $isEspresso,
             'lum-btn-outline' => $isEspresso,
-        ])>{{ __('lum.nav.take_a_break') }}</a>
+        ])>{{ \App\Support\Site::takeABreakLabel() }}</a>
         <a href="{{ route('contacts') }}" @class([
             'lum-icon-btn',
             'lum-icon-btn--ivory-filled' => ! $isEspresso,

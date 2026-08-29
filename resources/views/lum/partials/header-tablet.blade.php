@@ -39,7 +39,7 @@
             'px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]',
             'lum-btn-outline-ivory' => ! $isEspresso,
             'lum-btn-outline' => $isEspresso,
-        ])>{{ __('lum.nav.take_a_break') }}</a>
+        ])>{{ \App\Support\Site::takeABreakLabel() }}</a>
 
         <a href="{{ route('contacts') }}" @class([
             'lum-icon-btn',

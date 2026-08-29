@@ -20,7 +20,7 @@
             <button type="button" class="lum-burger-btn lum-burger-btn--espresso-compact absolute right-0 top-1/2 flex -translate-y-1/2 items-center" data-lum-menu-close aria-label="{{ __('lum.aria.close_menu') }}">
                 <img src="{{ asset('images/lum/menu/close.svg') }}" alt="" class="size-[32px]" width="32" height="32">
             </button>
-            <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.844px]">{{ __('lum.nav.break') }}</a>
+            <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.844px]">{{ \App\Support\Site::takeABreakLabel(mobile: true) }}</a>
         </header>
 
         {{-- Lang row: En / Ru / 中 --}}

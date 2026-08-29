@@ -197,6 +197,16 @@ class CmsContentSeeder extends Seeder
         }
 
         $this->setTranslations($site, [
+            'take_a_break_label' => $this->i18n(
+                $en['nav']['take_a_break'] ?? 'take a break',
+                $ru['nav']['take_a_break'] ?? 'сделать паузу',
+                $zh['nav']['take_a_break'] ?? '稍作休息',
+            ),
+            'take_a_break_label_mobile' => $this->i18n(
+                $en['nav']['break'] ?? 'break',
+                $ru['nav']['break'] ?? 'пауза',
+                $zh['nav']['break'] ?? '小憩',
+            ),
             'address' => $this->i18n($en['contact']['address'], $ru['contact']['address'], $zh['contact']['address']),
             'hours' => $this->i18n($en['contact']['hours'], $ru['contact']['hours'], $zh['contact']['hours']),
             'legal' => $this->i18n($en['contact']['legal'], $ru['contact']['legal'], $zh['contact']['legal']),

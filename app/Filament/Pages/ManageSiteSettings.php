@@ -58,6 +58,26 @@ class ManageSiteSettings extends Page implements HasForms
             'telegram_url' => $settings->telegram_url,
             'use_booking_page' => $settings->use_booking_page ?? true,
             'book_url' => $settings->book_url ?: $settings->take_a_break_url,
+            'take_a_break_label' => collect(AppLocales::codes())
+                ->mapWithKeys(fn (string $locale): array => [
+                    $locale => $settings->getTranslation('take_a_break_label', $locale, useFallbackLocale: false)
+                        ?: match ($locale) {
+                            'ru' => 'сделать паузу',
+                            'zh' => '稍作休息',
+                            default => 'take a break',
+                        },
+                ])
+                ->all(),
+            'take_a_break_label_mobile' => collect(AppLocales::codes())
+                ->mapWithKeys(fn (string $locale): array => [
+                    $locale => $settings->getTranslation('take_a_break_label_mobile', $locale, useFallbackLocale: false)
+                        ?: match ($locale) {
+                            'ru' => 'пауза',
+                            'zh' => '小憩',
+                            default => 'break',
+                        },
+                ])
+                ->all(),
             'address' => collect(AppLocales::codes())
                 ->mapWithKeys(fn (string $locale): array => [
                     $locale => $settings->getTranslation('address', $locale, useFallbackLocale: false),
@@ -123,6 +143,10 @@ class ManageSiteSettings extends Page implements HasForms
                             ->helperText('WhatsApp, Booking.com или другой URL')
                             ->visible(fn ($get) => ! $get('use_booking_page'))
                             ->required(fn ($get) => ! $get('use_booking_page')),
+                        Locales::text('take_a_break_label', 'Текст кнопки (desktop / tablet)')
+                            ->columnSpanFull(),
+                        Locales::text('take_a_break_label_mobile', 'Текст кнопки (mobile, короткий)')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Страница «Контакты»')

@@ -21,6 +21,8 @@ class SiteSetting extends Model
         'instagram_url',
         'telegram_url',
         'take_a_break_url',
+        'take_a_break_label',
+        'take_a_break_label_mobile',
         'book_url',
         'use_booking_page',
         'address',
@@ -36,6 +38,8 @@ class SiteSetting extends Model
     ];
 
     public array $translatable = [
+        'take_a_break_label',
+        'take_a_break_label_mobile',
         'address',
         'hours',
         'legal',

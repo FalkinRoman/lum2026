@@ -62,7 +62,7 @@
                             </button>
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-burger-tab'])
                         </div>
-                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ __('lum.nav.take_a_break') }}</a>
+                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]">{{ \App\Support\Site::takeABreakLabel() }}</a>
                         <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </a>
@@ -153,7 +153,7 @@
                             </button>
                             @include('lum.partials.language-switcher', ['panelId' => 'lum-lang-panel-burger-desk'])
                         </div>
-                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline">{{ __('lum.nav.take_a_break') }}</a>
+                        <a href="{{ \App\Support\Site::takeABreakUrl() }}" class="lum-btn-outline">{{ \App\Support\Site::takeABreakLabel() }}</a>
                         <a href="{{ route('contacts') }}" class="lum-icon-btn lum-icon-btn--espresso-filled" aria-label="{{ __('lum.aria.contact') }}">
                             <img src="{{ asset('images/lum/hero/arrow.svg') }}" alt="" class="size-[32px]" width="32" height="32">
                         </a>

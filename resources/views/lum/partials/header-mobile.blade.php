@@ -25,5 +25,5 @@
         'absolute right-[66px] top-1/2 -translate-y-1/2 px-[24px] pt-[5px] pb-[4px] text-[14px] leading-[23px] tracking-[2.84px]',
         'lum-btn-outline-ivory' => ! $isEspresso,
         'lum-btn-outline' => $isEspresso,
-    ])>{{ __('lum.nav.break') }}</a>
+    ])>{{ \App\Support\Site::takeABreakLabel(mobile: true) }}</a>
 </header>

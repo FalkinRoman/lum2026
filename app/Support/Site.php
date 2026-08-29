@@ -42,6 +42,32 @@ class Site
         return self::bookingDestination();
     }
 
+    /**
+     * Header CTA label. Mobile sticky / compact headers use the short variant.
+     */
+    public static function takeABreakLabel(bool $mobile = false): string
+    {
+        $settings = self::settings();
+        $field = $mobile ? 'take_a_break_label_mobile' : 'take_a_break_label';
+        $value = trim((string) ($settings->getTranslation($field, app()->getLocale()) ?: ''));
+
+        if ($value !== '') {
+            return $value;
+        }
+
+        // Mobile short empty → try full label before lang fallback
+        if ($mobile) {
+            $full = trim((string) ($settings->getTranslation('take_a_break_label', app()->getLocale()) ?: ''));
+            if ($full !== '') {
+                return $full;
+            }
+        }
+
+        return $mobile
+            ? (string) __('lum.nav.break')
+            : (string) __('lum.nav.take_a_break');
+    }
+
     public static function mapUrl(): string
     {
         $url = trim((string) (self::settings()->map_url ?: ''));
