@@ -52,11 +52,11 @@ set_env WEB_BIND 127.0.0.1
 rm -f .env.bak
 
 echo "==> .env ready for https://${DOMAIN}"
-echo "==> Opening firewall 80/443 if ufw is active (may need sudo password)"
-if command -v ufw >/dev/null 2>&1; then
-    sudo ufw allow 80/tcp || true
-    sudo ufw allow 443/tcp || true
-    sudo ufw status || true
+echo "==> Firewall: skipping ufw (no sudo on this user). Ensure hoster panel / security group allows TCP 80 and 443."
+if command -v ufw >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+    sudo -n ufw allow 80/tcp || true
+    sudo -n ufw allow 443/tcp || true
+    sudo -n ufw status || true
 fi
 
 echo "==> Deploy app + Caddy"
