@@ -25,14 +25,15 @@ services:
       context: .
       target: production
     ports:
-      - "${WEB_PORT:-8080}:80"
+      # Behind Caddy: WEB_BIND=127.0.0.1. Direct IP preview: WEB_BIND=0.0.0.0
+      - "${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8080}:80"
     environment:
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_SCHEME: http
+      APP_SCHEME: ${APP_SCHEME:-http}
       APP_HOST: ${APP_HOST:-45.151.62.114}
-      APP_PORT: ${WEB_PORT:-8080}
-      APP_URL: http://${APP_HOST:-45.151.62.114}:${WEB_PORT:-8080}
+      APP_PORT: ${APP_PORT:-${WEB_PORT:-8080}}
+      APP_URL: ${APP_URL:-http://45.151.62.114:8080}
       DB_CONNECTION: sqlite
       # Keep sqlite under storage so the named volume does not hide
       # database/migrations + database/seeders from the image.
@@ -40,8 +41,37 @@ services:
     volumes:
       - ./.env:/var/www/html/.env:ro
       - lum_storage:/var/www/html/storage
+    networks:
+      - lum
+
+  caddy:
+    profiles:
+      - production
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:-}
+      ACME_EMAIL: ${ACME_EMAIL:-info@lumresidence.com}
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - lum
 
 volumes:
   lum_vendor:
   lum_node_modules:
   lum_storage:
+  caddy_data:
+  caddy_config:
+
+networks:
+  lum:
+    driver: bridge

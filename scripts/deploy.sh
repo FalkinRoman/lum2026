@@ -31,46 +31,76 @@ if ! grep -q '^APP_KEY=base64:' .env 2>/dev/null; then
     fi
 fi
 
-# APP_URL must include WEB_PORT when not using host nginx on :80
-WEB_PORT="$(grep -E '^WEB_PORT=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
+env_get () {
+    grep -E "^${1}=" .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true
+}
+
+DOMAIN="$(env_get DOMAIN)"
+WEB_PORT="$(env_get WEB_PORT)"
 WEB_PORT="${WEB_PORT:-8080}"
-APP_HOST="$(grep -E '^APP_HOST=' .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true)"
+APP_HOST="$(env_get APP_HOST)"
 APP_HOST="${APP_HOST:-45.151.62.114}"
+ACME_EMAIL="$(env_get ACME_EMAIL)"
+ACME_EMAIL="${ACME_EMAIL:-info@lumresidence.com}"
 
-if grep -q '^APP_HOST=' .env; then
-    sed -i.bak "s|^APP_HOST=.*|APP_HOST=${APP_HOST}|" .env
-else
-    echo "APP_HOST=${APP_HOST}" >> .env
-fi
+set_env () {
+    local key="$1"
+    local value="$2"
+    if grep -q "^${key}=" .env; then
+        sed -i.bak "s|^${key}=.*|${key}=${value}|" .env
+    else
+        echo "${key}=${value}" >> .env
+    fi
+}
 
-if grep -q '^APP_SCHEME=' .env; then
-    sed -i.bak "s|^APP_SCHEME=.*|APP_SCHEME=http|" .env
+if [ -n "$DOMAIN" ]; then
+    # Public HTTPS behind Caddy
+    set_env APP_SCHEME https
+    set_env APP_HOST "$DOMAIN"
+    set_env APP_PORT ""
+    set_env APP_URL "https://${DOMAIN}"
+    set_env WEB_PORT "$WEB_PORT"
+    set_env WEB_BIND 127.0.0.1
+    set_env ACME_EMAIL "$ACME_EMAIL"
+    set_env SESSION_SECURE_COOKIE true
+    APP_URL="https://${DOMAIN}"
+    WITH_CADDY=1
 else
-    echo "APP_SCHEME=http" >> .env
-fi
-
-if grep -q '^APP_PORT=' .env; then
-    sed -i.bak "s|^APP_PORT=.*|APP_PORT=${WEB_PORT}|" .env
-else
-    echo "APP_PORT=${WEB_PORT}" >> .env
-fi
-
-APP_URL="http://${APP_HOST}:${WEB_PORT}"
-if grep -q '^APP_URL=' .env; then
-    sed -i.bak "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env
-else
-    echo "APP_URL=${APP_URL}" >> .env
+    # IP preview on :8080
+    set_env APP_SCHEME http
+    set_env APP_HOST "$APP_HOST"
+    set_env APP_PORT "$WEB_PORT"
+    set_env APP_URL "http://${APP_HOST}:${WEB_PORT}"
+    set_env WEB_PORT "$WEB_PORT"
+    set_env WEB_BIND 0.0.0.0
+    set_env SESSION_SECURE_COOKIE false
+    APP_URL="http://${APP_HOST}:${WEB_PORT}"
+    WITH_CADDY=0
 fi
 
 rm -f .env.bak
 
+# Export for compose variable substitution
+set -a
+# shellcheck disable=SC1091
+source <(grep -E '^(DOMAIN|ACME_EMAIL|APP_SCHEME|APP_HOST|APP_PORT|APP_URL|WEB_PORT|WEB_BIND)=' .env | sed 's/\r$//')
+set +a
+
 echo "Using APP_URL=${APP_URL}"
+if [ "$WITH_CADDY" = "1" ]; then
+    echo "Caddy enabled for DOMAIN=${DOMAIN}"
+fi
 
 echo "Building production image..."
 docker compose --profile production build web
 
-echo "Starting production container..."
-docker compose --profile production up -d web
+echo "Starting production container(s)..."
+if [ "$WITH_CADDY" = "1" ]; then
+    docker compose --profile production up -d web caddy
+else
+    docker compose --profile production up -d web
+    docker compose --profile production stop caddy >/dev/null 2>&1 || true
+fi
 
 echo "Waiting for HTTP on :${WEB_PORT}..."
 for i in $(seq 1 30); do
@@ -91,6 +121,14 @@ docker compose --profile production exec -T web php artisan migrate --force || e
 echo "Warming image derivatives (legacy CMS uploads)..."
 docker compose --profile production exec -T web php artisan lum:optimize-images || echo "optimize-images skipped (non-fatal)"
 
+echo "Clearing Laravel caches..."
+docker compose --profile production exec -T web php artisan optimize:clear || true
+
 echo "Done."
 docker compose --profile production ps
-echo "Site: http://${APP_HOST}:${WEB_PORT} (container port ${WEB_PORT})"
+if [ "$WITH_CADDY" = "1" ]; then
+    echo "Public: https://${DOMAIN} (after DNS A → this server)"
+    echo "Local:  http://127.0.0.1:${WEB_PORT}"
+else
+    echo "Site: http://${APP_HOST}:${WEB_PORT}"
+fi
