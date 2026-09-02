@@ -23,29 +23,28 @@ final class LumImageOptimizer
     public static function store(TemporaryUploadedFile $file, string $directory, string $disk = 'lum'): ?string
     {
         $directory = trim($directory, '/');
-        $mime = (string) ($file->getMimeType() ?: '');
-        $extension = strtolower((string) $file->getClientOriginalExtension());
+        $mime = strtolower((string) ($file->getMimeType() ?: ''));
+        $extension = self::safeExtensionFromMime($mime);
 
-        if (
-            str_contains($mime, 'svg')
-            || $extension === 'svg'
-            || str_contains($mime, 'gif')
-            || $extension === 'gif'
-        ) {
-            return self::storeOriginal($file, $directory, $disk, $extension !== '' ? $extension : 'bin');
+        if ($extension === null) {
+            return null;
+        }
+
+        if ($extension === 'gif') {
+            return self::storeOriginal($file, $directory, $disk, 'gif');
         }
 
         try {
             $binary = file_get_contents($file->getRealPath());
 
             if ($binary === false || $binary === '') {
-                return self::storeOriginal($file, $directory, $disk, $extension !== '' ? $extension : 'jpg');
+                return self::storeOriginal($file, $directory, $disk, $extension);
             }
 
             $source = @imagecreatefromstring($binary);
 
             if ($source === false) {
-                return self::storeOriginal($file, $directory, $disk, $extension !== '' ? $extension : 'jpg');
+                return self::storeOriginal($file, $directory, $disk, $extension);
             }
 
             $relative = ($directory !== '' ? $directory.'/' : '').(string) Str::ulid().'.webp';
@@ -54,12 +53,12 @@ final class LumImageOptimizer
             if (! self::writeImage($source, $absolute, self::MAX_EDGE)) {
                 imagedestroy($source);
 
-                return self::storeOriginal($file, $directory, $disk, $extension !== '' ? $extension : 'jpg');
+                return self::storeOriginal($file, $directory, $disk, $extension);
             }
 
             return $relative;
         } catch (Throwable) {
-            return self::storeOriginal($file, $directory, $disk, $extension !== '' ? $extension : 'jpg');
+            return self::storeOriginal($file, $directory, $disk, $extension);
         }
     }
 
@@ -246,9 +245,29 @@ final class LumImageOptimizer
         string $disk,
         string $extension,
     ): ?string {
-        $name = (string) Str::ulid().'.'.$extension;
+        $extension = self::safeExtensionFromMime(strtolower((string) ($file->getMimeType() ?: ''))) ?? $extension;
+
+        if (! in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)) {
+            return null;
+        }
+
+        $name = (string) Str::ulid().'.'.($extension === 'jpeg' ? 'jpg' : $extension);
 
         return $file->storeAs($directory, $name, $disk) ?: null;
+    }
+
+    /**
+     * Map verified MIME to a safe on-disk extension (never trust client filename).
+     */
+    private static function safeExtensionFromMime(string $mime): ?string
+    {
+        return match (true) {
+            str_contains($mime, 'jpeg') => 'jpg',
+            str_contains($mime, 'png') => 'png',
+            str_contains($mime, 'webp') => 'webp',
+            str_contains($mime, 'gif') => 'gif',
+            default => null,
+        };
     }
 
     /**

@@ -16,22 +16,23 @@ class ForcePublicRootUrl
     public function handle(Request $request, Closure $next): Response
     {
         $scheme = (string) (config('app.scheme') ?: $request->getScheme() ?: 'http');
-        $configHost = trim((string) config('app.host'));
+        $configHost = strtolower(trim((string) config('app.host')));
         $configPort = trim((string) config('app.port'));
 
-        $headerHost = $request->headers->get('Host');
-
-        // Browser sent Host with explicit port — trust it.
-        if (is_string($headerHost) && str_contains($headerHost, ':')) {
-            URL::forceRootUrl($scheme.'://'.$headerHost);
-
-            return $next($request);
-        }
-
-        $host = $configHost !== '' ? $configHost : $request->getHost();
+        $host = $configHost !== '' ? $configHost : strtolower($request->getHost());
 
         if ($host === '') {
             return $next($request);
+        }
+
+        // Never trust arbitrary Host / X-Forwarded-Host — only configured public host.
+        $headerHost = strtolower((string) $request->headers->get('Host', ''));
+        $headerName = str_contains($headerHost, ':')
+            ? strstr($headerHost, ':', true)
+            : $headerHost;
+
+        if ($configHost !== '' && $headerName !== '' && $headerName !== $configHost) {
+            $host = $configHost;
         }
 
         $root = in_array($configPort, ['', '80', '443'], true)

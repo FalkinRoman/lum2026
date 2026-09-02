@@ -14,6 +14,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use UnitEnum;
 
@@ -68,7 +70,13 @@ class ManageAccount extends Page implements HasForms
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                             ->nullable(),
                         TextInput::make('name')->label('Имя')->required(),
-                        TextInput::make('email')->label('Email')->email()->required(),
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->required()
+                            ->rules(fn () => [
+                                Rule::unique('users', 'email')->ignore(auth()->id()),
+                            ]),
                     ]),
 
                 Section::make('Пароль')
@@ -122,7 +130,20 @@ class ManageAccount extends Page implements HasForms
         $needsPassword = $nameChanged || $emailChanged || $passwordChanging;
 
         if ($needsPassword) {
+            $rateKey = 'manage-account-password:'.auth()->id();
+
+            if (RateLimiter::tooManyAttempts($rateKey, 5)) {
+                Notification::make()
+                    ->title('Слишком много попыток. Подождите 15 минут.')
+                    ->danger()
+                    ->send();
+
+                return;
+            }
+
             if (! Hash::check((string) ($state['current_password'] ?? ''), $user->password)) {
+                RateLimiter::hit($rateKey, 900);
+
                 Notification::make()
                     ->title('Неверный текущий пароль')
                     ->danger()
@@ -130,6 +151,8 @@ class ManageAccount extends Page implements HasForms
 
                 return;
             }
+
+            RateLimiter::clear($rateKey);
         }
 
         $user->avatar = $state['avatar'] ?? null;
@@ -141,6 +164,11 @@ class ManageAccount extends Page implements HasForms
         }
 
         $user->save();
+
+        if ($passwordChanging) {
+            auth()->logoutOtherDevices((string) $state['current_password']);
+        }
+
         $user->refresh();
         auth()->setUser($user);
 

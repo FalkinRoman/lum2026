@@ -74,7 +74,9 @@ class LivewireFileUploadController implements HasMiddleware
             ]);
 
             throw ValidationException::withMessages([
-                'files.0' => 'Ошибка сохранения: '.$e->getMessage(),
+                'files.0' => app()->isProduction()
+                    ? 'Не удалось сохранить файл. Обновите страницу и попробуйте снова.'
+                    : 'Ошибка сохранения: '.$e->getMessage(),
             ]);
         }
     }
@@ -98,8 +100,9 @@ class LivewireFileUploadController implements HasMiddleware
 
             if ($stored === false || $stored === null || $stored === '') {
                 throw new \RuntimeException(
-                    "Не удалось записать во временный диск [{$disk}] → ".FileUploadConfiguration::path()
-                    .'. Проверь права на storage/app/private.'
+                    app()->isProduction()
+                        ? 'Temporary upload write failed.'
+                        : "Не удалось записать во временный диск [{$disk}] → ".FileUploadConfiguration::path()
                 );
             }
 

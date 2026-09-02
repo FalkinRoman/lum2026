@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#fffddf">
     <meta name="color-scheme" content="light">
+    @include('lum.partials.gtag')
     <style>
         html, body { background: #fffddf; margin: 0; }
         html.lum-is-loading .lum-page { opacity: 0; }

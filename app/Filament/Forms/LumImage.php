@@ -32,7 +32,6 @@ class LumImage
                 'image/png',
                 'image/webp',
                 'image/gif',
-                'image/svg+xml',
             ])
             ->imageResizeMode('max')
             ->imageResizeTargetWidth(LumImageOptimizer::MAX_EDGE)
@@ -79,7 +78,6 @@ class LumImage
                 'image/png',
                 'image/webp',
                 'image/gif',
-                'image/svg+xml',
             ])
             ->imageResizeMode('max')
             ->imageResizeTargetWidth(LumImageOptimizer::MAX_EDGE)

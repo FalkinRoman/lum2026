@@ -30,10 +30,13 @@ fi
 set_env () {
     local key="$1"
     local value="$2"
+    local escaped="${value//\\/\\\\}"
+    escaped="${escaped//|/\\|}"
+    escaped="${escaped//&/\\&}"
     if grep -q "^${key}=" .env; then
-        sed -i.bak "s|^${key}=.*|${key}=${value}|" .env
+        sed -i.bak "s|^${key}=.*|${key}=${escaped}|" .env
     else
-        echo "${key}=${value}" >> .env
+        printf '%s=%s\n' "$key" "$value" >> .env
     fi
 }
 
