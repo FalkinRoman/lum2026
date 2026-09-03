@@ -32,7 +32,12 @@ if ! grep -q '^APP_KEY=base64:' .env 2>/dev/null; then
 fi
 
 env_get () {
-    grep -E "^${1}=" .env 2>/dev/null | cut -d= -f2- | tr -d ' "' || true
+    local raw
+    raw="$(grep -E "^${1}=" .env 2>/dev/null | head -1 | cut -d= -f2- || true)"
+    raw="${raw%$'\r'}"
+    raw="${raw#[\"\']}"
+    raw="${raw%[\"\']}"
+    printf '%s' "$raw"
 }
 
 DOMAIN="$(env_get DOMAIN)"
@@ -117,6 +122,11 @@ for i in $(seq 1 30); do
     fi
     sleep 1
 done
+
+# Domain mode: absolute URLs must not leak the internal WEB_PORT (APP_PORT compose bug).
+if [ "$WITH_CADDY" = "1" ] && curl -s --max-time 5 "http://127.0.0.1:${WEB_PORT}/" | grep -q ":${WEB_PORT}/build/"; then
+    echo "WARNING: absolute URLs contain :${WEB_PORT} — check APP_PORT in .env / docker-compose.yml" >&2
+fi
 
 echo "Applying migrations (map URL fix, etc.)..."
 docker compose --profile production exec -T web php artisan migrate --force || echo "migrate skipped (non-fatal)"

@@ -165,8 +165,19 @@ class ManageAccount extends Page implements HasForms
 
         $user->save();
 
+        // After save() the guard user already has the NEW password hash — pass the new
+        // plaintext, not current_password (Laravel Hash::check would throw otherwise).
         if ($passwordChanging) {
-            auth()->logoutOtherDevices((string) $state['current_password']);
+            try {
+                auth()->logoutOtherDevices((string) $state['password']);
+            } catch (\Throwable $e) {
+                report($e);
+
+                Notification::make()
+                    ->title('Пароль изменён, но другие сессии завершить не удалось')
+                    ->warning()
+                    ->send();
+            }
         }
 
         $user->refresh();
