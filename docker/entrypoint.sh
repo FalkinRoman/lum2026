@@ -34,7 +34,7 @@ fi
 php artisan migrate --force
 
 # Livewire temporary uploads (must be on the writable storage volume).
-mkdir -p storage/app/livewire-tmp storage/app/private/livewire-tmp storage/app/public
+mkdir -p storage/app/livewire-tmp storage/app/private/livewire-tmp storage/app/public storage/app/backups storage/app/lum-writable
 
 # Filament disk `lum` points at public/images/lum (baked into the image).
 # Persist writable upload dirs on the storage volume so www-data can write
@@ -58,7 +58,7 @@ persist_lum_dir() {
     ln -sfn "/var/www/html/storage/app/lum-writable/${name}" "${target}"
 }
 
-mkdir -p public/images/lum storage/app/lum-writable storage/logs storage/app/private/livewire-tmp
+mkdir -p public/images/lum storage/app/lum-writable storage/app/backups storage/logs storage/app/private/livewire-tmp
 touch storage/logs/laravel.log
 for dir in avatars uploads menu hero shop villas interior location polaroids stay dining relax discover blog activity excursion restaurant villa; do
     persist_lum_dir "${dir}"

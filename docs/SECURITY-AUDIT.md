@@ -26,7 +26,7 @@
 
 | # | Риск | Рекомендация |
 |---|------|----------------|
-| 8 | Нет бэкапов SQLite + uploads | cron: `sqlite3 .backup` + tar volume → off-site |
+| 8 | Нет бэкапов SQLite + uploads | ✅ `lum:backup` + админка «Бэкапы» + `scripts/backup.sh` (cron) |
 | 11 | CSP для Exely + gtag | сначала Report-Only в Caddy после DNS |
 | 14 | Password reset в Filament | ✅ `->passwordReset()`; на проде нужен Gmail app password в `.env` (+ 2-й админ желателен) |
 | 16 | CMS SELECT без кеша | memo в `HomeSection` / `PageSection` (perf) |
