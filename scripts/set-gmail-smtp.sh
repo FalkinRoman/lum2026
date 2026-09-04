@@ -40,13 +40,16 @@ fi
 set_env () {
     local key="$1"
     local value="$2"
-    local escaped="${value//\\/\\\\}"
+    # Always quote — spaces in values (e.g. MAIL_FROM_NAME) break dotenv otherwise.
+    local quoted
+    quoted="$(printf '"%s"' "${value//\"/\\\"}")"
+    local escaped="${quoted//\\/\\\\}"
     escaped="${escaped//|/\\|}"
     escaped="${escaped//&/\\&}"
     if grep -q "^${key}=" .env; then
         sed -i.bak "s|^${key}=.*|${key}=${escaped}|" .env
     else
-        printf '%s=%s\n' "$key" "$value" >> .env
+        printf '%s=%s\n' "$key" "$quoted" >> .env
     fi
 }
 
