@@ -28,7 +28,7 @@
 |---|------|----------------|
 | 8 | Нет бэкапов SQLite + uploads | cron: `sqlite3 .backup` + tar volume → off-site |
 | 11 | CSP для Exely + gtag | сначала Report-Only в Caddy после DNS |
-| 14 | Password reset в Filament | после бага A + реальный `MAIL_*` + 2-й админ |
+| 14 | Password reset в Filament | ✅ `->passwordReset()`; на проде нужен Gmail app password в `.env` (+ 2-й админ желателен) |
 | 16 | CMS SELECT без кеша | memo в `HomeSection` / `PageSection` (perf) |
 | 17 | Smoke-тесты роутов | `tests/Feature/PublicPagesTest.php` |
 | 18–20 | Blade/Content рефактор, мёртвый код | по желанию, не блокер prod |
