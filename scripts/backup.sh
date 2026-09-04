@@ -15,7 +15,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-HOST_BACKUP_DIR="${HOST_BACKUP_DIR:-/opt/backups/lum}"
+HOST_BACKUP_DIR="${HOST_BACKUP_DIR:-$HOME/backups/lum}"
 mkdir -p "$HOST_BACKUP_DIR"
 
 echo "[$(date -Is)] lum:backup starting…"
