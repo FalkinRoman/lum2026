@@ -181,7 +181,7 @@ return [
     ],
 
     'location' => [
-        'heading' => '坐拥 <span class="font-medium italic">Ahangama</span> 绝佳地段，位于 <span class="font-medium italic">斯里兰卡</span> 未经雕琢的南部海岸',
+        'heading' => '坐拥 <span class="font-medium italic whitespace-nowrap">Ahangama</span> 绝佳地段，位于 <span class="font-medium italic whitespace-nowrap">斯里兰卡</span> 未经雕琢的南部海岸',
         'see_on_map' => '在地图上查看',
         'see_on_map_upper' => '在地图上查看',
         'more_info' => '了解更多',

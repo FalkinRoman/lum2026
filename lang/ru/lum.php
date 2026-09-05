@@ -181,7 +181,7 @@ return [
     ],
 
     'location' => [
-        'heading' => 'идеальное место в <span class="font-medium italic">Аханагаме</span> на нетронутом южном побережье <span class="font-medium italic">Шри-Ланки</span>',
+        'heading' => 'идеальное место в <span class="font-medium italic whitespace-nowrap">Аханагаме</span> на нетронутом южном побережье <span class="font-medium italic whitespace-nowrap">Шри-Ланки</span>',
         'see_on_map' => 'На карте',
         'see_on_map_upper' => 'НА КАРТЕ',
         'more_info' => 'подробнее',

@@ -181,7 +181,7 @@ return [
     ],
 
     'location' => [
-        'heading' => 'prime location in <span class="font-medium italic">Ahangama</span> on the pristine southern coast of <span class="font-medium italic">Sri Lanka</span>',
+        'heading' => 'prime location in <span class="font-medium italic whitespace-nowrap">Ahangama</span> on the pristine southern coast of <span class="font-medium italic whitespace-nowrap">Sri Lanka</span>',
         'see_on_map' => 'See on map',
         'see_on_map_upper' => 'SEE on map',
         'more_info' => 'more info',

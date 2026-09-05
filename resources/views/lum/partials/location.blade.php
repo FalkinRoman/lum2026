@@ -61,7 +61,7 @@
     <div class="relative tab:hidden">
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-0 z-[1] h-[54px] w-[32px] -translate-x-1/2" width="32" height="54">
         <div class="relative z-0 flex flex-col items-center px-[20px] pb-[40px] pt-[78px] text-center" data-lum-scroll-reveal>
-            <h2 class="w-[335px] font-serif text-[36px] leading-[45px] text-lum-espresso">
+            <h2 class="w-[335px] font-serif text-[36px] leading-[45px] text-lum-espresso [&_span]:whitespace-nowrap">
                 {!! \App\Support\Content::safeInlineHtmlWithBreaks($location['heading'] ?? __('lum.location.heading')) !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[32px] h-px w-[335px]" width="335" height="1">
@@ -126,7 +126,7 @@
     <div class="relative hidden tab:block desk:hidden">
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[60px] z-[1] h-[67px] w-[40px] -translate-x-1/2" width="40" height="67">
         <div class="relative z-0 flex flex-col items-center px-[20px] pb-[64px] pt-[172px] text-center" data-lum-scroll-reveal>
-            <h2 class="w-[680px] font-serif text-[52px] leading-[52px] text-lum-espresso">
+            <h2 class="w-[680px] font-serif text-[52px] leading-[52px] text-lum-espresso [&_span]:whitespace-nowrap">
                 {!! \App\Support\Content::safeInlineHtmlWithBreaks($location['heading'] ?? __('lum.location.heading')) !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[580px]" width="580" height="2">
@@ -156,7 +156,7 @@
         </svg>
         <img src="{{ $img('location/decor.svg') }}" alt="" class="absolute left-1/2 top-[240px] z-[1] h-[80px] w-[48px] -translate-x-1/2" width="48" height="80">
         <div class="relative z-0 flex flex-col items-center pb-[80px] pt-[357px] text-center" data-lum-scroll-reveal>
-            <h2 class="w-[856px] lum-heading-1 text-lum-espresso">
+            <h2 class="w-[856px] lum-heading-1 text-lum-espresso [&_span]:whitespace-nowrap">
                 {!! \App\Support\Content::safeInlineHtmlWithBreaks($location['heading'] ?? __('lum.location.heading')) !!}
             </h2>
             <img src="{{ $img('location/divider.svg') }}" alt="" class="mt-[44px] h-[2px] w-[856px]" width="856" height="2">
