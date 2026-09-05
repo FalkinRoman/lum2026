@@ -55,6 +55,82 @@ class Content
         );
     }
 
+    /**
+     * Allow only design inline markup (<span class/style>, <br>) from CMS/lang.
+     * Text nodes are escaped; keeps XSS closed without showing raw tags.
+     */
+    public static function safeInlineHtml(?string $value): string
+    {
+        $value = (string) $value;
+
+        if ($value === '') {
+            return '';
+        }
+
+        $value = strip_tags($value, '<span><br>');
+
+        $parts = preg_split(
+            '/(<span\b[^>]*>.*?<\/span>|<br\s*\/?>)/is',
+            $value,
+            -1,
+            PREG_SPLIT_DELIM_CAPTURE,
+        );
+
+        if ($parts === false) {
+            return e($value);
+        }
+
+        $out = '';
+
+        foreach ($parts as $part) {
+            if ($part === '') {
+                continue;
+            }
+
+            if (preg_match('/^<br\s*\/?>$/i', $part)) {
+                $out .= '<br>';
+
+                continue;
+            }
+
+            if (preg_match('/^<span\b([^>]*)>(.*?)<\/span>$/is', $part, $match)) {
+                $attrs = $match[1];
+                $inner = e(html_entity_decode(strip_tags($match[2]), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+                $class = '';
+                if (preg_match('/\bclass\s*=\s*(["\'])(.*?)\1/i', $attrs, $m)) {
+                    $tokens = preg_split('/\s+/', trim($m[2])) ?: [];
+                    $allowed = array_values(array_filter(
+                        $tokens,
+                        static fn (string $t): bool => (bool) preg_match('/^[a-z][a-z0-9_-]*$/i', $t),
+                    ));
+                    if ($allowed !== []) {
+                        $class = ' class="'.e(implode(' ', $allowed)).'"';
+                    }
+                }
+
+                $style = '';
+                if (preg_match('/\bstyle\s*=\s*(["\'])(.*?)\1/i', $attrs, $m)
+                    && preg_match('/white-space\s*:\s*nowrap/i', $m[2])) {
+                    $style = ' style="white-space: nowrap;"';
+                }
+
+                $out .= '<span'.$class.$style.'>'.$inner.'</span>';
+
+                continue;
+            }
+
+            $out .= e(html_entity_decode($part, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        }
+
+        return $out;
+    }
+
+    public static function safeInlineHtmlWithBreaks(?string $value): string
+    {
+        return nl2br(self::safeInlineHtml($value), false);
+    }
+
     public static function hasMedia(mixed $path): bool
     {
         return is_string($path) && trim($path) !== '';
