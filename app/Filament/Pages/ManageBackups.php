@@ -53,7 +53,7 @@ class ManageBackups extends Page
                 ->action(function (): void {
                     try {
                         $backup = SiteBackup::create();
-                        SiteBackup::prune(14);
+                        SiteBackup::prune(SiteBackup::KEEP_FULL, SiteBackup::KIND_FULL);
 
                         Notification::make()
                             ->title('Бэкап создан')

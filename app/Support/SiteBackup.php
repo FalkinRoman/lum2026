@@ -9,6 +9,16 @@ use ZipArchive;
 
 class SiteBackup
 {
+    /** Daily DB-only snapshots to keep (a few hundred KB each). */
+    public const KEEP_DB = 7;
+
+    /** Weekly full snapshots to keep (DB + uploads, hundreds of MB each). */
+    public const KEEP_FULL = 4;
+
+    public const KIND_DB = 'db';
+
+    public const KIND_FULL = 'full';
+
     public static function directory(): string
     {
         $dir = storage_path('app/backups');
@@ -21,9 +31,10 @@ class SiteBackup
     }
 
     /**
-     * @return list<array{name: string, path: string, size: int, modified_at: int}>
+     * @param  string|null  $kind  self::KIND_DB, self::KIND_FULL, or null for both
+     * @return list<array{name: string, path: string, size: int, modified_at: int, kind: string}>
      */
-    public static function list(): array
+    public static function list(?string $kind = null): array
     {
         $dir = self::directory();
         $files = File::glob($dir.'/lum-backup-*.zip') ?: [];
@@ -34,19 +45,31 @@ class SiteBackup
                 'path' => $path,
                 'size' => (int) filesize($path),
                 'modified_at' => (int) filemtime($path),
+                'kind' => self::kindOf(basename($path)),
             ];
         }, $files);
+
+        if ($kind !== null) {
+            $items = array_values(array_filter($items, static fn (array $i): bool => $i['kind'] === $kind));
+        }
 
         usort($items, static fn (array $a, array $b): int => $b['modified_at'] <=> $a['modified_at']);
 
         return $items;
     }
 
+    public static function kindOf(string $name): string
+    {
+        return str_starts_with(basename($name), 'lum-backup-db-')
+            ? self::KIND_DB
+            : self::KIND_FULL;
+    }
+
     public static function path(string $name): string
     {
         $name = basename($name);
 
-        if (! preg_match('/^lum-backup-\d{4}-\d{2}-\d{2}-\d{6}\.zip$/', $name)) {
+        if (! preg_match('/^lum-backup-(db-)?\d{4}-\d{2}-\d{2}-\d{6}\.zip$/', $name)) {
             throw new RuntimeException('Invalid backup filename.');
         }
 
@@ -60,15 +83,21 @@ class SiteBackup
     }
 
     /**
-     * Create a ZIP with SQLite DB + CMS uploads (not application source code).
+     * Create a ZIP with the SQLite DB and, optionally, CMS uploads.
      *
-     * @return array{name: string, path: string, size: int}
+     * Uploads are ~370 MB and change rarely, so daily runs take $withUploads = false
+     * and a weekly run takes the full snapshot.
+     *
+     * @return array{name: string, path: string, size: int, kind: string}
      */
-    public static function create(): array
+    public static function create(bool $withUploads = true): array
     {
         $dir = self::directory();
         $stamp = now()->format('Y-m-d-His');
-        $name = "lum-backup-{$stamp}.zip";
+        $kind = $withUploads ? self::KIND_FULL : self::KIND_DB;
+        $name = $withUploads
+            ? "lum-backup-{$stamp}.zip"
+            : "lum-backup-db-{$stamp}.zip";
         $zipPath = $dir.DIRECTORY_SEPARATOR.$name;
         $tmpDir = $dir.DIRECTORY_SEPARATOR.'.tmp-'.$stamp;
 
@@ -77,24 +106,32 @@ class SiteBackup
         try {
             self::exportDatabase($tmpDir.DIRECTORY_SEPARATOR.'database.sqlite');
 
-            $uploadsSrc = storage_path('app/lum-writable');
-            $uploadsDst = $tmpDir.DIRECTORY_SEPARATOR.'uploads';
+            $contains = [
+                'database.sqlite' => 'CMS database (pages, settings, villas, users, …)',
+            ];
 
-            if (is_dir($uploadsSrc)) {
-                File::copyDirectory($uploadsSrc, $uploadsDst);
-            } else {
-                File::makeDirectory($uploadsDst, 0775, true);
+            if ($withUploads) {
+                $uploadsSrc = storage_path('app/lum-writable');
+                $uploadsDst = $tmpDir.DIRECTORY_SEPARATOR.'uploads';
+
+                if (is_dir($uploadsSrc)) {
+                    File::copyDirectory($uploadsSrc, $uploadsDst);
+                } else {
+                    File::makeDirectory($uploadsDst, 0775, true);
+                }
+
+                $contains['uploads/'] = 'Images uploaded via admin (public/images/lum → storage/app/lum-writable)';
             }
 
             File::put($tmpDir.DIRECTORY_SEPARATOR.'manifest.json', json_encode([
                 'created_at' => now()->toIso8601String(),
+                'kind' => $kind,
                 'app_url' => (string) config('app.url'),
                 'app_env' => (string) config('app.env'),
-                'contains' => [
-                    'database.sqlite' => 'CMS database (pages, settings, villas, users, …)',
-                    'uploads/' => 'Images uploaded via admin (public/images/lum → storage/app/lum-writable)',
-                ],
-                'note' => 'This is a content backup, not the full Laravel codebase. Source code lives in git.',
+                'contains' => $contains,
+                'note' => $withUploads
+                    ? 'This is a content backup, not the full Laravel codebase. Source code lives in git.'
+                    : 'Database-only snapshot. Uploaded images live in the newest full backup (lum-backup-<date>.zip).',
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
             $zip = new ZipArchive;
@@ -119,6 +156,7 @@ class SiteBackup
             'name' => $name,
             'path' => $zipPath,
             'size' => (int) filesize($zipPath),
+            'kind' => $kind,
         ];
     }
 
@@ -129,18 +167,20 @@ class SiteBackup
     }
 
     /**
-     * Keep only the newest $keep ZIP files.
+     * Keep only the newest $keep ZIP files of the given kind.
+     *
+     * Kinds are pruned separately so a run of daily DB snapshots never
+     * evicts the weekly full backups that hold the images.
      */
-    public static function prune(int $keep = 14): int
+    public static function prune(int $keep, ?string $kind = null): int
     {
         if ($keep < 1) {
             return 0;
         }
 
-        $items = self::list();
         $removed = 0;
 
-        foreach (array_slice($items, $keep) as $item) {
+        foreach (array_slice(self::list($kind), $keep) as $item) {
             File::delete($item['path']);
             $removed++;
         }
@@ -158,7 +198,6 @@ class SiteBackup
 
         // Consistent snapshot when sqlite3 CLI is available.
         $escapedSource = escapeshellarg($source);
-        $escapedDest = escapeshellarg($destination);
         $cmd = "sqlite3 {$escapedSource} ".escapeshellarg('.backup '.$destination).' 2>/dev/null';
 
         exec($cmd, $output, $code);

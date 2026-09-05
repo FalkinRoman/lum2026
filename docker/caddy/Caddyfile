@@ -18,3 +18,10 @@
 www.{$DOMAIN} {
 	redir https://{$DOMAIN}{uri} permanent
 }
+
+# Legacy-зона .ru → канонический {$DOMAIN}. 301 с сохранением пути и query.
+# Каждое имя требует A-записи на этот сервер, иначе Caddy не выпустит сертификат
+# и будет бесконечно повторять ACME-запрос.
+lumresidence.ru, www.lumresidence.ru {
+	redir https://{$DOMAIN}{uri} permanent
+}

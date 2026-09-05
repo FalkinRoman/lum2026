@@ -102,6 +102,13 @@ fi
 echo "Building production image..."
 docker compose --profile production build web
 
+# Trim BuildKit cache: it grows ~1 GB per deploy and once filled the 25 GB disk,
+# after which SQLite failed with "disk I/O error" and every page returned 500.
+# Notes: Docker 29 renamed --keep-storage to --max-used-space, and the cap applies
+# to the *reclaimable* (unused) cache only -- layers used by the current image stay.
+echo "Trimming Docker build cache (unused cache capped at 5 GB)..."
+docker builder prune -f --max-used-space 5GB >/dev/null 2>&1 || true
+
 echo "Starting production container(s)..."
 if [ "$WITH_CADDY" = "1" ]; then
     docker compose --profile production up -d web caddy
