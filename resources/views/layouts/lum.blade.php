@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#fffddf">
     <meta name="color-scheme" content="light">
     @include('lum.partials.gtag')
+    @include('lum.partials.metrika')
     <style>
         html, body { background: #fffddf; margin: 0; }
         html.lum-is-loading .lum-page { opacity: 0; }
