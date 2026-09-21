@@ -22,8 +22,9 @@
 
 <section class="lum-container relative overflow-visible bg-lum-ivory" data-lum-stay-wellness>
     {{-- MOBILE — Figma 101:565 + 101:567 --}}
+    {{-- Hero tuck (-mt) must stay ≤ venues bottom padding; overflow-hidden clips gsap scale bleed. --}}
     <div class="relative overflow-visible tab:hidden">
-        <div class="relative z-[1] -mt-[120px] h-[780px] overflow-visible" data-lum-stay-wellness-hero>
+        <div class="relative z-[1] -mt-[120px] h-[780px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $heroMobUrl }}" alt="" class="h-full w-full object-cover" width="375" height="780" loading="lazy">
         </div>
 
@@ -54,7 +55,7 @@
 
     {{-- TABLET — Figma 101:518 + 101:520 --}}
     <div class="relative hidden overflow-visible tab:block desk:hidden">
-        <div class="relative z-[1] -mt-[160px] h-[820px] overflow-visible" data-lum-stay-wellness-hero>
+        <div class="relative z-[1] -mt-[160px] h-[820px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $heroTabUrl }}" alt="" class="h-full w-full object-cover" width="960" height="820" loading="lazy">
         </div>
 

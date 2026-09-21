@@ -16,8 +16,9 @@
     $tabletLayout = ListingLayout::grid2($count, [20, 490], 588, 565);
     $desktopLayout = ListingLayout::grid2($count, [72, 686, 1299], 894, 804);
 
-    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 510);
-    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 645);
+    // Bottom padding = card height + quote hero tuck (-mt). Must stay ≥ |mt| or hero eats last row.
+    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 390 + 120);
+    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 525 + 160);
     $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'top', 900);
 @endphp
 
@@ -47,7 +48,7 @@
         @foreach ($activities as $index => $activity)
             @php $layout = $mobileLayout[$index]; @endphp
 
-            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute left-1/2 h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute left-1/2 z-[2] h-[390px] w-[335px] -translate-x-1/2 overflow-hidden" style="top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.relax.card', [
                     'img' => $img,
                     'activity' => $activity,
@@ -67,7 +68,8 @@
         @include('lum.partials.divider-logomark', [
             'img' => $img,
             'size' => 'mob',
-            'class' => 'absolute left-[20px] top-[1870px]',
+            'class' => 'absolute left-[20px]',
+            'style' => 'top: '.($mobileHeight - 40).'px',
         ])
     </div>
 
@@ -96,7 +98,7 @@
         @foreach ($activities as $index => $activity)
             @php $layout = $tabletLayout[$index]; @endphp
 
-            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute z-[2] h-[525px] w-[450px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.relax.card', [
                     'img' => $img,
                     'activity' => $activity,
@@ -115,7 +117,8 @@
         @include('lum.partials.divider-logomark', [
             'img' => $img,
             'size' => 'tab',
-            'class' => 'absolute left-[20px] top-[1798px]',
+            'class' => 'absolute left-[20px]',
+            'style' => 'top: '.($tabletHeight - 40).'px',
         ])
     </div>
 
@@ -144,7 +147,7 @@
         @foreach ($activities as $index => $activity)
             @php $layout = $desktopLayout[$index]; @endphp
 
-            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute h-[740px] w-[549px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
+            <a href="{{ route('relax.show', $activity['slug']) }}" class="lum-dining-card absolute z-[2] h-[740px] w-[549px] overflow-hidden" style="left: {{ $layout['left'] }}px; top: {{ $layout['top'] }}px" data-lum-stay-property-image data-lum-stay-property="{{ $index }}">
                 @include('lum.partials.relax.card', [
                     'img' => $img,
                     'activity' => $activity,

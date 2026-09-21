@@ -7,13 +7,14 @@
         default => ['mark' => 64, 'gap' => 22, 'w' => 'w-[1776px]', 'h' => 'h-[64px]'],
     };
     $extraClass = $class ?? '';
+    $dividerStyle = trim('gap: '.$dims['gap'].'px; '.($style ?? ''));
 @endphp
 <div @class([
     'flex items-center',
     $dims['w'],
     $dims['h'],
     $extraClass,
-]) style="gap: {{ $dims['gap'] }}px" {!! $attrs ?? '' !!}>
+]) style="{{ $dividerStyle }}" {!! $attrs ?? '' !!}>
     <div class="h-px flex-1 bg-lum-espresso/40"></div>
     <img
         src="{{ $img('interior/logomark.svg') }}"
