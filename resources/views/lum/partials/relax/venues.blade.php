@@ -16,10 +16,10 @@
     $tabletLayout = ListingLayout::grid2($count, [20, 490], 588, 565);
     $desktopLayout = ListingLayout::grid2($count, [72, 686, 1299], 894, 804);
 
-    // Bottom padding = card height + gap before quote hero (no negative-margin tuck).
-    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 390 + 64);
-    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 525 + 64);
-    $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'top', 900);
+    // End flush under last card — divider + gaps live in quote partial.
+    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 390);
+    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 525);
+    $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'top', 740);
 @endphp
 
 <section id="relax" class="lum-container relative bg-lum-ivory" data-lum-relax-page>
@@ -64,13 +64,6 @@
                 ])
             </a>
         @endforeach
-
-        @include('lum.partials.divider-logomark', [
-            'img' => $img,
-            'size' => 'mob',
-            'class' => 'absolute left-[20px]',
-            'style' => 'top: '.($mobileHeight - 40).'px',
-        ])
     </div>
 
     {{-- TABLET — Figma 101:486 --}}
@@ -113,13 +106,6 @@
                 ])
             </a>
         @endforeach
-
-        @include('lum.partials.divider-logomark', [
-            'img' => $img,
-            'size' => 'tab',
-            'class' => 'absolute left-[20px]',
-            'style' => 'top: '.($tabletHeight - 40).'px',
-        ])
     </div>
 
     {{-- DESKTOP — Figma 101:387 --}}

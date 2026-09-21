@@ -21,9 +21,15 @@
 @endphp
 
 <section class="lum-container relative bg-lum-ivory" data-lum-stay-wellness>
-    {{-- MOBILE — Figma 101:565 + 101:567 --}}
-    {{-- No -mt into venues: tuck + gsap scale was painting over the last card. --}}
+    {{-- MOBILE — divider band mirrors discover-excursion (mt-60) --}}
     <div class="relative tab:hidden">
+        <div class="flex justify-center px-[20px] py-[60px]">
+            @include('lum.partials.divider-logomark', [
+                'img' => $img,
+                'size' => 'mob',
+            ])
+        </div>
+
         <div class="relative z-[1] h-[780px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $heroMobUrl }}" alt="" class="h-full w-full object-cover" width="375" height="780" loading="lazy">
         </div>
@@ -53,8 +59,15 @@
         </div>
     </div>
 
-    {{-- TABLET — Figma 101:518 + 101:520 --}}
+    {{-- TABLET — mt-80 rhythm --}}
     <div class="relative hidden tab:block desk:hidden">
+        <div class="flex justify-center px-[20px] py-[80px]">
+            @include('lum.partials.divider-logomark', [
+                'img' => $img,
+                'size' => 'tab',
+            ])
+        </div>
+
         <div class="relative z-[1] h-[820px] overflow-hidden" data-lum-stay-wellness-hero>
             <img src="{{ $heroTabUrl }}" alt="" class="h-full w-full object-cover" width="960" height="820" loading="lazy">
         </div>
@@ -83,41 +96,46 @@
         </div>
     </div>
 
-    {{-- DESKTOP — Figma 101:421 --}}
-    <div class="relative hidden h-[1931px] desk:block">
-        @include('lum.partials.divider-logomark', [
-            'img' => $img,
-            'size' => 'desk',
-            'class' => 'absolute left-[72px] top-0',
-        ])
+    {{-- DESKTOP — mt-120 rhythm; oval overlays hero when present (no empty 433px well) --}}
+    <div class="relative hidden desk:block">
+        <div class="flex justify-center px-[72px] py-[120px]">
+            @include('lum.partials.divider-logomark', [
+                'img' => $img,
+                'size' => 'desk',
+            ])
+        </div>
 
-        @if ($ovalUrl)
-            <div class="absolute left-1/2 top-[183px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
-                <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+        <div class="relative">
+            @if ($ovalUrl)
+                <div class="pointer-events-none absolute left-1/2 top-[-215px] z-[3] h-[430px] w-[320px] -translate-x-1/2 overflow-hidden rounded-[50%]" data-lum-stay-wellness-oval>
+                    <img src="{{ $ovalUrl }}" alt="" class="h-full w-full object-cover" width="320" height="430" loading="lazy">
+                </div>
+            @endif
+
+            <div class="relative z-[1] h-[820px] w-full overflow-hidden" data-lum-stay-wellness-hero>
+                <img src="{{ $heroDeskUrl }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
             </div>
-        @endif
-
-        <div class="absolute left-0 top-[433px] z-[1] h-[820px] w-full overflow-hidden" data-lum-stay-wellness-hero>
-            <img src="{{ $heroDeskUrl }}" alt="" class="h-full w-full object-cover" width="1920" height="820" loading="lazy">
         </div>
 
-        <div class="absolute left-1/2 top-[1373px] flex -translate-x-1/2 flex-col items-center gap-[24px] text-center" data-lum-scroll-reveal>
-            <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">
-            <p class="whitespace-nowrap font-serif text-[88px] leading-[94px] text-lum-espresso">
-                <span class="italic">{{ $quoteLine1 }}</span>{{ $quoteLine2 }}
-            </p>
-        </div>
+        <div class="relative z-[2] flex flex-col items-center pb-[120px] pt-[120px]">
+            <div class="flex flex-col items-center gap-[24px] text-center" data-lum-scroll-reveal>
+                <img src="{{ $img('stay/intro-dot.svg') }}" alt="" class="size-[12px]" width="12" height="12">
+                <p class="whitespace-nowrap font-serif text-[88px] leading-[94px] text-lum-espresso">
+                    <span class="italic">{{ $quoteLine1 }}</span>{{ $quoteLine2 }}
+                </p>
+            </div>
 
-        <div class="absolute left-1/2 top-[1641px] w-[733px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
-            <img src="{{ $img('stay/quote-line-full.svg') }}" alt="" class="h-[2px] w-full" width="733" height="2">
-        </div>
+            <div class="mt-[48px] w-[733px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.12">
+                <img src="{{ $img('stay/quote-line-full.svg') }}" alt="" class="h-[2px] w-full" width="733" height="2">
+            </div>
 
-        <div class="absolute left-1/2 top-[1679px] w-[301px] -translate-x-1/2" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.16">
-            <div class="relative flex flex-col items-center">
-                <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] z-[1] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
-                <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
-                    <p class="whitespace-nowrap lum-body text-lum-espresso">{{ $noteLine1 }}</p>
-                    <p class="whitespace-nowrap lum-body text-lum-espresso">{{ $noteLine2 }}</p>
+            <div class="mt-[36px] w-[301px]" data-lum-scroll-reveal data-lum-scroll-reveal-delay="0.16">
+                <div class="relative flex flex-col items-center">
+                    <img src="{{ $img('stay/clip.png') }}" alt="" class="absolute left-[130px] top-[-45px] z-[1] h-[52px] w-[40px] rotate-2" width="40" height="52" loading="lazy">
+                    <div class="relative z-0 w-full bg-lum-cream px-[24px] py-[20px] text-center shadow-[1.3px_1px_1.2px_rgba(0,0,0,0.51)]">
+                        <p class="whitespace-nowrap lum-body text-lum-espresso">{{ $noteLine1 }}</p>
+                        <p class="whitespace-nowrap lum-body text-lum-espresso">{{ $noteLine2 }}</p>
+                    </div>
                 </div>
             </div>
         </div>
