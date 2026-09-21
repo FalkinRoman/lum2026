@@ -238,11 +238,16 @@ function initStayWellness(section) {
         const heroImg = hero.querySelector('img');
 
         if (heroImg) {
+            // Keep parallax inside the hero box. Page-level transform:scale breaks
+            // overflow:hidden clipping of nested transforms on some engines.
+            hero.style.overflow = 'clip';
+            hero.style.isolation = 'isolate';
+
             gsap.fromTo(
                 heroImg,
-                { scale: 1.04 },
+                { scale: 1 },
                 {
-                    scale: 1.08,
+                    scale: 1.06,
                     ease: 'none',
                     scrollTrigger: {
                         trigger: hero,

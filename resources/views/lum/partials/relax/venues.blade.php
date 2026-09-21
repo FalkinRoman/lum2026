@@ -16,9 +16,9 @@
     $tabletLayout = ListingLayout::grid2($count, [20, 490], 588, 565);
     $desktopLayout = ListingLayout::grid2($count, [72, 686, 1299], 894, 804);
 
-    // Bottom padding = card height + quote hero tuck (-mt). Must stay ≥ |mt| or hero eats last row.
-    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 390 + 120);
-    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 525 + 160);
+    // Bottom padding = card height + gap before quote hero (no negative-margin tuck).
+    $mobileHeight = ListingLayout::sectionHeight($mobileLayout, 'top', 390 + 64);
+    $tabletHeight = ListingLayout::sectionHeight($tabletLayout, 'top', 525 + 64);
     $desktopHeight = ListingLayout::sectionHeight($desktopLayout, 'top', 900);
 @endphp
 
