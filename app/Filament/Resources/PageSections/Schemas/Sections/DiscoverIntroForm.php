@@ -17,7 +17,7 @@ class DiscoverIntroForm
     {
         return [
             Section::make('Тексты')
-                ->description('Сверху вниз: как в intro на /discover.')
+                ->description('Сверху вниз: intro на /discover. Табы/карусель внизу страницы экскурсии — в Путешествия → Экскурсии → блок «Табы и галереи».')
                 ->columnSpanFull()
                 ->schema([
                     Tabs::make('locale')

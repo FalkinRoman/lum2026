@@ -126,8 +126,8 @@ class ActivityForm
                         )->columnSpanFull(),
                     ]),
 
-                Section::make('5. Impression')
-                    ->description('Каждый таб = своя галерея. CTA mode: activity = pricing_cta_url.')
+                Section::make('5. Табы и галереи (карусель внизу страницы)')
+                    ->description('Нижний блок с табами на /relax/{slug}. Каждый таб = своя галерея.')
                     ->schema([
                         Locales::text('impression_title_normal', 'Заголовок (курсивная строка)'),
                         Locales::text('impression_title_caps', 'Заголовок (CAPS)'),
@@ -135,6 +135,7 @@ class ActivityForm
                             ->label('Табы и галереи')
                             ->reorderable()
                             ->defaultItems(0)
+                            ->addActionLabel('Добавить таб')
                             ->schema([
                                 Tabs::make('tab_locale')
                                     ->contained(false)

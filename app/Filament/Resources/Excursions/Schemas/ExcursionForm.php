@@ -110,8 +110,8 @@ class ExcursionForm
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('6. Impression')
-                    ->description('Каждый таб = своя галерея. CTA mode: excursion = book_url.')
+                Section::make('6. Табы и галереи (карусель внизу страницы)')
+                    ->description('Нижний блок WALLS / STREETS / … на /discover/{slug}. Каждый таб = своя галерея.')
                     ->schema([
                         Locales::text('impression_title_normal', 'Заголовок (курсивная строка)'),
                         Locales::text('impression_title_caps', 'Заголовок (CAPS)'),
@@ -119,6 +119,7 @@ class ExcursionForm
                             ->label('Табы и галереи')
                             ->reorderable()
                             ->defaultItems(0)
+                            ->addActionLabel('Добавить таб')
                             ->schema([
                                 Tabs::make('tab_locale')
                                     ->contained(false)
